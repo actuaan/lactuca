@@ -1,0 +1,14 @@
+[
+  {
+    "version": "latest",
+    "url": "https://actuaan.github.io/lactuca/latest/"
+  },
+  {
+    "version": "stable",
+    "url": "https://actuaan.github.io/lactuca/stable/"
+  },
+  {
+    "version": "0.0.1",
+    "url": "https://actuaan.github.io/lactuca/0.0.1/"
+  }
+]
