@@ -53,5 +53,6 @@ and must include a link to this documentation site.
 
 For licensing enquiries, academic collaborations, or professional support:
 
-- **Email**: alberto.aragoneses@actuaan.com
+- **Author**: Alberto Aragoneses Nebreda
+- **Email**: [alberto.aragoneses@actuaan.com](mailto:alberto.aragoneses@actuaan.com)
 - **Affiliation**: Colegio de Actuarios de Cataluña (member no. 275)

@@ -64,8 +64,7 @@ print(f"Life annuity value: {annuity:.4f}")
 
 ## Contact
 
-**Alberto Aragoneses Nebreda**
-📧 [alberto.aragoneses@actuaan.com](mailto:alberto.aragoneses@actuaan.com)
+📧 [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
 🌐 [https://actuaan.github.io/lactuca/latest/](https://actuaan.github.io/lactuca/latest/)
 
 ---

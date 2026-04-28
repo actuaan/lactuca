@@ -36,9 +36,8 @@ Keeping answers in GitHub Issues makes them visible and searchable for the whole
 
 For licensing, commercial use, or other business enquiries, contact the maintainer directly:
 
-**Alberto Aragoneses Nebreda**
-📧 [alberto.aragoneses@actuaan.com](mailto:alberto.aragoneses@actuaan.com)
-🌐 [https://actuaan.github.io/lactuca/latest/](https://actuaan.github.io/lactuca/latest/)
+📧 [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+🌐 [https://lactuca.actuaan.com/latest/](https://lactuca.actuaan.com/latest/)
 
 ---
 

@@ -53,6 +53,15 @@ myst_enable_extensions = [
     "dollarmath",  # $...$ and $$...$$ math blocks
 ]
 
+# Global substitutions for MyST Markdown ({{ var }} syntax in docs/source/*.md).
+# Update this dict when URLs or contact addresses change — all .md files using {{ }} update automatically.
+# Note: substitutions work in inline text only; link destinations and raw HTML require direct edits.
+myst_substitutions = {
+    "docs_url": "https://lactuca.actuaan.com",
+    "support_email": "support-lactuca@actuaan.com",
+    "license_email": "licenses@mail.actuaan.com",
+}
+
 # Napoleon settings (NumPy docstrings)
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True

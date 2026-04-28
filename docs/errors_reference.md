@@ -7,11 +7,12 @@ the **cause**, a concrete **fix**, and **code examples** showing the triggering 
 alongside the correct alternative.
 
 :::{important}
-**Scope of this reference** — this page covers only errors that are *non-obvious*,
-*cross-cutting* (affecting multiple methods or components), or that arise from
-*configuration-of-state surprises* (e.g. restrictions that only appear after the object
-has been built in a particular way).  Simple parameter validation whose error message is
-self-explanatory (e.g. *"n must be non-negative"*) is intentionally omitted.
+**Scope of this reference** — this page covers *non-obvious*, *cross-cutting* errors
+(affecting multiple methods or components), errors that arise from
+*configuration-of-state surprises*, and **license enforcement errors** that may be
+raised at `import` time or during a long-running session.  Simple parameter validation
+whose error message is self-explanatory (e.g. *"n must be non-negative"*) is
+intentionally omitted.
 :::
 
 :::{note}
@@ -53,6 +54,7 @@ the full explanation, cause, and fix.
 | **GrowthRate** | `ValueError` | [GrowthRate.add_scenario errors](#growthrate-add-scenario-errors) | `scenario` not a `GrowthRate`; nested multi-scenario |
 | **GrowthRate** | `TypeError` | [GrowthRate.add_scenario errors](#growthrate-add-scenario-errors) | `scenario` is not a `GrowthRate` instance |
 | **GrowthRate** | `TypeError` | [GrowthRate.factor errors](#growthrate-factor-errors) | `t` is `None` (raises `TypeError`, not `ValueError`) |
+| **License** | `LicenseSeatExhaustedError` | [Concurrent session limit](#license-seat-exhausted) | Too many Python processes are running Lactuca simultaneously |
 | **Interest rate** | `ValueError` | [InterestRate advanced constructor](#interestrate-advanced-constructor) | Invalid `term_unit` passed to `InterestRate()` |
 | **Interest rate** | `TypeError` | [InterestRate.add_scenario errors](#interestrate-add-scenario-errors) | `scenario` not an `InterestRate` instance |
 | **Interest rate** | `ValueError` | [InterestRate.add_scenario errors](#interestrate-add-scenario-errors) | Nested multi-scenario `InterestRate` |
@@ -68,6 +70,8 @@ are: Non-finite `rates=` value (piecewise interest rate), Wrong type for `intere
 Invalid selected periods (non-integer value), times is None, GrowthRate constructor type
 checks, GrowthRate.factor None, GrowthRate.add_scenario, InterestRate.add_scenario,
 InterestRate.i_m/d_m, InterestRate.get_average_force.
+The `LicenseSeatExhaustedError` row is a custom exception (subclass of
+`LactucaLicenseError`) not derived from `ValueError` or `TypeError`.
 :::
 
 ---
@@ -1090,3 +1094,74 @@ gr.factor(None)       # ✘ → TypeError
 **Cashflows and growth rates**
 - {doc}`user_guide/irregular_cashflows` — irregular cashflow interface and array alignment
 - {doc}`user_guide/growth_rates_guide` — `GrowthRate` construction, `amounts()`, and payment frequency conventions
+
+**Licensing**
+- {doc}`faq_licensing` — concurrent session limits, `LicenseSeatExhaustedError`, and offline grace periods
+
+---
+
+(license-errors)=
+## License errors
+
+License errors are raised by the activation subsystem during `import lactuca` or during
+a long-running session (keep-alive mechanism).  They are subclasses of `LactucaLicenseError`
+and are **not** `ValueError` or `TypeError`.
+
+(license-seat-exhausted)=
+### Concurrent session limit — `LicenseSeatExhaustedError`
+
+**Exception**: `LicenseSeatExhaustedError`
+
+**Message pattern**:
+```
+License seat limit reached. All {N} concurrent session(s) allowed by your plan
+are currently in use. Wait for an existing session to exit, or upgrade your plan.
+```
+
+**Cause**: The license system (Keygen.sh process leasing) enforces a limit on the
+number of Python processes that may run Lactuca simultaneously across all activated
+devices.  When a new process calls `import lactuca` and the limit is already reached,
+the license server refuses to grant a new process lease and this exception is raised.
+
+Concurrent session limits per tier:
+
+| Plan | Concurrent sessions |
+|---|---|
+| Trial | 1 |
+| Individual | 1 |
+| Academic & Community | 1 |
+| Team | 10 |
+| Enterprise | 50 |
+| OEM | unlimited |
+
+**Fix**:
+
+1. **Wait for a seat to free up.** Seats are released automatically when a running
+   process exits cleanly (`atexit` hook). If a process was killed or crashed, the seat
+   is released after the heartbeat lease expires (30 minutes for single-user tiers;
+   60 minutes for Team/Enterprise).
+
+2. **Check for stuck processes.** Look for background scripts, Jupyter kernels, or
+   scheduled jobs running Lactuca that you may have forgotten about.
+
+3. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
+   for server deployments and teams running parallel jobs.
+
+4. **Catch and handle gracefully** in pipeline scripts that may run concurrently:
+
+```python
+from lactuca.exceptions import LicenseSeatExhaustedError
+
+try:
+    import lactuca
+except LicenseSeatExhaustedError:
+    # No seat available — retry after a delay or queue the job
+    raise SystemExit("Lactuca seat limit reached. Retry when a session is free.")
+```
+
+:::{note}
+The seat is always released on clean Python exit (via `atexit`).  If you are using
+`multiprocessing`, each child process consumes one seat.  For high-parallelism scenarios
+(e.g. 20+ workers) use an Enterprise license or restructure the pipeline to share a
+single Lactuca process across workers.
+:::

@@ -2,6 +2,158 @@
 
 ### ♻️ Refactoring
 
+- Streamline E2E license test scenarios and improve Python script execution
+
+
+### ✅ Testing
+
+- **activation**: Complete test suite for _activation module (114 tests)
+
+
+### ✨ Features
+
+- **webhook**: Add name field to trial endpoint (B.4c)
+
+- **licensing**: Add license verification and activation module
+
+- **pricing**: Add initial pricing policy document
+
+- Add E2E manual testing workflow for license system across platforms
+
+- Add tests for LACTUCA_CONFIG_DIR license.json handling in verify_or_activate()
+
+- Update Phase G action plan with new scenarios and workflow enhancements
+
+
+### 🐛 Bug Fixes
+
+- **webhook**: Sanitize user inputs to prevent HTML injection and URL path injection
+
+- **webhook**: Harden against empty secret, key HTML injection, and license ID path injection
+
+- Handle NO_MACHINES on first activation by registering machine then re-validating
+
+- Surface Keygen HTTP error in CI logs and guard against data:null in NO_MACHINES response
+
+- Remove dead try block in _create_machine; guard metadata:null; document Keygen policy auth requirement
+
+- Update dashboard configuration from API Tokens to License Keys for machine registration
+
+- Harden license activation against Keygen null responses and Python 2 syntax
+
+- Add diagnostic error codes [LAC-XXXX] and context to all license errors
+
+- Pre-commit audit _activation.py — 3 issues (DEAD + 2 IMPORTANT)
+
+- Set real Ed25519 verify key in _KEYGEN_VERIFY_KEY
+
+
+### 👷 Build System
+
+- Drop Python 3.10/3.11 support, min version 3.12
+
+
+### 📚 Documentation
+
+- **impl**: Update security audit §10.7 with Vercel Firewall decisions and Upstash deferral (rev 21)
+
+- Add pricing, activation, faq_licensing, and EULA pages (Fase F, F.1-F.5)
+
+- Add licensing pages (EULA, pricing, activation, FAQ, privacy) and fix sphinx build
+
+- Update EULA with detailed licensor information, license terms, and trial conditions
+
+- **licensing**: Add licensing, pricing, EULA and FAQ documentation
+
+- **internal**: Update distribution licensing implementation notes
+
+- **legal**: Simplify prompt transcripts, remove fragile error subtexts, sync heartbeat wording
+
+- **legal**: Fix trial registration channel in privacy policy (prompt, not web form)
+
+- **legal**: GDPR compliance gaps in privacy policy (Art. 13, 22, LSSI NIF)
+
+- **legal**: GDPR Art. 13(2)(e) mandatory-data disclosure, IP in activation, Art. 22(2)(a), opt-out link
+
+- **legal**: Add postal address (LSSI-CE Art. 10), correct fingerprint pseudonymity (GDPR Art. 4(5))
+
+- **legal**: Add IP to trial registration, stored-where to §2.4, fix retention label (LGT/contract)
+
+- **legal**: Disclose Vercel access log retention in §4 (GDPR Art. 13(2)(a))
+
+- **legal**: Remove file-format enumeration from §5.3 to avoid contractual staleness
+
+- **legal**: Fix §3 anchor name, fix FAQ cross-ref to §4, add last-updated date to EULA
+
+- **legal**: Add OEM misuse to §8.2(b) no-refund exceptions to match §16.1 claim
+
+- **legal**: Fix 3 discrepancies in faq_licensing (device limits, heartbeat grace behavior, Keygen server location)
+
+- **legal**: Fix trial expiry wording, offline warning text, academic eligibility, Enterprise named-user count in FAQ
+
+- **legal**: Fix heading levels for platform subsections, fix misleading Keygen portal link in activation guide
+
+- **legal**: Update Windows license path and clarify license validation grace period details
+
+- **legal**: Add LicenseSeatExhaustedError to troubleshooting, add explicit anchor in FAQ
+
+- **i18n**: Add complete Spanish translations of EULA and Privacy Policy; update product tagline to Life Actuarial Calculation Library
+
+- **planning**: Add web design implementation plan for Sphinx docs
+
+- Update contact email to support-lactuca@actuaan.com in README and support documentation
+
+- **pricing**: Update pricing tiers and add Founding Members Early Bird offers
+
+- **changelog**: Update changelog with new features, bug fixes, and legal compliance updates
+
+- Add new documentation files and update licensing information
+
+- Add dead code review step to lactuca-optimize skill
+
+
+### 🔧 CI/CD
+
+- Add LACTUCA_LICENSE_KEY to build verification step in e2e workflow
+
+- Fix cross-platform pip install line continuation (Windows PowerShell)
+
+- Expose KEYGEN_ACCOUNT_ID at job level for all e2e steps and subprocesses
+
+- Remove post-install import check from build step (activation tested in G.9)
+
+- Add CI teardown step to deactivate machine from Keygen after E2E run
+
+- Simplify machine cleanup to use License-key auth, delete all machines
+
+
+### 🧹 Miscellaneous
+
+- **lint**: Suppress UP045 (Optional[X] vs X|None) globally — Cython incompatible
+
+- Update pricing policy spreadsheet
+
+- Update pricing policy spreadsheet
+
+
+## [0.0.3-test] - 2026-04-17
+
+### 🐛 Bug Fixes
+
+- **tables**: Parenthesize multiple exception types in builder.py
+
+
+## [0.0.2-test] - 2026-04-17
+
+### 🐛 Bug Fixes
+
+- **ci**: Drop cp311, add CMAKE_BINARY_DIR_OVERRIDE for Windows, fix Python 2 except syntax
+
+
+## [0.0.1-test] - 2026-04-17
+
+### ♻️ Refactoring
+
 - Remove unused continuous_simplified_B method from AnnuityCore class
 
 - Remove unused _resolve_interest_rate function from core.py
@@ -1136,6 +1288,24 @@
 
 - Implement tiered cashflow amounts and GrowthRate utility functions
 
+- Implement webhook event handlers and Keygen license management (B.3/B.7)
+
+- Implement hardware fingerprint control for trial abuse prevention
+
+- Implement trial license creation and validation in webhook
+
+- Implement trial license activation and webhook handling
+
+- Integrate Resend for trial license email delivery and update endpoint configurations
+
+- **webhook**: Enhance trial email functionality with language detection and dynamic content
+
+- **licensing**: Implement license verification and activation system
+
+- **activation**: Implement HMAC-based activation token verification and enhance license validation flow
+
+- **activation**: Add PEP 562 module-level __setattr__ guard (C.9c)
+
 
 ### 🐛 Bug Fixes
 
@@ -1224,6 +1394,42 @@
 - Correct formatting comment in data_tables.py
 
 - Escape embedded triple-quotes in docstrings to prevent premature closing
+
+- Simplify vercel.json to use automatic API routing
+
+- Restore builds in vercel.json without explicit routes
+
+- List api handlers individually in vercel.json builds
+
+- Add webhook/pyproject.toml to isolate from root uv.lock
+
+- Use absolute dest paths in vercel.json routes
+
+- Switch to Flask app.py entrypoint for Vercel Python detection
+
+- Add flask to webhook/pyproject.toml dependencies
+
+- Add root health route and both /webhook and /api/webhook paths
+
+- Update webhook architecture and implement Flask entrypoint in app.py
+
+- Update verification status for Phase B tests in licensing documentation
+
+- Update subscription event handlers to return 200 status for missing licenses
+
+- Configure Vercel to serve Flask app from app.py
+
+- **webhook**: Use GET /users/{email} to retrieve existing Keygen user
+
+- **webhook**: Move resend import inside try/except to prevent startup crash
+
+- **webhook**: Use metadata[user_email] filter for trial duplicate check
+
+- Add resend to webhook pyproject.toml, remove redundant requirements.txt
+
+- Update support email address in documentation and code
+
+- **config**: Add __deepcopy__ to Config singleton to support LifeTable.copy()
 
 
 ### 📚 Documentation
@@ -1638,6 +1844,8 @@
 
 - Update CI/CD implementation plan with validation results and corrections for wheels build
 
+- **impl**: Update IMPL_distribution_licensing with C.9c and deepcopy details
+
 
 ### 🧹 Miscellaneous
 
@@ -1666,5 +1874,37 @@
 - Add .editorconfig for consistent coding styles across files
 
 - Update CI/CD workflow to include macOS and Ubuntu in build matrix
+
+- Update Python version to 3.14 and enable FORCE_JAVASCRIPT_ACTIONS_TO_NODE24
+
+- Enable FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 in CI/CD workflow
+
+- Enable FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 in release-test workflow
+
+- Add FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 environment variable to sync workflow
+
+- Add FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 environment variable to validate-docs workflow
+
+- Enable FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 in validate-wheels workflow
+
+- Enhance CI/CD documentation and streamline module imports for clarity
+
+- Update implementation plan and validate workflows for macOS/Linux support
+
+- Include Windows in the validation workflow OS matrix for comprehensive testing
+
+- Update CI/CD implementation plan with latest phase completions and documentation adjustments
+
+- Update CI/CD implementation plan with completion status and repository renaming
+
+- Update CI/CD implementation plan and licensing document with current status and completed prerequisites
+
+- Add webhook scaffold for Vercel deployment (Fase B)
+
+- Update licensing document with latest revision and webhook scaffold details
+
+- Update project URL in licensing document for Vercel deployment
+
+- Remove redundant requirements.txt (pyproject.toml is used by Vercel)
 
 

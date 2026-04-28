@@ -88,6 +88,20 @@ errors_reference
 ```{toctree}
 :maxdepth: 1
 :hidden:
+:caption: Licensing
+
+pricing
+activation
+faq_licensing
+eula
+eula_es
+privacy
+privacy_es
+```
+
+```{toctree}
+:maxdepth: 1
+:hidden:
 :caption: Project
 
 citing
