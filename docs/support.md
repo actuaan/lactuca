@@ -1,4 +1,4 @@
-# Support
+﻿# Support
 
 ## Reporting bugs
 
@@ -36,8 +36,8 @@ Keeping answers in GitHub Issues makes them visible and searchable for the whole
 
 For licensing, commercial use, or other business enquiries, contact the maintainer directly:
 
-📧 [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
-🌐 [https://lactuca.actuaan.com/latest/](https://lactuca.actuaan.com/latest/)
+📧 [support@lactuca.io](mailto:support@lactuca.io)
+🌐 [https://www.lactuca.io/latest/](https://www.lactuca.io/latest/)
 
 ---
 

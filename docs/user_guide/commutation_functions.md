@@ -54,7 +54,7 @@ quantities each pair produces:
 <tr>
   <td style="padding: 4px 8px; border: 1px solid #ccc; background: #f0f4ff; text-align: center;"><strong>d<sub>x</sub></strong><br/><small>= l<sub>x</sub> − l<sub>x+1</sub></small></td>
   <td style="padding: 4px 8px; text-align: center;">→</td>
-  <td style="padding: 4px 8px; border: 1px solid #ccc; background: #fff3e0; text-align: center;"><strong>C<sub>x</sub></strong> = v<sup>x+1</sup> · d<sub>x</sub></td>
+  <td style="padding: 4px 8px; border: 1px solid #ccc; background: #fff3e0; text-align: center;"><strong>C<sub>x</sub></strong> = v<sup>x+α</sup> · d<sub>x</sub><br/><small>α from <code>mortality_placement</code></small></td>
   <td style="padding: 4px 8px; text-align: center;">→</td>
   <td style="padding: 4px 8px; border: 1px solid #ccc; background: #fff3e0; text-align: center;"><strong>M<sub>x</sub></strong> = ΣC<sub>k</sub></td>
   <td style="padding: 4px 8px; text-align: center;">→</td>
@@ -63,6 +63,17 @@ quantities each pair produces:
 </tr>
 </table>
 </div>
+
+
+(ex-complete-vs-curtate)=
+## `ex` — complete expectation (not curtate)
+
+`LifeTable.ex(x)` returns the **complete** expectation of future lifetime
+$\mathring{e}_x = T_x / l_x$ under the configured `lx_interpolation` (UDD gives the
+trapezoidal person-years formula; CFM uses integration over exponential within-year
+survival). Classical **curtate** $e_x = \sum_{k=1}^{\omega-x} {}_kp_x$ is not exposed
+as a separate public method — use commutation ratios or build the sum explicitly if
+curtate notation is required.
 
 ## Why $\ddot{a}_x = N_x/D_x$
 
@@ -300,7 +311,7 @@ are not precomputed in Lactuca):
 | Approach | How $\ddot{a}^{(12)}_{65}$ is computed |
 |---|---|
 | `discrete_precision`, `m=12` | Exact summation at $t = 0, \tfrac{1}{12}, \tfrac{2}{12}, \ldots\,$; evaluates $l_{65+t}$ at each sub-annual point using the configured interpolation (respects `config.lx_interpolation`) |
-| `discrete_simplified`, `m=12` | Woolhouse 2-term: $\ddot{a}^{(12)}_{65} \approx \ddot{a}_{65} - \tfrac{11}{24}$; derived algebraically from annual-step annuities, no sub-annual $l_x$ evaluation |
+| `discrete_simplified`, `m=12` | Woolhouse 2-term on integer years: $\ddot{a}^{(12)}_{x:\overline{n}|} \approx \ddot{a}_{x:\overline{k}|} - \tfrac{m-1}{2m}$ with $k=\lfloor n\rfloor$; when $n$ is fractional and $m>1$, an exact $m$-thly tail on $(k,n]$ is added (hybrid $k+s$ — see {doc}`calculation_modes`) |
 | Classical commutation, $m>1$ | Requires separate $m$-thly commutation tables — not provided in Lactuca; approximated by the Woolhouse formula |
 
 For $m > 1$, use the engine methods (`äx`, `ax`, etc.) with the appropriate `m` and
@@ -366,3 +377,12 @@ integration point and therefore do respect `config.lx_interpolation`.
 - {doc}`lx_interpolation` — UDD vs. CFM, and when `config.lx_interpolation` applies
 - {doc}`interest_rates_guide` — setting the interest rate
 - {doc}`tables_taxonomy` — table types, column structure and decrement classes
+
+## `Lx`, `Tx`, and `lx_interpolation`
+
+Integer-age `Lx` and `Tx` use the UDD fast path ($L_x = l_x - d_x/2$) only when
+`config.lx_interpolation = "linear"`. With `"exponential"` (constant force of mortality
+within each year), the same methods integrate over within-year survival and may differ
+from the UDD shortcut. Engine methods honour `lx_interpolation` at fractional ages in
+all calculation modes.
+

@@ -6,8 +6,12 @@ period so that the present value reflects the true contracted term $n$ — not t
 aligned grid point.
 
 :::{note}
-This adjustment applies **only to `discrete_precision` mode**.  `discrete_simplified` and
-the continuous modes do not implement fractional final-period scaling.
+This adjustment applies **only to `discrete_precision` mode** for the standard
+``payments_frac`` scaling on the full payment grid.  In ``discrete_simplified``
+with fractional ``n_eff`` and ``m > 1``, the terminal fraction ``s = n_eff - k``
+is valued on an exact m-thly tail (``discrete_precision`` conventions) rather
+than via Woolhouse on the annual grid.  Continuous modes do not implement
+fractional final-period scaling on the simplified path.
 :::
 
 ## Annuity-due versus annuity-immediate

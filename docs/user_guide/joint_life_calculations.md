@@ -28,6 +28,12 @@ lifetimes), the factorised formula underestimates the joint survival probability
 cases require specialist models beyond the scope of this library.
 :::
 
+### Numerical evaluation (log domain)
+
+Joint survival is computed as ${}_t p_{xy\ldots} = \exp\bigl(\sum_i \ln {}_t p_{x_i}\bigr)$
+rather than multiplying probabilities directly.  This is actuarially equivalent under
+independence (including $t \le 1$ and $t = 0$).  See {doc}`numerical_precision`.
+
 ---
 
 ## Status types
@@ -267,6 +273,81 @@ Pure endowment methods (`nExy`, `nExyz`, `nEjoint`) accept only `n` (required), 
 
 ---
 
+## Batch joint-life calculations
+
+All joint-life methods support batch mode: pass arrays for **every** life's ages
+simultaneously.  Results are `NDArray[float64]` of the same length.
+
+### Two-life batch
+
+```python
+from lactuca import LifeTable, äxy, Axy
+
+lt_m = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt_f = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+
+x_ages = [60, 62, 65]
+y_ages = [55, 58, 61]
+
+# Joint annuity-due: payments while both lives survive
+result_ann = äxy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
+
+# First-death insurance
+result_ins = Axy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
+
+net_premium = result_ins / result_ann
+```
+
+### Three-life batch
+
+```python
+from lactuca import äxyz
+
+lt_z = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+
+z_ages = [50, 55, 58]
+
+result = äxyz(
+    [lt_m, lt_f, lt_z],
+    ages=(x_ages, y_ages, z_ages),
+    n=20,
+)
+```
+
+### *n*-life batch (`äjoint`, `ajoint`, `Afirst`, `nEjoint`)
+
+For the n-life methods, pass **all tables** as a single list and **all ages** as a list
+of arrays — one per life:
+
+```python
+from lactuca import äjoint
+
+result = äjoint(
+    [lt_m, lt_f, lt_z],
+    ages=[x_ages, y_ages, z_ages],
+    n=20,
+)  # NDArray shape (3,)
+```
+
+For a **per-policy multi-table dispatch** (each policy has its own set of tables),
+each element of the tables list must itself be a list of N `LifeTable` instances —
+one per policy:
+
+```python
+# 3 policies, 3 lives each — different table per policy per life
+tables = [
+    [lt_m, lt_f, lt_m],   # table for life 0, one entry per policy
+    [lt_f, lt_m, lt_f],   # table for life 1, one entry per policy
+    [lt_z, lt_z, lt_m],   # table for life 2, one entry per policy
+]
+result = äjoint(tables, ages=[x_ages, y_ages, z_ages], n=20)  # NDArray shape (3,)
+```
+
+See {doc}`batch_calculations` for full batch documentation, including aggregate
+portfolio flows for BEL calculations.
+
+---
+
 ## See also
 
 - {doc}`../formulas` — full mathematical definitions, joint-life status probabilities
@@ -275,3 +356,4 @@ Pure endowment methods (`nExy`, `nExyz`, `nEjoint`) accept only `n` (required), 
 - {doc}`functional_api` — complete functional API reference
 - {doc}`calculation_modes` — discrete vs. continuous and frequency effects on joint calculations
 - {doc}`notation_glossary` — joint-life symbols $\ddot{a}_{xy}$, $\ddot{a}_{\overline{xy}}$
+- {doc}`batch_calculations` — batch mode guide

@@ -110,12 +110,16 @@ Payment timing is determined by the method name: `äx`/`äjoint` = annuity-due (
 
 ## Calculation modes
 
+All four modes value the same actuarial present values under shared conventions; they are
+**actuarially coherent** but not numerically identical. See {ref}`actuarial-coherence-of-modes`
+in {doc}`calculation_modes`.
+
 | Mode string | Type | Handling of $m > 1$ | Notes |
 |-------------|------|---------------------|-------|
-| `"discrete_precision"` | Discrete | Via $l_x$ interpolation | Default |
-| `"discrete_simplified"` | Discrete | UDD approximation | Faster |
-| `"continuous_precision"` | Continuous | Numerical integration | Most accurate |
-| `"continuous_simplified"` | Continuous | Euler/trapezoid approximation | Fast continuous |
+| `"discrete_precision"` | Discrete | Via $l_x$ interpolation | Default; production reference |
+| `"discrete_simplified"` | Discrete | Woolhouse (annuities) / linear age interp. (insurances); hybrid m-thly tail when $n$ fractional | Faster approximations |
+| `"continuous_precision"` | Continuous | Numerical integration | Unrounded $l_x$ integration |
+| `"continuous_simplified"` | Continuous | Trapezoidal / averaging shortcuts | Fast continuous approximations |
 
 See {doc}`calculation_modes` for details.
 
@@ -233,3 +237,22 @@ $({}_t p_x)$ values.  It is active only under `"continuous_precision"` and
 **Commutation function**
 : Precomputed discounted survival quantity ($D_x$, $N_x$, $C_x$, $M_x$, etc.) used to evaluate
   annuity and insurance values in closed form.  See {doc}`commutation_functions`.
+
+**TableKey**
+: A hashable `NamedTuple` (`lactuca.TableKey`) that uniquely identifies a `LifeTable`,
+  `DisabilityTable`, or `ExitTable` instance by its five constructor dimensions:
+  `table_name` (str), `sex` (str), `cohort` (int or None), `duration` (int/str or None),
+  and `unisex_blend` (float or None).  `table_name` and `sex` are required; the remaining
+  fields default to `None`.  Used as the key type in `dict` returns from the vectorial
+  constructor when `return_dict=True`.
+
+  ```python
+  from lactuca import TableKey
+  key = TableKey("PER2020_Ind_1o", "m", 1960)    # cohort=1960, duration=None, unisex_blend=None
+  key = TableKey("PASEM2010", "u", unisex_blend=0.55)
+  ```
+
+  :::{note}
+  Always look up a key using the **same literal float** that was passed as `unisex_blend` at
+  construction time.  IEEE 754 rounding means `0.5 + 0.05 \neq 0.55` at the bit level.
+  :::

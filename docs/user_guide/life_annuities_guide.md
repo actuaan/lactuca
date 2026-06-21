@@ -72,6 +72,16 @@ $$
 | `ir` | `float \| InterestRate \| None` | table default | Interest rate |
 | `gr` | `float \| GrowthRate \| None` | `None` | Benefit growth rate (escalation) |
 
+:::{note}
+**`m=14` (Spanish "14 pagas" scheme)** is accepted by the calculation engine but is an
+approximation: a year does not divide evenly into 14 equal periods under any standard calendar
+convention (365/14 ≈ 26.07 days, 360/14 ≈ 25.71 days).  For actuarially precise results,
+model the two extraordinary payments explicitly using `m=12` for the regular monthly payments
+and a separate `ax` call with `cashflow_times` / `cashflow_amounts` for the extraordinary
+instalments.  Note also that `anniversary_dates` raises `ValueError` for `m=14`; use
+`m=12` for date-grid generation.
+:::
+
 `äx` and `ax` are importable as functional-style wrappers:
 
 ```python
@@ -255,3 +265,4 @@ config.reset()
 - {doc}`growth_rates_guide` — growing annuities with `GrowthRate`
 - {doc}`interest_rates_guide` — `InterestRate` class and term structures
 - {doc}`lx_interpolation` — fractional-age survival under UDD and constant force
+- {doc}`batch_calculations` — portfolio pricing: array ages, per-policy params, BEL flows

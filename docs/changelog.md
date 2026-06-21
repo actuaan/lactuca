@@ -1,5 +1,2113 @@
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- **tests**: Isolate MPE CLI smoke from wheel_test license env
+
+
+## [0.0.30-test] - 2026-06-21
+
+### ⚡ Performance
+
+- **_activation**: Derive process heartbeat interval from Keygen
+
+
+### ✅ Testing
+
+- **tests**: Parametrize MPE enforcement across license tiers
+
+- **tests**: Add activation security hardening regression tests
+
+- **tests**: Add TestActivationSecurityHardening regression suite
+
+- **tests**: Add Keygen MPE CLI smoke tests without live skip
+
+
+### ✨ Features
+
+- **ci**: Add LIVE-4 Team and LIVE-5 OEM MPE live scenarios
+
+- **ci**: Add LIVE-4b enterprise pool scenario to MPE Keygen live
+
+
+### 🐛 Bug Fixes
+
+- **ci**: Install build deps before MPE live editable install
+
+- **ci**: Paginate Keygen machine list in MPE live script
+
+- **_activation**: Map pool-full FPS_MISMATCH to LAC-1013 on activate
+
+- **ci**: Improve MPE live runner cleanup and lactuca fingerprint
+
+- **_activation**: Harden pool-full FPS_MISMATCH activation mapping
+
+- **_activation**: Infer tier from Keygen policy id for pool checks
+
+- **ci**: Make MPE live pool seeding capacity-aware
+
+- **_activation**: Map MACHINE_LIMIT_EXCEEDED to LAC-1013 on activate
+
+- **_activation**: Reject foreign machine_id on VALID pool-full activate
+
+- **_activation**: Use Keygen account processes API for LAC-4001
+
+- **_activation**: Map MACHINE_PROCESS_LIMIT_EXCEEDED to LAC-4001
+
+- **_activation**: Resolve OEM tier from full Keygen policy UUID
+
+- **_activation**: Prefer OEM policy over metadata tier individual
+
+- **_activation**: Use policy-aware tier on revalidation and CLI sync
+
+- **_activation**: Sync OEM tier to license.json before process lease
+
+- **_activation**: Enforce policy-authoritative tier on every import
+
+- **_activation**: Resolve tier from server on FPS_MISMATCH pool check
+
+- **_activation**: Enforce activation gate and block docs-build on wheels
+
+- **ci**: Skip MPE Keygen live scenarios on API quota exhaustion
+
+- **_activation**: Skip LAC-4003 offline grace for OEM tiers
+
+
+### 📚 Documentation
+
+- Close T5-G3 PoC on v0.0.29-test
+
+- Add MPE CI tier matrix implementation plan
+
+- **docs**: Document MPE cross-device errors and device registration
+
+- **_activation**: Document MPE pool and cross-device in docstrings
+
+- Close MPE plan and record tier-matrix embudo order
+
+- **docs**: Document LAC-1013/1014/1015 first-activation paths
+
+- **IMPL**: Update MPE tier matrix documentation with new specifications and affected files
+
+- **IMPL**: Update MPE tier matrix with license expiry details
+
+- Update keygen licenses configuration with new UUIDs
+
+- **docs**: Close MPE tier matrix B2 and mark T-01 complete
+
+- **docs**: Record post-B2 hardening commit SHAs in tier matrix
+
+- **docs**: Close MPE tier matrix and distribution licensing Fase 5
+
+
+### 🔧 CI/CD
+
+- **ci**: Add MPE Keygen live workflow and helper script
+
+- **ci**: Reuse LACTUCA_INTERNAL_LICENSE in MPE live workflow
+
+- **ci**: Wire LIVE-2 to LACTUCA_MPE_LICENSE_TRIAL
+
+- **ci**: Wire LIVE-2 to Individual Monthly license for LAC-4001
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.30 [test release]
+
+
+## [0.0.29-test] - 2026-06-19
+
+### 🐛 Bug Fixes
+
+- **_activation**: Map FPS_MISMATCH pool full to LAC-1013 on import
+
+
+### 📚 Documentation
+
+- Record MPE PoC T5 run 2 and T5-G3 fix status
+
+- Add MPE PoC tier equivalence note (trial vs other tiers)
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.29 [test release]
+
+- Bump version to 0.0.29 [test release]
+
+
+## [0.0.28-test] - 2026-06-19
+
+### 🐛 Bug Fixes
+
+- **_activation**: Handle NO_MACHINE in R4-import repair
+
+
+### 📚 Documentation
+
+- Close MPE phase 8 and add PoC T5 round-trip checklist
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.28 [test release]
+
+
+## [0.0.27-test] - 2026-06-19
+
+### 🐛 Bug Fixes
+
+- **_activation**: Auto-repair stale machine seat on import
+
+- **_activation**: Enforce R4-import blocking server statuses
+
+
+### 📚 Documentation
+
+- Update MPE implementation status through v0.0.26-test
+
+- Sign off gate #31 after MPE PoC v0.0.26-test
+
+- Design R4-import repair and K2 post-PoC in MPE IMPL
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.27 [test release]
+
+
+## [0.0.26-test] - 2026-06-18
+
+### ✅ Testing
+
+- **_activation**: Add machine pool enforcement regressions
+
+
+### 🐛 Bug Fixes
+
+- **webhook**: Set metadata.tier from policy env map
+
+- **_activation**: Enforce machine pool and cross-device rules
+
+
+### 📚 Documentation
+
+- Update implementation plan with latest CI/CD progress and metadata review
+
+- Update implementation plan with latest CI/CD progress and release details
+
+- **ci**: Add machine pool enforcement plan for gate #31
+
+- **docs**: Align copy-license guidance with LAC-2002
+
+
+### 🔧 CI/CD
+
+- Fix G.6-G.8b in manual e2e workflow for recovery paths
+
+- **ci**: Accept LAC-3002 stderr in G.8b e2e license workflow
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.26 [test release]
+
+
+## [0.0.25-test] - 2026-06-18
+
+### 🐛 Bug Fixes
+
+- **_activation,webhook**: Unify activation hints terminal-first
+
+- **_activation**: Map NOT_FOUND to revoke and protect server metadata
+
+
+### 📚 Documentation
+
+- **ci**: Record activation message unification rev 2.102
+
+- **ci**: Record NOT_FOUND revoke fix rev 2.103
+
+- **ci**: Record G.10 trial E2E and Resend #5 completion rev 2.104
+
+
+### 🧹 Miscellaneous
+
+- **ci**: Disable cmake configure-on-open and orphan pyright settings
+
+- Bump version to 0.0.25 [test release]
+
+
+## [0.0.24-test] - 2026-06-17
+
+### 🐛 Bug Fixes
+
+- **helpers,tests**: Restore scalar finite validation in cython wheels
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.24 [test release]
+
+
+## [0.0.23-test] - 2026-06-17
+
+### ✅ Testing
+
+- **tests**: Isolate _ACTIVATION_TOKEN in CLI activate tests
+
+- **tests**: Restore activation token after each licensed CI test
+
+- **tests**: Clear import-time token in non-tty CLI test
+
+- **tests**: Add non-lactuca warning policy and wheel test hygiene
+
+
+### 🐛 Bug Fixes
+
+- **helpers,tables,ir**: Silence numpy overflow and retry atomic save on windows
+
+
+### 📚 Documentation
+
+- Migrate public URLs to www.lactuca.io and update CI plan rev 2.99
+
+- **ci**: Mark wheel_test green for v0.0.22-test (rev 2.100)
+
+- **ci**: Update IMPL plan rev 2.101 for warning policy and wheel fixes
+
+
+### 🧹 Miscellaneous
+
+- **pyproject**: Update basedpyright configuration for tests and webhook environments
+
+- **build**: Disable basedpyright IDE type checking
+
+- **build**: Silence basedpyright IDE diagnostics
+
+- Bump version to 0.0.23 [test release]
+
+
+## [0.0.22-test] - 2026-06-17
+
+### 🐛 Bug Fixes
+
+- **_activation**: Consolidate activate CLI and suppress duplicate expiry
+
+
+### 📚 Documentation
+
+- **activation**: Document import vs CLI messaging and activate flow
+
+
+### 🧹 Miscellaneous
+
+- **skills**: Sync activation audit reference with CLI changes
+
+- Bump version to 0.0.22 [test release]
+
+
+## [0.0.21-test] - 2026-06-16
+
+### 🐛 Bug Fixes
+
+- **tests**: Use Python 3 tuple syntax in TableBuilder except handlers
+
+- **tests**: Align generational qx references with qx[omega]=1.0 contract
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.21 [test release]
+
+
+## [0.0.20-test] - 2026-06-16
+
+### 🐛 Bug Fixes
+
+- **tables**: Use Python 3 tuple syntax in unisex_blend except handlers
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.20 [test release]
+
+
+## [0.0.19-test] - 2026-06-16
+
+### ♻️ Refactoring
+
+- **base**: Tighten ScalarSequence typing and TableKey docs
+
+- **builder**: Close 8th-pass lactuca-optimize audit
+
+- **engine,config**: Complete engine/base 2nd-pass optimize audit
+
+- **engine,docs**: Extract hybrid tail orchestrators
+
+- **tables**: DRY batch ts snap and gr_repr in life (9.A.1-B P1)
+
+- **engine**: Post-9.D optimize annuity hybrid and batch paths
+
+- **engine**: Post-9.D optimize insurance batch_n_life and cf_matrix
+
+- **engine**: Post-9.D optimize helpers hybrid tail pv extraction
+
+- **tables**: Post-9.D optimize builder terminal qx index
+
+- **tables**: Post-9.D optimize source omega bool guard
+
+
+### ⚡ Performance
+
+- **ir,helpers,life**: Cache ts shifts and vectorize het-gr batch grouping
+
+
+### ✅ Testing
+
+- **dates**: Literal validator signatures and direct unit tests
+
+- **tests**: Regression tests for 9.D fractional n and insurance simplified
+
+- **tests**: Regression tests for 9.D fourth pass
+
+- **tests**: Regression tests for 9.D fifth pass
+
+- **tests**: Regression tests for 9.D sixth pass
+
+- **docs**: Complete 9.D-8 hybrid fractional tail plan
+
+- **tests**: Align TableBuilder life-table fixtures with qx[omega]=1.0
+
+- **tests**: Close 9.D-8 hybrid fractional coverage gaps
+
+- **tests**: Add 9.D-10 age_shift table_combination alignment tests
+
+- **tests**: Add 9.D-11 MDDT scope and key-order regression tests
+
+- **tests**: Add TestPass17DeepAudit for 9.D-17 certainty truncation
+
+
+### ✨ Features
+
+- **tables**: Surface omega truncation after table_combination
+
+- **tables,ir**: I-2 diagonal metadata and I-6 curve_policy [**BREAKING**]
+
+- **tables**: Add combination_mode independent/udd for table_combination
+
+
+### 🐛 Bug Fixes
+
+- **ir,life**: Ts-shift cache epoch invalidates on curve mutation
+
+- **config,ir**: Unify calendar validation and reset callback chain
+
+- **tables**: Harden TableSource load validation and cache
+
+- **tables**: Wheel-safe decrement setters, qx cache, and DRY hot paths
+
+- **tables**: Audit-clean disability ix, DRY summary, exit parity
+
+- **tables**: Audit-clean exit ox docstrings and blocked API
+
+- **tables**: Audit-clean tables/base generational helpers
+
+- **tables**: Audit-clean tables/data installer batch API
+
+- **data**: Audit-clean data_tables CMF metadata and DAV cache
+
+- **utils**: Wheel-safe hybrid signatures and tiered validation
+
+- **gr**: Audit-clean arithmetic validation and DRY helpers
+
+- **_activation**: Clarify offline revalidation UX and docstrings
+
+- **exceptions**: Complete 2nd-pass licensing exception API
+
+- **engine,tests**: Complete endowment 2nd-pass lactuca-optimize audit
+
+- **dates,base,engine,helpers,tests**: Complete dates/core 6th-pass audit
+
+- **dates**: Complete base/helpers 2nd pass and act_age validation
+
+- **api**: Entry point audit fixes after 9.F.5
+
+- **engine**: Shorten Ax2 term in insurance simplified modes
+
+- **tables**: Align mi_by_duration boundary with select column routing
+
+- **engine,tables**: 9.D actuarial corrections for simplified modes
+
+- **engine,tables**: 9.D fourth pass batch ts and table guards
+
+- **tables,engine,helpers**: 9.D fifth pass P0/P1 actuarial fixes
+
+- **engine,tables**: 9.D sixth pass actuarial fixes
+
+- **tables**: Align table_combination by age index
+
+- **engine,docs**: Restore simplified mode independence on fractional n
+
+- **engine,docs**: Hybrid fractional tail in discrete_simplified
+
+- **tables**: Restore discrete Lx/Tx/ex under exponential interpolation
+
+- **tables**: Reject negative x in tpx t=1 fast path
+
+- **tests**: Reorder import statements and simplify assertion message in LifeTable tests
+
+- **tables,docs,tests**: Respect stored qx at terminal age omega
+
+- **tables,docs,tests**: Restore qx[omega]=1.0 terminal age requirement
+
+- **tables,tests**: Wire combination_mode udd to udd2/udd3 helpers
+
+- **tables**: Calendar-age alignment for table_combination after age_shift
+
+- **tables**: Udd fractional mddt cache and age_shift other guard
+
+- **tables**: Align UDD fractional survival with collapsed q comb
+
+- **tables**: Clarify combine truncation age after age_shift (9.D-14)
+
+- **tables**: Reject duplicate/self combine and calendar q>1 (9.D-15)
+
+- **tables**: Validate padding and rate bounds before combine (9.D-16)
+
+- **tables**: Truncate at incoherent certainty tail in modify pipeline (9.D-17)
+
+- **tables**: Reject bool age_shift in modify pipeline (9.A.1-B P0)
+
+- **webhook**: Harden OWASP audit findings for Gate 9.G
+
+- **_activation**: Point trial webhook to production URL
+
+- **_activation**: Type lazy requests import for pyright
+
+- **_activation**: Fix requests cast and duplicate activation menu
+
+
+### 👷 Build System
+
+- Configure cursorpyright webhook env and vscode
+
+- **webhook**: Add requirements.txt for vercel production
+
+- **webhook**: Drop legacy builds from vercel.json
+
+- Remove duplicate pyright sections from pyproject.toml
+
+
+### 📚 Documentation
+
+- **my_docs**: Record GAP-C6 wheel bench and close Gate #30
+
+- **my_docs**: Record ir reserve batch 6th pass in CI/CD plan
+
+- **my_docs**: Record config 6th-7th pass audit-clean in CI/CD plan
+
+- **my_docs**: Record base.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record builder 8th pass audit-clean in CI/CD plan
+
+- **my_docs**: Record source.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record decrement.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record exit.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record tables/base.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record tables/data.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record utils.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record growth_rates.py 2nd pass audit-clean in CI/CD plan
+
+- **my_docs**: Record _activation.py 9.F audit sign-off
+
+- **docs**: Align errors_reference license section with exceptions API
+
+- **my_docs**: Record exceptions.py 2nd pass sign-off in CI/CD plan
+
+- **my_docs**: Record engine/base.py 2nd pass in CI/CD plan
+
+- **my_docs**: Record engine/endowment.py 2nd pass in CI/CD plan
+
+- **my_docs**: Record dates/core.py 6th pass in CI/CD plan
+
+- **my_docs**: Record dates 26-27 2nd pass and 9.A.1 sweep complete
+
+- **my_docs**: Record 9.F.5 entry points audit and 9.A.1 scope
+
+- **my_docs**: Record 9.D third pass actuarial audit session
+
+- **my_docs**: Record 9.D fourth pass and 9.E.0 P2 backlog
+
+- **my_docs**: Record 9.D fifth pass and 9.E.0 P2 backlog
+
+- **docs**: 9.E initial actuarial user guide updates
+
+- **my_docs**: Record 9.D sixth pass and 9.E partial progress
+
+- **docs**: Document table_combination age-alignment contract
+
+- Mark 9.D-8 commit hash in hybrid fractional plan
+
+- Unify qx omega boundary criteria across agent docs
+
+- **my_docs**: Record G-06 commit hash in 9.D-8 plan
+
+- **my_docs**: Record G-07 commit hash in 9.D-8 plan
+
+- **docs,my_docs**: Close 9.D I-3 through I-6 actuarial docs
+
+- **my_docs**: Record I-2..I-6 commit hashes in CI/CD plan
+
+- **my_docs**: Record qx[omega] revert commit hash in CI/CD plan
+
+- **my_docs**: Add combination_mode UDD plan rev.3 for 9.D-9
+
+- **my_docs**: Add BACKLOG and refine combination_mode plan rev 4.1
+
+- **my_docs**: Delegate formulas.md MDDT patch to 9.E.0
+
+- **docs**: Table_combination UDD formulas and others-order note
+
+- **my_docs**: Record 9.D-9 F-01 UDD hot path and E-12 closure
+
+- **docs**: Document calendar-age alignment for age_shift and table_combination
+
+- **my_docs**: Record 9.D-10 C-1 calendar-age alignment closure
+
+- **tables**: Clarify v1 MDDT scope in _modify_decrement notes
+
+- **docs**: Clarify v1 MDDT scope and modification key order
+
+- **my_docs**: Record 9.D-11 IMPORTANT audit closure
+
+- **docs**: 9.D-12 table_combination I-D I-E and fractional UDD
+
+- **my_docs**: Record 9.D-12 audit closure
+
+- **docs**: Document Bowers v1 collapsed fractional survival (9.D-13)
+
+- **my_docs**: Record 9.D-13 audit closure and BACKLOG CM-V2-05
+
+- **docs**: Table_combination contracts for 9.D-14 I-B/C/D
+
+- **my_docs**: Record 9.D-14 audit closure (rev 2.68)
+
+- **docs**: Duplicate/select-ultimate and q>1 errors for 9.D-15
+
+- **my_docs**: Record 9.D-15 audit closure (rev 2.69)
+
+- **docs**: Pre-combine padding and rate guards for 9.D-16
+
+- **my_docs**: Record 9.D-16 audit closure (rev 2.70)
+
+- **docs**: Certainty truncation and generational combine notes (9.D-17)
+
+- **my_docs**: Record 9.D-17 audit closure (rev 2.71)
+
+- **my_docs**: Record 9.D re-audit closure and 9.E.1 next step (rev 2.72)
+
+- **docs**: Close IR-4D-01/04/05/06 in interest rates user guide
+
+- **ir**: Clarify calculation_mode source and get_rate junctions
+
+- **my_docs**: Record 9.E.1-A closure and next step 9.E.1-B (rev 2.73)
+
+- **my_docs**: Add 9.A.1-B optimize post-9.D plan and P0 audit
+
+- **tables**: Record 9.A.1-B P2 post-9.D audit for tables/base
+
+- **tables**: Record 9.A.1-B P3 post-9.D audit for disability
+
+- **tables**: Align exit module docstring with 9.D combination_mode
+
+- **ci**: Close 9.A.1-B P3 engine/base post-9.D optimize
+
+- **engine**: Align continuous_simplified docstrings (9D-004/005)
+
+- **docs,engine**: Align continuous_simplified insurance return_flows (9D-005)
+
+- **docs**: Separate lx_interpolation from mortality_placement (CFG-4D-01)
+
+- **config**: Disambiguate lx_interpolation and mortality_placement docstrings
+
+- **docs,ci**: Close 9.E/9.A audits and expand production e2e
+
+- **docs**: Align activation CLI exit codes and offline grace wording
+
+- **docs**: Document default activate CLI and corporate revalidation FAQ
+
+- Record 9.G webhook audit and add 9.I threat model
+
+- **docs**: Switch pricing checkout to lemon squeezy production
+
+- **impl**: Record founding coupon draft in ls production
+
+- **impl**: Record Bloque 0, Gate #18, and G.11 zero-charge path
+
+- **impl**: Record G.11 E2E completion and next steps
+
+
+### 🔧 CI/CD
+
+- Close Gate #2 verify-license with explicit ActivationRequiredError check
+
+
+### 🧹 Miscellaneous
+
+- **benchmarks**: Add reserve ts batch benchmark and plan doc
+
+- **tables**: Remove unused host_size in certainty truncation helper
+
+- **plan**: Close 9.A.1-B P1 life.py and queue engine/annuity
+
+- **plan**: Close 9.A.1-B P1 engine/annuity and queue insurance
+
+- **plan**: Close 9.A.1-B P1 engine/insurance and queue helpers
+
+- **plan**: Close 9.A.1-B P1 engine/helpers and queue builder
+
+- **plan**: Close 9.A.1-B P2 builder and queue source
+
+- **plan**: Close 9.A.1-B P2 source and queue base
+
+- **plan**: Close 9.A.1-B P3 tables/exit.py post-9.D optimize
+
+- **plan**: Close 9.A.1-B P3 engine/endowment post-9.D optimize
+
+- **plan**: Close 9.A.1-B and add grep transversal prompt
+
+- **plan**: Grep transversal 9.A.1 post-9.D
+
+- **plan**: Mark 9.E.1-B 9D-004/005 closed (Gate #23 partial)
+
+- **plan**: Mark 9.E.1-B+ inspecting_cashflows closed (rev 2.77)
+
+- **plan**: Mark CFG-4D-01 closed, next 9.F (rev 2.78)
+
+- **plan**: Mark 9.F Mode B sign-off complete (rev 2.85)
+
+- **plan**: Document next operational step 9.G (rev 2.86)
+
+- Bump version to 0.0.19 [test release]
+
+
+## [0.0.18-test] - 2026-06-12
+
+### 🐛 Bug Fixes
+
+- **tables**: Widen _get_discount_factors x0 param to object for wheels
+
+
+### 📚 Documentation
+
+- **skills**: Correct Cython STRICT scalar coercion rules for wheels
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.18 [test release]
+
+
+## [0.0.17-test] - 2026-06-12
+
+### 🐛 Bug Fixes
+
+- **tables,helpers**: Wheel-safe object params in commutation finalize
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.17 [test release]
+
+
+## [0.0.16-test] - 2026-06-12
+
+### 🐛 Bug Fixes
+
+- **tables,ir**: Wheel-safe scalar/array returns for commutation and vn
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.16 [test release]
+
+
+## [0.0.15-test] - 2026-06-12
+
+### 🐛 Bug Fixes
+
+- **tables,helpers,functional**: Wheel-safe commutation and record_ids paths
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.15 [test release]
+
+
+## [0.0.14-test] - 2026-06-12
+
+### 🐛 Bug Fixes
+
+- **build**: Repair stub-parse syntax and add release preflight
+
+
+### 🧹 Miscellaneous
+
+- Remove deprecated Pyright configuration from pyproject.toml
+
+- Bump version to 0.0.14 [test release]
+
+
+## [0.0.13-test] - 2026-06-12
+
+### ♻️ Refactoring
+
+- **validators,ir,life**: Reuse coerced m from frequency validator
+
+- **tables**: Use Union[float, None] for public unisex_blend
+
+- **dates**: Dry sequence helpers in dates core re-audit
+
+- **ir**: Apply 3rd-pass audit fixes to interest_rates
+
+- **tables,helpers**: Unify batch product cores in life.py
+
+- **functional**: DRY batch preamble and helpers import
+
+- **functional**: DRY multi-table dispatch across 16 products
+
+- **functional**: Unify multitable dispatch and DRY product preamble
+
+- **helpers,life**: Add _batch_m_scalar_and_arr and fix n-life m docstrings
+
+
+### ⚡ Performance
+
+- **helpers,batch**: Add _resolve_batch_m and batch m helpers
+
+- **life,engine**: Hoist m_val in batch paths; wheel-safe dispatch m
+
+- **helpers,ir**: Np.integer m fast path and _resolve_batch_m in IR batch
+
+- **helpers**: Use _M_FREQ_SET frozenset for O(1) m membership (GAP-C9)
+
+- **batch,engine,tables**: Vectorize n-life discrete_precision fast path (GAP-C6)
+
+
+### ✅ Testing
+
+- **tests**: Remove legacy _wheel_linux_compat shims
+
+- **tests**: Commutation bool guard and multi-table record_ids Series
+
+- **tests**: Add m bool guard tests and wheel-safe typing tiers
+
+- **tests**: Add batch m payment frequency benchmark (Fase E)
+
+- **batch**: Add n-life prob matrix and fast-path parity tests (GAP-C6)
+
+
+### 🐛 Bug Fixes
+
+- **helpers**: Close optimize audit module 1/27
+
+- **gr**: Restore start_f and migrate finiteness checks
+
+- **engine**: Independent empty arrays in return_flows
+
+- **tables**: Migrate finiteness checks for -ffast-math wheels
+
+- **validators**: Use _is_finite_f64_array in batch range check
+
+- **utils**: Use _is_finite_f64_array in tiered_amounts
+
+- **ir**: Use _is_finite_f64_array in batch on_error mask
+
+- **life**: Close optimize audit module 2/27
+
+- **engine**: Close optimize audit module 3/27 annuity
+
+- **engine**: Close optimize audit module 4/27 insurance
+
+- **engine**: Close optimize audit module 5/27 helpers
+
+- **functional**: Close optimize audit module 6/27
+
+- **validators**: Close optimize audit module 7/27
+
+- **ir**: Close optimize audit module 8/27 interest_rates
+
+- **config**: Close optimize audit module 9/27
+
+- **base**: Close optimize audit module 10/27
+
+- **tables**: Close optimize re-audit module 11/27 builder
+
+- **tables**: Close optimize audit module 12/27 source
+
+- **tables,api,ir**: Close optimize audit 13/27 decrement
+
+- **tables**: Close optimize audit module 14/27 disability
+
+- **tables**: Close optimize audit module 15/27 exit
+
+- **tables**: Close optimize audit module 16/27 base
+
+- **tables**: Close optimize audit module 17/27 data
+
+- **tables**: Close optimize audit module 18/27 data_tables
+
+- **utils**: Close optimize audit module 19/27 utils
+
+- **gr**: Close optimize audit module 20/27 growth_rates
+
+- **gr**: Re-audit growth_rates eq/hash and terms validation
+
+- **_activation**: Close optimize audit module 21/27 activation
+
+- **_activation**: Harden Keygen JSON parsing on re-audit
+
+- **exceptions**: Close optimize audit module 22/27 exceptions
+
+- **engine**: Close optimize audit module 23/27 engine base
+
+- **engine**: Close optimize audit module 24/27 endowment
+
+- **dates**: Close optimize audit module 25/27 dates core
+
+- **dates**: Materialize generic iterables in to_broadcast_list
+
+- **dates**: Close optimize audit module 26/27 dates base
+
+- **dates**: Close optimize audit module 27/27 dates helpers
+
+- **ir**: Use content hash in _gr_group_key batch grouping
+
+- **ir**: Simplify _gr_group_key catch-all to hash(gr_item)
+
+- **config**: PathLike I/O signatures and singleton late-publish
+
+- **config**: Normalize tables_path to str at storage boundary
+
+- **tables**: Reject bool kwargs and widen _is_power_of_10 for LTO
+
+- **tables**: Wheel kwargs, save hash guard, select_period DRY
+
+- **ir**: Defensive copy on terms property and docstring cleanup
+
+- **_activation**: Clarify seat offline grace comment scope
+
+- **_activation**: Skip seat grace when machine_id absent
+
+- **dates**: Close 9.A.1 pass 4-5 on core sequence broadcasting
+
+- **config**: Harden wheel-safe setters and TOML validation
+
+- **tables**: Close builder 9.A.1 pass 7 audit-clean
+
+- **helpers,validators**: Harden batch m validation and DRY
+
+- **life**: Hybrid object signatures, cache safety, and product Notes
+
+- **functional,tables,ci**: Hybrid object typing and wheel bool guard
+
+- **ir**: Hybrid object typing on InterestRate.a/ä and wheel smoke
+
+- **engine,insurance,tests**: Close annuity 9.A.1 pass 2 audit
+
+- **tables,functional**: Wheel bool guard on decrement probability APIs
+
+- **api**: Commutation bool guard and functional multitable refactor
+
+- **helpers,api**: Detect active growth rate in batch ts guard
+
+- **functional,tests**: Align batch guards with OOP and docstring Raises
+
+- **functional,tests**: Cython-safe multitable dispatch and shared docstrings
+
+- **functional,tests**: Shared docstrings, bool guards, and utf8 hygiene
+
+- **validators,helpers**: Close 7/27 audit with m fast-path
+
+- **validators,life**: Include method name in boolean n rejection errors
+
+
+### 📚 Documentation
+
+- **ci,skills**: Record v0.0.12-test strict wheel_test and PyObject finiteness
+
+- **ci**: Mark section 9.B.8 legacy cleanup complete (rev. 2.2)
+
+- **api**: Align public m annotations with PaymentFrequencyLiteral
+
+- **plan**: Sync 9.A.1 pass2 checklist rev. 2.27
+
+- **plan**: Sync 9.A.1 builder 11/27 closure rev. 2.29
+
+- **plan**: Sync 9.A.1 interest_rates 8/27 closure rev. 2.31
+
+- **docs**: Record partial 9.F activation audit in CI plan
+
+- **plan**: Record config 9.A.1 passes 4-5 audit-clean
+
+- **plan**: Record builder 9.A.1 pass 7 audit-clean
+
+- **plan**: Record helpers 9.A.1 pass 2 audit-clean
+
+- **plan**: Record life.py 9.A.1 pass 2 audit-clean
+
+- **plan**: Record annuity.py 9.A.1 pass 2 audit-clean
+
+- **engine**: Complete insurance.py 9.A.1 pass 2 audit
+
+- **plan**: Record insurance.py 9.A.1 pass 2 audit-clean
+
+- **engine**: Close engine/helpers 2nd optimize pass
+
+- **docs**: Forbid implementation leaks in user-facing documentation
+
+- **my_docs**: Mark functional 6/27 2nd pass complete
+
+- **my_docs,skills**: Mark validators 7/27 2nd pass complete
+
+- **my_docs,skills**: Add batch m perf plan and retire fastpath IMPL
+
+- **my_docs**: Mark Fase F items 20-21 complete in batch m perf plan
+
+- **my_docs**: Mark Fase E benchmark complete in batch m perf plan
+
+- **my_docs,skills**: Close batch m perf Fase C documentation
+
+- **my_docs**: Add GAP-C6 n-life batch vectorization plan
+
+- **my_docs**: Integrate GAP-C6 into CI/CD plan and mark Fase 2 complete
+
+- **my_docs**: Mark GAP-C6 merge done and clarify Fase 3 scope
+
+
+### 🧹 Miscellaneous
+
+- **build**: Remove pyright from dev tooling
+
+- **docs**: Drop pyright from copilot cython instructions
+
+- **plan**: 9.A.1 pass2 module 13/27 clean
+
+- Bump version to 0.0.13 [test release]
+
+
+## [0.0.12-test] - 2026-06-08
+
+### ♻️ Refactoring
+
+- **helpers**: Remove duplicate import of _MAX_FLOAT64 in interest_rates.py
+
+
+### ﻿fix
+
+- **helpers,ir**: Replace struct-based NaN/Inf check with PyObject_RichCompare
+
+
+### 👷 Build System
+
+- Add typeCheckingMode to pyproject.toml for basic type checking
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.12 [test release]
+
+
+## [0.0.11-test] - 2026-06-08
+
+### 🐛 Bug Fixes
+
+- **helpers**: Struct-based scalar finiteness for -ffast-math wheels
+
+
+### 👷 Build System
+
+- Remove duplicate basedpyright section from pyproject.toml
+
+- Fix invalid pyright executionEnvironments config
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.11 [test release]
+
+
+## [0.0.10-test] - 2026-06-08
+
+### ✅ Testing
+
+- **tests,build**: Fix TableBuilder symlink test and ignore N999
+
+
+### 🎨 Styling
+
+- **engine**: Normalize docstring LaTeX and formatting in helpers
+
+
+### 🐛 Bug Fixes
+
+- **ci**: Wait for Test PyPI index before wheel_test install
+
+- **helpers**: IEEE754 finiteness under -ffast-math; strict batch identity tests
+
+- **engine**: Batch-scalar identity under -ffast-math wheels
+
+- **batch,helpers,ir,lt**: Round unit PV before benefits scaling
+
+
+### 📚 Documentation
+
+- **batch**: Document benefits batch-scalar identity contract
+
+
+### 🧹 Miscellaneous
+
+- **tests,build**: Fix test_45 imports and pyright test paths
+
+- Bump version to 0.0.10 [test release]
+
+
+## [0.0.9-test] - 2026-06-08
+
+### ✅ Testing
+
+- **tests**: Use tuple except syntax for Python 3.13 collection
+
+
+### 🐛 Bug Fixes
+
+- **ci**: Isolate no-license smoke test in wheel_test
+
+- **ci**: Purge runner fingerprint across Keygen account in wheel_test
+
+- **ci**: Run fingerprint cleanup script via bash shell
+
+- **ci**: Serialize wheel_test jobs and fix fingerprint scope activation
+
+- **tests**: Align Ubuntu wheel_test with Linux wheel 0.0.8 limits
+
+- **tests**: Skip NaN finiteness cases on Linux wheel 0.0.8
+
+- **tests**: Tolerate batch/scalar 1-ULP drift on Linux wheel 0.0.8 py3.12
+
+
+### 📚 Documentation
+
+- **ci**: Update Fase 9.B plan for wheel_test and cp312-cp314 matrix
+
+- **ci**: Mark Windows cp312-cp314 wheel matrix complete
+
+- **ci**: Record wheel_test GHA success and Linux wheel 0.0.8 compat (rev. 2.0)
+
+
+### 🔧 CI/CD
+
+- **release-test**: Add wheel_test matrix job with workflow_dispatch
+
+- **release-test**: Add Keygen cleanup to wheel_test job
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.9 [test release]
+
+
+## [0.0.8-test] - 2026-06-07
+
+### 🐛 Bug Fixes
+
+- **tables,builder**: Wheel 0.0.7 unisex_blend init and scale parsing
+
+
+### 🧹 Miscellaneous
+
+- **skills**: Document LifeTable.__init__ and _parse_scale wheel patterns
+
+- Bump version to 0.0.8 [test release]
+
+
+## [0.0.7-test] - 2026-06-07
+
+### 🐛 Bug Fixes
+
+- **tables,helpers**: Wheel 0.0.6 delegate typing and inf finiteness
+
+
+### 🧹 Miscellaneous
+
+- **skills**: Document wheel 0.0.6 delegate and finiteness patterns
+
+- Bump version to 0.0.7 [test release]
+
+
+## [0.0.6-test] - 2026-06-07
+
+### 🐛 Bug Fixes
+
+- **tables,helpers,validators,growth_rates,utils**: Wheel batch and ffast-math validation
+
+- **_activation,tests**: Cython-safe stdin and requests in activation
+
+- **tables,tests**: Align wheel regex error assertions
+
+
+### 👷 Build System
+
+- **pyproject**: Include __main__.py in wheel
+
+
+### 🧹 Miscellaneous
+
+- **skills**: Document wheel 0.0.5 compatibility patterns
+
+- Bump version to 0.0.6 [test release]
+
+
+## [0.0.5-test] - 2026-06-07
+
+### 🐛 Bug Fixes
+
+- **validators,helpers,tables,_activation**: Prevent Cython annotation_typing coercion in wheels
+
+
+### 👷 Build System
+
+- **scripts**: Exclude _activation.pyi from wheel stub generation
+
+
+### 📚 Documentation
+
+- **api**: Align docstrings with Cython scalar coercion
+
+- **scripts**: Document licensing stub exclusion and wheel audit patterns
+
+
+### 🧹 Miscellaneous
+
+- Document wheel scalar compatibility in lactuca-optimize skill
+
+- Bump version to 0.0.5 [test release]
+
+
+## [0.0.4-test] - 2026-06-07
+
+### 🐛 Bug Fixes
+
+- **api**: Coerce Python scalars for Cython wheel compatibility
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.4 [test release]
+
+
+## [0.0.3-test] - 2026-06-06
+
+### Changelog
+
+- Update changelog with new batch tests and documentation improvements
+
+
+### ♻️ Refactoring
+
+- Extract _scalar_or_arr_to_size, rename N->size, dedup isfinite (Cython STRICT + Ruff N806)
+
+- **batch**: Remove 'in v1' from error messages; permanent limitation documented in PLAN
+
+- **decrement**: Update version identifiers from V1/V2 to E1/E2 in comments
+
+- **functional**: Fix duplicate Sequence import (collections.abc vs typing)
+
+- **tests**: Rename test_batch_single_life → test_41_batch_single_life
+
+- **tests**: Streamline array creation in batch tests for clarity
+
+- **batch**: Remove unused mode variable and fix unicode escapes in joint batch helpers
+
+- **tests**: Reorganize batch test suite and add coverage gaps
+
+- Rename dict key total_bel -> total_pv for context-neutral API
+
+- **batch**: Rename benefit= to benefits= in batch API
+
+- **batch**: Redirect 2-life to n-life dispatchers; remove _*_batch_joint
+
+- **engine**: Remove t_grid alias and redundant aliases from return_flows dicts
+
+- **engine**: Rename t_payment -> payment_time in InsuranceEngine
+
+- **engine**: Reorder return_flows dict keys in logical computation order
+
+- **engine**: Remove redundant present_value from endowment dicts
+
+- **engine**: Remove redundant float() wrappers in endowment arrays
+
+- Rename benefit_* to benefits_* throughout life.py and functional.py
+
+- **api**: Unify dict key payment_time/t_grid to time_grid in all engine dicts
+
+- **batch**: Remove _axy_multi_table_dispatch and simplify 3 n-life dispatchers to single-call (13-A)
+
+- **batch**: Route functional multi-table via OOP public API (13-B)
+
+- **batch**: Inline single-life multi-table dispatchers into functional.py (14-A/B/C/D)
+
+- **engine**: Remove dead-code n=1000 perpetuity guard in AnnuityEngine
+
+- **engine**: Restore n: Union[float,None] signature in AnnuityEngine
+
+- **tests**: Rename test_47/48/50 to test_45/46/47 (batch suite renumbering)
+
+- **tests**: Remove duplicate scalar-batch identity tests D1+D2+D4, move D5 stress to test_41/42 (-22 test functions)
+
+- **tests**: Reorder imports and simplify list comprehensions in test_45_batch_vector_params_multilife.py
+
+- **tests**: Absorb test_45 into test_47 as S52-S55 (T-12A-01..62)
+
+- **tests**: Update docstring for clarity on scalar/batch identity tests
+
+- **tests**: Renumber test files 46-48 → 44-46 to reserve slots for new phases
+
+- **ir**: Extract _annuity_batch_dispatch; eliminate ~240-line duplication between a() and ae()
+
+- **batch**: Extract _aggregate_flow_parts helper to helpers.py
+
+- **tables**: Recursive on_error='nan' in ax/ax/Ax; fix benefits rounding order
+
+- Remove patch_benefits_validate.py script as part of benefits validation overhaul
+
+- **tables**: Recursive on_error='nan' in joint/2-life/3-life annuity+insurance
+
+- **tables**: Recursive on_error='nan' in nEx/nExy/nExyz/nEjoint
+
+- Use public ax() API in functional single-table shortcut for per-policy m support
+
+- **_activation**: Delegate _activate_interactive to _activate_with_key
+
+- **tables**: Phase 6 - remove redundant import, docstring audit fixes
+
+- **api**: Rename generate_payment_times to payment_times [**BREAKING**]
+
+- Update execution checklist and mark steps as completed for renaming generate_payment_times to payment_times
+
+- Extract DRY table-resolution and nan-result batch helpers (Fase 2 + Fase 3)
+
+- Remove dead BatchErrorReport import from life.py
+
+- **tables,engine**: Replace np.atleast_1d/asarray with _as_f64_safe
+
+
+### ⚡ Performance
+
+- Optimize engine/helpers.py (OOB guard, remove errstate overhead)
+
+- Running log-sum in joint prob funcs, inline _joint_dbqx_func (no matrix alloc)
+
+- Query _prob_decrement_interval once per life in _joint_survival_udd_yearwise_func
+
+- Reuse age_defer and simplify error messages in _validate_actuarial_range
+
+- NIVEL 2 R9 — replace np.add.at with np.bincount in return_flows scatter-add paths
+
+- NIVEL 2 R10 — add R10 marker comment to continuous fallback loops in batch dispatchers
+
+- PHASE 6.5 complete -- NIVEL 2-5 audit all pass, benchmark verified
+
+- **engine**: OPT-A+B in AnnuityEngine/InsuranceEngine; fix test_50 S22/S23/S31
+
+- Vectorise all 4 calculation modes for Ax and nEx batch dispatch
+
+- **helpers**: Collapse redundant ndarray branches in batch detection and broadcast helpers
+
+- **helpers,tables**: Eliminate redundant allocations in batch hot paths
+
+
+### ✅ Testing
+
+- **batch**: Reorganize n-life batch tests into test_38/test_39 dedicated files
+
+- **batch**: PHASE 7.2 - functional multi-table batch tests (ax/ax-due/Ax/nEx)
+
+- **batch**: PHASE 7.4 - functional single-table batch type contracts and OOP equivalence
+
+- **batch**: Add full coverage for batch error handling and edge cases
+
+- **batch**: Complete full coverage for all batch functions
+
+- **batch**: Add select table batch coverage
+
+- **batch**: Expand batch test suite with lowprio, single-life, 2-life, and select scenarios
+
+- **batch**: Complete coverage gaps for nEx/nExy/äxy/Axy batch modes
+
+- **batch**: Complete large-N and decimals coverage in test_44
+
+- **decrement**: Add dedicated ResourceWarning threshold test
+
+- **batch**: Add Section 24 per-policy InterestRate batch tests
+
+- **batch**: Independent coverage tests Paso 1 (T-47..T-96)
+
+- **batch**: Add T-45/T-46/T-59 t_output and simplified-mode tests for 2-life
+
+- **batch**: T-44 axyz multitable return_flows and T-83 header updates
+
+- **batch**: T-44b T-44c Axyz/nExyz multitable return_flows; fix docs redundancy
+
+- T-17 — add test_benefits_on_error_nan_raises in test_40_batch_infra
+
+- Add T-98..T-101 batch return_flows dot-product identity tests
+
+- **batch**: Update 10 test files for unified "time_grid" dict key (13-C.4)
+
+- Add batch-scalar exact identity test suite (test_50, S1-S17)
+
+- Add multi-table exact identity tests (test_50 S18-S20)
+
+- **test_50**: Add S26/S27 (mu_method+d/ts), S32 (cashflow_amounts×m)
+
+- **test_50**: Add S47/S48/S49 — continuous n_frac, joint×m, fractional d
+
+- **test_50**: Add S29/S35-S41 — perpetuity, frac-ts, piecewise-IR combos
+
+- **batch**: Add S51 ajoint/ajoint all-modes scalar-batch identity (8 tests)
+
+- **batch**: Add S56-S57 identity tests and test_48 P0/P1/P2 coverage for 3+ life methods
+
+- **batch**: Replace rtol=1e-12 with assert_array_equal for scalar-batch identity tests
+
+- **batch**: Fix 6 wrong-method bugs and add missing sections 14-18 in test_48
+
+- Fill all P0/P1/P2 batch coverage gaps
+
+- Add combined parameter broadcasting tests for 3-life/N-life (T12A71-78)
+
+- Add fractional-n, t_output, and benefits coverage for 3-life/N-life batch (S24-S26)
+
+- Cover R1-R5 batch gaps (äxyz simplified-raises, InterestRate 3-vida, scalar-float, dtype, stress)
+
+- Cover P1-P3 batch gaps (force_integer_ts 3-vida, nExyz/nEjoint mutual exclusion, functional exact values)
+
+- **ir**: PHASE 11 — add test_47_ir_batch.py (212 tests for InterestRate batch)
+
+- **ir**: Add missing batch symmetry tests for ä(), on_error and cashflow_times exclusivity
+
+- **ir**: Add gap-coverage tests for all-invalid batch, perpetuity+deferment, degenerate return_flows
+
+- **batch**: Add missing benefits rf_false/on_error_nan/het_m tests; fix batch_calculations.md residuals
+
+- **batch**: Update batch tests for relaxed benefits parameter contract
+
+- **tables**: Regression tests for batch nan recursive paths + rounding fix
+
+- **ir**: Extend test_47_ir_batch coverage for on_error='nan' edge cases
+
+- Add missing cashflow_times/cashflow_amounts tests for Axy/Axyz/Afirst and due-annuity methods
+
+- Add exhaustive cashflow constraint tests for annuity functions and fix äxy cashflow_times validation
+
+- Complete 100% cashflow coverage - m>1 multi-life batch==scalar and validation error tests
+
+- Complete §N3 record_ids coverage to 12/12 multi-group functional functions
+
+- Add S72 ValueError guard tests for t_output without return_flows
+
+- **cli**: Add helper contract coverage for license commands
+
+- **cli**: Cover edge cases for license helper contract
+
+- **tables**: Add cartesian+return_dict+ir_sequence alignment test (coverage gap)
+
+- **tables**: Phase 6 - smoke tests for cartesian/dict/blend/warnings
+
+- **tables**: Rename smoke tests to follow test_NN convention
+
+- **activation**: Update tests for Fix 1/Fix 2; protect license.json in conftest
+
+- **batch**: _arraylike_len_or_1 unit tests; _detect_batch_joint Series regression; t_output Series NDArray invariant
+
+- **batch**: Complete Series audit coverage and module pd/pl imports
+
+- **ir,gr**: Add regression tests for deepcopy and copy() methods
+
+- **batch**: Add T-46 test for uniform benefits scaling
+
+
+### ✨ Features
+
+- Add PHASE 0 batch helpers and validators
+
+- AnnuityEngine.discrete_precision_batch - phase 1.1 vectorized batch engine
+
+- InsuranceEngine.discrete_precision_batch - phase 1.2 vectorized batch engine
+
+- EndowmentEngine.discrete_precision_batch - phase 1.3 vectorized batch engine
+
+- _annuity_batch dispatcher in life.py - phase 2.1 vectorized batch dispatcher
+
+- _insurance_batch dispatcher in life.py - phase 2.2 vectorized batch dispatcher
+
+- _endowment_batch dispatcher in life.py - phase 2.3 vectorized batch dispatcher
+
+- Batch mode for ax, äx, Ax, nEx public methods - phase 3.1-3.4
+
+- Multi-table batch dispatchers in life.py - phase 4.1-4.4
+
+- Joint-life batch helpers and batch mode for axy/axy/Axy/nExy - phase 5
+
+- **functional**: Add multi-table batch dispatch to functional API (PHASE 6)
+
+- **batch**: Add n-life batch dispatchers and functional API batch support
+
+- **batch**: Add per-policy vector_gr (VG-1) and vector_m (VM-1) support
+
+- **batch**: PHASE 6.6.A — _check_batch_param limit 50, _validate_actuarial_range_batch collect-all
+
+- **batch**: PHASE 6.6.A — collect-all validation in all 16 batch functions
+
+- **batch**: PHASE 6.6.B - on_error/record_ids in all 16 batch functions
+
+- **batch**: PHASE 7.6 - vector_gr and vector_m for n-life batch (VG-1/VM-1)
+
+- **batch**: Add _check_batch_ts_integer and _fmt_batch_violation helpers
+
+- Export BatchResult and BatchErrorReport; document on_error batch handling
+
+- **config**: Replace config alias with dynamic _ConfigProxy for singleton safety
+
+- **batch**: Extract _aggregate_flow_parts; enable return_flows in n-life batch
+
+- **batch**: Add benefit= per-policy monetary weighting to single-life batch
+
+- **batch**: Benefit= per-policy monetary weighting in n-life batch
+
+- **batch**: Enable return_flows in continuous_precision mode
+
+- Enable return_flows=True and t_output in multi-table functional joint dispatch
+
+- **batch**: Complete PHASE 10 and update checklists in PLAN_vectorizacion_batch.md
+
+- **batch**: Vectorise ts, d, n, m, ir in all multi-life batch methods (Fase 12-A)
+
+- **batch**: Per-policy mortality tables for all multi-life batch methods (Fase 12-B)
+
+- **tables**: Normalize n=np.inf sentinel in Axyz joint method (S50)
+
+- **ir**: PHASE 11 — batch route for InterestRate.a() and InterestRate.ä()
+
+- Add benefits parameter to InterestRate.a() and ä() for return_flows=True
+
+- **ir**: Extend InterestRate.a() and ä() with benefits parameter for return_flows=True
+
+- **annuity**: Add simplified core computation for annuity calculations to optimize performance
+
+- **insurance**: Implement single-pass core for discrete_simplified in InsuranceEngine and add regression tests
+
+- **annuity**: Simplify AnnuityEngine code and improve type hints; enhance test coverage for InterestRate broadcasting
+
+- **batch**: Allow benefits parameter without return_flows=True in batch annuities
+
+- **lt**: Replace 16x benefits blocks with _validate_benefits helper
+
+- Add cashflow_amounts to annuity-due methods (äx, äxy, äxyz, äjoint)
+
+- Add fail-fast ValueError guard for t_output without return_flows=True
+
+- Add on_error scalar guard to all 16 batch methods
+
+- Implement on_error='nan' scalar guard for batch methods
+
+- **api**: Guard record_ids in scalar mode for all 16 batch OOP methods (Bug F) [**BREAKING**]
+
+- **cli**: Implement license refresh status doctor commands
+
+- **tables**: Phase 1 — add TableKey namedtuple, export from __init__, 17 tests
+
+- **tables**: Phase 2 — table_name Sequence, range/None cohort/duration, unisex_blend Sequence, 30 tests
+
+- **tables**: Phase 3 - cartesian=True, pre-validation, combos abstraction, 17 tests
+
+- **tables**: Phase 4 - return_dict=True, TableKey dict keys, 15 tests + E2E
+
+- Batch multi-life methods triggered by non-ages scalar params
+
+- Accept Pandas/Polars Series directly as batch input parameters
+
+- Add .cursorrules file for Lactuca Actuarial Library guidelines and standards
+
+
+### ﻿chore
+
+- **scripts**: Close G-13 in lactuca-series-batch skill audit matrix
+
+
+### ﻿docs
+
+- **batch,functional,ir**: Update batch guide and cross-ref pages for ir/gr Series
+
+- **batch**: Remove redundant local TOC directive
+
+
+### ﻿fix
+
+- **helpers,batch**: Preserve ir/gr objects in object-dtype Pandas/Polars Series
+
+
+### ﻿test
+
+- **batch,tests**: Add S41 Series object-dtype ir/gr piecewise coverage
+
+
+### 🎨 Styling
+
+- Apply Ruff formatting to annuity.py
+
+
+### 🐛 Bug Fixes
+
+- Update project description and homepage URL in pyproject.toml
+
+- Update license section in README.md for clarity and add activation instructions
+
+- Update implementation plan with completion dates for steps 8.1 and 8.2
+
+- Cython STRICT fixes in engine/helpers.py (M-3 int cast, M-4 _prob_life_interval)
+
+- Guard log(0) and replace np.isfinite with IEEE-safe check in MuApproximator (-ffast-math)
+
+- Consistent 1e-300 guard and inline in _individual_avg_forces (-ffast-math)
+
+- Rename N_k->n_k, M->n_t in discrete_precision_batch (Ruff N806)
+
+- Corregir bugs y optimizar dispatch multi-tabla en functional.py
+
+- **life**: Update error messages for return_flows in batch mode to clarify calculation_mode requirements
+
+- **functional**: Add error handling for return_flows in joint-life multi-table batch for axy and äxy functions
+
+- **batch**: Resolve ir=None to table default in batch helpers; add PHASE 7.7 tests
+
+- **life**: Accept n=+inf as whole-life sentinel in ax/ax-due/Ax scalar paths
+
+- **tests**: Update vectorial cohort tests for ResourceWarning threshold
+
+- **tables/life**: Correct ir type hints and docstrings to include list[InterestRate]
+
+- **batch**: Emit UserWarning for fractional ts when GrowthRate active
+
+- **config**: Reset_to_defaults() preserves tables_path
+
+- **config**: Resolve Config forward reference in __deepcopy__ return annotation
+
+- **batch**: Pre-fase-a production bugs (aliasing, exception types, dead code, silent discard)
+
+- **batch**: Endowment return_flows 2D shape, ravel defense, T-58 continuous_precision
+
+- Replace NotImplementedError with ValueError for vector-m + return_flows
+
+- **engine**: Fix 3 batch precision bugs to enable exact scalar identity
+
+- **batch**: Perpetuity per-policy fallback in _annuity_batch for zero-tolerance
+
+- Replace np.asarray with _as_f64_safe in public API boundaries
+
+- **helpers**: Correct BatchErrorReport docstring reference from pandas to polars
+
+- **ir**: Fix stale ä() Notes docstring; fix stale on_error=nan inline comments; add missing scalar-batch identity tests (G1/G2/G3)
+
+- **ir**: Correct return types, remove broadcast copies, align valid_idx, fix docstring
+
+- Reorder cashflow params in insurance signatures to times-first
+
+- Propagate on_error/record_ids in multi-table functional single-group shortcut
+
+- Propagate on_error/record_ids in multi-table functional multi-group loop
+
+- **api**: Add _validate_on_error fail-fast and record_ids length guard to all 12 joint/n-life functional wrappers (Bug I)
+
+- **api**: Guard joint-life OOP methods against empty/invalid ages type; fix stale test_40
+
+- **api**: Guard joint-life OOP methods against empty tables_yz/tables_others
+
+- **api**: Accept np.ndarray as ages in all 11 joint/n-life OOP guards
+
+- **api**: Raise ValueError for batch-only params used in scalar mode
+
+- **_activation**: Convert LactucaLicenseError subclasses to clean SystemExit in __init__
+
+- **_activation**: Recover from LAC-3001/3002/3003/3004 using stored key; never delete license.json
+
+- **_activation**: Online revalidation for expired/invalid-fp; add python -m lactuca activate CLI
+
+- **tests**: Remove unused exc_info in test_activate_calls_activate_interactive
+
+- **_activation**: Replace isatty guard with _was_ever_activated(); show [T/K/Q] in Jupyter
+
+- **_activation**: Block trial requests on paid devices
+
+- **cli**: Harden license refresh and align server states
+
+- **license**: Remove user env dependency from CLI diagnostics
+
+- Plan — gap analysis 7: unisex_blend_list cartesian extend, range cohort, _resolve helper, E2E test description
+
+- **_activation**: Atomic write for license.json via tmp+os.replace
+
+- Batch mode triggered by m/gr arrays in ax/äx/Ax/ir.a/ir.ä and ir in nEx
+
+- Update batch detection to include `m` and `gr` in annuities
+
+- Normalize_n_sentinel, remove cashflow_times from äxy OOP signature, and add validation guards in joint-life methods
+
+- Update sphinx-build status to indicate successful build and zero warnings
+
+- Homogenize ir annotation in nExyz and nEjoint functional signatures (GAP-39)
+
+- **batch**: Rename 'policies' to 'records' in error messages and docstrings
+
+- **activation**: Redirect non-keygen expired keys to interactive activation
+
+- Accept Pandas/Polars Series for batch parameter m
+
+- Accept Pandas/Polars Series for batch parameters ir and gr
+
+- Normalize record_ids to list for safe positional indexing with any sequence
+
+- **life**: Normalize t_output via _as_f64_safe in all batch methods
+
+- **helpers**: Accept pd/pl Series in _validate_numeric_input allow_sequence path
+
+- **dates**: Accept Pandas/Polars Series in is_leap_year, days_in_year, days_in_month
+
+- **tests**: Restore _is_integer_valued import in integer detection helpers
+
+- **ir,gr**: Add InterestRate.__deepcopy__ and copy() to IR and GR
+
+- **notebooks**: Update error handling in pycactus_legacy notebook
+
+- **workflows**: Improve error handling in validate-wheels.yml for license checks
+
+
+### 📚 Documentation
+
+- **plan**: Reconcile Regla 3 in batch engine steps 1.1-2.3 and add Cython STRICT speed principles
+
+- **plan**: Add implementation phase guidelines for batch vectorization process
+
+- Mark PHASE 1.1 as completed in batch vectorization plan
+
+- Mark PHASE 1.2 as completed in batch vectorization plan
+
+- Mark PHASE 1.3 as completed in batch vectorization plan
+
+- Mark PHASE 2.1 as completed in batch vectorization plan
+
+- Mark PHASE 2.2 as completed in batch vectorization plan
+
+- Mark PHASE 2.3 as completed in batch vectorization plan
+
+- Mark PHASE 3.1-3.4 as completed in batch vectorization plan
+
+- Mark PHASE 4.1-4.4 as completed in batch vectorization plan
+
+- Mark PHASE 5.1-5.3 as completed in batch vectorization plan
+
+- **plan**: Document VG-1 vector_gr and VM-1 vector_m vectorization gaps
+
+- **plan**: Mark PHASE 6.4 complete, update PHASE 7 status with test_38/test_39
+
+- **plan**: Mark VG-1 and VM-1 as COMPLETADO, update Sequence type hints
+
+- **plan**: Add PHASE 6.6 batch error handling plan and PHASE 7.7 tests
+
+- **plan**: Add D-1 gap — generational/select table cohort-duration batch limitation
+
+- **plan**: Mark PHASE 6.6.B as completed (all 16 functions)
+
+- **plan**: Document m heterogeneous + return_flows=True permanent limitation
+
+- **plan**: Mark PHASE 7.7 completed; document ir=None batch bug fix
+
+- Update PLAN_vectorizacion_batch.md - mark 7.1/7.2/7.4/7.5/7.6 completed
+
+- PHASE 8 complete — batch mode docstrings for all public methods in life.py and functional.py
+
+- Fix arrow notation consistency in docstrings
+
+- PHASE 9 — batch calculations user guide and cross-references
+
+- Fix batch API examples and add cross-references to batch_calculations
+
+- Add batch_calculations cross-references to cookbook, using_tables, prospective_reserve
+
+- Remove vectorial hard limit; add memory warning + group-then-update pattern
+
+- **plan**: Mark 6.6.B.1, 9.2-9.6 as completed; verify 9.5/9.6 autodoc
+
+- Update references in licensing FAQ for consistency and clarity
+
+- Update changelog with refactoring, performance improvements, testing enhancements, and new features
+
+- **9.7**: Add probable_flows.md — IFRS 17 BEL, SCR SII, IAS 19 PVDBO, rate/mortality sensitivity
+
+- Correct m parameter description — supports per-policy sequences in batch mode
+
+- Document cashflow_times per-policy limitation and group-by-product workaround
+
+- **plan**: Mark implementation complete — all phases done, PR pending
+
+- **plan**: Add pre-merge checklist with 3 validation items
+
+- **batch**: Add broadcasting rules table and per-policy InterestRate examples
+
+- **probable-flows**: Fix cashflow_amounts usage for per-policy sums insured
+
+- **changelog**: Add decrement ResourceWarning threshold entries
+
+- **batch**: Clarify per-policy intro — name cashflow exceptions inline
+
+- **batch**: Make per-policy examples self-contained; remove numpy dependency
+
+- **batch**: Add print() output to all runnable code snippets; fix cohort table name
+
+- **audit**: Add comprehensive documentation audit protocol for verifying and updating markdown files
+
+- **batch**: Correct formatting in output table for clarity
+
+- **batch**: Use ax (postpagable) for benefit/pension examples; äx only for premium formula
+
+- **batch**: Fix table selection per Spanish regulation (PER2020 ahorro/pensiones, PASEM riesgo); recalculate all output values with cohort=1960
+
+- **user-guide**: Update batch_calculations.md with benefit= examples and flow aggregation patterns
+
+- **plan**: Add Phase 10 benefit= batch plan with 61-gap analysis and 44 tests
+
+- **plan**: Add G-62..G-64 (t_output gaps, T-43 numeric assertions, T-45/T-46)
+
+- **plan**: Add G-65..G-68 (t_output äx/nEx OOP, t_output functional, on_error/record_ids n-vida, record_ids f_Axy/f_nExy) and T-47..T-54
+
+- **plan**: Add lactuca-optimize principles section with Cython STRICT checklist for src/ implementation
+
+- **plan**: Add Bloque 4 (docstrings actuarial-docstring skill) and Bloque 5 (docs user guide lactuca-docs) to implementation principles
+
+- **plan**: Add G-69..G-75 (CI regression, aliasing, simplified-mode guards, nExy coverage) and T-55..T-65 to implementation plan
+
+- **plan**: Add G-76..G-81 (production aliasing bug, error-type mismatch, dead code, Ax/nEx mode-raises gap, is-not assertion gap, on_error+return_flows gap) and T-66..T-70
+
+- **plan**: Add G-82..G-86 (Axy/nExy multi-table silent return_flows, nEx warning gap, force_integer_ts 2vida gaps, test_39 functional NotImplementedError) and T-71..T-75
+
+- **plan**: Correct T-71/T-74 fix strategy (guard not forward), mark T-64 redundant, add G-87..G-89 and T-76..T-78
+
+- **plan**: Restore G-86..G-89, add G-90..G-94 (test_38 all-invalid/empty-batch/record_ids/continuous_simplified gaps; test_42 matrix housekeeping) and T-79..T-83
+
+- **plan**: Add G-95..G-101 and T-84..T-90 (secondary-life invalid, fractional n, due annuity gr/m, continuous_simplified functional, single_group batch, functional gr, generational tables gaps)
+
+- **plan**: Add G-102..G-107 and T-91..T-96 (select+SelectGen batch coverage gaps: return_flows, t_output, SelectGen, äjoint/äxyz, functional API, on_error)
+
+- **plan**: Add G-108 and T-97 (return_flows+benefit batch aggregation vs scalar loop)
+
+- **plan**: Add ordered implementation roadmap (Pasos 0-7) with conflict-free commit sequence
+
+- **plan**: Fix ordering issues in Pasos 2-6 (aggregate_flow_parts dep, A-1.16 dupe, G-82/G-85 confusion, B-5 ordering)
+
+- **plan**: Assign T-97 to Paso 3 (benefit+return_flows batch vs scalar loop cross-check)
+
+- **plan**: Assign T-75 to Paso 2 (covered by T-56); T-64 correctly unassigned (superseded)
+
+- **plan**: Update PLAN_batch_flujos_benefit status to Paso 4 completed
+
+- **batch**: Add benefits= and return_flows docstrings and user guide updates
+
+- **plan**: Record Paso 8 bug fixes in PLAN_batch_flujos_benefit
+
+- **plan**: Update status to Pasos 0-8 completados; add ac46f9b commit entry
+
+- **plan**: Registrar T-44 como completado y añadir commit 2dbcfd1 al historial
+
+- Doc-16 — clarify t_grid vs payment_time two-level key design
+
+- Update plan checklist — mark 51 T-xx items as done (stale since Pasos 0-8)
+
+- Finalize plan — add Doc-16/checklist commits to history, clear pending section
+
+- Mark all 5 doc-plan items as done in Plan de documentacion section
+
+- Mark Fases A-B-C-D checklist items as done (stale since Pasos 0-8)
+
+- Fix Approach B EIOPA snippet and note blocks in batch_calculations.md
+
+- Add parameter compatibility table and t_output/return_flows limitation note
+
+- Update compatibility table and Fase 11 plan after Tarea D
+
+- Remove stale NotImplementedError entries from axy/äxy/ajoint/äjoint docstrings
+
+- Update changelog with recent batch and engine API changes
+
+- Add Fase 12 planning for multi-life vectorized parameters
+
+- **batch**: Per-policy mortality tables for multi-life batch methods (Fase 12-B/C)
+
+- Register Fase 13-C completion in PLAN_batch_flujos_benefit
+
+- **batch**: Rename t_grid/payment_time to time_grid in docs and functional.py docstrings (13-C.5)
+
+- Update plan -- mark 13-C.5 and 13-A as completed
+
+- Update plan -- mark 13-B as completed (ec86775)
+
+- Update plan -- mark Fase 14 as completed (6537a73)
+
+- Update plan -- mark Fase 15 (batch-scalar exact identity) as completed
+
+- Update PLAN_batch_flujos_benefit -- mark Fase 15 as completed
+
+- Update PLAN_batch_flujos_benefit -- add Fases 13-15 to status table
+
+- Update Fase 15 tracking -- mark bug fixes + identity tests as completed, defer DGEMV to future
+
+- Document DGEMV cancellation rationale (FP non-assoc) + safe OPT-A..E alternatives
+
+- Fase 16 tracking corrected + S21-S30 test gaps documented
+
+- Fase 15 tracking corrected + GAP-NEW-K..V documented; remove GAP-T50-J (already covered)
+
+- Update plan -- mark S50 (n=np.inf joint normalization) as completed (0d31036)
+
+- Add Fase 16 pre-merge checklist and release sequence to plan
+
+- Update plan with S51 (606 tests, commit af64d1c)
+
+- Improve documentation clarity and consistency in annuity.py
+
+- Clarify return_flows scalar vs batch dict schema
+
+- **functional**: Complete return_flows docstring in ax, äx, axyz, äxyz, Ax, Axyz, nEx
+
+- **life**: Fix batch return dict key t_grid → time_grid in docstrings
+
+- **tables**: Update return_flows docstring — supported also for continuous_precision
+
+- **ir**: PHASE 11 step 11.4 - update a() and ae() docstrings for batch mode
+
+- **user_guide**: PHASE 11 step 11.6 - add Pure financial annuities section to batch_calculations.md
+
+- **plan**: Mark Phase 11 steps 11.4-11.7 complete
+
+- **lactuca**: Fix docstring audit P1-P3 corrections
+
+- Update Python version requirement to 3.12 and add notes on 'm=14' scheme in user guides; enhance DecrementTable with stable identity hash and equality checks
+
+- Audit and fix batch_calculations.md and interest_rates_guide.md
+
+- Fix simplified mode -> simplified modes (plural) in compat table
+
+- **ir**: Fix stale on_error=nan+return_flows Notes in a()/ä() docstrings and batch_calculations.md; mark IMPL plan 100% complete
+
+- Update changelog and implementation notes for batch NaN+benefits
+
+- **skill**: Expand lactuca-optimize skill with memory, Cython, and precision patterns
+
+- Document cashflow_amounts in due-annuity methods and clarify cashflow_times design
+
+- Document calculation_mode restriction in insurance cashflow_times and add insurance section to irregular cashflows guide
+
+- Mark INC-4 and INC-5 as COMPLETADO in impl plan
+
+- Update batch `on_error='nan'` DRY optimization plan with detailed objectives and validation updates
+
+- Fix cashflow_times/cashflow_amounts parameter order in insurance docstrings
+
+- Document on_error/record_ids multi-table support in docstrings and user guide
+
+- Add on_error='nan' example for multi-table functional joint/n-life dispatch
+
+- Add IMPL plan for missing vectorised batch engines (Ax/nEx)
+
+- Document t_output guard (ValueError) across docstrings and user guide
+
+- **plan**: Add implementation plan for on_error/record_ids multi-table forwarding fix
+
+- **helpers**: Fix _round_to_nearest_int docstring examples to show near-integer use case
+
+- **functional**: Complete on_error/record_ids Raises + examples in ax, äx, Ax, nEx
+
+- **errors_reference**: Update LAC-3002/3003/3004 recovery sections for auto-recovery
+
+- **batch**: Update batch_calculations user guide for t_output/on_error guards
+
+- **plan**: Mark all checklist items completed in IMPL_activation_recovery_fix
+
+- **impl**: Mark §11 paso 6 manual verification complete
+
+- **licensing**: Align internal config docs
+
+- **licensing**: Finalize S-3 documentation
+
+- **plan**: Finalize license CLI implementation plan
+
+- Update changelog and keygen license notes
+
+- **licensing**: Finalize CLI docs and validation checklist
+
+- **licensing**: Mark implementation plan as fully completed
+
+- **user-guide**: Align batch flow contracts and examples
+
+- **changelog**: Update documentation entries
+
+- **user-guide**: Remove redundant notes in batch calculations
+
+- Fix t_output docstrings — clarify bucketing mechanism and total_pv invariant
+
+- **batch**: Improve portfolio examples, simplify constructor usage, fix sexes array
+
+- Plan — document cartesian-vs-groupby distinction; portfolio canonical pattern in Phase 5
+
+- Plan — gap analysis 6: existing-doc update coverage (notation_glossary, tables_taxonomy, disability/exit API, decrement unconditional, using_tables param updates, batch forward-ref)
+
+- **tables**: Phase 5 - TableKey, cartesian, return_dict, unisex_blend docs
+
+- Mark all plan checkboxes complete in PLAN_table_cartesian_dict.md
+
+- **batch**: Add zip-mode comments to all multi-sex LifeTable examples
+
+- **batch**: Simplify per-policy table examples with vectorial constructor pattern
+
+- **changelog**: Update auto-generated changelog entries
+
+- Replace np.arange with payment_times in code snippets
+
+- Replace unnecessary np.array with plain lists in code snippets
+
+- Mark FEAT_batch_multilife_nonages plan as 100% COMPLETADO
+
+- Audit and fix batch_calculations.md
+
+- Fix missing MyST cross-reference anchors in batch_calculations.md
+
+- Move Error handling section before Single-table batch for pedagogical clarity
+
+- Add BatchResult and BatchErrorReport to API reference and fix cross-references
+
+- **changelog**: Add entries for batch DRY helpers and docs updates
+
+- **notebooks**: Update pycactus_legacy with batch on_error example
+
+- Fix multi-line message indentation in on_error example
+
+- Fix sphinx warnings - duplicate BatchResult attrs, np.bool_ RST ref, batcherrorreport anchor
+
+- Add premium column to Polars integration example
+
+- Document Pandas/Polars Series acceptance for all batch params
+
+- Document Pandas/Polars Series acceptance for benefits in all batch methods
+
+- **batch**: Document Series acceptance for n/d/ts and ages in all multi-life methods; fix DRY in IR batch dispatch; add 30 Series coverage tests
+
+- **functional,interest_rates**: Add Pandas/Polars Series mentions to all per-policy param docstrings
+
+- **functional**: Add Pandas/Polars Series mentions to multi-life param docstrings
+
+- **life**: Add Pandas/Polars Series mentions to OOP method param docstrings
+
+- Document Pandas/Polars Series support in batch API user guide
+
+- **impl**: Extend Series audit with DA-16..DA-22 docstring gaps and CB-01..CB-03 bugs
+
+- Add guidelines for Conventional Commits and versioning workflow
+
+- **functional**: Fix docstring indentation for gr parameter in ax, ax, axy
+
+- **batch,docs**: Audit batch_calculations and probable_flows guides
+
+- **ir,gr**: Document copy() snapshotting in IR and GR user guides
+
+- **docs**: Remove redundant float() wrapping on NumPy results in probable_flows
+
+- **user_guide**: Enhance cashflows documentation with batch mode example
+
+- **user_guide**: Update probable_flows documentation for annuity calculations
+
+- **plan**: Update batch plan for direct merge to main
+
+- **plan**: Close batch vectorization plan after merge to main
+
+- **plan**: Align CI/CD plan with Gate v0.1.0 rev 1.7
+
+- **changelog**: Add missing entries from batch, activation and Series work
+
+
+### 🔧 CI/CD
+
+- **docs**: Fix gh-pages deploy with CNAME and rsync multi-version
+
+
+### 🧹 Miscellaneous
+
+- Update actuarial data table and legacy notebook
+
+- Mark Fase 12-B/C/D/final as completed in PLAN tracking table
+
+- **lint**: Add N806 to functional.py ruff ignores
+
+- **copilot**: Improve docstring-auditor and docs-writer agents
+
+- **copilot**: Add engine instructions, new-test prompt, and batch/profile skills
+
+- **dev**: Add git hooks (commit-msg, pre-commit, pre-push) and installer
+
+- **notebook**: Update pycactus legacy notebook
+
+- Add cartesian+dict LifeTable constructor implementation plan
+
+- Update TODO — mark vectorized functions and licensing as done, add docs audit template
+
+- **notebook**: Update pycactus legacy notebook
+
+- Complete plan coverage audit — 10 missing test paths + explicit out-of-scope section
+
+- Plan gap analysis — 12 missing tests + cross-phase fixes + 3 new risks
+
+- Plan deep-gap analysis — fix phase-order bugs, restore 3 lost tests, rename dedup test, add 4 new tests
+
+- Plan docs gaps — add actuarial-docstring skill (ph1-4), Docs-writer agent (ph5), Docstring-auditor agent (ph6), restore ph3 header
+
+- Plan gap analysis 4 — 7 impl/test gaps fixed (cartesian guard, combos refactor, Phase4 thread clarity, API docs, 3 missing tests)
+
+- Plan — document tables[0] limitation, memory footprint tradeoff, add lazy-construction and int-subscript to out-of-scope
+
+- Plan — gap analysis 5: fix test class placement, unisex_blend_list always-produce note, api/base.md step, KeyError smoke test
+
+- **notebooks**: Update pycactus_legacy with per-policy table pattern example
+
+- Fix test module docstring and mark rename plan as completed
+
+- Migrate AI instructions to Cursor rules and skills
+
+- Add lactuca-series-batch skill and agent index
+
+- **skills**: Add actuarial and activation audit workflows for Fase 9
+
+- Bump version to 0.0.3 [test release]
+
+
+## [0.0.2-test] - 2026-04-30
+
 ### ♻️ Refactoring
 
 - Streamline E2E license test scenarios and improve Python script execution
@@ -8,6 +2116,8 @@
 ### ✅ Testing
 
 - **activation**: Complete test suite for _activation module (114 tests)
+
+- **e2e**: Add G.NEW-A and G.NEW-B manual scenarios for FASE N MAC
 
 
 ### ✨ Features
@@ -24,8 +2134,24 @@
 
 - Update Phase G action plan with new scenarios and workflow enhancements
 
+- **licensing**: Remove annual billing variants and restructure Keygen policies
+
+- **tests**: Add manual test helper script for Fase G offline/revocation scenarios
+
+- **docs**: Add EULA acceptance checkbox gate in pricing.md; update F.6 IMPL with implemented solution
+
+- **docs**: Replace checkbox banner with modal gate for EULA acceptance (option C)
+
+- **webhook**: Bilingual purchase email with plan name, security hardening, null-safe JSON access
+
+- **activation**: Add FASE N — MAC integrity layer (LAC-3003/3004/3005)
+
 
 ### 🐛 Bug Fixes
+
+- **ci**: Drop cp311, add CMAKE_BINARY_DIR_OVERRIDE for Windows, fix Python 2 except syntax
+
+- **tables**: Parenthesize multiple exception types in builder.py
 
 - **webhook**: Sanitize user inputs to prevent HTML injection and URL path injection
 
@@ -46,6 +2172,82 @@
 - Pre-commit audit _activation.py — 3 issues (DEAD + 2 IMPORTANT)
 
 - Set real Ed25519 verify key in _KEYGEN_VERIFY_KEY
+
+- Handle incompatible license schema version in local verification
+
+- **tests**: Mock _get_hardware_fingerprint in signature-check tests
+
+- **ux**: Fix 5 activation UX bugs in _activation.py
+
+- **ux**: Add feedback during periodic license revalidation
+
+- **ux**: Replace unicode escapes with literal chars; confirm revalidation
+
+- **ux**: Suppress traceback after ActivationRequiredError in __init__
+
+- **ux**: Eliminate message duplication and Windows UnicodeEncodeError
+
+- **activation**: Add nonecheck guards on list[0] access; clean import aliases
+
+- **activation**: Distinguish unsigned license from tampered (LAC-3001)  - Add _STATUS_UNSIGNED constant for Keygen policies without Ed25519 signing - _verify_local(): keys absent (None) → LAC-3001; both empty strings → _STATUS_UNSIGNED - _do_verify_or_activate(): force needs_revalidation=True when _STATUS_UNSIGNED - scripts/setup_manual_tests.py: fix platformdirs path (appauthor=False) - tests: add 3 new tests for _STATUS_UNSIGNED behavior (119 total, all passing)
+
+- **activation**: Add trailing newline to error messages shown via SystemExit
+
+- **e2e**: Broaden G.1/G.3 success check to match 'license' in error output
+
+- **docs**: Correct LS checkout URLs; add Spanish EULA link in checkbox
+
+- **webhook**: Send purchase email with license key after order_created event
+
+- **docs**: Update checkout URLs in pricing section to new store domain
+
+- **webhook**: Close EULA modal on checkout, Spanish email for ES buyers, rename purchase sender to licenses@
+
+- **webhook**: Add lang detection logging, add country name fallback for Spanish detection
+
+- **webhook**: Default to Spanish in LS Test Mode (billing_address is null in test)
+
+- **docs**: Migrate all URLs from actuaan.github.io/lactuca to lactuca.actuaan.com; centralize via myst_substitutions and _DOCS_BASE_URL
+
+- **_activation**: Migrate URLs, add lang detection and email confirmation in trial flow
+
+- **_activation**: Add trailing newline to all user-facing messages
+
+- **webhook**: Remove hardcoded device limit from trial emails
+
+- **_activation**: Refresh tier from Keygen on every revalidation
+
+- **ux**: Add trailing newline to stderr messages and fix G8 setup script
+
+- Add missing newlines for better readability in stderr messages
+
+- Update trial email legal text and clarify license suspension process
+
+- **docs**: Update implementation plan with new phases and improve changelog headings
+
+- **docs**: Update comments for license scenarios and clarify license requirements
+
+- Optimize license verification by caching verify key bytes and improving error handling
+
+- **tests**: Enhance license verification tests by patching key bytes and improving error handling
+
+- **tests**: Add ignore rule for extraneous parentheses in exception handling
+
+- **config**: Migrate domain to lactuca.io and update support email
+
+- Update Resend email addresses to use lactuca.io domain
+
+- **resend**: Use resend v2 API (emails.send lowercase)
+
+- **resend**: Revert to Emails.send() uppercase (SDK v2 API)
+
+- Correct README content, domain to lactuca.io, and license contact email
+
+- Correct cibuildwheel Windows path escaping causing LNK1104 linker error
+
+- Align release-test Windows build config with working validate-wheels workflow
+
+- Redirect ARCHIVE_OUTPUT_DIRECTORY per-target to prevent LNK1104 on Windows MSVC
 
 
 ### 👷 Build System
@@ -111,6 +2313,26 @@
 
 - Add dead code review step to lactuca-optimize skill
 
+- Update pricing to definitive prices; team/enterprise annual via direct invoice
+
+- **impl**: Mark Fase G manual tests G.4/G.5/G.5b/G.8 as passed (2026-04-24)
+
+- **impl**: Mark Fase G workflow scenarios G.1-G.9b as passed; G.10 pending
+
+- **impl**: Activate LS store; unblock F.6/F.7/A.5b/K.3; add F.8 replication task; replace Fase H with CI/CD Fase 10 reference
+
+- **impl**: F.6 rework — no native LS checkbox; document precontractual description strategy with legal basis
+
+- **impl**: F.7 rework — clarify LS receipt vs Resend key email; add confirmation modal and thank you note texts
+
+- Add FASE N verification flow and LAC-3003/3004/3005 to public docs
+
+- **impl**: Fix verification barrier order; update IMPL and CI/CD plan
+
+- **impl**: Mark Fase G fully completed (G.NEW-A/B PASADO 2026-04-28)
+
+- Update CI/CD plan (version accumulation fix, sync-public trigger) and project notes
+
 
 ### 🔧 CI/CD
 
@@ -126,6 +2348,10 @@
 
 - Simplify machine cleanup to use License-key auth, delete all machines
 
+- **e2e**: Include Python version in pip cache key to prevent cross-version cache pollution
+
+- Rewrite release.sh with test/prod/bump modes; automate sync-public after prod release; add validate-docs header
+
 
 ### 🧹 Miscellaneous
 
@@ -135,19 +2361,9 @@
 
 - Update pricing policy spreadsheet
 
+- Update changelog with new features, bug fixes, and CI/CD enhancements
 
-## [0.0.3-test] - 2026-04-17
-
-### 🐛 Bug Fixes
-
-- **tables**: Parenthesize multiple exception types in builder.py
-
-
-## [0.0.2-test] - 2026-04-17
-
-### 🐛 Bug Fixes
-
-- **ci**: Drop cp311, add CMAKE_BINARY_DIR_OVERRIDE for Windows, fix Python 2 except syntax
+- Bump version to 0.0.2 [test release]
 
 
 ## [0.0.1-test] - 2026-04-17

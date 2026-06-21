@@ -87,7 +87,7 @@ counterparts.
 import polars as pl
 from lactuca import TableBuilder
 
-qx_m = [0.005 + i * 0.0003 for i in range(110)] + [1.0]  # ages 0–110; qx[omega]=1.0
+qx_m = [0.005 + i * 0.0003 for i in range(110)] + [1.0]  # ages 0–110; example closed table: q_omega=1.0
 qx_f = [0.004 + i * 0.0002 for i in range(110)] + [1.0]
 
 tb = TableBuilder(
@@ -148,6 +148,21 @@ tb = TableBuilder(
 Lactuca pads ages below `start_age` internally with zero rates so the internal arrays
 always start at age 0.  These padding rows are hidden by `view_data()` and `head()` by
 default; pass `show_normalized=True` to expose them.
+
+### Decrement values at the terminal age
+
+All decrement columns must contain probabilities in $[0, 1]$ (or scaled integers when
+using `decrement_scale_factor`).  For **life** tables, the value at age $\omega$ must
+equal $1.0$: $q_\omega = 1.0$ is enforced at build and load time.  Values within
+$10^{-4}$ of $1.0$ (for example `0.99995`) are silently corrected to exactly `1.0`;
+deviations beyond that tolerance raise `ValueError`.
+
+If you need a mortality rate below $1.0$ at what would otherwise be the last age of
+interest, extend the table by one year: set $\omega$ to the next age index and store
+your intended rate at $\omega - 1$, with $q_\omega = 1.0$ on the new terminal row.
+
+Exit and disability tables may have rates below $1$ at $\omega$.  For ages
+$x > \omega$, the query API returns $q_x = 1.0$ (no survivors beyond the table limit).
 
 ### Scaled rates: `decrement_scale_factor` and `mi_scale_factor`
 
@@ -212,7 +227,7 @@ Store the rates under `qx_u` (or `ix_u` / `ox_u`).  Instantiate with `sex='u'`
 import polars as pl
 from lactuca import TableBuilder, LifeTable
 
-qx = [0.004 + i * 0.0002 for i in range(110)] + [1.0]  # qx[omega]=1.0 required
+qx = [0.004 + i * 0.0002 for i in range(110)] + [1.0]  # example closed table: q_omega=1.0
 
 tb = TableBuilder(
     pl.DataFrame({"qx_u": qx}),
@@ -289,7 +304,7 @@ factors.  Corresponds to *Aggregate – Static* in {doc}`tables_taxonomy`.
 import polars as pl
 from lactuca import TableBuilder, LifeTable
 
-qx_m = [0.005 + i * 0.0003 for i in range(110)] + [1.0]  # ages 0–110; qx[omega]=1.0
+qx_m = [0.005 + i * 0.0003 for i in range(110)] + [1.0]  # ages 0–110; example closed table: q_omega=1.0
 qx_f = [0.004 + i * 0.0002 for i in range(110)] + [1.0]
 
 tb = TableBuilder(
@@ -393,7 +408,7 @@ years.  This is the simplest generational variant:
 import polars as pl
 from lactuca import TableBuilder, LifeTable
 
-qx_m = [0.003 + i * 0.0002 for i in range(110)] + [1.0]   # ages 0–110; qx[omega]=1.0
+qx_m = [0.003 + i * 0.0002 for i in range(110)] + [1.0]   # ages 0–110; example closed table: q_omega=1.0
 qx_f = [0.002 + i * 0.00015 for i in range(110)] + [1.0]
 mi_m = [0.015] * len(qx_m)   # 1.5 % annual improvement, all ages
 mi_f = [0.012] * len(qx_f)
@@ -438,7 +453,7 @@ import polars as pl
 from lactuca import TableBuilder
 
 n = 120                                        # ages 1–120
-qx_m = [min(0.001 + i * 0.001, 1.0) for i in range(119)] + [1.0]  # qx[omega]=1.0 required
+qx_m = [min(0.001 + i * 0.001, 1.0) for i in range(119)] + [1.0]  # example closed table: q_omega=1.0
 qx_f = [min(0.0007 + i * 0.00075, 1.0) for i in range(119)] + [1.0]
 # Scale AA improvement rates per age (steadily declining with age)
 mi_m = [max(0.018 - i * 0.00005, 0.0) for i in range(n)]
@@ -481,7 +496,7 @@ import polars as pl
 from lactuca import TableBuilder
 
 years = list(range(2010, 2036))   # 26-year MI grid
-qx_m = [0.004 + i * 0.0003 for i in range(110)] + [1.0]   # ages 0–110; qx[omega]=1.0
+qx_m = [0.004 + i * 0.0003 for i in range(110)] + [1.0]   # ages 0–110; example closed table: q_omega=1.0
 qx_f = [0.003 + i * 0.0002 for i in range(110)] + [1.0]
 
 mi_m_cols = {f"mi_m_{y}": [0.015 - 0.0001 * (y - 2010)] * 111 for y in years}

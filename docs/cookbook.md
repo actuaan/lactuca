@@ -125,11 +125,11 @@ Value a pension that pays €12 000/year for 10 years, then €8 000/year therea
 using `ax` (annuity-immediate), which supports custom cashflow schedules:
 
 ```python
-from lactuca import LifeTable, generate_payment_times as gpt, tiered_amounts
+from lactuca import LifeTable, payment_times, tiered_amounts
 
 lt = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
 
-times   = gpt(n=40, m=1)
+times   = payment_times(n=40, m=1)
 amounts = tiered_amounts(times, breakpoints=[10], values=[12_000.0, 8_000.0])
 
 pv = lt.ax(x=65, cashflow_times=times, cashflow_amounts=amounts)
@@ -373,6 +373,7 @@ and is significantly faster than `iterrows` for large DataFrames.
 ## See also
 
 - {doc}`user_guide/using_tables` — vectorized construction, cohort setter, bulk portfolios
+- {doc}`user_guide/batch_calculations` — vectorized alternative to recipes 9–12: pass an age array to a single call for 50–250× speedup
 - {doc}`user_guide/building_tables` — create custom `.ltk` files with `TableBuilder`
 - {doc}`user_guide/interest_rates_guide` — `InterestRate` construction and scenarios
 - {doc}`user_guide/joint_life_calculations` — joint-life annuities, insurances, and derivable formulas

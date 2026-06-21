@@ -527,4 +527,5 @@ Here `t=n` is the **future duration** (years to survive), wholly distinct from `
 - {doc}`growth_conventions` — how `GrowthRate.shifted()` aligns benefit revaluation with anniversaries
 - {doc}`inspecting_cashflows` — examine the cash-flow arrays underlying the reserve
 - {doc}`calculation_modes` — precision trade-offs for fractional-age calculations
+- {doc}`batch_calculations` — compute $_tV$ for a full portfolio in one vectorized call (building block for BEL / IFRS 17 FCF — not full GMM, RA, or CSM; see {ref}`regulatory-reporting-scope` in {doc}`calculation_modes`)
 - {doc}`../formulas` — formal prospective reserve formula

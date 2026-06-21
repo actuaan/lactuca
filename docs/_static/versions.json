@@ -1,14 +1,14 @@
 [
   {
     "version": "latest",
-    "url": "https://lactuca.actuaan.com/latest/"
+    "url": "https://www.lactuca.io/latest/"
   },
   {
     "version": "stable",
-    "url": "https://lactuca.actuaan.com/stable/"
+    "url": "https://www.lactuca.io/stable/"
   },
   {
     "version": "0.0.1",
-    "url": "https://lactuca.actuaan.com/0.0.1/"
+    "url": "https://www.lactuca.io/0.0.1/"
   }
 ]

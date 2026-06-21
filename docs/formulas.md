@@ -570,6 +570,13 @@ $$
 d^{(m)} = m \left[1 - (1+i)^{-1/m}\right]
 $$
 
+:::{note}
+**Term structures and EIOPA RFR.** Piecewise discount curves are entered manually via
+`InterestRate(terms=..., rates=...)`.  Lactuca does not download or parse official EIOPA
+RFR files — build segment forward rates from published spot curves.  See
+{doc}`user_guide/interest_rates_guide` § EIOPA risk-free rate curve.
+:::
+
 (growth-rates-escalating-benefits)=
 ## Growth rates (escalating benefits)
 
@@ -597,11 +604,51 @@ payment density. The complete $m$-thly growing annuity formulas are in
 ## Multiple decrements
 
 :::{note}
-**Lactuca assumes independent decrements** in all multiple-decrement calculations
-(`DecrementTable`, `DisabilityTable`, `ExitTable`).  The independence formula
-${}_{t}p_x^{(\tau)} = \prod_j {}_t p_x^{(j)}$ is applied throughout.  The general
-inclusion-exclusion form below is shown for mathematical completeness only.
+**Multiple-decrement table combination** (`table_combination` on
+``modify_qx`` / ``modify_ix`` / ``modify_ox``) stores a collapsed total
+$q_x^{\mathrm{comb}}$ in the host table.  Default ``combination_mode`` is
+**independent competing risks**; optional ``combination_mode="udd"`` applies
+UDD associated singles (two or three causes) before collapsing.  For two or
+three causes the collapsed total equals the independent product exactly.
+Per-cause $q'^{(j)}$ are not returned in v1.  See
+{doc}`user_guide/modifying_decrements` and {ref}`table-combination-formulas` below.
 :::
+
+(table-combination-formulas)=
+### Table combination (v1 collapsed total)
+
+**Independent** (default):
+
+$$
+q_x^{\mathrm{comb}} = 1 - (1 - q_x^{(0)}) \prod_j (1 - q_x^{(j)})
+$$
+
+**UDD** (``combination_mode="udd"``, host plus one or two other tables only):
+
+Two causes — associated singles then sum:
+
+$$
+q'^{(1)} = q^{(0)}\left(1 - \frac{q^{(1)}}{2}\right), \quad
+q'^{(2)} = q^{(1)}\left(1 - \frac{q^{(0)}}{2}\right), \quad
+q_x^{\mathrm{comb}} = q'^{(1)} + q'^{(2)} = 1 - (1-q^{(0)})(1-q^{(1)})
+$$
+
+Three causes (Bowers/Jordan):
+
+$$
+\begin{aligned}
+q'^{(1)} &= q^{(0)}\left(1 - \frac{q^{(1)}}{2} - \frac{q^{(2)}}{2} + \frac{q^{(1)}q^{(2)}}{3}\right) \\
+q'^{(2)} &= q^{(1)}\left(1 - \frac{q^{(0)}}{2} - \frac{q^{(2)}}{2} + \frac{q^{(0)}q^{(2)}}{3}\right) \\
+q'^{(3)} &= q^{(2)}\left(1 - \frac{q^{(0)}}{2} - \frac{q^{(1)}}{2} + \frac{q^{(0)}q^{(1)}}{3}\right)
+\end{aligned}
+$$
+
+$$
+q_x^{\mathrm{comb}} = q'^{(1)} + q'^{(2)} + q'^{(3)}
+= 1 - (1-q^{(0)})(1-q^{(1)})(1-q^{(2)})
+$$
+
+For joint-life calculations and unmodified tables, ${}_t p_x^{(\tau)} = \prod_j {}_t p_x^{(j)}$ under the **independence** assumption. The general inclusion-exclusion form below is shown for mathematical completeness.
 
 For independent decrements $j = 1, 2, \ldots, n$:
 
@@ -632,7 +679,9 @@ $$
 Correlated mortality is not supported.
 :::
 
-Survival of both lives:
+Survival of both lives (independence).  Lactuca evaluates products in **log domain**
+$\exp(\ln {}_t p_x + \ln {}_t p_y)$ for numerical stability; this is equivalent to the
+product below, including for $t \le 1$.  See {doc}`user_guide/numerical_precision`.
 
 $$
 {}_t p_{xy} = {}_t p_x \cdot {}_t p_y \quad \text{(independence)}
@@ -704,11 +753,18 @@ same method (`äx`, `Ax`, etc.) uses different formulae depending on the active 
 Full details in {doc}`user_guide/calculation_modes`.
 
 :::{note}
+**Actuarial coherence.** All four modes value the same product under shared global
+conventions (tables, `mortality_placement`, `lx_interpolation`, interest/growth). They are
+actuarially coherent but **not** required to return numerically identical results. See
+{ref}`actuarial-coherence-of-modes` in {doc}`user_guide/calculation_modes`.
+:::
+
+:::{note}
 Change mode globally with `config.calculation_mode = "<mode>"`.  Allowed values:
 `"discrete_precision"` (default), `"discrete_simplified"`,
 `"continuous_precision"`, `"continuous_simplified"`.
 Any other string raises `ValueError`.
-Call `config.reset()` to restore the default.
+Call `config.reset_to_defaults()` to restore the default.
 :::
 
 ### `discrete_precision` — integer ages, $m = 1$
@@ -754,9 +810,12 @@ $$\ddot{a}_{x:\overline{n}|}^{(m)} \approx \ddot{a}_{x:\overline{n}|} - \frac{m-
 
 $$\ddot{a}_x^{(m)} \approx \ddot{a}_x - \frac{m-1}{2m}$$
 
-Woolhouse approximation for insurances:
+Woolhouse approximation for **annuities** (insurances use adjacent-age linear
+interpolation — **not** $(i/i^{(m)})A_x$; see {doc}`user_guide/calculation_modes`). When $n_\text{eff}$ is fractional
+and $m>1$, integer years $k=\lfloor n_\text{eff}\rfloor$ use Woolhouse and the
+terminal fraction $s=n_\text{eff}-k$ is summed on an exact m-thly grid:
 
-$$A_x^{(m)} \approx A_x + \frac{m-1}{2m}\left(A_{x+1} - A_x\right)$$
+$$A_x^{(m)} \approx A_x + \frac{m-1}{2m}\left(A_{x+1} - A_x\right) \quad\text{(insurances; integer $n$ only)}$$
 
 ### `continuous_precision`
 

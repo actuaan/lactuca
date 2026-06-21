@@ -1,4 +1,4 @@
-# Contrato de Licencia de Usuario Final
+﻿# Contrato de Licencia de Usuario Final
 
 **Lactuca — Biblioteca de Cálculo Actuarial de Vida para Python**
 
@@ -25,8 +25,8 @@ Para todos los demás Licenciatarios, prevalecerá la **versión en inglés**
 > Alberto Aragoneses Nebreda (que opera bajo la marca **Actuaan**)
 > NIF: 09180714B
 > Dirección: Francesc Pérez Cabrero, 7, 08021, Barcelona, ESPAÑA
-> Correo electrónico: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
-> Sitio web: [lactuca.actuaan.com](https://lactuca.actuaan.com)
+> Correo electrónico: [support@lactuca.io](mailto:support@lactuca.io)
+> Sitio web: [www.lactuca.io](https://www.lactuca.io)
 >
 > Alberto Aragoneses Nebreda es un profesional autónomo inscrito en el Régimen Especial
 > de Trabajadores Autónomos (RETA) de la Seguridad Social española y en la Agencia
@@ -60,7 +60,7 @@ pago en el nivel Trial.
 
 Las **licencias Académicas y Comunitarias** son concedidas directamente por el
 Licenciante mediante solicitud por correo electrónico
-([support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)) y no se procesan
+([support@lactuca.io](mailto:support@lactuca.io)) y no se procesan
 a través de Lemon Squeezy. El Licenciante no recaba ni trata datos de pago en estos
 niveles.
 
@@ -137,11 +137,11 @@ adquirido:
 
 | Nivel | Grupo de activaciones | Sesiones simultáneas |
 |---|---|---|
-| **Trial** | 2 | 1 |
-| **Individual** | 3 | 1 |
-| **Team** | 30 | 10 |
-| **Enterprise** | 150 | 50 |
-| **Académica y Comunitaria** | 2 | 1 |
+| **Trial** | 1 | 1 |
+| **Individual** | 1 | 1 |
+| **Team** | 10 | 10 |
+| **Enterprise** | 50 | 50 |
+| **Académica y Comunitaria** | 1 | 1 |
 | **OEM** | según acuerdo | ilimitadas |
 
 «**Dispositivo**» significa una única máquina física o virtual, incluidos servidores y
@@ -238,7 +238,7 @@ Cada fin cuenta con el consentimiento por separado. El consentimiento a cada fin
 necesario para que la Prueba funcione como se describe.
 
 Este consentimiento puede retirarse en cualquier momento contactando con
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com). La retirada del
+[support@lactuca.io](mailto:support@lactuca.io). La retirada del
 consentimiento dará lugar a la desactivación inmediata de la clave de prueba. Para
 facilitar la retirada, el Licenciatario también puede utilizar el enlace de exclusión
 incluido en el correo electrónico de entrega de la clave de prueba. De conformidad con
@@ -324,7 +324,7 @@ medidas técnicas de protección:
 | Huella digital del hardware (hash unidireccional) | Aplicar los límites de activación por dispositivo |
 | Archivo de licencia firmado digitalmente | Prevenir la manipulación del archivo de licencia |
 | Validación en línea periódica (cada 30 días) | Detectar el uso compartido no autorizado de claves |
-| Seguimiento de sesiones simultáneas (keep-alive aprox. cada 5 min) | Aplicar los límites de sesiones simultáneas por nivel |
+| Seguimiento de sesiones simultáneas (keep-alive aprox. cada 10–20 min, según nivel) | Aplicar los límites de sesiones simultáneas por nivel |
 | Distribución en formato binario compilado únicamente (sin código fuente) | Proteger la implementación propietaria |
 
 ### 5.2 Huella digital del hardware
@@ -346,7 +346,7 @@ El Software es compatible con:
 - **Versiones de Python**: 3.12 y superiores
 - **Dependencias**: instaladas automáticamente por pip; la lista actual y los
   requisitos de versión mínima se publican en la
-  [guía de instalación](https://lactuca.actuaan.com/latest/user_guide/getting_started.html#installation)
+  [guía de instalación](https://www.lactuca.io/latest/user_guide/getting_started.html#installation)
 
 El Software no requiere ningún controlador a nivel de sistema ni extensión del núcleo
 del sistema operativo. No interactúa con ningún otro software actuarial de terceros.
@@ -369,7 +369,8 @@ Contrato.
 
 Además de los datos descritos en §5.2 recabados en el momento de la activación, cada
 instancia en ejecución del Software transmite una solicitud HTTP de keep-alive
-(*heartbeat*) a la API de Keygen.sh aproximadamente cada 5 minutos (§6.1(b)). Cada
+(*heartbeat*) a la API de Keygen.sh aproximadamente cada 10 minutos en niveles de
+un solo puesto y cada 20 minutos en Team y Enterprise (§6.1(b)). Cada
 solicitud de este tipo contiene:
 
 - El identificador de la clave de licencia (o un hash no reversible del mismo);
@@ -412,15 +413,19 @@ prorrateado de cualquier tarifa anual prepagada (§13.2).
 
 El Software mantiene dos períodos de gracia sin conexión independientes:
 
-(a) **Período de gracia de validación de licencia (30 días)**: si no hay conexión a
-    internet disponible, el Software puede operar hasta 30 días sin acceso a la red,
-    siempre que la licencia almacenada localmente no haya superado su fecha de
-    expiración. Una vez superada la fecha de expiración almacenada localmente, el
-    Software no funcionará independientemente de la disponibilidad de red.
+(a) **Período de gracia de validación de licencia (intervalo de revalidación de 30 días)**:
+    el Software intenta revalidar la licencia en línea aproximadamente cada 30 días.
+    Si no hay conexión a internet disponible en el momento de la revalidación, el
+    Software puede seguir operando mientras la licencia almacenada localmente no haya
+    alcanzado su fecha de expiración, con avisos periódicos al inicio. No existe un
+    corte offline adicional más allá de la fecha de expiración almacenada. Una vez
+    superada la fecha de expiración almacenada localmente, el Software no funcionará
+    independientemente de la disponibilidad de red.
 
 (b) **Período de gracia de sesión simultánea (3 días)**: cada instancia en ejecución
     del Software envía una señal de keep-alive al servidor de licencias aproximadamente
-    cada 5 minutos para mantener su sesión activa. Si el servidor no puede ser
+    cada 10 minutos en niveles de un solo puesto y cada 20 minutos en Team y
+    Enterprise para mantener su sesión activa. Si el servidor no puede ser
     alcanzado:
 
     - Un **proceso ya en ejecución** en el momento del fallo de red sigue funcionando
@@ -568,7 +573,7 @@ Licenciatario:
 
 Estos reconocimientos son registrados por Lemon Squeezy en el momento del pago y están
 disponibles a petición en
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+[support@lactuca.io](mailto:support@lactuca.io).
 
 **A efectos aclaratorios, la renuncia establecida en el presente §9.2 no afecta ni
 limita los derechos del Licenciatario respecto a la falta de conformidad del Software
@@ -581,7 +586,7 @@ inalterados.**
 Si el Licenciatario ha adquirido una licencia pero no ha activado ni descargado aún el
 Software, podrá solicitar un reembolso completo en el plazo de 14 días naturales desde
 la compra contactando con
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com). Una vez iniciada la
+[support@lactuca.io](mailto:support@lactuca.io). Una vez iniciada la
 activación, se aplica la renuncia del §9.2.
 
 ### 9.4 Consumidores fuera de la UE/EEE
@@ -878,7 +883,7 @@ establecidos en la UE:
 [https://ec.europa.eu/consumers/odr](https://ec.europa.eu/consumers/odr)
 
 Correo electrónico del Licenciante para la resolución de litigios en línea:
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+[support@lactuca.io](mailto:support@lactuca.io)
 
 El Licenciante **no está afiliado a ningún organismo de resolución alternativa de
 litigios (RAL)** registrado conforme a la Directiva 2013/11/UE o la legislación
@@ -920,7 +925,7 @@ La infracción de cualquiera de las declaraciones anteriores constituye un incum
 esencial que faculta al Licenciante a resolver la licencia de forma inmediata conforme
 al §8. Las infracciones OEM están sujetas a resolución sin reembolso (§8.2(b)). Para
 obtener una licencia OEM, contacte con
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com) con una descripción
+[support@lactuca.io](mailto:support@lactuca.io) con una descripción
 del producto, el número estimado de usuarios finales externos y el modelo de negocio
 previsto. Las licencias OEM se negocian individualmente.
 
@@ -944,9 +949,9 @@ Licenciatario deberá:
 Para consultas sobre licencias, asistencia técnica o notificaciones legales:
 
 **Correo electrónico**:
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+[support@lactuca.io](mailto:support@lactuca.io)
 
-**Sitio web**: [lactuca.actuaan.com](https://lactuca.actuaan.com)
+**Sitio web**: [www.lactuca.io](https://www.lactuca.io)
 
 ---
 

@@ -57,6 +57,14 @@ For a **whole-life** insurance (`n=None`) the sum extends to the limiting age $\
 | `ir` | `float \| InterestRate \| None` | table default | Interest rate |
 | `gr` | `float \| GrowthRate \| None` | `None` | Benefit growth rate (escalating sum assured) |
 
+:::{note}
+**`m=14` (Spanish "14 pagas" scheme)** is accepted by the calculation engine but is an
+approximation: a year does not divide evenly into 14 equal periods under any standard calendar
+convention.  For actuarially precise results, model the two extraordinary payments explicitly
+using `m=12` for the regular monthly payments and a separate `ax` call with
+`cashflow_times` / `cashflow_amounts` for the extraordinary instalments.
+:::
+
 `Ax` is also importable as a functional-style wrapper:
 
 ```python
@@ -281,3 +289,5 @@ config.reset()
 - {doc}`calculation_modes` — mortality placement, discrete vs. continuous modes
 - {doc}`joint_life_calculations` — joint-life insurances `Axy`, first-death insurance
 - {doc}`interest_rates_guide` — `InterestRate` class and term structures
+- {doc}`batch_calculations` — portfolio pricing: array ages, per-policy params, BEL flows
+- {doc}`irregular_cashflows` — variable sum assured and explicit payment schedules for insurances and annuities

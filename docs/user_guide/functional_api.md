@@ -362,6 +362,54 @@ All annuity and insurance functions accept `return_flows=True` to return a per-p
 breakdown instead of a scalar present value.
 See {doc}`inspecting_cashflows` for the full key reference and worked examples.
 
+In batch mode (array `x`), `return_flows=True` aggregates expected cash flows across all
+policies.  Pass `benefits=sums_insured` (shape `(N,)`) to weight each policy's contribution
+by its sum insured or pension amount — the returned `total_pv` is then the portfolio BEL or
+PVDBO directly when `return_flows=True` is used in a precision mode.  With
+`return_flows=False`, `benefits=` remains available in all modes as a per-policy scaling
+factor.
+
+---
+
+## Batch with multiple tables
+
+When policies belong to **different tables** — mixed-sex portfolio, multiple cohorts, or
+different select durations — pass a **list of `LifeTable` instances** as the first
+argument.  The list must have one entry per policy; ages and other per-policy parameters
+are arrays of the same length.
+
+```python
+from lactuca import LifeTable, äx, Ax, config
+
+lt_m = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt_f = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+
+config.decimals.annuities  = 4
+config.decimals.insurances = 4
+
+ages   = [60, 62, 65, 68]
+tables = [lt_m, lt_f, lt_m, lt_f]   # one per policy
+
+annuities  = äx(tables, ages, n=20)   # NDArray shape (4,)
+insurances = Ax(tables, ages, n=20)   # NDArray shape (4,)
+premiums   = insurances / annuities   # element-wise
+```
+
+For **two-life joint** batch calculations pass arrays for both lives via `ages=(x_arr, y_arr)`:
+
+```python
+from lactuca import äxy
+
+x_ages = [60, 62, 65]
+y_ages = [55, 58, 61]
+
+# [lt_m, lt_f] — one table per life; arrays for batch over policies
+result = äxy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
+```
+
+See {doc}`batch_calculations` for a complete guide: per-policy parameters, joint-life
+batch, `return_flows=True` for BEL calculations, and performance notes.
+
 ## Full function list
 
 | Function | Equivalent method | Applicable to |
@@ -393,6 +441,31 @@ See {doc}`inspecting_cashflows` for the full key reference and worked examples.
 | `nExy` | `table.nExy(…)` | `LifeTable` |
 | `nExyz` | `table.nExyz(…)` | `LifeTable` |
 | `nEjoint` | `table.nEjoint(…)` | `LifeTable` |
+
+**DataFrame workflow:** all per-policy parameters (`x`/`ages`, `n`, `ir`, `d`, `ts`, `m`, `gr`,
+`benefits`) accept Pandas and Polars `Series` directly.  A numeric `ir`/`gr` Series is
+converted to per-policy floats; an object-dtype `Series` of `InterestRate` or `GrowthRate`
+instances (including piecewise curves) is treated like a list.  See
+{doc}`batch_calculations` — *DataFrame workflow* for complete examples.
+
+## Global calculation mode (`config.calculation_mode`)
+
+All functional wrappers delegate to the same OOP engines.  The active calculation mode
+(`discrete_precision`, `discrete_simplified`, `continuous_precision`, `continuous_simplified`)
+comes from the process-global `Config` singleton — there is **no** per-call mode argument
+on `ax(lt, …)`, `Ax(lt, …)`, etc.:
+
+```python
+from lactuca import LifeTable, ax, config
+
+config.calculation_mode = "discrete_simplified"
+lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+print(ax(lt, 65, n=10))   # discrete_simplified via config
+```
+
+`InterestRate.a()` / `.ä()` follow the same global mode.  Change `config.calculation_mode`
+(or persist settings via the user config file) before invoking functional wrappers.
+See {doc}`calculation_modes` and {doc}`configuration`.
 
 ## See also
 

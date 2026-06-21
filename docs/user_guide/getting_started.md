@@ -4,9 +4,13 @@ This guide walks you through the first steps with Lactuca: installing the librar
 loading an actuarial table, and running common probability and valuation calculations.
 No prior knowledge of the package is assumed.
 
+> **Professional use**: Results depend on inputs and assumptions chosen by the user.
+> See the {doc}`../eula` §10.2–10.3 for the full professional
+> responsibility and regulatory disclaimer.
+
 ## Installation
 
-Lactuca runs on Windows, macOS, and Linux. **Python ≥ 3.10** is required.
+Lactuca runs on Windows, macOS, and Linux. **Python ≥ 3.12** is required.
 
 ```bash
 pip install lactuca
@@ -471,12 +475,11 @@ columns = durations):
 
 ```python
 from lactuca import LifeTable
-import numpy as np
 
 pasem = LifeTable("PASEM2020_Rel_1o", "m")
 
-ages = np.array([50, 55, 60, 65])
-durations = np.array([5, 10, 15, 20])
+ages = [50, 55, 60, 65]
+durations = [5, 10, 15, 20]
 tpx_matrix = pasem.tpx(ages, t=durations)        # shape (4, 4)
 ```
 
@@ -896,6 +899,8 @@ silently accepted. To reject fractional shifts entirely, set
 - Explore the {doc}`../api/index` for detailed API documentation
 - Check {doc}`../formulas` for mathematical foundations
 - See {doc}`bundled_tables` for the complete list of bundled tables
+- Pricing a portfolio? See {doc}`batch_calculations` for batch mode and BEL calculations
+- Inspect per-payment flows? See {doc}`inspecting_cashflows`
 - Review {doc}`../changelog` for version history
 
 ## Support

@@ -285,8 +285,9 @@ producing `NaN`.
 **Structural table-build invariants** — the following properties are guaranteed by the table
 construction process and are not re-checked on every calculation:
 
-- $l_x$ is non-increasing across all ages
-- $q_{\omega} = 1.0$ (complete mortality at the terminal age $\omega$, auto-corrected from stored values within a 1e-4 tolerance for rounding artefacts)
+- $l_x$ is non-increasing across all ages (when derived from stored decrement columns)
+- For life tables, $q_\omega = 1.0$ at the terminal age (enforced at build/load; rounding
+  artefacts within $10^{-4}$ are auto-corrected)
 
 ## See also
 

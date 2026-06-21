@@ -1,4 +1,4 @@
----
+﻿---
 html_theme.sidebar_secondary.remove: true
 ---
 
@@ -44,15 +44,15 @@ automatically for all jurisdictions). Prices shown are **ex-VAT**.
 **€69 / month**
 
 - 1 user
-- Up to 3 activated devices
+- 1 activated device
 - **1 concurrent session** (one instance at a time)
 - All minor & patch releases included
-- Online license validation; 30-day offline grace period
+- Online license validation every 30 days; offline use until local expiry (EULA §6.1)
 
 ```{raw} html
 <div style="margin-top:1em">
   <button class="sd-btn sd-btn-primary lac-buy-btn"
-    onclick="lacModalOpen('https://lactuca-store.actuaan.com/checkout/buy/c39f4a38-3b1e-40ad-85df-90c051bd4fef')"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/9982f82f-4fff-4595-a6e3-4aa609adc6fc')"
     style="cursor:pointer;border:none">Buy monthly</button>
 </div>
 ```
@@ -62,15 +62,15 @@ automatically for all jurisdictions). Prices shown are **ex-VAT**.
 **€580 / month**
 
 - Up to 10 users
-- Up to 3 activated devices per user (30 total)
+- 1 activated device per user (10 total)
 - **Up to 10 concurrent sessions** across all devices
 - All minor & patch releases included
-- Online license validation; 30-day offline grace period
+- Online license validation every 30 days; offline use until local expiry (EULA §6.1)
 
 ```{raw} html
 <div style="margin-top:1em">
   <button class="sd-btn sd-btn-primary lac-buy-btn"
-    onclick="lacModalOpen('https://lactuca-store.actuaan.com/checkout/buy/5bdb0aca-e75c-4515-bcb3-c756aff211d9')"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/0cb8ee3d-7a47-4d7c-a12e-8a963d1d4d08')"
     style="cursor:pointer;border:none">Buy monthly</button>
 </div>
 ```
@@ -79,18 +79,18 @@ automatically for all jurisdictions). Prices shown are **ex-VAT**.
 :::{grid-item-card} Enterprise
 **€1,650 / month**
 
-- Up to 150 device activations (3 per user for up to 50 users)
+- Up to 50 device activations (1 per user for up to 50 users)
 - **Up to 50 concurrent sessions** across all activated devices
 - Covers workstation installation and server/shared deployments for internal users
 - Monthly (Lemon Squeezy) and annual (direct contract) plans include identical usage rights
 - All minor & patch releases included
-- Online license validation; 30-day offline grace period
+- Online license validation every 30 days; offline use until local expiry (EULA §6.1)
 - Annual billing available on request (contact us for a quote)
 
 ```{raw} html
 <div style="margin-top:1em">
   <button class="sd-btn sd-btn-primary lac-buy-btn"
-    onclick="lacModalOpen('https://lactuca-store.actuaan.com/checkout/buy/c026505b-1bb6-46e4-a250-eb890a57006d')"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/16ea5803-5321-46ca-8875-68bfd1352b5a')"
     style="cursor:pointer;border:none">Buy monthly</button>
 </div>
 ```
@@ -100,13 +100,13 @@ automatically for all jurisdictions). Prices shown are **ex-VAT**.
 **Free**
 
 - Students, educators, independent researchers, open-source contributors, and beta testers
-- 1 named user, up to 2 activated devices, **1 concurrent session**
+- 1 named user, 1 activated device, **1 concurrent session**
 - **Non-commercial use only** — see the [EULA](eula) for restrictions
 - Apply by email — no credit card required
 
 ```{raw} html
 <div style="margin-top:1em">
-  <a class="sd-btn sd-btn-outline-secondary" href="mailto:support-lactuca@actuaan.com?subject=Academic%20%26%20Community%20License%20Request">Apply by email</a>
+  <a class="sd-btn sd-btn-outline-secondary" href="mailto:support@lactuca.io?subject=Academic%20%26%20Community%20License%20Request">Apply by email</a>
 </div>
 ```
 :::
@@ -130,7 +130,7 @@ your subscription remains active. Limited to the first **20 subscribers** in tot
 **No credit card required. No commitment.**
 
 Start a free 30-day trial to evaluate Lactuca before purchasing. The trial gives you
-full access to all features with 2 device activations (laptop + workstation).
+full access to all features with 1 device activation.
 
 Trials are requested directly from the activation prompt when you first import the
 library. Install Lactuca and run:
@@ -151,9 +151,10 @@ Lactuca requires a license key to run.
 Choice [T/K/Q]: T
 ```
 
-Enter your name (optional) and email address. Your trial key will arrive by email
-within a few minutes. Once you have it, run `import lactuca` again and choose **[K]**
-to enter the key.
+Enter your name (optional) and email address. A confirmation step lets you correct
+the email before the request is sent. Your trial key will arrive by email within a
+few minutes. Once you have it, run `import lactuca` again and choose **[K]** to
+enter the key.
 
 See the [Activation Guide](activation) for step-by-step instructions.
 
@@ -161,7 +162,7 @@ See the [Activation Guide](activation) for step-by-step instructions.
 
 ## Academic & Community Process
 
-1. Send an email to [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com?subject=Academic%20%26%20Community%20License%20Request) with:
+1. Send an email to [support@lactuca.io](mailto:support@lactuca.io?subject=Academic%20%26%20Community%20License%20Request) with:
    - Your full name
    - Your institution
    - Your institutional email address (`.edu`, `.ac.uk`, `.upm.es`, etc.)
@@ -183,11 +184,11 @@ full restrictions.
 | Annuities & insurances | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Multiple-decrement models | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Generational mortality | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Offline grace period (30 d) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Periodic revalidation (30 d) + seat heartbeat (3 d) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Concurrent sessions | 1 | 1 | ≤ 10 | ≤ 50 | 1 |
 | Commercial use | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Number of users | 1 | 1 | ≤ 10 | ≤ 50 | 1 |
-| Devices per user | 2 | 3 | 3 | 3 | 2 |
+| Devices per user | 1 | 1 | 1 | 1 | 1 |
 | Duration | 30 days | Monthly | Monthly | Monthly / direct annual | 1 year |
 
 ---
@@ -227,7 +228,7 @@ Standard license tiers (Individual, Team, Enterprise) do not cover OEM use.
   own Lactuca license directly from Licensor.
 
 To enquire about OEM licensing, contact
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com?subject=OEM%20License%20Enquiry)
+[support@lactuca.io](mailto:support@lactuca.io?subject=OEM%20License%20Enquiry)
 with a description of your product and estimated scale.
 
 ```{raw} html

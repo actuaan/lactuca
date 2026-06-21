@@ -14,6 +14,13 @@ exit_table
 
 ```{toctree}
 :maxdepth: 1
+:caption: Base types
+
+base
+```
+
+```{toctree}
+:maxdepth: 1
 :caption: Financial models
 
 interest_rate

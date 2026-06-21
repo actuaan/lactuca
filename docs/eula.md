@@ -1,4 +1,4 @@
-# End User License Agreement
+﻿# End User License Agreement
 
 **Lactuca — Life Actuarial Calculation Library for Python**
 
@@ -11,8 +11,8 @@
 > Alberto Aragoneses Nebreda (trading as **Actuaan**)
 > NIF: 09180714B
 > Address: Francesc Pérez Cabrero, 7, 08021, Barcelona, SPAIN
-> Email: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
-> Website: [lactuca.actuaan.com](https://lactuca.actuaan.com)
+> Email: [support@lactuca.io](mailto:support@lactuca.io)
+> Website: [www.lactuca.io](https://www.lactuca.io)
 >
 > Alberto Aragoneses Nebreda is a self-employed professional (*autónomo*)
 > registered with the Spanish Social Security (*RETA*) and tax authority
@@ -44,7 +44,7 @@ processed through Lemon Squeezy, and no payment data is collected or
 processed by Licensor for the Trial tier.
 
 **Academic & Community licenses** are granted directly by Licensor by
-email request ([support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com))
+email request ([support@lactuca.io](mailto:support@lactuca.io))
 and are not processed through Lemon Squeezy. No payment data is collected
 or processed by Licensor for these tiers.
 
@@ -120,11 +120,11 @@ acquired:
 
 | Tier | Activation pool | Concurrent sessions |
 |---|---|---|
-| **Trial** | 2 | 1 |
-| **Individual** | 3 | 1 |
-| **Team** | 30 | 10 |
-| **Enterprise** | 150 | 50 |
-| **Academic & Community** | 2 | 1 |
+| **Trial** | 1 | 1 |
+| **Individual** | 1 | 1 |
+| **Team** | 10 | 10 |
+| **Enterprise** | 50 | 50 |
+| **Academic & Community** | 1 | 1 |
 | **OEM** | per agreement | unlimited |
 
 "**Device**" means a single physical or virtual machine, including servers
@@ -183,7 +183,7 @@ Trial without Licensee's affirmative act of purchase.
 
 ### 2.3 Trial limitations
 
-The Trial is limited to 2 device activations and 1 concurrent session. All restrictions
+The Trial is limited to 1 device activation and 1 concurrent session. All restrictions
 in §3 apply during the Trial. Trial licenses do not include upgrade rights
 beyond the trial period.
 
@@ -219,7 +219,7 @@ Each purpose is separately consented to. Consent to each purpose is
 required for the Trial to function as described.
 
 This consent may be withdrawn at any time by contacting
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+[support@lactuca.io](mailto:support@lactuca.io).
 Withdrawal of consent will result in immediate deactivation of the Trial
 key. To facilitate withdrawal, Licensee may also use the opt-out link
 included in the trial key delivery email. Pursuant to Art. 7(3) GDPR,
@@ -306,7 +306,7 @@ technical protection measures are in place:
 | Hardware fingerprint (one-way hash) | Enforce per-device activation limits |
 | Digitally signed local license file | Prevent license file tampering |
 | Periodic online validation (every 30 days) | Detect unauthorised key sharing |
-| Concurrent session tracking (keep-alive approximately every 5 min) | Enforce concurrent session limits per tier |
+| Concurrent session tracking (keep-alive approximately every 10–20 min, tier-dependent) | Enforce concurrent session limits per tier |
 | Compiled-only binary distribution (no source code) | Protect proprietary implementation |
 
 ### 5.2 Hardware fingerprint
@@ -329,7 +329,7 @@ The Software is compatible with:
 - **Python versions**: 3.12 and above
 - **Dependencies**: installed automatically by pip; the current list and
   minimum version requirements are published in the
-  [installation guide](https://lactuca.actuaan.com/latest/user_guide/getting_started.html#installation)
+  [installation guide](https://www.lactuca.io/latest/user_guide/getting_started.html#installation)
 
 The Software does not require any system-level driver or kernel extension.
 It does not interoperate with any third-party actuarial software.
@@ -353,7 +353,8 @@ this Agreement.
 
 In addition to the activation-time data described in §5.2, each running
 instance of the Software transmits a keep-alive HTTP request (*heartbeat*)
-to the Keygen.sh API approximately every 5 minutes (§6.1(b)). Each such
+to the Keygen.sh API approximately every 10 minutes on single-seat tiers and every
+20 minutes on Team and Enterprise (§6.1(b)). Each such
 request contains:
 
 - The license key identifier (or a non-reversible hash thereof);
@@ -393,15 +394,19 @@ receive a pro-rata refund of any prepaid annual fee (§13.2).
 
 The Software maintains two independent offline grace periods:
 
-(a) **License validation grace period (30 days)**: if no internet connection
-    is available, the Software may operate for up to 30 days without
-    network access, provided the locally stored license has not yet reached
-    its expiry date. Once the expiry date stored locally is exceeded, the
-    Software will not operate regardless of network availability.
+(a) **License validation grace period (30-day revalidation interval)**: the
+    Software attempts to revalidate the license online approximately every
+    30 days. If no internet connection is available at revalidation time, the
+    Software may continue to operate while the locally stored license has not
+    yet reached its expiry date, subject to periodic warnings on startup. There
+    is no additional offline cutoff beyond the stored expiry date. Once the
+    expiry date stored locally is exceeded, the Software will not operate
+    regardless of network availability.
 
 (b) **Concurrent session grace period (3 days)**: each running instance
     of the Software sends a keep-alive signal to the license server
-    approximately every 5 minutes to maintain its active session. If the server cannot
+    approximately every 10 minutes on single-seat tiers and every 20 minutes on Team
+    and Enterprise to maintain its active session. If the server cannot
     be reached:
 
     - A **process already running** at the time of network failure
@@ -551,7 +556,7 @@ downloading the Software, Licensee:
 
 These acknowledgements are recorded by Lemon Squeezy at the time of
 checkout and are available on request from
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+[support@lactuca.io](mailto:support@lactuca.io).
 
 **For the avoidance of doubt, the waiver set out in this §9.2 does not
 affect or limit Licensee's rights in respect of lack of conformity of the
@@ -564,7 +569,7 @@ fully unaffected.**
 If Licensee has purchased a license but has not yet activated or downloaded
 the Software, Licensee may request a full refund within 14 calendar days of
 purchase by contacting
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com). Once
+[support@lactuca.io](mailto:support@lactuca.io). Once
 activation has commenced, the waiver in §9.2 applies.
 
 ### 9.4 Consumers outside the EU/EEA
@@ -856,7 +861,7 @@ traders established in the EU:
 **ODR platform**: [https://ec.europa.eu/consumers/odr](https://ec.europa.eu/consumers/odr)
 
 Licensor's email address for ODR purposes:
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+[support@lactuca.io](mailto:support@lactuca.io)
 
 Licensor is **not affiliated with any alternative dispute resolution (ADR)
 organism** registered under Directive 2013/11/EU or the applicable national
@@ -897,7 +902,7 @@ Agreement that:
 Violation of either representation constitutes a material breach entitling
 Licensor to terminate the license immediately under §8. OEM violations are
 subject to termination without refund (§8.2(b)). To obtain an OEM license,
-contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+contact [support@lactuca.io](mailto:support@lactuca.io)
 with a description of the product, the estimated number of external end
 users, and the intended business model. OEM licenses are negotiated
 individually.
@@ -920,9 +925,9 @@ occurring, Licensor will notify Licensee in writing. Licensee shall:
 
 For licensing inquiries, support, or legal notices:
 
-**Email**: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+**Email**: [support@lactuca.io](mailto:support@lactuca.io)
 
-**Website**: [lactuca.actuaan.com](https://lactuca.actuaan.com)
+**Website**: [www.lactuca.io](https://www.lactuca.io)
 
 ---
 

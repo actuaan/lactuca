@@ -1,10 +1,10 @@
-# Política de Privacidad
+﻿# Política de Privacidad
 
 **Lactuca — Biblioteca de Cálculo Actuarial de Vida para Python**
 
-*Fecha de entrada en vigor: 2026-04-01. Última actualización: 2026-04-21.*
+*Fecha de entrada en vigor: 2026-04-01. Última actualización: 2026-06-19.*
 *Responsable del tratamiento: Alberto Aragoneses Nebreda, que opera bajo la marca Actuaan.*
-*Contacto: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)*
+*Contacto: [support@lactuca.io](mailto:support@lactuca.io)*
 
 ---
 
@@ -34,7 +34,7 @@ política es:
 > Alberto Aragoneses Nebreda (Actuaan)
 > NIF: 09180714B
 > Dirección: Francesc Pérez Cabrero, 7, 08021, Barcelona, España
-> Correo electrónico: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+> Correo electrónico: [support@lactuca.io](mailto:support@lactuca.io)
 > País: España (Unión Europea)
 
 ---
@@ -60,6 +60,13 @@ irreversible—. La huella digital constituye **datos seudonimizados** en el sen
 Art. 4(5) del RGPD: no puede identificarle directamente como individuo sin acceso a
 información adicional que el Licenciante no conserva.
 
+:::{note}
+**La entrega de la clave de prueba no registra un dispositivo.** Cuando solicita una
+prueba, creamos una clave de licencia y almacenamos su correo y la huella digital
+(hash) para evitar pruebas duplicadas. El cupo de dispositivo de su plan **no** se
+consume hasta que active Lactuca con éxito en ese equipo por primera vez (véase §2.2).
+:::
+
 ### 2.2 Activación y validación de la licencia
 
 Cuando activa Lactuca (o cuando la biblioteca valida su licencia en línea), recabamos:
@@ -70,12 +77,26 @@ Cuando activa Lactuca (o cuando la biblioteca valida su licencia en línea), rec
 | Huella digital del hardware (hash) | Aplicar los límites de dispositivos | Keygen.sh |
 | Nivel de licencia | Determinar el uso permitido | Keygen.sh |
 | Marca de tiempo de activación | Seguimiento del período de gracia y de la expiración | Keygen.sh |
+| Registro de dispositivo (hash de huella digital) | Vincular la licencia a este equipo; aplicar límites de dispositivos del plan | Keygen.sh |
 | Dirección IP (inherente al HTTP saliente) | Implícita en la solicitud de red | Registros de Keygen.sh |
+
+:::{important}
+**El registro del dispositivo ocurre en la primera activación, no al emitir la clave.**
+Recibir una clave de prueba o de pago no registra su ordenador. La primera activación
+con éxito en un equipo crea un **registro de dispositivo** en el servidor de licencias,
+asociado al hash de la huella digital de ese equipo. Cada dispositivo registrado cuenta
+para el límite de su plan (por ejemplo, un dispositivo en los planes Trial e
+Individual). Trasladar la licencia a otro equipo requiere liberar un cupo antes — véase
+el {ref}`procedimiento de transferencia de dispositivo <device-transfer>` en la FAQ de
+licencias.
+:::
 
 ### 2.3 Seguimiento de sesiones simultáneas (heartbeat)
 
 Mientras una instancia del Software está en ejecución, envía una solicitud HTTP de
-keep-alive (*heartbeat*) a la API de Keygen.sh aproximadamente cada 5 minutos. Cada
+keep-alive (*heartbeat*) a la API de Keygen.sh aproximadamente cada 10 minutos en
+niveles de un solo puesto y cada 20 minutos en Team y Enterprise (derivado de la
+política de procesos del servidor de licencias). Cada
 solicitud de heartbeat contiene:
 
 | Dato | Finalidad | Almacenado en |
@@ -148,7 +169,7 @@ legal impuesta por ley. El campo **nombre** es voluntario en todo momento.
 
 | Categoría de datos | Período de conservación |
 |---|---|
-| Registros de licencias activas (clave, huella digital, nivel) | Durante la vigencia de la suscripción activa |
+| Registros de licencias activas (clave, huella digital, nivel, registros de dispositivo) | Durante la vigencia de la suscripción activa |
 | Registros de licencias vencidas o revocadas | 3 años tras la expiración (ejecución del contrato y resolución de disputas) |
 | Dirección de correo electrónico de la prueba | 1 año tras la expiración de la clave de prueba, o hasta que solicite la supresión |
 | Registros de solicitudes de la API (dirección IP, marcas de tiempo — Keygen.sh) | 14 días (supresión automática por Keygen.sh) |
@@ -200,10 +221,10 @@ consecuencia es que el Software no funcionará. Este tratamiento automatizado es
 necesario para la **ejecución del contrato** (Art. 22(2)(a) RGPD). Tiene derecho a
 obtener intervención humana, expresar su punto de vista e impugnar cualquiera de dichas
 decisiones contactando con
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+[support@lactuca.io](mailto:support@lactuca.io).
 
 Para ejercer cualquiera de estos derechos, envíe un correo electrónico a
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com) con el asunto
+[support@lactuca.io](mailto:support@lactuca.io) con el asunto
 **«Solicitud RGPD — \<derecho\>»** (p. ej., «Solicitud RGPD — Supresión»).
 
 Para **retirar el consentimiento** para el registro de la prueba en concreto, también
@@ -241,7 +262,7 @@ incluidas:
 
 ## 8. Cookies y seguimiento
 
-El sitio web de documentación de Lactuca (`lactuca.actuaan.com`) no instala
+El sitio web de documentación de Lactuca (`www.lactuca.io`) no instala
 cookies y no utiliza scripts de seguimiento ni análisis. No se recaban datos personales
 por el mero hecho de visitar la documentación.
 
@@ -270,7 +291,7 @@ El [CLUF](eula_es) incorpora la presente Política de Privacidad por referencia.
 
 Para cualquier consulta relacionada con la privacidad o para ejercer sus derechos:
 
-**Correo electrónico**: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+**Correo electrónico**: [support@lactuca.io](mailto:support@lactuca.io)
 
 **Prefijo del asunto**: `Solicitud RGPD —`
 

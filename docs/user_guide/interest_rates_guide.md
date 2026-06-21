@@ -75,6 +75,31 @@ ir.active_scenario = "stress"
 print(round(ir.vn(10), 4))   # uses stress scenario
 ```
 
+### Copying and snapshotting
+
+Use `ir.copy()` to take an independent deep copy before switching scenarios, passing
+the curve to a function that may mutate it, or building stress variants from a shared
+baseline:
+
+```python
+from lactuca import InterestRate
+
+ir_base = InterestRate({"base": 0.03, "stress": ([5, 5], [0.02, 0.03, 0.04])})
+
+ir_a = ir_base.copy()
+ir_b = ir_base.copy()
+
+ir_a.active_scenario = "base"
+ir_b.active_scenario = "stress"
+
+print(round(ir_a.vn(10), 4))   # 0.7441  (base)
+print(round(ir_b.vn(10), 4))   # 0.7014  (stress)
+# ir_base is untouched
+```
+
+`ir.copy()` uses `copy.deepcopy` internally; the `Config` singleton is shared
+(not duplicated), and a fresh thread lock is created for the copy.
+
 ## Discount factors
 
 The discount factor $v^n = (1+i)^{-n}$ is the present value of one unit payable in $n$ years.
@@ -117,11 +142,72 @@ print(round(ir.ä(n=10, m=4), 4))  # 8.6896   certain annuity-due,       10 yr, 
 
 These are the pure-interest building blocks used internally by `LifeTable` annuity methods.
 
+### Batch mode
+
+Both methods support **batch inputs**: passing any of `n`, `d`, or `ts` as a list,
+tuple, or `NDArray` switches to batch mode and returns `NDArray[np.float64]`.
+
+```python
+from lactuca import InterestRate, payment_times
+
+ir = InterestRate(0.03)
+
+# Duration analysis — PV over a ladder of maturities
+maturities = payment_times(n=30, m=1)
+pv_curve   = ir.a(n=maturities)     # NDArray shape (30,)
+
+# Per-policy deferments
+pv = ir.a(n=20.0, d=[0.0, 5.0, 10.0])
+print(pv)
+# [14.87747486 12.8334405  11.07023851]
+
+# Net premium (annuity-due, no mortality)
+premiums = 1.0 / ir.ä(n=[10.0, 20.0, 30.0])
+```
+
+**One curve per instance:** batch `ir.a()` / `ir.ä()` always discount with the
+term structure stored on that single `InterestRate` object.  You can vary `n`, `d`, `ts`,
+`m`, or `gr` per policy, but not attach a different curve per row in the same call.
+For mortality-inclusive BEL with heterogeneous discount curves per policy, pass a
+per-policy `ir` list (or object-dtype `Series` of `InterestRate` instances) to
+`LifeTable` batch methods — see {doc}`batch_calculations` (*Broadcasting rules*).
+
+For portfolio cash flows (`return_flows=True`), benefit-weighted portfolio aggregation
+(`benefits=face_values`), error handling (`on_error='nan'`), and full examples including
+IFRS 17 / ALM use cases, see
+{ref}`pure-financial-annuities`.
+
+### `return_flows` on `InterestRate` vs `LifeTable`
+
+`InterestRate.a()` and `InterestRate.ä()` support `return_flows=True` in **batch mode
+for all four** calculation modes (`discrete_precision`, `discrete_simplified`,
+`continuous_precision`, `continuous_simplified`).
+
+`LifeTable` annuity, insurance, and endowment methods restrict batch
+`return_flows=True` to **precision modes only** (`discrete_precision` and
+`continuous_precision`); simplified modes raise `ValueError` in batch.
+
+| API | Batch `return_flows=True` in simplified modes |
+|-----|-----------------------------------------------|
+| `InterestRate.a()` / `InterestRate.ä()` | Supported (all four modes) |
+| `LifeTable.ax()` / `äx()` / `Ax()` / `nEx()` (and joint-life equivalents) | `ValueError` — use a precision mode |
+
+See {doc}`batch_calculations` — *`return_flows` requires a precision calculation mode*
+for the `LifeTable` contract and {ref}`pure-financial-annuities` for pure-financial
+aggregate flows.
+
 ## Querying individual rates
 
 Use `get_rate(t)` to retrieve the spot rate applying at any instant.  For piecewise curves
 this returns the rate of the segment containing `t`; for constant curves it always returns
 the single rate.  The call is vectorised: pass a list or array to get all rates at once.
+
+**Segment boundaries (junction times):** piecewise segments are left-closed intervals
+$[T_{k-1}, T_k]$ where $T_0 = 0$ and $T_k$ is the cumulative end of segment $k$.
+At an exact junction $t = T_k$, `get_rate` returns the rate of the segment **ending**
+at $T_k$ (not the next segment).  Internally this follows
+`numpy.searchsorted(cum_terms, t, side='left')`, consistent with `get_segment_info`
+and discount compounding in `vn()`.
 
 ```python
 from lactuca import InterestRate
@@ -130,6 +216,7 @@ ir = InterestRate(terms=[5, 5], rates=[0.02, 0.03, 0.04])
 
 print(ir.get_rate(2))                    # 0.02  (first segment)
 print(ir.get_rate(3.5))                  # 0.02  (fractional t, still in first segment)
+print(ir.get_rate(5))                    # 0.02  (junction: still first segment)
 print(ir.get_rate(7))                    # 0.03  (second segment)
 print(ir.get_rate([2, 7, 12]))           # [0.02 0.03 0.04]
 print(ir.get_rate([0.5, 5.5, 10.5]))     # [0.02 0.03 0.04]  (fractional t values)
@@ -252,6 +339,30 @@ print(round(ir.sn(7.5), 6))    # 1.188760
 print(round(ir.sn(7.5) * ir.vn(7.5), 12))   # 1.0
 ```
 
+## Calculation mode (`Config` is the source of truth)
+
+`LifeTable` actuarial methods and `InterestRate.a()` / `InterestRate.ä()` both read
+the global calculation mode from `Config` (or the `config` alias).  There is **no**
+`calculation_mode` parameter on the public `InterestRate(...)` constructor, and
+`LifeTable` exposes no per-instance override — set the mode once for the process:
+
+```python
+from lactuca import Config, InterestRate, LifeTable
+
+Config().calculation_mode = "discrete_precision"   # default
+ir = InterestRate(0.03)
+print(ir.calculation_mode)   # mirrors Config
+
+lt = LifeTable("PASEM2020_Rel_1o", "m")
+print(lt.calculation_mode)   # same global setting
+```
+
+The read-only `InterestRate.calculation_mode` property reflects `Config` unless an
+internal metadata override is present (used for serialization, not typical user
+configuration).  To change how annuities are valued, update
+`Config().calculation_mode` before calling table or `InterestRate` methods — see
+{doc}`calculation_modes` and {doc}`configuration`.
+
 ## Using with table methods
 
 Pass `ir` to any `LifeTable` method via the `ir` keyword argument.  A plain float is also accepted
@@ -265,6 +376,22 @@ ir = InterestRate(0.03)
 
 print(round(lt.ax(65, ir=ir), 4))     # explicit InterestRate object
 print(round(lt.ax(65, ir=0.03), 4))   # plain float shorthand (equivalent)
+```
+
+**Heterogeneous curves in portfolio batch:** when each policy needs a different term
+structure or constant rate, pass a per-policy `ir` array to `LifeTable` batch methods
+(not to `InterestRate.a()` batch, which shares one curve per instance):
+
+```python
+from lactuca import InterestRate, LifeTable
+
+lt = LifeTable("PASEM2020_Rel_1o", "m")
+ages = [55, 60, 65, 70]
+ir_flat = InterestRate(0.03)
+ir_curve = InterestRate(terms=[5, 5], rates=[0.02, 0.03, 0.04])
+
+# One flat rate and one piecewise curve in the same portfolio batch
+result = lt.ax(ages, n=20, ir=[ir_flat, ir_flat, ir_curve, ir_curve])
 ```
 
 ### Setting a default rate on the table
@@ -407,6 +534,41 @@ ir_eiopa = InterestRate(
 > **Tip:** If you have spot (zero-coupon) rates $s_t$ at maturities $t_1 < t_2 < \ldots$,
 > the implied forward rate for segment $[t_{k-1}, t_k]$ is:
 > $f_k = \left(\frac{(1+s_{t_k})^{t_k}}{(1+s_{t_{k-1}})^{t_{k-1}}}\right)^{1/(t_k - t_{k-1})} - 1$
+
+**Batch / DataFrame usage:** `ir=` accepts a Pandas or Polars `Series` directly.
+A numeric `Series` is converted to per-policy floats.  An **object-dtype** `Series` of
+`InterestRate` instances (including piecewise curves) is treated identically to a list —
+no `.to_numpy()` is needed.  Mixing `InterestRate` objects and numeric values in a single
+`Series` raises `ValueError`.
+See {doc}`batch_calculations` — *Broadcasting rules* for the complete parameter table.
+
+## Curve diagnostics (`curve_analysis` / `validate`)
+
+`InterestRate.curve_analysis()` and `InterestRate.validate()` return a `curve_policy`
+dict describing **what the discount engine supports** — not regulatory compliance:
+
+| Flag | Meaning |
+|------|---------|
+| `negative_rates_allowed` | Zero and negative segment rates are accepted |
+| `flat_or_piecewise_discount` | Constant or piecewise-flat term structures |
+| `multi_scenario_curves` | Named scenario container present |
+
+```python
+from lactuca import InterestRate
+
+ir = InterestRate(terms=[5, 5], rates=[0.02, 0.03, 0.04])
+summary = ir.curve_analysis()
+print(summary["curve_policy"])
+# {'negative_rates_allowed': True, 'flat_or_piecewise_discount': True,
+#  'multi_scenario_curves': False}
+```
+
+:::{warning}
+`curve_policy` is **not** a Solvency II or IFRS 17 sign-off.  Lactuca discounts
+cash flows with user-supplied curves; it does not load official EIOPA RFR files,
+compute Risk Adjustment, CSM, or SCR modules.  Build BEL inputs manually from
+published curves when required.
+:::
 
 ## See also
 

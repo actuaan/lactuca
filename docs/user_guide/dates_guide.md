@@ -434,7 +434,7 @@ from lactuca.dates import format_date
 
 config.date_format = "dmy"
 print(format_date("2024-07-15"))  # '15/07/2024'
-config.reset()                    # restore defaults
+config.reset_to_defaults()        # restore defaults
 ```
 
 ---

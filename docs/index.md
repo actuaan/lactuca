@@ -8,7 +8,7 @@ html_theme.sidebar_secondary.remove: true
 
 Lactuca is a high-performance library for **life actuarial calculations**, consistent with international actuarial standards.
 It covers life contingencies, insurances, annuities, multiple-decrement models, and interest rate scenarios —
-built with Cython for maximum speed and vectorised with NumPy.
+vectorised with NumPy for production performance.
 
 ::::{grid} 1 1 2 2
 :gutter: 3
@@ -63,7 +63,7 @@ Complete API documentation with detailed function signatures, parameters, and ex
 
 **Platform**
 
-- ✅ **Highly optimised** with NumPy vectorisation and Cython compilation
+- ✅ **Highly optimised** with NumPy vectorisation for production workloads
 - ✅ **IDE-friendly**: full autocompletion in Jupyter and VS Code via stub files (.pyi)
 
 ```{toctree}

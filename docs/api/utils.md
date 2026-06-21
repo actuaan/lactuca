@@ -1,10 +1,24 @@
 # Utilities
 
-Helper functions for actuarial calculations that are not tied to a specific table instance.
+Helper functions and return types for actuarial calculations that are not tied to a specific table instance.
+
+## Batch result types
+
+{class}`~lactuca.BatchResult` and {class}`~lactuca.BatchErrorReport` are the return
+types produced when `on_error='nan'` is passed to any batch calculation method.
+See {doc}`../user_guide/batch_calculations` for usage examples.
+
+```{eval-rst}
+.. autoclass:: lactuca.BatchResult
+
+.. autoclass:: lactuca.BatchErrorReport
+   :members:
+   :undoc-members:
+```
 
 ## Payment schedule helpers
 
-{func}`~lactuca.generate_payment_times` generates the vector of payment times
+{func}`~lactuca.payment_times` generates the vector of payment times
 (in years) for a given duration, payment frequency $m$, and optional subset of
 periods within each year.  It is used internally by all annuity and insurance
 calculation engines and is also available as a standalone tool for custom cashflow
@@ -20,7 +34,7 @@ $(n, m)$ combination, or when building {doc}`../user_guide/irregular_cashflows`.
 ```
 
 ```{eval-rst}
-.. autofunction:: lactuca.generate_payment_times
+.. autofunction:: lactuca.payment_times
 ```
 
 ## Tiered cashflow amounts

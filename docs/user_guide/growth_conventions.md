@@ -9,6 +9,15 @@ for all actuarial functions that accept a `gr` (growth rate) parameter:
 
 Pure endowments (`nEx`, `nExy`, `nExyz`) do **not** accept `gr=`.
 
+
+:::{warning}
+The adjusted-rate shortcut $i' = (1+i)/(1+g) - 1$ is valid for **annual** ($m=1$)
+growing annuities only. For $m > 1$, growth applies at annual anniversaries
+$(1+g)^{\lfloor j/m \rfloor}$ on the payment grid; in ``discrete_simplified``
+with fractional ``n_eff``, the hybrid m-thly tail uses anniversary indices
+$k + \lfloor j/m \rfloor$ where $k = \lfloor n_\text{eff} \rfloor$.
+:::
+
 ## Anniversary index definition
 
 For a payment stream with frequency $m$ (payments per year) starting at time $d$
@@ -91,6 +100,27 @@ full sum with rate $i$ and growth factor $(1+g)^k$ per term. The net-rate identi
 is therefore a useful consistency check or mental shorthand, not an implementation
 detail. For growing annuities with mortality, the independence of survival
 probabilities from $i^*$ means no further simplification arises beyond the annuity formula itself.
+
+### Example — $m > 1$ vs. the $i'$ shortcut
+
+The net-rate identity does **not** reproduce Lactuca's $m$-thly growing annuity when
+$m > 1$.  Growth steps at annual anniversaries $\lfloor j/m \rfloor$, not continuously:
+
+```python
+from lactuca import Config, GrowthRate, LifeTable
+
+lt = LifeTable("PASEM2020_Rel_1o", "m")
+gr = GrowthRate(0.02)
+i, g, m = 0.03, 0.02, 12
+i_prime = (1 + i) / (1 + g) - 1   # valid mental model only for m=1
+
+cfg = Config()
+cfg.calculation_mode = "discrete_precision"
+val_gr = float(lt.ax(60, n=10, m=m, ir=i, gr=gr))
+val_wrong = float(lt.ax(60, n=10, m=m, ir=i_prime))  # omits gr — not equivalent
+
+assert abs(val_gr - val_wrong) > 1e-6   # i' shortcut must not be used for m>1
+```
 
 ## Bibliographic reference
 

@@ -2,10 +2,11 @@
 
 This page explains, in usage order, the full public functionality of Lactuca's global configuration object:
 
-- The class `Config`
-- The top-level alias `config`
+- The top-level alias `config` — the recommended interface for all user code.
+- The class `Config` — available for type annotations and advanced use cases.
 
-Both refer to the same process-level singleton.
+Both reference the same process-level singleton. `config` is a **dynamic proxy** that always
+delegates to the active singleton, so it remains valid even after `Config.reset()`.
 
 ## Mental model
 
@@ -19,20 +20,29 @@ Most user confusion disappears if you keep these three layers separate.
 
 ## Accessing the singleton
 
-Use either import style:
+The recommended way is to import `config` directly:
 
 ```python
-from lactuca import Config, config
+from lactuca import config
+
+config.decimals.annuities = 4
+```
+
+`config` is a transparent proxy: every attribute access delegates to the active
+singleton at call time. It is always safe to use, even after `Config.reset()`.
+
+For type annotations or direct singleton construction, import `Config`:
+
+```python
+from lactuca import Config
 
 cfg1 = Config()
 cfg2 = Config()
-
-print(cfg1 is cfg2)     # True
-print(cfg1 is config)   # True
+print(cfg1 is cfg2)  # True
 ```
 
 :::{note}
-Any change to `Config`/`config` applies immediately to all subsequent
+Any change to `config` or `Config()` applies immediately to all subsequent
 calculations in the same Python process.
 :::
 
@@ -246,16 +256,15 @@ config.reset_to_defaults()
 
 - Clears the singleton instance.
 - Next `Config()` call creates a fresh object.
-- Existing old references become stale.
+- `config` (the proxy) automatically picks up the new singleton on next access.
+- Variables bound directly to `Config()` (e.g. `cfg = Config()`) become stale.
 
 ```python
-from lactuca import Config
+from lactuca import Config, config
 
-old_cfg = Config()
 Config.reset()
-new_cfg = Config()
-
-print(old_cfg is new_cfg)  # False
+# config proxy is still valid — it creates a new singleton on next access
+print(config.decimals.annuities)  # reads from newly created singleton
 ```
 
 Use `Config.reset()` mainly in tests and controlled bootstrap scenarios.
@@ -291,11 +300,10 @@ config.reset_to_defaults()  # optional cleanup for shared sessions
 ### Pattern C: Test isolation
 
 ```python
-from lactuca import Config
+from lactuca import Config, config
 
-Config.reset()          # ensure fresh singleton
-cfg = Config()
-cfg.reset_to_defaults() # deterministic baseline
+Config.reset()              # destroy singleton; next access via config recreates it
+config.reset_to_defaults()  # deterministic baseline on the fresh singleton
 ```
 
 ## Settings reference
@@ -312,11 +320,17 @@ See {doc}`bundled_tables` for installation and usage of bundled tables.
 
 | Setting | Default | Allowed values | Purpose |
 |---------|---------|----------------|---------|
-| `calculation_mode` | `"discrete_precision"` | `"discrete_precision"`, `"discrete_simplified"`, `"continuous_precision"`, `"continuous_simplified"` | Selects valuation engine behavior for annuities, insurances, and pure endowments. |
-| `lx_interpolation` | `"linear"` | `"linear"`, `"exponential"` | Fractional-age survival hypothesis: UDD (`linear`) or constant force (`exponential`). |
-| `force_mortality_method` | `"finite_difference"` | `"finite_difference"`, `"spline"`, `"kernel"` | Method used by force-of-mortality routines. |
-| `mortality_placement` | `"mid"` | `"beginning"`, `"mid"`, `"end"` | Timing offset for death-benefit discounting in insurance calculations. |
+| `calculation_mode` | `"discrete_precision"` | `"discrete_precision"`, `"discrete_simplified"`, `"continuous_precision"`, `"continuous_simplified"` | Selects valuation engine behavior for annuities, insurances, and pure endowments. All four modes are actuarially coherent (same product/conventions) but not numerically identical — see {ref}`actuarial-coherence-of-modes`. |
+| `lx_interpolation` | `"linear"` | `"linear"`, `"exponential"` | Fractional-age survival between integer ages (UDD / CFM); affects ${}_tp_x$, annuity grids, ${}_n E_x$ — not insurance $\delta_m$. |
+| `force_mortality_method` | `"finite_difference"` | `"finite_difference"`, `"spline"`, `"kernel"` | Method used by force-of-mortality routines (continuous modes only). |
+| `mortality_placement` | `"mid"` | `"beginning"`, `"mid"`, `"end"` | Death-benefit payment timing within each sub-period (`Ax` discount only); independent of `lx_interpolation`. |
 | `force_integer_ts` | `False` | `bool` | If `True`, rejects fractional `ts` shifts. |
+
+:::{note}
+**Two independent mortality settings:** `lx_interpolation` bridges fractional ages for
+survival probabilities; `mortality_placement` sets insurance benefit discount timing only.
+Neither substitutes for the other. See {ref}`two-independent-knobs` in {doc}`calculation_modes`.
+:::
 
 See:
 

@@ -17,7 +17,9 @@ happens before any rounding.
 
 Once loaded (and possibly modified via {meth}`lactuca.LifeTable.modify_qx`), the
 integer-age $q_x$ array is the single source of truth for every probability the table
-can return.
+can return.  Modifications such as `table_combination` (with optional
+`combination_mode`) replace or merge this array **before** the $l_x$ recursion; see
+{doc}`modifying_decrements`.
 
 :::{note}
 Disability and exit tables store $i_x$ (disability inception rates) and $o_x$ (exit rates)
@@ -273,17 +275,19 @@ print(lt.dx(65))   # expected deaths between exact ages 65 and 66
 
 ## Boundary at the terminal age
 
-Every table defines a terminal age $\omega$: the age at which the starting cohort is
-fully extinct.  The library enforces these conventions automatically:
+Every table defines a terminal age $\omega$: the last age index stored in the
+file.  For life tables, $q_\omega = 1.0$ is required at build and load time
+(see {doc}`building_tables`).  `LifeTable.qx(omega)` therefore returns $1.0$ for
+integer annual frequency ($m = 1$).
 
-- $l_{\omega} = 0$ — no survivors remain at the terminal age.
+Beyond the table limit the query API applies:
+
 - $l_x = 0$ for any $x > \omega$ — ages beyond the table range are out of scope.
 - ${}_{t}p_x = 0$ and ${}_{t}q_x = 1$ whenever $x + t \ge \omega$ — any interval
   that extends to or past $\omega$ has zero survival probability and certain death.
 
-These values arise naturally from the $l_x$-ratio formula: when $l_{x+t} = 0$, the
-numerator of ${}_{t}p_x = l_{x+t}/l_x$ collapses to zero and no special case handling
-is needed in calling code.
+These extrapolation rules arise from the $l_x$-ratio formula and masked division when
+$l_{x+t} = 0$.
 
 ```python
 from lactuca import LifeTable
@@ -328,4 +332,4 @@ See {doc}`decimals_rounding` for how to configure the precision of each output t
 - {doc}`decimals_rounding` — configuring rounding precision for each output type
 - {doc}`numerical_precision` — how continuous modes use unrounded lx values
 - {doc}`calculation_modes` — choosing between discrete and continuous computation
-- {doc}`modifying_decrements` — adjusting mortality rates before derivation
+- {doc}`modifying_decrements` — adjusting mortality rates before derivation (`table_combination`, `combination_mode`)

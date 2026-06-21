@@ -1,4 +1,4 @@
-# Configuration file for Sphinx documentation builder.
+﻿# Configuration file for Sphinx documentation builder.
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
@@ -57,9 +57,9 @@ myst_enable_extensions = [
 # Update this dict when URLs or contact addresses change — all .md files using {{ }} update automatically.
 # Note: substitutions work in inline text only; link destinations and raw HTML require direct edits.
 myst_substitutions = {
-    "docs_url": "https://lactuca.actuaan.com",
-    "support_email": "support-lactuca@actuaan.com",
-    "license_email": "licenses@mail.actuaan.com",
+    "docs_url": "https://www.lactuca.io",
+    "support_email": "support@lactuca.io",
+    "license_email": "licenses@mail.lactuca.io",
 }
 
 # Napoleon settings (NumPy docstrings)

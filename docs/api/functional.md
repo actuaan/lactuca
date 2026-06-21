@@ -16,7 +16,8 @@ For all other workflows the OOP methods on {class}`~lactuca.LifeTable`,
 {class}`~lactuca.DisabilityTable`, or {class}`~lactuca.ExitTable` are recommended.
 
 ```{seealso}
-{doc}`../user_guide/functional_api` — Why and when to use the functional API.
+{doc}`../user_guide/functional_api` — Why and when to use the functional API.\
+{doc}`../user_guide/batch_calculations` — Multi-table batch dispatch and portfolio BEL.
 ```
 
 ## Single-life functions
@@ -72,6 +73,6 @@ For all other workflows the OOP methods on {class}`~lactuca.LifeTable`,
 
 :::{seealso}
 {doc}`../user_guide/joint_life_calculations` — Full guide to joint-life and multi-life annuities and insurances.\
-{doc}`utils` — {func}`~lactuca.generate_payment_times` and other helpers for
+{doc}`utils` — {func}`~lactuca.payment_times` and other helpers for
 constructing custom payment grids (``cashflow_times`` parameter).
 :::

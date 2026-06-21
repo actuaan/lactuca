@@ -10,8 +10,8 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "lactuca"
-version = "0.0.1"
-description = "Professional actuarial library for Python with compiled performance and Spanish/international tables"
+version = "0.0.31"
+description = "Professional life actuarial library for Python with compiled performance and international tables"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
 authors = [
@@ -50,17 +50,16 @@ dependencies = [
   "PyNaCl>=1.5.0",
   "requests>=2.28.0",
   "scipy>=1.16.0,<2.0",
-  "tomli>=2.0.0; python_full_version < '3.11'",
   "tomli-w>=1.0.0",
 ]
 
 [project.urls]
-Homepage = "https://lactuca.dev"
-Documentation = "https://actuaan.github.io/lactuca/latest/"
+Homepage = "https://www.lactuca.io"
+Documentation = "https://www.lactuca.io/latest/"
 Repository = "https://github.com/actuaan/lactuca-dev"
 "Public Repository" = "https://github.com/actuaan/lactuca"
 Issues = "https://github.com/actuaan/lactuca/issues"
-Changelog = "https://actuaan.github.io/lactuca/latest/changelog.html"
+Changelog = "https://www.lactuca.io/latest/changelog.html"
 
 [project.optional-dependencies]
 docs = [
@@ -78,11 +77,12 @@ dev = [
   "git-cliff>=2.0",
   "pytest>=7.0",
   "pytest-cov>=4.0",
+  "flask>=3.0.0",
+  "resend>=2.0.0",
   "ipykernel",
   "build",
   "twine",
-  "ruff",
-  "pyright"
+  "ruff"
 ]
 
 # ============================================================================
@@ -98,6 +98,7 @@ cmake.args = [
 wheel.exclude = [
     "**.py",            # Excluir .py de wheels
     "!**/__init__.py",  # Excepto __init__.py
+    "!**/__main__.py",  # CLI entry point (python -m lactuca)
     "**.pyc",
     "**/__pycache__",
 ]
@@ -136,10 +137,75 @@ select = ["E", "F", "W", "I", "N", "UP"]
 ignore = [
   "E501",   # Line too long (handled by formatter)
   "UP007",  # Use X | Y for Union (not compatible with Cython; use Union[X, Y])
+  "UP034",  # Extraneous parentheses — MUST NOT remove from `except (A, B):` (required Python 3 syntax; removable only in Python 2)
   "UP045",  # Use X | None for Optional (not compatible with Cython; use Optional[X])
   "UP017",  # Use datetime.UTC alias (requires Python 3.11+; project supports 3.10)
 ]
-per-file-ignores = { "src/lactuca/__init__.py" = ["E402"], "src/lactuca/tables/life.py" = ["N802", "N806"], "src/lactuca/engine/insurance.py" = ["N806"], "src/lactuca/config.py" = ["N802"], "src/lactuca/tables/exit.py" = ["N802"], "src/lactuca/tables/disability.py" = ["N802"], "tests/**/*.py" = ["N802", "N806"], "src/lactuca/functional.py" = ["N802"] }
+per-file-ignores = { "src/lactuca/__init__.py" = ["E402"], "src/lactuca/tables/life.py" = ["N802", "N803", "N806"], "src/lactuca/engine/insurance.py" = ["N803", "N806"], "src/lactuca/config.py" = ["N802"], "src/lactuca/tables/exit.py" = ["N802"], "src/lactuca/tables/disability.py" = ["N802"], "tests/**/*.py" = ["N802", "N803", "N806", "N999"], "src/lactuca/functional.py" = ["N802", "N803", "N806"] }
+
+# ============================================================================
+# BasedPyright (IDE — cursorpyright; not a CI gate; see linting-types.mdc)
+# ============================================================================
+[tool.basedpyright]
+# IDE-only (cursorpyright / optional basedpyright extension). Ruff is the repo gate.
+typeCheckingMode = "off"
+extraPaths = ["src"]
+reportMissingImports = "none"
+reportMissingModuleSource = "none"
+reportImportCycles = "none"
+reportUnusedImport = "none"
+reportUnusedClass = "none"
+reportUnusedFunction = "none"
+reportUnusedVariable = "none"
+reportDuplicateImport = "none"
+reportWildcardImportFromLibrary = "none"
+reportAbstractUsage = "none"
+reportUnsupportedDunderAll = "none"
+reportUnusedCoroutine = "none"
+reportUnnecessaryTypeIgnoreComment = "none"
+reportIgnoreCommentWithoutRule = "none"
+reportPrivateImportUsage = "none"
+reportPrivateUsage = "none"
+reportImplicitOverride = "none"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "tests"
+extraPaths = ["src", ".."]
+reportMissingImports = "none"
+reportMissingModuleSource = "none"
+reportPrivateImportUsage = "none"
+reportPrivateUsage = "none"
+reportUnknownMemberType = "none"
+reportUnknownParameterType = "none"
+reportMissingParameterType = "none"
+reportUnknownLambdaType = "none"
+reportUnknownVariableType = "none"
+reportUnknownArgumentType = "none"
+reportAny = "none"
+reportUnusedParameter = "none"
+reportUnusedCallResult = "none"
+reportMissingTypeArgument = "none"
+reportUntypedFunctionDecorator = "none"
+reportUntypedClassDecorator = "none"
+reportArgumentType = "none"
+reportAttributeAccessIssue = "none"
+reportCallIssue = "none"
+reportIndexIssue = "none"
+reportGeneralTypeIssues = "none"
+reportOptionalMemberAccess = "none"
+reportOptionalSubscript = "none"
+reportOptionalCall = "none"
+reportOptionalOperand = "none"
+reportOperatorIssue = "none"
+reportReturnType = "none"
+reportAssignmentType = "none"
+reportRedeclaration = "none"
+reportUnusedExpression = "none"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "webhook"
+extraPaths = ["webhook"]
+reportMissingImports = "none"
 
 # ============================================================================
 # Pytest configuration
@@ -147,15 +213,26 @@ per-file-ignores = { "src/lactuca/__init__.py" = ["E402"], "src/lactuca/tables/l
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
+pythonpath = ["."]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-s -ra --strict-markers"
 doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE"]
+filterwarnings = [
+    "error::RuntimeWarning",
+    "error::DeprecationWarning",
+    "error::FutureWarning",
+    "error::PendingDeprecationWarning",
+    "error::ResourceWarning",
+    "error::pytest.PytestUnhandledThreadExceptionWarning",
+    "error::pytest.PytestUnraisableExceptionWarning",
+    "error::pytest.PytestUnknownMarkWarning",
+    "ignore:Creating .* table instances in a single vectorial call:ResourceWarning",
+]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "benchmark: marks tests as benchmarks (run with pytest-benchmark)",
 ]
-
 

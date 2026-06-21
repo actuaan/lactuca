@@ -12,6 +12,10 @@ Dimensions 2 and 3, together with the mathematical formula used to project rates
 **nine category types** described below (Gen (d) applies only to Select-Ultimate tables).  Every included table belongs to exactly one category
 and one table type.
 
+Each instance is uniquely identified at runtime by a {class}`lactuca.TableKey`
+(`table_name`, `sex`, `cohort`, `duration`, `unisex_blend`) — see
+{doc}`using_tables` for the vectorial constructor and dict-return patterns.
+
 ---
 
 ::::{grid} 1 1 1 1

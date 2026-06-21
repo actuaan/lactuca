@@ -1,10 +1,10 @@
-# Privacy Policy
+﻿# Privacy Policy
 
 **Lactuca — Life Actuarial Calculation Library for Python**
 
-*Effective date: 2026-04-01. Last updated: 2026-04-21.*
+*Effective date: 2026-04-01. Last updated: 2026-06-19.*
 *Data controller: Alberto Aragoneses Nebreda, operating under the brand Actuaan.*
-*Contact: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)*
+*Contact: [support@lactuca.io](mailto:support@lactuca.io)*
 
 ---
 
@@ -22,7 +22,7 @@ The data controller for all personal data described in this policy is:
 > Alberto Aragoneses Nebreda (Actuaan)
 > NIF: 09180714B
 > Address: Francesc Pérez Cabrero, 7, 08021, Barcelona, Spain
-> Email: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+> Email: [support@lactuca.io](mailto:support@lactuca.io)
 > Country: Spain (European Union)
 
 ---
@@ -47,6 +47,13 @@ constitutes **pseudonymous data** within the meaning of Art. 4(5) GDPR: it canno
 directly identify you as an individual without access to additional information that
 Licensor does not retain.
 
+:::{note}
+**Trial key delivery does not register a device.** When you request a trial, we create
+a license key and store your email and fingerprint hash for duplicate-trial prevention.
+The device slot for your plan is **not** consumed until you successfully activate
+Lactuca on that machine for the first time (see §2.2).
+:::
+
 ### 2.2 License activation and validation
 
 When you activate Lactuca (or when the library validates your license online), we collect:
@@ -57,12 +64,25 @@ When you activate Lactuca (or when the library validates your license online), w
 | Hardware fingerprint (hash) | Enforce device limits | Keygen.sh |
 | License tier | Determine permitted usage | Keygen.sh |
 | Activation timestamp | Grace-period and expiry tracking | Keygen.sh |
+| Device registration record (fingerprint hash) | Link the license to this device; enforce per-plan device limits | Keygen.sh |
 | IP address (inherent to outbound HTTP) | Implicit in network request | Keygen.sh logs |
+
+:::{important}
+**Device registration happens at first activation, not when the key is issued.**
+Receiving a trial or paid license key does not register your computer. The first
+successful activation on a machine creates a **device registration record** on the
+license server, associated with that machine's fingerprint hash. Each registered device
+counts toward your plan's device limit (for example, one device for Trial and
+Individual plans). Transferring to another computer requires freeing a slot first — see
+the {ref}`device transfer procedure <device-transfer>` in the Licensing FAQ.
+:::
 
 ### 2.3 Concurrent session tracking (heartbeat)
 
 While an instance of the Software is running, it sends a keep-alive HTTP
-request (*heartbeat*) to the Keygen.sh API approximately every 5 minutes.
+request (*heartbeat*) to the Keygen.sh API approximately every 10 minutes on
+single-seat tiers and every 20 minutes on Team and Enterprise (derived from the
+license server's process policy).
 Each heartbeat request contains:
 
 | Data | Purpose | Stored where |
@@ -131,7 +151,7 @@ voluntary at all times.
 
 | Data category | Retention period |
 |---|---|
-| Active license records (key, fingerprint, tier) | For the duration of the active subscription |
+| Active license records (key, fingerprint, tier, device registrations) | For the duration of the active subscription |
 | Expired or revoked license records | 3 years after expiry (contract performance and dispute resolution) |
 | Trial email address | 1 year after the trial key expires, or until you request deletion |
 | API request logs (IP address, timestamps — Keygen.sh) | 14 days (automated deletion by Keygen.sh) |
@@ -172,10 +192,10 @@ As a data subject in the EU/EEA, you have the following rights:
 | **Withdraw consent** (Art. 7(3)) | Withdraw consent for trial registration at any time (does not affect prior processing) |
 | **Not to be subject to automated decisions** (Art. 22) | Request human review of any automated license denial and contest the decision |
 
-**Automated decision-making (Art. 13(2)(f) GDPR):** License access is granted or denied automatically based on your license status and hardware fingerprint. If your license is expired, suspended, revoked, the device limit has been reached, or the fingerprint does not match the activated device, access is denied without prior human intervention. The consequence is that the Software will not operate. This automated processing is necessary for the **performance of the contract** (Art. 22(2)(a) GDPR). You have the right to obtain human intervention, express your point of view, and contest any such decision by contacting [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+**Automated decision-making (Art. 13(2)(f) GDPR):** License access is granted or denied automatically based on your license status and hardware fingerprint. If your license is expired, suspended, revoked, the device limit has been reached, or the fingerprint does not match the activated device, access is denied without prior human intervention. The consequence is that the Software will not operate. This automated processing is necessary for the **performance of the contract** (Art. 22(2)(a) GDPR). You have the right to obtain human intervention, express your point of view, and contest any such decision by contacting [support@lactuca.io](mailto:support@lactuca.io).
 
 To exercise any of these rights, send an email to
-[support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com) with the subject
+[support@lactuca.io](mailto:support@lactuca.io) with the subject
 **"GDPR request — \<right\>"** (e.g. "GDPR request — Erasure").
 
 To **withdraw consent** for trial registration specifically, you may also use the
@@ -207,7 +227,7 @@ data against accidental loss, unauthorised access, disclosure, or destruction, i
 
 ## 8. Cookies and tracking
 
-The Lactuca documentation website (`lactuca.actuaan.com`) does not set cookies
+The Lactuca documentation website (`www.lactuca.io`) does not set cookies
 and does not use any tracking or analytics scripts. No personal data is collected by
 simply visiting the documentation.
 
@@ -234,7 +254,7 @@ The [EULA](eula) incorporates this Privacy Policy by reference.
 
 For any privacy-related questions or to exercise your rights:
 
-**Email**: [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+**Email**: [support@lactuca.io](mailto:support@lactuca.io)
 **Subject prefix**: `GDPR request —`
 
 ---

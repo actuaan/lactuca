@@ -19,7 +19,8 @@ generational tables that include mortality improvement factors.
 {doc}`../user_guide/joint_life_calculations` — Joint-life methods (äxy, axy, Axy, …).\
 {doc}`../user_guide/lx_interpolation` — Fractional-age survival assumptions (UDD vs. CFM).\
 {doc}`../user_guide/deferment` — Deferred annuities and the ``d=`` parameter.\
-{doc}`../user_guide/mortality_improvement` — Generational tables and improvement factors.
+{doc}`../user_guide/mortality_improvement` — Generational tables and improvement factors.\
+{doc}`../user_guide/batch_calculations` — Batch mode: array ages, per-policy params, portfolio BEL.
 ```
 
 ```{eval-rst}

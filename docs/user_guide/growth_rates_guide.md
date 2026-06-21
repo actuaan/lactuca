@@ -242,6 +242,25 @@ Both setters are unavailable on multi-scenario containers — set individual sce
 instances directly. The `terms` setter is also unavailable on constant `GrowthRate`
 instances (they have no segment structure).
 
+### Copying to preserve the original
+
+If you need to keep the original schedule intact while experimenting with a variant,
+use `gr.copy()` instead of mutating in-place:
+
+```python
+from lactuca import GrowthRate
+
+gr_base = GrowthRate(rates=[0.01, 0.02], terms=[5])
+
+gr_stress = gr_base.copy()
+gr_stress.rates = [0.02, 0.04]   # only gr_stress changes
+
+print(gr_base.factor(3))    # 1.0303  (unchanged)
+print(gr_stress.factor(3))  # 1.0612
+```
+
+`gr.copy()` produces an independent deep copy; arrays are not shared with the original.
+
 ## Querying rates and segment metadata
 
 `get_rate(t)` retrieves the growth rate of the segment that applies at period `t`.
@@ -368,15 +387,15 @@ print(d["library"])            # "lactuca"
 
 {meth}`GrowthRate.amounts` produces the escalated cashflow amount for each payment
 in a schedule, using the anniversary convention described above.  It is the
-companion to {func}`~lactuca.generate_payment_times`: build the time grid first,
+companion to {func}`~lactuca.payment_times`: build the time grid first,
 then derive the amounts vector.
 
 ```python
-from lactuca import GrowthRate, generate_payment_times as gpt
+from lactuca import GrowthRate, payment_times
 import numpy as np
 
 gr = GrowthRate(0.02)              # 2 % geometric annual growth
-times = gpt(n=5, m=12)             # monthly payments for 5 years
+times = payment_times(n=5, m=12)             # monthly payments for 5 years
 amounts = gr.amounts(times, start=1_000.0, m=12)
 
 # First year: 1 000 / month (no growth yet)
@@ -392,7 +411,7 @@ For arithmetic growth, the amount increases by a fixed additive amount each year
 
 ```python
 gr_a = GrowthRate(0.05, growth_type='a')   # flat +5 % per year
-times_a = gpt(n=3, m=1)
+times_a = payment_times(n=3, m=1)
 print(gr_a.amounts(times_a, start=1000.0, m=1))
 # [1000. 1050. 1100.]
 ```
@@ -416,6 +435,13 @@ to {meth}`~lactuca.LifeTable.ax` always produces the same present value as using
 `gr=` in the formula — modulo rounding, because `cashflow_amounts` bypasses the
 engine's internal growth loop and rounds at the input boundary.
 :::
+
+**Batch / DataFrame usage:** `gr=` accepts a Pandas or Polars `Series` directly.
+A numeric `Series` is converted to per-policy floats.  An **object-dtype** `Series` of
+`GrowthRate` instances (including piecewise curves) is treated identically to a list of
+the same objects — no `.to_numpy()` is needed and no object flattening occurs.
+Mixing `GrowthRate` objects and numeric values in a single `Series` raises `ValueError`.
+See {doc}`batch_calculations` — *Broadcasting rules* for the complete parameter table.
 
 ## See also
 

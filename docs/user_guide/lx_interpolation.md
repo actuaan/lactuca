@@ -136,6 +136,10 @@ See {doc}`calculation_modes` for details on when each continuous mode is used.
 
 ## Scope of effect
 
+`config.lx_interpolation` is **independent** of `config.mortality_placement`, which controls
+when death benefits are discounted within each sub-period in **insurance** calculations only.
+See {ref}`two-independent-knobs` in {doc}`calculation_modes`.
+
 The rule is simple: `config.lx_interpolation` applies whenever $l_{x+t}$ must be evaluated at
 a **fractional age** — that is, whenever $x + t$ is non-integer.  This occurs in three
 situations:

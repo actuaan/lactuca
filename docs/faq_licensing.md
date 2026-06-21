@@ -1,4 +1,4 @@
-# Licensing FAQ
+﻿# Licensing FAQ
 
 Answers to common questions about Lactuca licenses, activation, and account management.
 
@@ -10,7 +10,8 @@ Answers to common questions about Lactuca licenses, activation, and account mana
 
 Run `import lactuca` in Python. If no license is found, the activation prompt
 appears with the option **[T] Request a free 30-day trial**. Enter your name
-(optional) and email address; your trial key will arrive by email within a few
+(optional) and email address; a confirmation step lets you correct the address
+before the request is sent. Your trial key will arrive by email within a few
 minutes. No credit card required.
 
 Once you receive the key, run `import lactuca` again and choose **[K]** to enter it.
@@ -26,6 +27,13 @@ within seconds of the trial request.
 No. One trial per person and per device. If your trial has expired, purchase a paid plan
 from the [Pricing page](pricing).
 
+### I chose `[T]` to start a trial but got an error saying my device has an active license. What should I do?
+
+Your machine already has a paid Lactuca license registered. Choose option **[K]**
+at the activation prompt and enter your license key. If you cannot find your key,
+check your original purchase confirmation email from Lemon Squeezy. If you need
+further help, contact [support@lactuca.io](mailto:support@lactuca.io).
+
 ### Can I use the trial for commercial work?
 
 Yes — trial licenses allow full commercial use during the 30-day period.
@@ -36,9 +44,45 @@ Yes — trial licenses allow full commercial use during the 30-day period.
 
 ### How do I activate my license?
 
-Run `import lactuca` and enter your key at the prompt. See the full
-[Activation Guide](activation) for step-by-step instructions for Windows, macOS, and
-Linux.
+Run `python -m lactuca` (or `import lactuca`) and enter your key at the prompt.
+With an already-valid license, `python -m lactuca` prints a one-line status summary.
+See the full [Activation Guide](activation) for step-by-step instructions for Windows,
+macOS, and Linux.
+
+### Support confirmed a license adjustment, but my local expiry did not update yet. What should I do?
+
+Run a manual synchronization:
+
+```bash
+python -m lactuca license refresh
+```
+
+This forces an immediate online sync and updates local `license.json` when the server
+returns `VALID` or `EXPIRING`.
+
+### How do I quickly inspect local license state?
+
+Use:
+
+```bash
+python -m lactuca license status
+```
+
+This command reads local state only and does not call the license server.
+
+### How do I run guided license diagnostics?
+
+Use:
+
+```bash
+python -m lactuca license doctor
+```
+
+For automation pipelines, use JSON output:
+
+```bash
+python -m lactuca license doctor --json
+```
 
 ### Where is `license.json` stored?
 
@@ -52,29 +96,75 @@ You can override the directory with the `LACTUCA_CONFIG_DIR` environment variabl
 
 ### Can I activate on multiple devices?
 
-Yes, up to the device limit of your plan (Individual: 3; Team: 30; Enterprise: 150;
-Trial: 2). Each physical or virtual machine counts as one device.
+Yes, up to the device limit of your plan (Trial: 1; Individual: 1; Team: 10;
+Enterprise: 50; Academic: 1). Each physical or virtual machine counts as one device.
 
 (device-transfer)=
 ### I upgraded my computer. How do I transfer my license to the new machine?
 
 1. On your **old machine**, delete `license.json` (see paths above). This does not free
-   the device slot automatically; contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
-   to release it, or wait for the next billing cycle (slots are reset on renewal).
+   the device slot automatically; contact [support@lactuca.io](mailto:support@lactuca.io)
+  to release it. For paid monthly or annual plans, device slots also reset on renewal.
 2. On your **new machine**, run `import lactuca` and enter your key. Activation proceeds
    normally if a slot is available.
 
 If you have reached your device limit and need to activate on a new device immediately,
-contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com) with the
+contact [support@lactuca.io](mailto:support@lactuca.io) with the
 subject "Device transfer request".
+
+### Can I copy `license.json` to another machine?
+
+No. `license.json` is device-bound: it contains a device-specific integrity code (MAC)
+computed from the hardware fingerprint of the machine that activated it. Copying the
+file to a different machine fails integrity checks (**[LAC-3004]** or fingerprint
+mismatch **[LAC-2002]**). Online recovery using the stored key runs only on the
+**same** device (tampered local file, not a cross-host copy). On another machine,
+delete the copied file and activate independently, or follow the
+{ref}`device transfer procedure <device-transfer>`.
+
+Each machine must activate independently.  Activating on a new device consumes one
+slot from your license's device pool.
+
+(license-tampered-faq)=
+### I see `LicenseTamperedError`. What does it mean?
+
+`LicenseTamperedError` is raised when the local `license.json` file fails one of the
+built-in integrity checks.  There are four variants:
+
+| Error code | Meaning | Auto-recoverable? |
+|---|---|---|
+| **LAC-3001** | Missing `signed_data` or `signature` fields (schema version mismatch or manual edit) | Yes — online recovery using stored key |
+| **LAC-3003** | Missing `mac` integrity field (old file or manual edit) | Yes — online recovery using stored key |
+| **LAC-3004** | MAC mismatch — fields modified after writing, or file copied from another device | Same device only — online recovery using stored key; cross-host copy → **[LAC-2002]** |
+| **LAC-3005** | System clock moved back past the last validated date | No — restore the system clock |
+
+For **LAC-3001, LAC-3003, and LAC-3004** on the **same** device: Lactuca attempts
+online recovery and rewrites `license.json` when recovery succeeds. Cross-host copies
+raise **[LAC-2002]** instead. In non-interactive environments (servers, CI/CD), ensure
+`LACTUCA_LICENSE_KEY` is set so same-device recovery can proceed without a prompt.
+
+If recovery fails, run:
+
+```bash
+python -m lactuca license doctor
+python -m lactuca license refresh
+```
+
+If it still fails, delete `license.json` manually and re-activate.
+
+For **LAC-3005**: the library cannot fix the system clock on your behalf.  Sync your
+system clock (e.g. `w32tm /resync` on Windows, or enable NTP on Linux/macOS) and retry.
+
+See {ref}`lac-3003-mac-missing`, {ref}`lac-3004-mac-mismatch`,
+and {ref}`lac-3005-clock-rollback` in the Error Reference for full details.
 
 ### I see `LicenseInvalidError: Your license has reached the maximum number of activations.` What now?
 
 Your license has no free device slots. Options:
 
-- **Deactivate an unused device**: contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+- **Deactivate an unused device**: contact [support@lactuca.io](mailto:support@lactuca.io)
   and provide the hostname(s) to deactivate.
-- **Upgrade your plan**: Team (30 device pool) and Enterprise (150 device pool) support
+- **Upgrade your plan**: Team (10 device pool) and Enterprise (50 device pool) support
   significantly larger activation pools.
 
 (seat-exhausted)=
@@ -113,8 +203,8 @@ accepted by the Licensee in the EULA.
 
 Technical enforcement operates on two complementary axes:
 
-1. **Machine activations**: each tier has an activation pool (Individual: 3; Team: 30;
-   Enterprise: 150; Trial/Academic: 2). Every device (workstation, server, VM, Docker
+1. **Machine activations**: each tier has an activation pool (Individual: 1; Team: 10;
+  Enterprise: 50; Trial/Academic: 1). Every device (workstation, server, VM, Docker
    host) on which Lactuca is activated consumes one slot.
 
 2. **Concurrent sessions (process leasing)**: the license system also enforces a limit
@@ -170,7 +260,7 @@ unavailable at revalidation time, the library continues operating — printing a
 to `stderr` on each startup — until the license's local expiry date:
 
 ```
-[Lactuca] Could not reach license server. Running in offline grace period.
+[Lactuca] Could not reach license server. Continuing with locally validated license.
 ```
 
 There is no hard offline cutoff for the validation check; operation continues with
@@ -179,7 +269,9 @@ the warning until `expires_at` is reached. Normal computations continue unaffect
 **Process heartbeat grace period (3 days)**
 
 Each running Lactuca process sends a short keep-alive heartbeat to the license server
-every 5 minutes. If the server cannot be reached, heartbeat failures are silently
+approximately every **10 minutes** on single-seat tiers and every **20 minutes** on
+Team and Enterprise (derived from the license server's process policy). If the server
+cannot be reached, heartbeat failures are silently
 ignored — **a running process is never interrupted** by network unavailability.
 However, **new startups** of Lactuca are permitted offline for up to 3 days from the
 last successful server contact. After 3 days, a new `import lactuca` will raise
@@ -197,15 +289,30 @@ the network is available the license is blocked immediately. The grace period on
 applies when the network is physically unreachable (timeout). It does not extend the
 validity of an expired or revoked license.
 
+A **permanent revocation** on the license server (for example after subscription
+cancellation or account closure) removes the license record entirely. Lactuca
+detects this on the next online check. Running `python -m lactuca license refresh`
+or `license doctor` records that outcome; the **next** `import lactuca` with network
+access forces an immediate check and blocks access even if the 30-day revalidation
+window has not elapsed.
+
+For payment or account issues that may be temporary, contact
+[support@lactuca.io](mailto:support@lactuca.io) — support can restore access when
+appropriate.
+
 ### I work on a corporate network with no internet access. What should I do?
 
-Ask your IT administrator to allow outbound HTTPS (port 443) to `api.keygen.sh`.
+Ask your IT administrator to allow outbound HTTPS (port 443) to the Lactuca license
+server (`api.keygen.sh`).
 Lactuca contacts the server at each startup (to acquire a session seat) and sends
-keep-alive requests approximately every 5 minutes during operation. Heartbeat failures
+keep-alive requests approximately every 10–20 minutes during operation (tier-dependent).
+Heartbeat failures
 are silently tolerated — a running process is never interrupted — but new startups
-require a successful server connection within the last **3 days**. License revalidation
-requires connectivity at least once every **30 days**. If persistent internet access is
-not possible, contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com)
+require a successful server connection within the last **3 days**. Every **30 days**
+the library attempts online revalidation; if the network is unavailable at that time,
+computation continues with a startup warning until the local license expiry date
+(`expires_at`) — there is no separate 30-day offline cutoff beyond that date. If
+persistent internet access is not possible, contact [support@lactuca.io](mailto:support@lactuca.io)
 to discuss options for your organization.
 
 ---
@@ -226,8 +333,46 @@ Or inject it at runtime:
 docker run -e LACTUCA_LICENSE_KEY="XXXX-XXXX-XXXX-XXXX" my-image
 ```
 
-The Docker host counts as one activated device.
+**Important — device fingerprint and container identity**: Lactuca uses the container's
+MAC address as part of its device fingerprint. By default, Docker assigns a random MAC
+to every new container, so each container recreation is treated as a different device.
+This means:
 
+- A `license.json` stored on a persistent volume will produce a `LicenseInvalidError`
+  (error code `LAC-2002`) when the container is recreated, because the new container's
+  fingerprint no longer matches the stored one.
+- The activated device slot from the previous container is not released automatically.
+
+**Recommended setup for persistent container deployments**:
+
+1. Fix the container's MAC address so it is stable across recreations:
+
+   ```bash
+   docker run --mac-address 02:42:ac:11:00:02 \
+              -e LACTUCA_LICENSE_KEY="XXXX-XXXX-XXXX-XXXX" \
+              -v /data/lactuca:/var/lib/lactuca \
+              -e LACTUCA_CONFIG_DIR=/var/lib/lactuca \
+              my-image
+   ```
+
+2. Mount `LACTUCA_CONFIG_DIR` on a persistent volume so the activated `license.json`
+   survives container recreations.
+
+Without both steps, Lactuca will re-activate on every container restart, consuming
+a new device slot each time. The previous slot is not released automatically and must
+be freed manually from the Lactuca account portal.
+
+**Ephemeral containers (CI/CD, batch jobs)**: if the container is intentionally
+short-lived and never reused, set `LACTUCA_LICENSE_KEY` as an environment variable
+and do not persist `LACTUCA_CONFIG_DIR`. Each run will activate and consume a device
+slot — ensure your license tier has enough device slots for the expected concurrency.
+See [How do I use Lactuca in a CI/CD pipeline?](#cicd-pipeline-faq)
+for a CI-specific approach that avoids this problem.
+
+**Kubernetes**: the same principles apply. Fix the pod's MAC address via a network
+annotation and mount `LACTUCA_CONFIG_DIR` on a `PersistentVolumeClaim`.
+
+(cicd-pipeline-faq)=
 ### How do I use Lactuca in a CI/CD pipeline?
 
 Store your key as a repository secret and inject it as an environment variable:
@@ -292,7 +437,7 @@ immediate revocation. See the [EULA](eula).
 
 ### How do I apply for an Academic license?
 
-Send an email to [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com?subject=Academic%20%26%20Community%20License%20Request)
+Send an email to [support@lactuca.io](mailto:support@lactuca.io?subject=Academic%20%26%20Community%20License%20Request)
 with your name, institution, institutional email, and intended use. Licenses are issued
 within 2–3 business days.
 
@@ -316,12 +461,12 @@ OEM licenses are negotiated individually and include:
   maintaining a persistent internet connection per process is impractical.
 - Activation pools and device limits set by agreement.
 
-Contact [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com?subject=OEM%20License%20Enquiry)
+Contact [support@lactuca.io](mailto:support@lactuca.io?subject=OEM%20License%20Enquiry)
 with a description of your product and intended use.
 
 ### Does an Enterprise license cover a SaaS platform I build on top of Lactuca?
 
-**No.** An Enterprise license covers up to 150 device activations for **internal** named
+**No.** An Enterprise license covers up to 50 device activations for **internal** named
 users of your organisation, with up to 50 concurrent sessions. If your SaaS platform
 serves Lactuca calculations to your own clients
 (users external to your organisation), that is OEM use and requires a separate OEM
@@ -339,7 +484,7 @@ agreement, regardless of the number of end users.
   only the irreversible hash is stored. This hash constitutes **pseudonymous data**
   (GDPR Art. 4(5)): it cannot directly identify you as an individual.
 
-Full details are in the [Privacy Policy](https://lactuca.actuaan.com/privacy).
+Full details are in the [Privacy Policy](https://www.lactuca.io/privacy).
 
 ### Where is the data stored?
 
@@ -354,4 +499,4 @@ details.
 
 ## Still have questions?
 
-Contact us at [support-lactuca@actuaan.com](mailto:support-lactuca@actuaan.com).
+Contact us at [support@lactuca.io](mailto:support@lactuca.io).

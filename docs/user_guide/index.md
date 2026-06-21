@@ -68,6 +68,8 @@ numerical_precision
 :maxdepth: 2
 
 functional_api
+batch_calculations
+probable_flows
 growth_conventions
 irregular_cashflows
 inspecting_cashflows

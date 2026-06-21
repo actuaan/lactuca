@@ -246,11 +246,45 @@ $t = \text{cohort} + x + d$.  For other formulas (e.g. `exponential_improvement`
 by `DAV2004R_SelUlt_2o`), improvement is applied uniformly across all durations using
 $t = \text{cohort} + x$.
 
+Inspect the active convention programmatically:
+
+```python
+from lactuca import LifeTable, TableSource
+
+# DAV 2004 R SelUlt — year_indexed exponential_improvement
+ts = TableSource("DAV2004R_SelUlt_2o")
+print(ts.select_improvement_diagonal)   # 'cohort_plus_x'
+
+lt = LifeTable("DAV2004R_SelUlt_2o", "m", cohort=1969, duration=1)
+print(lt.select_improvement_diagonal)   # same — delegates to TableSource
+```
+
+| `select_improvement_diagonal` | Calendar year for MI lookup | Typical tables |
+|------------------------------|----------------------------|----------------|
+| `cohort_plus_x_plus_d` | $t = \text{cohort} + x + d$ | `projected_improvement` select-ultimate |
+| `cohort_plus_x` | $t = \text{cohort} + x$ | `exponential_improvement`, `linear_improvement`, … |
+| `None` | N/A (period or aggregate generational) | `PASEM2020_Rel_1o`, `DAV2004R_Agg_2o` |
+
 :::{note}
 No bundled tables combine the select-ultimate structure with `projected_improvement`
 (taxonomy sub-type Gen (c) select-ultimate).  The engine supports this combination;
 see {doc}`tables_taxonomy` for the full classification.
 :::
+
+### `duration="ult"` on select-ultimate generational tables
+
+Passing `duration="ult"` selects the **ultimate** rate column (contract past the select
+period).  Mortality improvement is then evaluated on the table's active diagonal **without**
+an in-force select duration $d$:
+
+| Formula family | Calendar year for MI when `duration="ult"` |
+|----------------|--------------------------------------------|
+| `projected_improvement` | $t = \text{cohort} + x$ (not $\text{cohort} + x + d$) |
+| `exponential_improvement`, `linear_improvement`, … | $t = \text{cohort} + x$ |
+
+For contracts **still within** the select period, pass numeric `duration=d` — not `"ult"`.
+Using ultimate rates too early **understates** select-period reserves; see
+{doc}`tables_taxonomy` § *When to use duration vs "ult"*.
 
 ---
 

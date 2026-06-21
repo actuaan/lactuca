@@ -37,13 +37,19 @@ the full explanation, cause, and fix.
 | **Interest rate** | `TypeError` | [Piecewise rate inputs](#piecewise-rate-input-errors) | Non-finite (NaN or Inf) value in the `rates=` array |
 | **Table data** | `ValueError` | [Terminal age condition](#omega-condition) | $q_\omega \neq 1.0$ in a user-supplied `.ltk` file |
 | **Table data** | `ValueError` | [Generational table](#generational-table-errors) | Missing, unexpected, or out-of-range `cohort`; or missing `base_year` metadata |
+| **Table modification** | `ValueError` | [Orphan `combination_mode`](#table-modification-combination-mode) | `combination_mode` without `table_combination` in the same dict |
+| **Table modification** | `ValueError` | [Invalid `combination_mode`](#table-modification-combination-mode) | Value not exactly `"independent"` or `"udd"` |
+| **Table modification** | `ValueError` | [UDD with too many causes](#table-modification-combination-mode) | `combination_mode="udd"` with host + 3+ other tables |
+| **Table modification** | `ValueError` | [Host or duplicate in `others`](#host-or-duplicate-instance-in-others) | Same instance as host or twice in `others` |
+| **Table modification** | `ValueError` | [Combined decrement exceeds 1.0](#combined-decrement-exceeds-10) | Invalid rates before product formula |
+| **Table modification** | `ValueError` | [Decrement rate outside [0, 1] before combine](#decrement-rate-outside-01-before-combine) | Host or other `_decrement` out of range before merge |
 | **Configuration** | `ValueError` | [Invalid setting value](#invalid-setting-value) | Disallowed value for a config setting |
 | **Configuration** | `ValueError` | [Decimal places](#decimal-places) | Negative or non-integer value for `config.decimals.*` |
 | **Input arrays** | `ValueError` | [Cashflow arrays](#mismatched-cashflow-arrays) | `cashflow_times` and `cashflow_amounts` differ in length |
 | **Input arrays** | `ValueError` | [Broadcasting](#broadcasting-errors) | `x` and `x0` arrays passed to `InterestRate` have incompatible shapes |
 | **Interest rate** | `TypeError` | [Wrong type for `interest_rate`](#wrong-type-interest-rate) | `int` or other non-`float` passed to the `interest_rate` property setter or constructor |
-| **Cashflow utilities** | `ValueError` | [Invalid payment frequency](#invalid-payment-frequency) | Invalid `m` passed to `generate_payment_times` or `GrowthRate.amounts` |
-| **Cashflow utilities** | `ValueError` | [Invalid selected periods](#invalid-selected-periods) | Period value outside `[1, m]` in `generate_payment_times` |
+| **Cashflow utilities** | `ValueError` | [Invalid payment frequency](#invalid-payment-frequency) | Invalid `m` passed to `payment_times` or `GrowthRate.amounts` |
+| **Cashflow utilities** | `ValueError` | [Invalid selected periods](#invalid-selected-periods) | Period value outside `[1, m]` in `payment_times` |
 | **Cashflow utilities** | `TypeError` | [Invalid selected periods](#invalid-selected-periods) | Non-integer value in `selected_periods` |
 | **Cashflow utilities** | `ValueError` | [Tier structure](#tier-structure-errors) | `len(values) ≠ len(breakpoints) + 1`, or breakpoints not strictly ascending |
 | **Cashflow utilities** | `ValueError` | [Non-finite cashflow inputs](#non-finite-cashflow-inputs) | NaN or Inf in `times`, `breakpoints`, `values`, or `start` |
@@ -54,7 +60,20 @@ the full explanation, cause, and fix.
 | **GrowthRate** | `ValueError` | [GrowthRate.add_scenario errors](#growthrate-add-scenario-errors) | `scenario` not a `GrowthRate`; nested multi-scenario |
 | **GrowthRate** | `TypeError` | [GrowthRate.add_scenario errors](#growthrate-add-scenario-errors) | `scenario` is not a `GrowthRate` instance |
 | **GrowthRate** | `TypeError` | [GrowthRate.factor errors](#growthrate-factor-errors) | `t` is `None` (raises `TypeError`, not `ValueError`) |
-| **License** | `LicenseSeatExhaustedError` | [Concurrent session limit](#license-seat-exhausted) | Too many Python processes are running Lactuca simultaneously |
+| **License** | `LactucaLicenseError` | [License errors — overview](#license-errors) | Any licensing failure (catch-all base class) |
+| **License** | `LicenseExpiredError` | [License expired](#license-expired) | Stored or online validation confirms the license period has ended |
+| **License** | `LicenseRevokedError` | [License revoked or suspended](#license-revoked) | License server reports revoked or suspended status |
+| **License** | `LicenseInvalidError` | [Invalid license or device binding](#license-invalid) | Unrecognized key, unexpected server response, network failure during activation, or malformed license data |
+| **License** | `LicenseInvalidError` | [Device pool full (LAC-1013)](#lac-1013-device-pool-full) | Maximum activated devices for the plan already registered on the license server |
+| **License** | `LicenseInvalidError` | [Cross-device fingerprint mismatch (LAC-2002)](#lac-2002-cross-device) | Local license file was created on another machine, or JSON copied between hosts |
+| **License** | `ActivationRequiredError` | [Activation required](#activation-required) | No local license file in non-interactive environment, missing `LACTUCA_LICENSE_KEY` in CI, or cancelled/incomplete activation |
+| **License** | `LicenseSeatExhaustedError` | [Concurrent session limit (LAC-4001)](#license-seat-exhausted) | Maximum simultaneous Python processes for the plan already in use |
+| **License** | `LicenseSeatExhaustedError` | [Offline seat grace expired (LAC-4003)](#lac-4003-offline-grace) | Seat availability could not be verified within the offline grace period |
+| **License** | `LicenseTamperedError` | [Missing signature fields (LAC-3001)](#lac-3001-missing-signature) | Local license file missing required signature fields — auto-recoverable using stored key |
+| **License** | `LicenseTamperedError` | [Invalid signature (LAC-3002)](#lac-3002-invalid-signature) | Cryptographic signature verification failed — auto-recoverable using stored key |
+| **License** | `LicenseTamperedError` | [Integrity field missing (LAC-3003)](#lac-3003-mac-missing) | Local license file missing device-bound integrity field — auto-recoverable using stored key |
+| **License** | `LicenseTamperedError` | [Integrity check failed (LAC-3004)](#lac-3004-mac-mismatch) | Protected fields modified after writing, or file copied from another device — auto-recoverable using stored key |
+| **License** | `LicenseTamperedError` | [Clock rollback (LAC-3005)](#lac-3005-clock-rollback) | System clock moved back past the last validated date |
 | **Interest rate** | `ValueError` | [InterestRate advanced constructor](#interestrate-advanced-constructor) | Invalid `term_unit` passed to `InterestRate()` |
 | **Interest rate** | `TypeError` | [InterestRate.add_scenario errors](#interestrate-add-scenario-errors) | `scenario` not an `InterestRate` instance |
 | **Interest rate** | `ValueError` | [InterestRate.add_scenario errors](#interestrate-add-scenario-errors) | Nested multi-scenario `InterestRate` |
@@ -70,8 +89,8 @@ are: Non-finite `rates=` value (piecewise interest rate), Wrong type for `intere
 Invalid selected periods (non-integer value), times is None, GrowthRate constructor type
 checks, GrowthRate.factor None, GrowthRate.add_scenario, InterestRate.add_scenario,
 InterestRate.i_m/d_m, InterestRate.get_average_force.
-The `LicenseSeatExhaustedError` row is a custom exception (subclass of
-`LactucaLicenseError`) not derived from `ValueError` or `TypeError`.
+The license rows raise subclasses of `LactucaLicenseError` (not `ValueError` or
+`TypeError`).  See [License errors](#license-errors) for import-time behaviour and CI handling.
 :::
 
 ---
@@ -399,15 +418,14 @@ and `x` must be at least as large as `x0` (the reference start).
 **Fix**: Ensure `x >= x0 >= 0` for all elements.
 
 ```python
-import numpy as np
 from lactuca import InterestRate
 
 ir = InterestRate(0.03)
 ir.vx(5)                                  # ✔  x0=0 by default
-ir.vx(np.array([30, 40]), x0=25)          # ✔
+ir.vx([30, 40], x0=25)                    # ✔
 ir.vx(-1)                                 # ✘ → ValueError: negative x
 ir.vx(5, x0=-1)                           # ✘ → ValueError: negative x0
-ir.vx(np.array([10, 20]), x0=np.array([15, 5]))  # ✘ → ValueError: x[0] < x0[0]
+ir.vx([10, 20], x0=[15, 5])               # ✘ → ValueError: x[0] < x0[0]
 ```
 
 (interestrate-im-dm-errors)=
@@ -544,7 +562,9 @@ rejected.
 **Fix**: Set `qx[omega] = 1.0` in your source data.  Open the `.ltk` file and check the
 last row of the relevant decrement column (`qx_m`, `qx_f`, or `qx_u`).  Values within
 $10^{-4}$ of 1.0 (e.g. `0.9999998`) are silently clamped on load and will not raise;
-only deviations $> 10^{-4}$ trigger this error.
+only deviations $> 10^{-4}$ trigger this error.  If you need a rate below $1.0$ at the
+last age of interest, extend $\omega$ by one year and store your intended rate at
+$\omega - 1$, with $q_\omega = 1.0$ on the new terminal row.
 
 :::{note}
 All bundled Lactuca tables are pre-validated and will never raise this error.  This error
@@ -640,7 +660,7 @@ config.lx_interpolation = "linear"              # ✔  UDD assumption (default)
 config.lx_interpolation = "exponential"         # ✔  constant force of mortality
 config.calculation_mode = "discrete_precision"  # ✔  valid
 config.days_per_year = 365.25                   # ✔  valid
-config.reset()                                  # restore all settings to defaults
+config.reset_to_defaults()                      # restore all settings to defaults
 
 # Invalid — each raises ValueError independently:
 config.lx_interpolation = "udd"                 # ✘ → ValueError: not an allowed value
@@ -670,7 +690,7 @@ config.decimals.lx = 8           # ✔  8 decimal places for lx output
 config.decimals.annuities = 0    # ✔  round to integer (0 decimal places)
 config.decimals.annuities = -1   # ✘ → ValueError: negative integer
 config.decimals.annuities = 4.5  # ✘ → ValueError: non-integer float
-config.reset()                   # restore all decimals to defaults
+config.reset_to_defaults()       # restore all decimals to defaults
 ```
 
 ---
@@ -731,17 +751,16 @@ broadcasting fails and this error is raised.
 (either broadcasts freely against an `x` array of any length).
 
 ```python
-import numpy as np
 from lactuca import InterestRate
 
 ir = InterestRate(terms=[5], rates=[0.02, 0.03])  # non-constant rate curve
 
-ages = np.array([30, 40, 50])           # length 3
+ages = [30, 40, 50]                     # length 3
 ir.vx(ages, x0=0)                       # ✔  scalar x0 broadcasts freely
-ir.vx(ages, x0=np.array([0]))           # ✔  length-1 array also broadcasts
-ir.vx(ages, x0=np.array([0, 0, 0]))    # ✔  same length as ages
+ir.vx(ages, x0=[0])                     # ✔  length-1 list also broadcasts
+ir.vx(ages, x0=[0, 0, 0])              # ✔  same length as ages
 
-x0_bad = np.array([0, 0])               # length 2 ≠ length 3
+x0_bad = [0, 0]                         # length 2 ≠ length 3
 ir.vx(ages, x0=x0_bad)                  # ✘ → ValueError: incompatible shapes
 ```
 
@@ -750,7 +769,7 @@ ir.vx(ages, x0=x0_bad)                  # ✘ → ValueError: incompatible shape
 (cashflow-utility-errors)=
 ## Cashflow utility errors
 
-These errors are raised by :func:`generate_payment_times`, :func:`tiered_amounts`, and
+These errors are raised by :func:`payment_times`, :func:`tiered_amounts`, and
 :meth:`GrowthRate.amounts` when payment schedule or tier arguments are invalid.
 
 (invalid-payment-frequency)=
@@ -762,7 +781,7 @@ These errors are raised by :func:`generate_payment_times`, :func:`tiered_amounts
 
 | Function | Message pattern |
 |---|---|
-| `generate_payment_times` | `"[generate_payment_times] Parameter m (payments per year) must be one of {allowed} (value: {value})"`  |
+| `payment_times` | `"[payment_times] Parameter m (payments per year) must be one of {allowed} (value: {value})"`  |
 | `GrowthRate.amounts` | `"[GrowthRate.amounts] m must be one of {allowed}, got {value}."` |
 
 **Cause**: The `m` argument is not one of the allowed payment frequencies:
@@ -772,11 +791,11 @@ These errors are raised by :func:`generate_payment_times`, :func:`tiered_amounts
 4 (quarterly), 12 (monthly), 52 (weekly).
 
 ```python
-from lactuca import generate_payment_times as gpt, GrowthRate
+from lactuca import payment_times, GrowthRate
 
-times = gpt(n=3, m=12)                         # ✔  monthly
-gpt(n=3, m=365)                               # ✔  daily
-gpt(n=3, m=7)                                 # ✘ → ValueError: 7 not in allowed set
+times = payment_times(n=3, m=12)                         # ✔  monthly
+payment_times(n=3, m=365)                               # ✔  daily
+payment_times(n=3, m=7)                                 # ✘ → ValueError: 7 not in allowed set
 
 gr = GrowthRate(0.02)
 gr.amounts(times, start=1000.0, m=12)         # ✔
@@ -792,7 +811,7 @@ gr.amounts(times, start=1000.0, m=7)          # ✘ → ValueError
 
 | Condition | Exception | Message pattern |
 |---|---|---|
-| Period value outside `[1, m]` | `ValueError` | `"[generate_payment_times] selected_periods must be integers in [1, {m}] for m={m}."` |
+| Period value outside `[1, m]` | `ValueError` | `"[payment_times] selected_periods must be integers in [1, {m}] for m={m}."` |
 | Non-integer value (e.g. float) | `TypeError` | (raised by the input validator) |
 
 **Cause**: Each element of `selected_periods` must be an integer between 1 and `m`
@@ -802,13 +821,13 @@ is the last.  Float values raise `TypeError`; integers outside `[1, m]` raise `V
 **Fix**: Use integer-valued periods in the range `[1, m]`.
 
 ```python
-from lactuca import generate_payment_times as gpt
+from lactuca import payment_times
 
-gpt(n=5, m=4, selected_periods=[1, 3])       # ✔  Q1 and Q3
-gpt(n=5, m=12, selected_periods=[1, 7])      # ✔  January and July
-gpt(n=5, m=4, selected_periods=[0, 3])       # ✘ → ValueError: 0 < 1 (periods are 1-based)
-gpt(n=5, m=4, selected_periods=[5])          # ✘ → ValueError: 5 > m=4
-gpt(n=5, m=4, selected_periods=[1.5])        # ✘ → TypeError: non-integer value
+payment_times(n=5, m=4, selected_periods=[1, 3])       # ✔  Q1 and Q3
+payment_times(n=5, m=12, selected_periods=[1, 7])      # ✔  January and July
+payment_times(n=5, m=4, selected_periods=[0, 3])       # ✘ → ValueError: 0 < 1 (periods are 1-based)
+payment_times(n=5, m=4, selected_periods=[5])          # ✘ → ValueError: 5 > m=4
+payment_times(n=5, m=4, selected_periods=[1.5])        # ✘ → TypeError: non-integer value
 ```
 
 (tier-structure-errors)=
@@ -832,10 +851,9 @@ are rejected.
 ascending order.
 
 ```python
-import numpy as np
-from lactuca import tiered_amounts
+from lactuca import tiered_amounts, payment_times
 
-times = np.arange(1.0, 11.0)
+times = payment_times(n=10, m=1)
 tiered_amounts(times, breakpoints=[5],    values=[1.0, 1.1])         # ✔  1 bp → 2 values
 tiered_amounts(times, breakpoints=[5, 8], values=[1.0, 1.1, 1.2])   # ✔  2 bp → 3 values
 tiered_amounts(times, breakpoints=[5],    values=[1.0])              # ✘ → ValueError: 1 ≠ 2
@@ -866,9 +884,9 @@ locate them.
 
 ```python
 import numpy as np
-from lactuca import tiered_amounts, GrowthRate, generate_payment_times as gpt
+from lactuca import tiered_amounts, GrowthRate, payment_times
 
-times = gpt(n=10, m=1)
+times = payment_times(n=10, m=1)
 tiered_amounts(times, [5], [1.0, 1.1])                    # ✔
 
 bad_times = times.copy()
@@ -892,13 +910,13 @@ other invalid inputs, `None` raises `TypeError` (not `ValueError`) because it is
 array-like at all.
 
 **Fix**: Pass an array-like of payment times — typically the output of
-:func:`generate_payment_times`, a NumPy array, or a Python list of floats.
+:func:`payment_times`, a NumPy array, or a Python list of floats.
 
 ```python
-from lactuca import GrowthRate, generate_payment_times as gpt
+from lactuca import GrowthRate, payment_times
 
 gr = GrowthRate(0.02)
-times = gpt(n=5, m=12)
+times = payment_times(n=5, m=12)
 
 gr.amounts(times, start=1000.0, m=12)   # ✔
 gr.amounts(None,  start=1000.0, m=12)   # ✘ → TypeError: times is None
@@ -1096,32 +1114,323 @@ gr.factor(None)       # ✘ → TypeError
 - {doc}`user_guide/growth_rates_guide` — `GrowthRate` construction, `amounts()`, and payment frequency conventions
 
 **Licensing**
-- {doc}`faq_licensing` — concurrent session limits, `LicenseSeatExhaustedError`, and offline grace periods
+- {doc}`activation` — activation flow, device-bound `license.json`, and CLI commands
+- {doc}`faq_licensing` — device transfer, copying `license.json`, concurrent session limits, and offline grace periods
 
 ---
 
 (license-errors)=
 ## License errors
 
-License errors are raised by the activation subsystem during `import lactuca` or during
-a long-running session (keep-alive mechanism).  They are subclasses of `LactucaLicenseError`
-and are **not** `ValueError` or `TypeError`.
+License errors are raised during `import lactuca` or during a long-running session
+(session keep-alive).  They are subclasses of `LactucaLicenseError` and are **not**
+`ValueError` or `TypeError`.
+
+Import the exception types from the top-level package or from `lactuca.exceptions`:
+
+```python
+from lactuca import LicenseExpiredError
+# equivalent:
+from lactuca.exceptions import LicenseExpiredError
+```
+
+:::{important}
+**Import-time behaviour** — on `import lactuca`, the package initializer converts
+`LactucaLicenseError` subclasses to a clean `SystemExit` (message on stderr, no Python
+traceback).  A surrounding ``except LicenseExpiredError`` (or any other subclass)
+**will not** catch import-time failures.
+
+Use one of these approaches instead:
+
+- **CI / automation:** set ``LACTUCA_LICENSE_KEY`` before import (see {doc}`activation`).
+- **Subprocess:** run ``python -c "import lactuca"`` and inspect the exit code / stderr.
+- **Interactive recovery:** ``python -m lactuca activate`` or ``python -m lactuca license doctor``.
+- **Automation guard:** catch ``SystemExit`` and inspect the message string for LAC codes
+  (see examples below).
+
+The exception types below are the **typed errors** raised by the activation layer; their
+messages appear in CLI output and in the ``SystemExit`` string on import.
+
+Typed errors may include a ``Server-status:`` diagnostic line (for example
+``EXPIRED``, ``SUSPENDED``, ``NOT_FOUND``).  Include the full message when
+contacting support; you do not need to interpret the status code yourself.
+:::
+
+### Exception overview
+
+| Exception | When it is raised |
+|---|---|
+| `LactucaLicenseError` | Catch-all base — handle any licensing error in one ``except`` block |
+| `LicenseExpiredError` | Stored expiry date or online validation confirms the license period has ended |
+| `LicenseRevokedError` | License server reports revoked, suspended, or permanently deleted status |
+| `LicenseInvalidError` | Unrecognized key, fingerprint mismatch, device activation limit, unexpected server response, network failure during activation, or malformed license data |
+| `LicenseTamperedError` | Local license file failed integrity or signature checks, or system clock rollback detected |
+| `ActivationRequiredError` | No valid license and activation is required (non-interactive import, missing env key in CI, cancelled activation) |
+| `LicenseSeatExhaustedError` | Concurrent session limit reached **or** offline seat grace period expired |
+
+(license-expired)=
+### License expired — `LicenseExpiredError`
+
+**Exception**: `LicenseExpiredError`
+
+**Message pattern** (representative):
+```
+[LAC-1011] Your license has expired.
+Action: Purchase a new license at: {pricing_url}
+```
+
+Local expiry (without a fresh online check) uses code **LAC-2001**; online revalidation
+uses **LAC-2003**.
+
+**Cause**: The stored expiry date or an online validation confirms the license period
+has ended.
+
+**Fix**: Renew at [lactuca.io/pricing](https://lactuca.io/pricing), then re-run
+`import lactuca` or `python -m lactuca license refresh`.  In CI, update
+``LACTUCA_LICENSE_KEY`` to the renewed key if the stored file cannot be updated
+automatically.
+
+(license-revoked)=
+### License revoked or suspended — `LicenseRevokedError`
+
+**Exception**: `LicenseRevokedError`
+
+**Message pattern** (representative):
+```
+[LAC-1012] Your license has been revoked by the license server.
+Action: Contact support to resolve this issue.
+```
+
+Online revalidation uses **LAC-2004**.
+
+**Cause**: The license server reports that the license has been revoked, suspended,
+or permanently deleted (typically after payment failure, subscription cancellation,
+or manual action by Lactuca support).
+
+**Fix**: Contact [support@lactuca.io](mailto:support@lactuca.io) with the full error
+message.  Do not expect automatic recovery after a permanent deletion on the server;
+a new license key is required.
+
+(license-invalid)=
+### Invalid license or device binding — `LicenseInvalidError`
+
+**Exception**: `LicenseInvalidError`
+
+Catch-all for license-key and device-binding failures that are not expiry, revocation,
+tampering, or concurrent-session errors.  The LAC code in the message identifies the
+specific scenario.
+
+| LAC code | Topic | Detail |
+|---|---|---|
+| **LAC-1013** | Device pool full | [Device pool full (LAC-1013)](#lac-1013-device-pool-full) |
+| **LAC-2002** | Cross-device use | [Cross-device fingerprint mismatch (LAC-2002)](#lac-2002-cross-device) |
+| **LAC-1015** | Fingerprint scope | [Fingerprint scope mismatch (LAC-1015)](#lac-1015-fingerprint-scope) |
+| **LAC-1014** | Device registration failed | [Device registration failed (LAC-1014)](#lac-1014-device-registration) |
+| **LAC-1016** | Activation incomplete | Server did not receive the initial device ping |
+| **LAC-1017** | Network error | Interactive activation blocked by connectivity |
+| **LAC-1018** | Unexpected server status | Key rejected or status not recognized during activation |
+| **LAC-2005** | Online revalidation | Malformed payload or blocking `last_server_status` while offline |
+| **LAC-4002** | Process lease | Unexpected failure acquiring a concurrent session lease |
+| **LAC-5001** | Server configuration | Client/server configuration mismatch |
+
+**Fix**: Read the LAC code and ``Action:`` line in the message, then follow the linked
+subsection above or run ``python -m lactuca license doctor``.
+
+(lac-1013-device-pool-full)=
+### Device pool full — `LicenseInvalidError` (LAC-1013)
+
+**Exception**: `LicenseInvalidError`
+
+**Message pattern**:
+```
+[LAC-1013] Your license has reached the maximum number of activated devices.
+Server-status: TOO_MANY_MACHINES | fingerprint: {fingerprint}
+Action: To transfer activation to this device, visit: {faq_device_transfer_url}
+If this device was activated with a different license key, deactivate that license first, then free a device slot if needed.
+```
+
+**Cause**: The license server refused to register this device because the plan's
+**device pool** is full.  Each physical or virtual machine counts as one activated
+device (distinct from concurrent Python sessions — see [LAC-4001](#license-seat-exhausted)).
+
+The client raises **LAC-1013** when Keygen returns ``TOO_MANY_MACHINES``, and also
+during **first activation** when validate-key reports ``FINGERPRINT_SCOPE_MISMATCH``
+but every device slot on **this** license is already in use (pool exhausted after a
+failed ``POST /machines``).
+
+Device limits per plan:
+
+| Plan | Activated devices |
+|---|---|
+| Trial | 1 |
+| Individual | 1 |
+| Academic & Community | 1 |
+| Team | 10 |
+| Enterprise | 50 |
+| OEM | unlimited |
+
+Typical triggers:
+
+- Running ``python -m lactuca activate`` on a new machine while every slot is already
+  in use on the license server.
+- First activation when the server returns ``FINGERPRINT_SCOPE_MISMATCH`` but the
+  license already has the maximum number of registered machines (Enterprise 50/50,
+  Team 10/10, etc.).
+- Online revalidation or machine registration after a legitimate device change, before
+  an old slot was released.
+- After ``license refresh`` records ``TOO_MANY_MACHINES`` in ``last_server_status``,
+  the next ``import lactuca`` requires a successful online re-check — import does not
+  continue offline while the pool remains full.
+
+**Fix**:
+
+1. **Free a device slot** before activating on this machine — see the
+   {ref}`device transfer procedure <device-transfer>` in the Licensing FAQ.
+2. If this device was activated with **another license key**, deactivate that license
+   on this machine first (then free a slot on the intended license if still at capacity).
+3. On Team or Enterprise plans, release an unused device slot (or ask support to remove
+   a stale machine registration) before retrying activation on the new host.
+4. After a slot is free, run ``python -m lactuca activate`` (or ``python -m lactuca license refresh``)
+   while connected to the internet, then ``import lactuca``.
+
+Contact [support@lactuca.io](mailto:support@lactuca.io) if you need a slot released
+immediately (subject line: *Device transfer request*).
+
+(lac-2002-cross-device)=
+### Cross-device fingerprint mismatch — `LicenseInvalidError` (LAC-2002)
+
+**Exception**: `LicenseInvalidError`
+
+**Message pattern**:
+```
+[LAC-2002] This device is not activated for your license (hardware fingerprint mismatch).
+stored-fingerprint: {stored} | current-fingerprint: {current}
+Action: To transfer activation to this device, visit: {faq_device_transfer_url}
+```
+
+**Cause**: The local ``license.json`` was written on a **different** machine.  The
+stored hardware fingerprint does not match this device.  Common scenarios:
+
+- **Copying ``license.json``** from another PC — not a valid way to share a license
+  (see {doc}`faq_licensing`).
+- Import on a second host where the file still lists the first machine's fingerprint.
+- Online recovery is attempted with a stored key, but the file's fingerprint belongs to
+  another device — recovery runs only on the **same** device (LAC-3001/3003/3004);
+  cross-host copies raise **LAC-2002** instead.
+
+Lactuca does **not** silently register a new device when the JSON was copied from
+elsewhere.
+
+**Fix**:
+
+1. On **this** machine, delete the copied ``license.json`` — do not copy the file from
+   the other PC again.
+2. If your plan is at its device limit, free a slot first — {ref}`device transfer <device-transfer>`.
+3. Run ``python -m lactuca activate`` and enter your license key on **this** device.
+
+See also {doc}`activation` (device-bound license file).
+
+(lac-1014-device-registration)=
+### Device registration failed — `LicenseInvalidError` (LAC-1014)
+
+**Exception**: `LicenseInvalidError`
+
+**Message pattern**:
+```
+[LAC-1014] Device registration failed: the license server could not register this device.
+Server-status: {keygen_status} | fingerprint: {fingerprint}
+Action: Check your internet connection and try again.
+```
+
+**Cause**: The license server did not complete device registration.  Typical triggers:
+
+- ``NO_MACHINE`` / ``NO_MACHINES`` after activation could not create a machine record.
+- ``FINGERPRINT_SCOPE_MISMATCH`` during first activation when the client could not
+  confirm whether the device pool is full (transient list/count failure on the
+  license server).
+
+**Fix**: Verify network connectivity and retry ``python -m lactuca activate``.  If the
+error persists, run ``python -m lactuca license doctor`` and contact
+[support@lactuca.io](mailto:support@lactuca.io).
+
+(lac-1015-fingerprint-scope)=
+### Fingerprint scope mismatch — `LicenseInvalidError` (LAC-1015)
+
+**Exception**: `LicenseInvalidError`
+
+**Message pattern** (interactive activation):
+```
+[LAC-1015] This device's fingerprint is already registered under a different license key.
+Server-status: FINGERPRINT_SCOPE_MISMATCH | fingerprint: {fingerprint}
+Action: Deactivate the previous license on this device first, or contact support.
+```
+
+**Cause**: During **interactive activation** (``python -m lactuca activate``), the
+license server reported that this hardware fingerprint is already bound to a
+**different** license key, and the device pool on the key being activated is
+**not** full.  This is distinct from:
+
+- **LAC-2002** — local ``license.json`` from another machine (stored fingerprint mismatch).
+- **LAC-1013** — device pool full on **this** license (``TOO_MANY_MACHINES``, or
+  ``FINGERPRINT_SCOPE_MISMATCH`` with pool at capacity).
+
+**Fix**: Release or deactivate the other license on this device, then activate with the
+intended key.  If you believe the binding is stale, contact
+[support@lactuca.io](mailto:support@lactuca.io).
+
+:::{note}
+**First activation** with ``FINGERPRINT_SCOPE_MISMATCH``: if every device slot on the
+license being activated is already in use, the client raises **LAC-1013** (pool full),
+not LAC-1015.  If the machine count cannot be retrieved, the client raises **LAC-1014**.
+
+**Online revalidation** (``import lactuca``, ``license refresh``) can receive the same
+server status ``FINGERPRINT_SCOPE_MISMATCH`` in other contexts:
+
+- If the stored fingerprint matches this device but the pool is full, the client raises
+  **LAC-1013**, not LAC-1015.
+- If ``license refresh`` records ``FINGERPRINT_SCOPE_MISMATCH`` or ``TOO_MANY_MACHINES``
+  in ``last_server_status``, the next import forces an immediate online re-check.
+  While offline, import is blocked with **LAC-2005** citing the stored server status;
+  after reconnecting, the client resolves the situation to LAC-1013, LAC-2002, or
+  LAC-2005 as appropriate — import does **not** silently succeed with a copied license
+  file.
+:::
+
+(activation-required)=
+### Activation required — `ActivationRequiredError`
+
+**Exception**: `ActivationRequiredError`
+
+**Cause**: No valid license is found and activation is required — for example on first
+import when no local license file is present and the environment is non-interactive,
+when ``LACTUCA_LICENSE_KEY`` is not set in CI/CD, or when interactive activation was
+cancelled or could not complete (trial request, key entry, etc.).
+
+**Fix**:
+
+- **Interactive:** run ``python -m lactuca activate``.
+- **CI / headless:** set ``LACTUCA_LICENSE_KEY`` before import (see {doc}`activation`).
+- **Trial:** follow the URL in the message or visit [lactuca.io/pricing](https://lactuca.io/pricing).
+
+:::{note}
+``ActivationRequiredError`` carries an ``already_printed`` flag.  When the activation
+flow already printed guidance to the terminal, import exits with code **0** and no
+duplicate message.
+:::
 
 (license-seat-exhausted)=
-### Concurrent session limit — `LicenseSeatExhaustedError`
+### Concurrent session limit — `LicenseSeatExhaustedError` (LAC-4001)
 
 **Exception**: `LicenseSeatExhaustedError`
 
 **Message pattern**:
 ```
-License seat limit reached. All {N} concurrent session(s) allowed by your plan
-are currently in use. Wait for an existing session to exit, or upgrade your plan.
+[LAC-4001] All concurrent sessions for this license are in use.
+Action: Close another active Lactuca session, or upgrade your plan: {pricing_url}
 ```
 
-**Cause**: The license system (Keygen.sh process leasing) enforces a limit on the
-number of Python processes that may run Lactuca simultaneously across all activated
-devices.  When a new process calls `import lactuca` and the limit is already reached,
-the license server refuses to grant a new process lease and this exception is raised.
+**Cause**: The maximum number of simultaneous active Python processes allowed by the
+license plan is already in use.  The license server refused to grant a new process lease.
 
 Concurrent session limits per tier:
 
@@ -1137,9 +1446,9 @@ Concurrent session limits per tier:
 **Fix**:
 
 1. **Wait for a seat to free up.** Seats are released automatically when a running
-   process exits cleanly (`atexit` hook). If a process was killed or crashed, the seat
-   is released after the heartbeat lease expires (30 minutes for single-user tiers;
-   60 minutes for Team/Enterprise).
+   process exits cleanly. If a process was killed or crashed, the seat is released after
+   the heartbeat lease expires (30 minutes for single-user tiers; 60 minutes for
+   Team/Enterprise).
 
 2. **Check for stuck processes.** Look for background scripts, Jupyter kernels, or
    scheduled jobs running Lactuca that you may have forgotten about.
@@ -1147,21 +1456,375 @@ Concurrent session limits per tier:
 3. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
    for server deployments and teams running parallel jobs.
 
-4. **Catch and handle gracefully** in pipeline scripts that may run concurrently:
+4. **Handle in pipeline scripts** that may run concurrently (inspect ``SystemExit`` on
+   import — see {ref}`license-errors`):
 
 ```python
-from lactuca.exceptions import LicenseSeatExhaustedError
-
 try:
     import lactuca
-except LicenseSeatExhaustedError:
-    # No seat available — retry after a delay or queue the job
-    raise SystemExit("Lactuca seat limit reached. Retry when a session is free.")
+except SystemExit as exc:
+    msg = str(exc) or ""
+    if "LAC-4001" in msg:
+        raise SystemExit("Lactuca seat limit reached. Retry when a session is free.")
+    raise
 ```
 
 :::{note}
-The seat is always released on clean Python exit (via `atexit`).  If you are using
-`multiprocessing`, each child process consumes one seat.  For high-parallelism scenarios
+The seat is always released on clean Python exit.  If you are using
+``multiprocessing``, each child process consumes one seat.  For high-parallelism scenarios
 (e.g. 20+ workers) use an Enterprise license or restructure the pipeline to share a
 single Lactuca process across workers.
 :::
+
+(lac-4003-offline-grace)=
+### Offline seat grace expired — `LicenseSeatExhaustedError` (LAC-4003)
+
+**Exception**: `LicenseSeatExhaustedError` (same class as LAC-4001)
+
+**Message pattern**:
+```
+[LAC-4003] Offline grace period has expired: cannot verify seat availability.
+Action: Connect to the internet and try again.
+```
+
+**Cause**: Lactuca could not verify seat availability with the license server within the
+allowed offline grace period (see {doc}`faq_licensing` for grace duration).  This is
+distinct from LAC-4001: the session limit may not be reached, but the process cannot
+confirm an available seat while offline.
+
+**Fix**: Connect to the internet and retry ``python -m lactuca`` or ``import lactuca``.  No manual file deletion
+is required — the local license file is kept so recovery is retried on the next import.
+
+(lac-3001-missing-signature)=
+### Missing signature fields — `LicenseTamperedError` (LAC-3001)
+
+**Exception**: `LicenseTamperedError`
+
+**Message pattern**:
+```
+[LAC-3001] license.json is missing required signature fields (signed_data or signature).
+Cause: The file was modified manually, corrupted, or is from an incompatible version.
+Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+```
+
+**Cause**: The local license file is missing required signature fields.
+
+**Recovery**: **Auto-recoverable** when a license key is stored in the file.  Lactuca
+validates online with the stored key.  If the key is still valid, the local license file
+is silently overwritten and import continues.  If the key has expired, a
+`LicenseExpiredError` is raised; if revoked, a `LicenseRevokedError`; if the network is
+unavailable, an `ActivationRequiredError` explaining how to reconnect.
+
+**Fix**: Re-run ``python -m lactuca`` or ``import lactuca`` while connected to the internet.  In non-interactive
+environments, set ``LACTUCA_LICENSE_KEY`` so re-activation can proceed without a prompt.
+
+(lac-3002-invalid-signature)=
+### Invalid cryptographic signature — `LicenseTamperedError` (LAC-3002)
+
+**Exception**: `LicenseTamperedError`
+
+**Message pattern**:
+```
+[LAC-3002] license.json Ed25519 signature verification failed.
+Cause: The file was modified after being written, or the signing key has changed.
+Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+```
+
+**Cause**: The cryptographic signature stored in the local license file does not verify.
+This happens when protected payload fields were edited manually, the file was tampered
+with, corrupted during an incomplete write, or the signing key has changed.
+
+**Recovery**: **Auto-recoverable** when a license key is stored in the file.  Lactuca
+validates online with the stored key.  If the key is still valid, the local license file
+is silently overwritten and import continues normally.  If the key has expired, a
+`LicenseExpiredError` with the renewal URL is raised instead; if revoked, a
+`LicenseRevokedError`; if the network is unavailable, an `ActivationRequiredError`
+explaining how to reconnect.
+
+**Fix**: In most cases, simply re-run ``python -m lactuca`` or ``import lactuca`` while connected to the internet.
+In non-interactive environments, ensure ``LACTUCA_LICENSE_KEY`` is set so re-activation
+can proceed without a prompt if the file needs to be recreated.
+
+```python
+import lactuca   # auto-recovers when online and a stored key is present
+```
+
+(lac-3003-mac-missing)=
+### Integrity field missing — `LicenseTamperedError` (LAC-3003)
+
+**Exception**: `LicenseTamperedError`
+
+**Message pattern**:
+```
+[LAC-3003] license.json integrity check failed: mac field is missing.
+Cause: The file was written by an older Lactuca version, modified manually, or copied from another device.
+Action: Re-run python -m lactuca or import lactuca. If recovery does not complete, run
+  'python -m lactuca license doctor' and
+  'python -m lactuca license refresh'. Delete license.json manually
+  only if recovery still fails.
+```
+
+**Cause**: The local license file does not contain the device-bound integrity field.
+This happens when the file was written by an older Lactuca version, edited manually, or
+copied from another device.
+
+**Recovery**: **Auto-recoverable** when a license key is stored in the file.  Lactuca
+validates online with the stored key.  If the key is still valid, the local license file
+is silently overwritten and import continues normally.  If the key has expired, a
+`LicenseExpiredError` with the renewal URL is raised instead; the file is kept.  If the
+network is unavailable, an `ActivationRequiredError` explaining how to reconnect is
+raised; the file is kept so recovery is retried automatically on the next import.
+
+**Fix**: Simply re-run ``python -m lactuca`` or ``import lactuca`` while connected to the internet.  In
+non-interactive environments, ensure ``LACTUCA_LICENSE_KEY`` is set in case the stored key
+has expired and a new one must be entered.
+
+```python
+import lactuca   # auto-recovers when online and a stored key is present
+```
+
+(lac-3004-mac-mismatch)=
+### Integrity check failed — `LicenseTamperedError` (LAC-3004)
+
+**Exception**: `LicenseTamperedError`
+
+**Message pattern**:
+```
+[LAC-3004] license.json integrity check failed: mac mismatch.
+Cause: The file was modified after being written, or was copied from a different device.
+Action: Re-run python -m lactuca or import lactuca. If recovery does not complete, run
+  'python -m lactuca license doctor' and
+  'python -m lactuca license refresh'. Delete license.json manually
+  only if recovery still fails.
+```
+
+**Cause**: The device-bound integrity check failed — protected fields in the local
+license file do not match the expected value for this device.  This happens when
+protected fields were edited manually (e.g. extending ``expires_at`` by hand) or the file
+was copied from another machine (the integrity binding is device-specific).
+
+**Recovery**: **Auto-recoverable** when a license key is stored in the file.  Identical
+recovery flow to LAC-3003: Lactuca validates online with the stored key and, if still
+valid, silently overwrites the local license file.  The file is never deleted
+automatically.
+
+:::{note}
+The most common cause of LAC-3004 is manually editing ``expires_at`` to extend a license.
+In that case online revalidation returns the server's authoritative expiry date and
+raises `LicenseExpiredError` with the renewal URL — no trial is offered.  To extend
+your license, renew at [lactuca.io/pricing](https://lactuca.io/pricing) and then
+re-run ``python -m lactuca`` or ``import lactuca``; renewal is detected automatically via the stored key.
+:::
+
+**Fix**: In non-interactive environments set ``LACTUCA_LICENSE_KEY`` before importing.
+Never copy the local license file between devices — each device must activate
+independently.
+
+**Operational shortcut**: use CLI diagnostics before manual cleanup:
+
+```bash
+python -m lactuca license doctor
+python -m lactuca license refresh
+```
+
+:::{important}
+The local license file is device-bound and cannot be shared between machines.  Each device
+consumes one activation slot from the license pool.  To transfer a license to a new
+machine, see {ref}`device-transfer` in the Licensing FAQ.
+:::
+
+```python
+# If expires_at was edited by hand, the integrity check fails (LAC-3004).
+# After renewing the same key at lactuca.io/pricing, just re-import:
+import lactuca   # detects renewal automatically when online
+```
+
+(lac-3005-clock-rollback)=
+### Clock rollback — `LicenseTamperedError` (LAC-3005)
+
+**Exception**: `LicenseTamperedError`
+
+**Message pattern**:
+```
+[LAC-3005] System clock rollback detected.
+Cause: The system clock has been moved back past the last validated date.
+Action: Restore the system clock to the correct date and time, then retry.
+```
+
+**Cause**: The system clock is set to a time more than 60 seconds **before** the last
+validated timestamp recorded in the local license file.  Because that timestamp is covered
+by the device-bound integrity check (see LAC-3004), it cannot be forged.  Rolling the
+clock back is detected as a tampering attempt aimed at re-using an expired license.
+
+**Recovery**: This error is **not auto-recoverable** — Lactuca cannot fix the system
+clock on your behalf.
+
+**Fix**: Restore your system clock to the correct date and time, then retry ``python -m lactuca`` or ``import lactuca``.
+On Windows you can sync the clock with:
+
+```powershell
+w32tm /resync
+```
+
+On macOS/Linux, enable and start the NTP daemon:
+
+```bash
+# macOS
+sudo sntp -sS time.apple.com
+
+# Linux (systemd)
+sudo timedatectl set-ntp true
+```
+
+:::{note}
+The 60-second tolerance exists to absorb normal NTP corrections (typically < 1 second)
+without false positives.  Legitimate clock resets of this magnitude are rare; if your
+clock legitimately jumped back more than 60 seconds, re-syncing via NTP will resolve it.
+:::
+
+(table-modification-combination-mode)=
+## Table modification — `combination_mode`
+
+Errors raised by `modify_qx`, `modify_ix`, and `modify_ox` when the
+`combination_mode` key is invalid or inconsistent with `table_combination`.
+
+### Orphan `combination_mode`
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+
+```
+combination_mode requires table_combination in the same modification dict
+```
+
+**Cause**: `combination_mode` was passed without `table_combination` in the same dict.
+
+**Fix**: Include both keys, or omit `combination_mode` (defaults to `independent`).
+
+```python
+# Wrong
+lt.modify_qx({"combination_mode": "udd"})
+
+# Correct
+lt.modify_qx({"table_combination": et, "combination_mode": "udd"})
+```
+
+### Invalid `combination_mode` literal
+
+**Exception**: `ValueError`
+
+**Message patterns**:
+
+```
+combination_mode must be the string 'independent' or 'udd'
+Unknown combination_mode '{value}'; allowed values are 'independent' and 'udd'
+```
+
+**Cause**: Value is not exactly `"independent"` or `"udd"` (including legacy
+`"udd_2"`, `"udd_3"`, wrong case, booleans, or non-strings).
+
+**Fix**: Use `"independent"` or `"udd"` only.
+
+### UDD with too many causes
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+
+```
+combination_mode='udd' is limited to 2 or 3 causes (host plus 1 or 2 other tables); got {n} causes with {m} other table(s).
+```
+
+**Cause**: `combination_mode="udd"` with host plus three or more other tables (four+
+causes). v1 supports UDD for two or three causes only.
+
+**Fix**: Use `"independent"` for four or more causes, or reduce the number of tables
+in `table_combination`.
+
+(host-or-duplicate-instance-in-others)=
+### Host or duplicate instance in `others`
+
+**Exception**: `ValueError`
+
+**Message patterns**:
+
+```
+table_combination: cannot combine a table with itself.
+table_combination: duplicate table instance in the others list.
+```
+
+**Cause**: The same `DecrementTable` instance was passed as both host and other
+(e.g. `et.modify_ox({"table_combination": et})`), or listed twice in
+`others` (e.g. `[et, et]`). Competing-risk formulas would treat the same rates
+as multiple independent causes.
+
+**Fix**: Pass distinct instances for each cause. For file/base rates on each,
+use separate objects or `reset_modifications()` before combining.
+
+(combined-decrement-exceeds-10)=
+### Combined decrement exceeds 1.0
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+
+```
+table_combination: combined decrement probability exceeds 1.0 at age {x} (q_combined=...)
+table_combination: combined decrement probability exceeds 1.0 at index {i} (calendar age {x} after age_shift={n}) (q_combined=...)
+```
+
+**Cause**: Prior keys in the same dict (often `decrement_multiplier`) pushed host
+or aligned rates above 1 before the product formula ran.
+
+**Fix**: Use valid rates in $[0, 1]$ at each age, or reorder keys so scaling
+does not create invalid intermediates before combine.
+
+(decrement-rate-outside-01-before-combine)=
+### Decrement rate outside [0, 1] before combine
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+
+```
+table_combination: host decrement rate outside [0, 1] at index {i} (age {x}) (q=...)
+table_combination: host decrement rate outside [0, 1] at index {i} (calendar age {x} after age_shift={n}) (q=...)
+table_combination: ExitTable decrement rate outside [0, 1] at index {i} (age {x}) (q=...)
+```
+
+**Cause**: The host or an *other* table’s active `_decrement` vector contained a
+rate below 0 or above 1 before the competing-risk formula ran (often from direct
+`_decrement` manipulation or corrupt data). Negative combined rates would
+otherwise be clipped silently to 0 at the final safety step.
+
+**Fix**: Restore valid rates in $[0, 1]$ on every table (`reset_modifications()`
+or a fresh instance), then combine again.
+
+### Other table shortened by `age_shift`
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+
+```
+table_combination: ExitTable was shortened by a prior age_shift modification. Apply age_shift on the table you are modifying (e.g. LifeTable.modify_qx), not on the other table.
+```
+
+**Cause**: The table passed to `table_combination` was previously modified with
+`age_shift`, so its `_decrement` array is shorter than `_decrement_base`.
+
+**Fix**: Apply `age_shift` on the table you are modifying together with
+`table_combination`:
+
+```python
+# Wrong — shortens ExitTable, then LifeTable cannot combine
+et.modify_ox({"age_shift": 40})
+lt.modify_qx({"table_combination": et})
+
+# Correct — shift LifeTable, align exit rates by calendar age
+lt.modify_qx({"age_shift": 40, "table_combination": et})
+```
+
+See also {doc}`user_guide/modifying_decrements`.
+
