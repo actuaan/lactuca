@@ -1,0 +1,1171 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deferred Life Contingencies &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/deferment';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Growth Rates" href="growth_rates_guide.html" />
+    <link rel="prev" title="Commutation Functions" href="commutation_functions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deferred Life Contingencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates_guide.html">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspecting_cashflows.html">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="last_payment_adjustment.html">Last Payment Adjustment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates_guide.html">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Deferred Life Contingencies</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deferred-life-contingencies">
+<h1>Deferred Life Contingencies<a class="headerlink" href="#deferred-life-contingencies" title="Link to this heading">#</a></h1>
+<p>A <em>deferred</em> life contingency is one in which the payment stream — whether an
+annuity or an insurance benefit — does not start immediately but only after a waiting
+period of <span class="math notranslate nohighlight">\(d\)</span> years measured from the reference age <span class="math notranslate nohighlight">\(x\)</span>.  The parameter <code class="docutils literal notranslate"><span class="pre">d</span></code> controls
+this waiting period uniformly across all life annuity and life insurance methods in
+Lactuca.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page covers <code class="docutils literal notranslate"><span class="pre">d</span></code> in isolation (the default case where the valuation date coincides
+with the reference age, i.e. <code class="docutils literal notranslate"><span class="pre">ts=0</span></code>).  When combining deferment with an off-anniversary
+time shift <code class="docutils literal notranslate"><span class="pre">ts</span></code>, the interaction rule <span class="math notranslate nohighlight">\(d_{\text{eff}} = \max(d - ts,\; 0)\)</span> applies; see
+<a class="reference internal" href="prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a> for a full treatment.</p>
+</div>
+<hr class="docutils" />
+<section id="the-deferment-parameter">
+<h2>The deferment parameter<a class="headerlink" href="#the-deferment-parameter" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> is the number of years that must elapse — from age <span class="math notranslate nohighlight">\(x\)</span> — before the first payment
+is made.  Internally, every payment time is shifted by <span class="math notranslate nohighlight">\(d\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+t_j = \frac{j + p_{\text{timing}}}{m} + d
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(j\)</span> counts payments from zero, <span class="math notranslate nohighlight">\(m\)</span> is the annual payment frequency, and
+<span class="math notranslate nohighlight">\(p_{\text{timing}}\)</span> equals 0 for annuity-due (payments at start of each period) and
+1 for annuity-immediate (payments at end of each period).</p>
+<p>Key properties:</p>
+<ul class="simple">
+<li><p><strong>Default</strong>: <code class="docutils literal notranslate"><span class="pre">d=0</span></code> — payments start immediately.</p></li>
+<li><p><strong>Type</strong>: non-negative float; sub-year values such as <code class="docutils literal notranslate"><span class="pre">d=0.5</span></code> are fully supported.
+A negative value raises a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p></li>
+<li><p><strong>Scope</strong>: <code class="docutils literal notranslate"><span class="pre">d</span></code> is accepted by all life annuity methods (<code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>), all life insurance methods (<code class="docutils literal notranslate"><span class="pre">Ax</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axyz</span></code>), and the financial
+annuity methods on <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> (<code class="docutils literal notranslate"><span class="pre">ä</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code>).  Pure endowment methods (<code class="docutils literal notranslate"><span class="pre">nEx</span></code>, <code class="docutils literal notranslate"><span class="pre">nExy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">nExyz</span></code>) do <strong>not</strong> accept <code class="docutils literal notranslate"><span class="pre">d</span></code>; see <a class="reference internal" href="#interaction-with-pure-endowments">Interaction with pure endowments</a>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="standard-formulas">
+<h2>Standard formulas<a class="headerlink" href="#standard-formulas" title="Link to this heading">#</a></h2>
+<section id="deferred-whole-life-annuities">
+<h3>Deferred whole-life annuities<a class="headerlink" href="#deferred-whole-life-annuities" title="Link to this heading">#</a></h3>
+<p><strong>Annuity-due</strong> (prepayable, <code class="docutils literal notranslate"><span class="pre">äx</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_x^{(m)} = \frac{1}{m} \sum_{j=0}^{\infty} v^{j/m\,+\,d} \cdot {}_{j/m\,+\,d}p_x
+  = \nEx{d}{x} \cdot \ddot{a}_{x+d}^{(m)}
+\]</div>
+<p>The factorisation uses the chain rule <span class="math notranslate nohighlight">\({}_{j/m+d}p_x = \px{d}{x} \cdot {}_{j/m}p_{x+d}\)</span>
+and separates <span class="math notranslate nohighlight">\(v^{j/m+d} = v^d \cdot v^{j/m}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{m}\sum_{j=0}^{\infty} v^{j/m+d}\cdot {}_{j/m+d}p_x
+= v^d\,\px{d}{x}\cdot\frac{1}{m}\sum_{j=0}^{\infty} v^{j/m}\cdot {}_{j/m}p_{x+d}
+= \nEx{d}{x}\cdot\ddot{a}_{x+d}^{(m)}
+\]</div>
+<p><strong>Annuity-immediate</strong> (postpayable, <code class="docutils literal notranslate"><span class="pre">ax</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}a_x^{(m)} = \frac{1}{m} \sum_{j=1}^{\infty} v^{j/m\,+\,d} \cdot {}_{j/m\,+\,d}p_x
+  = \nEx{d}{x} \cdot a_{x+d}^{(m)}
+\]</div>
+<p>The factorisation via the pure endowment <span class="math notranslate nohighlight">\(\nEx{d}{x} = v^d \cdot \px{d}{x}\)</span> is exact
+for both forms: the pure endowment discounts survival to age <span class="math notranslate nohighlight">\(x + d\)</span>, and from that age
+a standard whole-life annuity applies.  The two forms are related by</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}a_x^{(m)} = {}_{d|}\ddot{a}_x^{(m)} - \frac{1}{m}\,\nEx{d}{x}
+\]</div>
+<p>which is the classical due-to-immediate conversion shifted to the deferred origin.</p>
+</section>
+<section id="deferred-temporary-annuities">
+<h3>Deferred temporary annuities<a class="headerlink" href="#deferred-temporary-annuities" title="Link to this heading">#</a></h3>
+<p><strong>Annuity-due</strong> (prepayable, <code class="docutils literal notranslate"><span class="pre">äx</span></code> with <code class="docutils literal notranslate"><span class="pre">n=</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_{x:\overline{n}|}^{(m)}
+  = \ddot{a}_{x:\overline{d+n}|}^{(m)} - \ddot{a}_{x:\overline{d}|}^{(m)}
+  = \nEx{d}{x} \cdot \ddot{a}_{x+d:\overline{n}|}^{(m)}
+\]</div>
+<p><strong>Annuity-immediate</strong> (postpayable, <code class="docutils literal notranslate"><span class="pre">ax</span></code> with <code class="docutils literal notranslate"><span class="pre">n=</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}a_{x:\overline{n}|}^{(m)}
+  = a_{x:\overline{d+n}|}^{(m)} - a_{x:\overline{d}|}^{(m)}
+  = \nEx{d}{x} \cdot a_{x+d:\overline{n}|}^{(m)}
+\]</div>
+<p>In both cases pass <code class="docutils literal notranslate"><span class="pre">d=</span></code> and <code class="docutils literal notranslate"><span class="pre">n=</span></code> together: <code class="docutils literal notranslate"><span class="pre">lt.äx(x,</span> <span class="pre">n=n,</span> <span class="pre">d=d)</span></code> / <code class="docutils literal notranslate"><span class="pre">lt.ax(x,</span> <span class="pre">n=n,</span> <span class="pre">d=d)</span></code>.</p>
+<p>The due-to-immediate relation for the deferred temporary case generalises to:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}a_{x:\overline{n}|}^{(m)}
+  = {}_{d|}\ddot{a}_{x:\overline{n}|}^{(m)}
+    - \frac{1}{m}\left(\nEx{d}{x} - \nEx{d+n}{x}\right)
+\]</div>
+<p>The first pure-endowment term accounts for the payment at the start of the deferment
+period (present in the due form, absent in the immediate) and the second for the
+extra payment at the end of term <span class="math notranslate nohighlight">\(d+n\)</span> (present in the immediate, absent in the due).</p>
+</section>
+<section id="deferred-life-insurance">
+<h3>Deferred life insurance<a class="headerlink" href="#deferred-life-insurance" title="Link to this heading">#</a></h3>
+<p>A deferred life insurance pays the benefit only if death occurs <strong>after</strong> the deferment
+period ends:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}A_x = \nEx{d}{x} \cdot A_{x+d}
+\]</div>
+<p>The same identity holds for a finite term:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}A^1_{x:\overline{n}|} = \nEx{d}{x} \cdot A^1_{x+d:\overline{n}|}
+\]</div>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">d=</span></code> (and optionally <code class="docutils literal notranslate"><span class="pre">n=</span></code>) to <code class="docutils literal notranslate"><span class="pre">lt.Ax(x,</span> <span class="pre">d=d)</span></code>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="api-examples">
+<h2>API examples<a class="headerlink" href="#api-examples" title="Link to this heading">#</a></h2>
+<section id="single-life-annuities">
+<h3>Single-life annuities<a class="headerlink" href="#single-life-annuities" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># 10-year deferred whole-life annuity-due:  10|äx(55)</span>
+<span class="n">a_def_whole_due</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_def_whole_due</span><span class="p">)</span>    <span class="c1"># → 11.3534</span>
+
+<span class="c1"># 10-year deferred whole-life annuity-immediate:  10|ax(55)</span>
+<span class="n">a_def_whole_imm</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_def_whole_imm</span><span class="p">)</span>    <span class="c1"># → 10.6478</span>
+
+<span class="c1"># 10-year deferred, 20-year temporary annuity-due:  10|ä55:20|</span>
+<span class="n">a_def_temp_due</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_def_temp_due</span><span class="p">)</span>     <span class="c1"># → 9.5844</span>
+
+<span class="c1"># 10-year deferred, 20-year temporary annuity-immediate:  10|a55:20|</span>
+<span class="n">a_def_temp_imm</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_def_temp_imm</span><span class="p">)</span>     <span class="c1"># → 9.1223</span>
+
+<span class="c1"># For comparison: standard whole-life annuity at age 65 (no deferment)</span>
+<span class="n">a_reference</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_reference</span><span class="p">)</span>        <span class="c1"># → 16.0899</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The pure endowment factorisation produces the same result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Direct: 10|äx(55)</span>
+<span class="n">a_direct</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_direct</span><span class="p">)</span>                                     <span class="c1"># → 11.3534</span>
+
+<span class="c1"># Equivalent via pure endowment:  10Ex(55) × äx(65)</span>
+<span class="n">via_endowment</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">nEx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">via_endowment</span><span class="p">)</span>                                <span class="c1"># → 11.3534</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="single-life-insurance">
+<h3>Single-life insurance<a class="headerlink" href="#single-life-insurance" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Ax</span></code> accepts <code class="docutils literal notranslate"><span class="pre">d</span></code> and all four calculation modes honour it.  The benefit is payable
+on death only if death occurs after the deferment period:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">insurances</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Standard whole-life insurance:  Ax(55)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">55</span><span class="p">))</span>              <span class="c1"># → 0.424462</span>
+
+<span class="c1"># 10-year deferred whole-life insurance:  10|Ax(55)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>        <span class="c1"># → 0.380524</span>
+
+<span class="c1"># 5-year deferred, 20-year term insurance:  5|A¹55:20|</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>   <span class="c1"># → 0.144705</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A deferred insurance always produces a <strong>lower</strong> present value than the non-deferred
+equivalent: deaths during the deferment period <span class="math notranslate nohighlight">\([0, d)\)</span> are excluded from the benefit,
+reducing the expected present value.</p>
+</div>
+</section>
+<section id="fractional-deferment">
+<h3>Fractional deferment<a class="headerlink" href="#fractional-deferment" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> is a float and any non-negative value is valid, including sub-year periods:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># 6-month deferment, 20-year temporary:  0.5|ä60:20|</span>
+<span class="n">a_half</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_half</span><span class="p">)</span>    <span class="c1"># → 13.8892</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Survival at the fractional age <span class="math notranslate nohighlight">\(x + d\)</span> is evaluated under the configured interpolation
+hypothesis (UDD by default — see <a class="reference internal" href="lx_interpolation.html"><span class="doc">lx Interpolation</span></a>).</p>
+</section>
+<section id="multiple-payment-frequencies-with-deferment">
+<h3>Multiple payment frequencies with deferment<a class="headerlink" href="#multiple-payment-frequencies-with-deferment" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> and <code class="docutils literal notranslate"><span class="pre">m</span></code> are fully orthogonal: the payment grid is
+<span class="math notranslate nohighlight">\(t_j = j/(m) + d\)</span> for annuity-due, regardless of frequency:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Monthly payments, 10-year deferred whole-life:  10|ä⁽¹²⁾x(55)</span>
+<span class="n">a_monthly</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_monthly</span><span class="p">)</span>    <span class="c1"># → 11.0274</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="joint-life-deferred-contingencies">
+<h2>Joint-life deferred contingencies<a class="headerlink" href="#joint-life-deferred-contingencies" title="Link to this heading">#</a></h2>
+<p>All joint-life annuity and insurance methods accept <code class="docutils literal notranslate"><span class="pre">d</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">insurances</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Standard joint-life annuity-due (no deferment):  äxy(60, 58)</span>
+<span class="n">a_joint</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äxy</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">58</span><span class="p">],</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_joint</span><span class="p">)</span>           <span class="c1"># → 16.7085</span>
+
+<span class="c1"># 10-year deferred joint-life annuity-due:  10|äxy(60, 58)</span>
+<span class="n">a_joint_def</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äxy</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">58</span><span class="p">],</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_joint_def</span><span class="p">)</span>       <span class="c1"># → 8.2606</span>
+
+<span class="c1"># 10-year deferred, 15-year temporary:  10|äxy:15|(60, 58)</span>
+<span class="n">a_joint_def_tmp</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äxy</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">58</span><span class="p">],</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_joint_def_tmp</span><span class="p">)</span>   <span class="c1"># → 6.9214</span>
+
+<span class="c1"># 5-year deferred joint first-death insurance:  5|Axy(60, 58)</span>
+<span class="n">Axy_def</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">Axy</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">58</span><span class="p">],</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Axy_def</span><span class="p">)</span>           <span class="c1"># → 0.481055</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For the independence assumption, last-survivor and reversionary annuity formulas, see
+<a class="reference internal" href="joint_life_calculations.html"><span class="doc">Joint-Life Calculations</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="financial-annuities-without-mortality">
+<h2>Financial annuities without mortality<a class="headerlink" href="#financial-annuities-without-mortality" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">InterestRate.ä</span></code> and <code class="docutils literal notranslate"><span class="pre">InterestRate.a</span></code> accept <code class="docutils literal notranslate"><span class="pre">d</span></code> with exactly the same semantics as
+their life-table counterparts — no mortality is involved, so survival probabilities
+are identically 1 and the present value is a pure discount calculation.  This is
+useful for pricing fixed-income structures or for isolating the interest component
+of a life annuity:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># 10-year annuity-due, starting immediately:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">ä</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>          <span class="c1"># → 8.7861</span>
+
+<span class="c1"># The same annuity deferred 5 years:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">ä</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>     <span class="c1"># → 7.5789</span>
+
+<span class="c1"># Annuity-immediate, 5-year deferred:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">a</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>     <span class="c1"># → 7.3582</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For a flat interest rate the scaling is exact:
+<span class="math notranslate nohighlight">\(\ddot{a}(d, n) = v^d \cdot \ddot{a}(n)\)</span>, i.e.\ a 5-year deferment at 3% multiplies
+the undeferrred value by <span class="math notranslate nohighlight">\(v^5 = 1.03^{-5} \approx 0.8626\)</span>, giving
+approximately <span class="math notranslate nohighlight">\(0.8626 \times 8.7861 \approx 7.5789\)</span>.</p>
+</section>
+<hr class="docutils" />
+<section id="deferment-and-benefit-growth">
+<h2>Deferment and benefit growth<a class="headerlink" href="#deferment-and-benefit-growth" title="Link to this heading">#</a></h2>
+<p>When a <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> is active, <strong><code class="docutils literal notranslate"><span class="pre">d</span></code> shifts payment times but does not advance the
+growth anniversary index</strong>.  The growth exponent always counts completed years from
+the first payment of the stream — the deferment period <span class="math notranslate nohighlight">\([0, d)\)</span> is not counted.</p>
+<p>For an annual annuity-due with constant geometric growth <span class="math notranslate nohighlight">\(g\)</span>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Payment at <span class="math notranslate nohighlight">\(t\)</span></p></th>
+<th class="head text-right"><p>Growth factor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><span class="math notranslate nohighlight">\(d\)</span></p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\((1+g)^0 = 1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><span class="math notranslate nohighlight">\(d+1\)</span></p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\((1+g)^1\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><span class="math notranslate nohighlight">\(d+2\)</span></p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\((1+g)^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><span class="math notranslate nohighlight">\(\vdots\)</span></p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(\vdots\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Because the growth schedule always restarts at the first payment of any call, the
+pure-endowment factorisation extends unchanged to growing annuities:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_x(g) = \nEx{d}{x} \cdot \ddot{a}_{x+d}(g)
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Deferred growing annuity: growth index starts from first payment at age 65</span>
+<span class="n">a_deferred</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">gr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_deferred</span><span class="p">)</span>           <span class="c1"># → 14.1698</span>
+
+<span class="c1"># Equivalent factorisation: nEx(55, 10) × äx(65, gr=2%)</span>
+<span class="n">nex</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">nEx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">a_factor</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nex</span> <span class="o">*</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">gr</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_factor</span><span class="p">)</span>             <span class="c1"># → 14.1698</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is <strong>different</strong> from <code class="docutils literal notranslate"><span class="pre">ts</span></code> (time shift): <code class="docutils literal notranslate"><span class="pre">ts=5</span></code> consumes the first 5 anniverary
+years from the growth schedule, while <code class="docutils literal notranslate"><span class="pre">d=5</span></code> merely delays the first payment without
+altering the growth starting point.  See <a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a> for the complete
+interaction between <code class="docutils literal notranslate"><span class="pre">gr</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, and <code class="docutils literal notranslate"><span class="pre">ts</span></code>.</p>
+</div>
+<hr class="docutils" />
+</section>
+<section id="interaction-with-pure-endowments">
+<span id="id1"></span><h2>Interaction with pure endowments<a class="headerlink" href="#interaction-with-pure-endowments" title="Link to this heading">#</a></h2>
+<p>Pure endowment methods (<code class="docutils literal notranslate"><span class="pre">nEx</span></code>, <code class="docutils literal notranslate"><span class="pre">nExy</span></code>, <code class="docutils literal notranslate"><span class="pre">nExyz</span></code>) do <strong>not</strong> accept a <code class="docutils literal notranslate"><span class="pre">d</span></code> parameter.
+This is intentional: the pure endowment <span class="math notranslate nohighlight">\(\nEx{n}{x} = v^n \cdot \px{n}{x}\)</span> already
+has a fixed observation horizon <span class="math notranslate nohighlight">\(n\)</span>; adding deferment on top of it would simply be
+equivalent to changing <span class="math notranslate nohighlight">\(n\)</span>.  To value a deferred pure endowment, increase <code class="docutils literal notranslate"><span class="pre">n</span></code> directly:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_d E_x = \texttt{lt.nEx}(x,\; n=d)
+\qquad
+{}_{d+n} E_x = \texttt{lt.nEx}(x,\; n=d+n)
+\]</div>
+<p>The annuity factorisation <span class="math notranslate nohighlight">\({}_{d|}\ddot{a}_x = \nEx{d}{x} \cdot \ddot{a}_{x+d}\)</span> makes
+this connection explicit: <code class="docutils literal notranslate"><span class="pre">nEx</span></code> and <code class="docutils literal notranslate"><span class="pre">äx</span></code> together reproduce the deferred annuity.</p>
+</section>
+<hr class="docutils" />
+<section id="calculation-modes">
+<h2>Calculation modes<a class="headerlink" href="#calculation-modes" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> shifts the payment grid independently of the calculation mode.  The table below
+summarises how each mode integrates the shift:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Discrete / continuous</p></th>
+<th class="head"><p>Effect of <code class="docutils literal notranslate"><span class="pre">d</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;discrete_precision&quot;</span></code> (default)</p></td>
+<td><p>Discrete exact summation</p></td>
+<td><p>Payment grid <span class="math notranslate nohighlight">\(t_j = j/m + d\)</span>; each <span class="math notranslate nohighlight">\(t_j\)</span> enters survival and discount directly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;discrete_simplified&quot;</span></code></p></td>
+<td><p>Woolhouse UDD approximation</p></td>
+<td><p>Same grid shift; Woolhouse 2-term adjustment applied after</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;continuous_precision&quot;</span></code></p></td>
+<td><p>Numerical integration</p></td>
+<td><p>Integration starts at <span class="math notranslate nohighlight">\(t = d\)</span>; the grid spans <span class="math notranslate nohighlight">\([d,\, d+n]\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;continuous_simplified&quot;</span></code></p></td>
+<td><p>Trapezoidal approximation</p></td>
+<td><p>Sub-calculations shifted by <span class="math notranslate nohighlight">\(d\)</span>; results averaged to approximate continuous integral</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Both continuous modes use unrounded <span class="math notranslate nohighlight">\(l_x\)</span> values (full float64 precision, no intermediate rounding).</p>
+<p>No configuration changes are needed when using <code class="docutils literal notranslate"><span class="pre">d</span></code> with any mode.  Switch modes via
+<code class="docutils literal notranslate"><span class="pre">config.calculation_mode</span></code>; see <a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> for full details.</p>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a> — interaction between <code class="docutils literal notranslate"><span class="pre">d</span></code> and the elapsed-time
+parameter <code class="docutils literal notranslate"><span class="pre">ts</span></code>; the effective deferment rule <span class="math notranslate nohighlight">\(d_{\text{eff}} = \max(d - ts,\; 0)\)</span></p></li>
+<li><p><a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a> — how <code class="docutils literal notranslate"><span class="pre">d</span></code> interacts with <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code>: deferment shifts
+payment <em>times</em> but does not advance the benefit anniversary index</p></li>
+<li><p><a class="reference internal" href="joint_life_calculations.html"><span class="doc">Joint-Life Calculations</span></a> — joint-life methods, independence assumption,
+last-survivor and reversionary formulas</p></li>
+<li><p><a class="reference internal" href="../formulas.html"><span class="doc">Actuarial Formulas</span></a> — full mathematical reference for deferred annuity formulas</p></li>
+<li><p><a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> — discrete vs. continuous modes and their frequency effects</p></li>
+<li><p><a class="reference internal" href="lx_interpolation.html"><span class="doc">lx Interpolation</span></a> — interpolation hypotheses (UDD / CFM) used at fractional ages</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="commutation_functions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Commutation Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="growth_rates_guide.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Growth Rates</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-deferment-parameter">The deferment parameter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-formulas">Standard formulas</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-whole-life-annuities">Deferred whole-life annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-temporary-annuities">Deferred temporary annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-life-insurance">Deferred life insurance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-examples">API examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-life-annuities">Single-life annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-life-insurance">Single-life insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-deferment">Fractional deferment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-payment-frequencies-with-deferment">Multiple payment frequencies with deferment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-deferred-contingencies">Joint-life deferred contingencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#financial-annuities-without-mortality">Financial annuities without mortality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deferment-and-benefit-growth">Deferment and benefit growth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interaction-with-pure-endowments">Interaction with pure endowments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-modes">Calculation modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

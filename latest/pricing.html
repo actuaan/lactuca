@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pricing &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pricing';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Activation Guide" href="activation.html" />
+    <link rel="prev" title="Error Reference" href="errors_reference.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Pricing</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pricing">
+<h1>Pricing<a class="headerlink" href="#pricing" title="Link to this heading">#</a></h1>
+<p><strong>Lactuca</strong> is a high-performance life actuarial library for Python. All paid plans are
+billed via <a class="reference external" href="https://lemonsqueezy.com">Lemon Squeezy</a> (Merchant of Record; VAT handled
+automatically for all jurisdictions). Prices shown are <strong>ex-VAT</strong>.</p>
+<hr class="docutils" />
+<section id="plans">
+<h2>Plans<a class="headerlink" href="#plans" title="Link to this heading">#</a></h2>
+<!-- EULA acceptance modal -->
+<div id="lac-eula-modal" role="dialog" aria-modal="true" aria-labelledby="lac-modal-title"
+  style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:10px;max-width:540px;width:92%;padding:2em 2em 1.6em;box-shadow:0 8px 32px rgba(0,0,0,0.22);position:relative">
+    <h3 id="lac-modal-title" style="margin:0 0 0.7em;font-size:1.15em">Before you continue</h3>
+    <p style="margin:0 0 1em;font-size:0.93em;line-height:1.5">Please review and accept the Lactuca license terms before proceeding to checkout.</p>
+    <label style="display:flex;align-items:flex-start;gap:0.65em;cursor:pointer;font-size:0.93em;line-height:1.5;margin-bottom:1.2em">
+      <input type="checkbox" id="lac-modal-check" style="margin-top:3px;flex-shrink:0" onchange="lacModalCheckChange()">
+      <span>I have read and accept the
+        <a href="eula.html" target="_blank" rel="noopener">End User License Agreement</a>
+        (<a href="eula_es.html" target="_blank" rel="noopener">versi&#xF3;n en espa&#xF1;ol</a>)
+        and acknowledge that this software requires periodic internet access
+        (at least every 3&nbsp;days) to maintain the license.</span>
+    </label>
+    <div style="display:flex;gap:0.8em;justify-content:flex-end">
+      <button onclick="lacModalClose()" style="padding:0.5em 1.2em;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer;font-size:0.93em">Cancel</button>
+      <a id="lac-modal-continue" href="#" target="_blank" rel="noopener" onclick="lacModalClose()"
+        style="padding:0.5em 1.4em;border-radius:5px;background:#0d6efd;color:#fff;text-decoration:none;font-size:0.93em;opacity:0.45;pointer-events:none"
+        aria-disabled="true">Continue to checkout &#x2192;</a>
+    </div>
+  </div>
+</div><div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Individual</div>
+<p class="sd-card-text"><strong>€69 / month</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text">1 user</p></li>
+<li><p class="sd-card-text">1 activated device</p></li>
+<li><p class="sd-card-text"><strong>1 concurrent session</strong> (one instance at a time)</p></li>
+<li><p class="sd-card-text">All minor &amp; patch releases included</p></li>
+<li><p class="sd-card-text">Online license validation every 30 days; offline use until local expiry (EULA §6.1)</p></li>
+</ul>
+<div style="margin-top:1em">
+  <button class="sd-btn sd-btn-primary lac-buy-btn"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/9982f82f-4fff-4595-a6e3-4aa609adc6fc')"
+    style="cursor:pointer;border:none">Buy monthly</button>
+</div></div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Team</div>
+<p class="sd-card-text"><strong>€580 / month</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text">Up to 10 users</p></li>
+<li><p class="sd-card-text">1 activated device per user (10 total)</p></li>
+<li><p class="sd-card-text"><strong>Up to 10 concurrent sessions</strong> across all devices</p></li>
+<li><p class="sd-card-text">All minor &amp; patch releases included</p></li>
+<li><p class="sd-card-text">Online license validation every 30 days; offline use until local expiry (EULA §6.1)</p></li>
+</ul>
+<div style="margin-top:1em">
+  <button class="sd-btn sd-btn-primary lac-buy-btn"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/0cb8ee3d-7a47-4d7c-a12e-8a963d1d4d08')"
+    style="cursor:pointer;border:none">Buy monthly</button>
+</div></div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Enterprise</div>
+<p class="sd-card-text"><strong>€1,650 / month</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text">Up to 50 device activations (1 per user for up to 50 users)</p></li>
+<li><p class="sd-card-text"><strong>Up to 50 concurrent sessions</strong> across all activated devices</p></li>
+<li><p class="sd-card-text">Covers workstation installation and server/shared deployments for internal users</p></li>
+<li><p class="sd-card-text">Monthly (Lemon Squeezy) and annual (direct contract) plans include identical usage rights</p></li>
+<li><p class="sd-card-text">All minor &amp; patch releases included</p></li>
+<li><p class="sd-card-text">Online license validation every 30 days; offline use until local expiry (EULA §6.1)</p></li>
+<li><p class="sd-card-text">Annual billing available on request (contact us for a quote)</p></li>
+</ul>
+<div style="margin-top:1em">
+  <button class="sd-btn sd-btn-primary lac-buy-btn"
+    onclick="lacModalOpen('https://store.lactuca.io/checkout/buy/16ea5803-5321-46ca-8875-68bfd1352b5a')"
+    style="cursor:pointer;border:none">Buy monthly</button>
+</div></div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Academic &amp; Community</div>
+<p class="sd-card-text"><strong>Free</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text">Students, educators, independent researchers, open-source contributors, and beta testers</p></li>
+<li><p class="sd-card-text">1 named user, 1 activated device, <strong>1 concurrent session</strong></p></li>
+<li><p class="sd-card-text"><strong>Non-commercial use only</strong> — see the <a class="reference internal" href="eula.html"><span class="doc std std-doc">EULA</span></a> for restrictions</p></li>
+<li><p class="sd-card-text">Apply by email — no credit card required</p></li>
+</ul>
+<div style="margin-top:1em">
+  <a class="sd-btn sd-btn-outline-secondary" href="mailto:support@lactuca.io?subject=Academic%20%26%20Community%20License%20Request">Apply by email</a>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p><strong>VAT</strong>: Lemon Squeezy adds the applicable VAT for your jurisdiction at checkout
+(e.g. 21% in Spain). Enterprise annual billing is handled via direct invoice
+outside the Lemon Squeezy platform; contact us for a quote.</p>
+</div></blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Early Bird — Founding Members
+Apply discount code <strong><code class="docutils literal notranslate"><span class="pre">FOUNDING</span></code></strong> at checkout on the Individual monthly plan to lock
+in <strong>€49 / month permanently</strong> — the discount applies to every renewal for as long as
+your subscription remains active. Limited to the first <strong>20 subscribers</strong> in total.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="free-30-day-trial">
+<h2>Free 30-Day Trial<a class="headerlink" href="#free-30-day-trial" title="Link to this heading">#</a></h2>
+<p><strong>No credit card required. No commitment.</strong></p>
+<p>Start a free 30-day trial to evaluate Lactuca before purchasing. The trial gives you
+full access to all features with 1 device activation.</p>
+<p>Trials are requested directly from the activation prompt when you first import the
+library. Install Lactuca and run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">lactuca</span>
+</pre></div>
+</div>
+<p>The activation prompt will appear:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lactuca</span> <span class="n">requires</span> <span class="n">a</span> <span class="n">license</span> <span class="n">key</span> <span class="n">to</span> <span class="n">run</span><span class="o">.</span>
+
+  <span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="n">Request</span> <span class="n">a</span> <span class="n">free</span> <span class="mi">30</span><span class="o">-</span><span class="n">day</span> <span class="n">trial</span> <span class="p">(</span><span class="n">no</span> <span class="n">credit</span> <span class="n">card</span> <span class="n">required</span><span class="p">)</span>
+  <span class="p">[</span><span class="n">K</span><span class="p">]</span> <span class="n">Enter</span> <span class="n">an</span> <span class="n">existing</span> <span class="n">license</span> <span class="n">key</span>
+  <span class="p">[</span><span class="n">Q</span><span class="p">]</span> <span class="n">Quit</span>
+
+<span class="n">Choice</span> <span class="p">[</span><span class="n">T</span><span class="o">/</span><span class="n">K</span><span class="o">/</span><span class="n">Q</span><span class="p">]:</span> <span class="n">T</span>
+</pre></div>
+</div>
+<p>Enter your name (optional) and email address. A confirmation step lets you correct
+the email before the request is sent. Your trial key will arrive by email within a
+few minutes. Once you have it, run <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code> again and choose <strong>[K]</strong> to
+enter the key.</p>
+<p>See the <a class="reference internal" href="activation.html"><span class="doc std std-doc">Activation Guide</span></a> for step-by-step instructions.</p>
+</section>
+<hr class="docutils" />
+<section id="academic-community-process">
+<h2>Academic &amp; Community Process<a class="headerlink" href="#academic-community-process" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Send an email to <a class="reference external" href="mailto:support&#37;&#52;&#48;lactuca&#46;io?subject=Academic%20%26%20Community%20License%20Request">support<span>&#64;</span>lactuca<span>&#46;</span>io</a> with:</p>
+<ul class="simple">
+<li><p>Your full name</p></li>
+<li><p>Your institution</p></li>
+<li><p>Your institutional email address (<code class="docutils literal notranslate"><span class="pre">.edu</span></code>, <code class="docutils literal notranslate"><span class="pre">.ac.uk</span></code>, <code class="docutils literal notranslate"><span class="pre">.upm.es</span></code>, etc.)</p></li>
+<li><p>Brief description of intended use (thesis, research, teaching, open-source project)</p></li>
+</ul>
+</li>
+<li><p>Licenses are reviewed and issued within 2–3 business days.</p></li>
+<li><p>The license is valid for 1 year and can be renewed following the same process.</p></li>
+</ol>
+<p>Academic licenses are <strong>non-commercial only</strong> — see §3 of the <a class="reference internal" href="eula.html"><span class="doc std std-doc">EULA</span></a> for the
+full restrictions.</p>
+</section>
+<hr class="docutils" />
+<section id="feature-comparison">
+<h2>Feature Comparison<a class="headerlink" href="#feature-comparison" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head text-center"><p>Trial</p></th>
+<th class="head text-center"><p>Individual</p></th>
+<th class="head text-center"><p>Team</p></th>
+<th class="head text-center"><p>Enterprise</p></th>
+<th class="head text-center"><p>Academic</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>All actuarial table types</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Life, disability, exit tables</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Annuities &amp; insurances</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiple-decrement models</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Generational mortality</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Periodic revalidation (30 d) + seat heartbeat (3 d)</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Concurrent sessions</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>≤ 10</p></td>
+<td class="text-center"><p>≤ 50</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Commercial use</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>Number of users</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>≤ 10</p></td>
+<td class="text-center"><p>≤ 50</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Devices per user</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>Duration</p></td>
+<td class="text-center"><p>30 days</p></td>
+<td class="text-center"><p>Monthly</p></td>
+<td class="text-center"><p>Monthly</p></td>
+<td class="text-center"><p>Monthly / direct annual</p></td>
+<td class="text-center"><p>1 year</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading">#</a></h2>
+<p><strong>Can I upgrade from Individual to Team?</strong>
+Yes. Purchase the Team plan and activate with your new key. See the
+<a class="reference internal" href="faq_licensing.html"><span class="doc std std-doc">FAQ</span></a> for the full upgrade procedure.</p>
+<p><strong>What happens when my trial expires?</strong>
+<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code> raises <code class="docutils literal notranslate"><span class="pre">LicenseExpiredError</span></code>. Purchase any paid plan to continue.</p>
+<p><strong>Is VAT included in the prices shown?</strong>
+No. Prices shown are ex-VAT. Lemon Squeezy adds the applicable VAT for your
+jurisdiction at checkout.</p>
+<p><strong>Can I use Lactuca in a CI/CD pipeline?</strong>
+Yes — set the <code class="docutils literal notranslate"><span class="pre">LACTUCA_LICENSE_KEY</span></code> environment variable. See the
+<a class="reference internal" href="activation.html#server-mode-and-cicd"><span class="std std-ref">Activation Guide</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="oem-and-saas-licensing">
+<h2>OEM and SaaS Licensing<a class="headerlink" href="#oem-and-saas-licensing" title="Link to this heading">#</a></h2>
+<p>If you want to embed Lactuca as a calculation engine in a product or service
+distributed or made available to your own clients or external users, you need
+an <strong>OEM license</strong> — a separate written agreement with Licensor.</p>
+<p>Standard license tiers (Individual, Team, Enterprise) do not cover OEM use.</p>
+<p><strong>Typical OEM scenarios:</strong></p>
+<ul class="simple">
+<li><p>A SaaS platform running Lactuca server-side for your customers.</p></li>
+<li><p>An application or API sold to third parties that calls Lactuca internally.</p></li>
+<li><p>Any product where your clients benefit from Lactuca without obtaining their
+own Lactuca license directly from Licensor.</p></li>
+</ul>
+<p>To enquire about OEM licensing, contact
+<a class="reference external" href="mailto:support&#37;&#52;&#48;lactuca&#46;io?subject=OEM%20License%20Enquiry">support<span>&#64;</span>lactuca<span>&#46;</span>io</a>
+with a description of your product and estimated scale.</p>
+<script>
+function lacModalOpen(url) {
+  var modal = document.getElementById('lac-eula-modal');
+  var chk = document.getElementById('lac-modal-check');
+  var btn = document.getElementById('lac-modal-continue');
+  chk.checked = false;
+  btn.style.opacity = '0.45';
+  btn.style.pointerEvents = 'none';
+  btn.setAttribute('aria-disabled', 'true');
+  btn.href = url;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function lacModalClose() {
+  document.getElementById('lac-eula-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function lacModalCheckChange() {
+  var chk = document.getElementById('lac-modal-check');
+  var btn = document.getElementById('lac-modal-continue');
+  if (chk.checked) {
+    btn.style.opacity = '';
+    btn.style.pointerEvents = '';
+    btn.removeAttribute('aria-disabled');
+  } else {
+    btn.style.opacity = '0.45';
+    btn.style.pointerEvents = 'none';
+    btn.setAttribute('aria-disabled', 'true');
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { lacModalClose(); }
+});
+document.getElementById('lac-eula-modal').addEventListener('click', function(e) {
+  if (e.target === this) { lacModalClose(); }
+});
+</script></section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="errors_reference.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Error Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="activation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Activation Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

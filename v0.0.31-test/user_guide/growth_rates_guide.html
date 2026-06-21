@@ -1,0 +1,1174 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Growth Rates &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/growth_rates_guide';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Joint-Life Calculations" href="joint_life_calculations.html" />
+    <link rel="prev" title="Deferred Life Contingencies" href="deferment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deferment.html">Deferred Life Contingencies</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspecting_cashflows.html">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="last_payment_adjustment.html">Last Payment Adjustment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates_guide.html">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Growth Rates</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="growth-rates">
+<h1>Growth Rates<a class="headerlink" href="#growth-rates" title="Link to this heading">#</a></h1>
+<p>This guide covers the <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> class — how to create, configure, and use growth
+rate objects in actuarial annuity and insurance calculations.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> models a per-period revaluation factor applied to benefit amounts.
+Applications are not limited to escalating benefits: common uses include pension CPI
+indexation, salary-scale projections, guaranteed annual increases, and stress testing
+with alternative growth assumptions. Growth can be <strong>geometric</strong> (compound, default)
+or <strong>arithmetic</strong> (linear additive), with constant or piecewise schedules and
+multi-scenario containers — analogous to <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code>.</p>
+<section id="creating-a-growthrate">
+<h2>Creating a GrowthRate<a class="headerlink" href="#creating-a-growthrate" title="Link to this heading">#</a></h2>
+<section id="constant-geometric-growth">
+<h3>Constant geometric growth<a class="headerlink" href="#constant-geometric-growth" title="Link to this heading">#</a></h3>
+<p>Geometric (compound) growth is the default: each payment receives a factor of
+<span class="math notranslate nohighlight">\((1+g)^k\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of complete policy years elapsed since the
+first payment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># 2% compound annual increase (growth_type=&#39;g&#39; is the default)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>             <span class="c1"># GrowthRate: geometric, constant rate = 0.020000</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">6</span><span class="p">))</span>   <span class="c1"># 1.061208  — 1.02 ** 3</span>
+</pre></div>
+</div>
+</section>
+<section id="constant-arithmetic-growth">
+<h3>Constant arithmetic growth<a class="headerlink" href="#constant-arithmetic-growth" title="Link to this heading">#</a></h3>
+<p>Arithmetic growth applies a flat linear increment: the factor at anniversary <span class="math notranslate nohighlight">\(k\)</span>
+is <span class="math notranslate nohighlight">\(1 + g \cdot k\)</span>. Use this for benefit schedules expressed as a fixed percentage
+of the original benefit (step increases), rather than a compound multiplier.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># 2% linear annual increase (additive)</span>
+<span class="n">gr_a</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">growth_type</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_a</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>      <span class="c1"># GrowthRate: arithmetic, constant rate = 0.020000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_a</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>      <span class="c1"># 1.06  — 1 + 0.02 × 3</span>
+</pre></div>
+</div>
+</section>
+<section id="piecewise-schedule">
+<h3>Piecewise schedule<a class="headerlink" href="#piecewise-schedule" title="Link to this heading">#</a></h3>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">rates</span></code> and <code class="docutils literal notranslate"><span class="pre">terms</span></code> for a step-wise schedule. <code class="docutils literal notranslate"><span class="pre">rates</span></code> must have one more
+element than <code class="docutils literal notranslate"><span class="pre">terms</span></code>; the last rate applies indefinitely:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># 1% for the first year, 2% thereafter</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>               <span class="c1"># GrowthRate: geometric, piecewise terms=[1], rates=[0.01 0.02]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>               <span class="c1"># 1.01     — one period at 1%</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>     <span class="c1"># 1.0302   — 1.01 × 1.02</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">6</span><span class="p">))</span>     <span class="c1"># 1.050804 — 1.01 × 1.02 ** 2</span>
+</pre></div>
+</div>
+</section>
+<section id="when-growth-applies-apply-from-first">
+<h3>When growth applies: <code class="docutils literal notranslate"><span class="pre">apply_from_first</span></code><a class="headerlink" href="#when-growth-applies-apply-from-first" title="Link to this heading">#</a></h3>
+<p>By default (<code class="docutils literal notranslate"><span class="pre">apply_from_first=False</span></code>) the first payment has factor 1 — growth
+applies from the second payment onward. Set <code class="docutils literal notranslate"><span class="pre">apply_from_first=True</span></code> to apply
+growth already to the first payment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">apply_from_first</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># standard convention</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>    <span class="c1"># 1.0    — first payment, no growth yet</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>    <span class="c1"># 1.03</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>    <span class="c1"># 1.0609</span>
+
+<span class="n">gr_first</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">apply_from_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_first</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>    <span class="c1"># 1.03   — growth applied even at t=0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_first</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>    <span class="c1"># 1.0609</span>
+</pre></div>
+</div>
+</section>
+<section id="multi-scenario-container">
+<h3>Multi-scenario container<a class="headerlink" href="#multi-scenario-container" title="Link to this heading">#</a></h3>
+<p>Store named alternatives in a single object and switch with <code class="docutils literal notranslate"><span class="pre">active_scenario</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">({</span>
+    <span class="s2">&quot;base&quot;</span><span class="p">:</span>   <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="s2">&quot;stress&quot;</span><span class="p">:</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.04</span><span class="p">),</span>
+    <span class="s2">&quot;flat&quot;</span><span class="p">:</span>   <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.00</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>   <span class="c1"># lists all scenarios and the active one</span>
+
+<span class="n">gr</span><span class="o">.</span><span class="n">active_scenario</span> <span class="o">=</span> <span class="s2">&quot;base&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>    <span class="c1"># 1.1041  — 1.02 ** 5</span>
+
+<span class="n">gr</span><span class="o">.</span><span class="n">active_scenario</span> <span class="o">=</span> <span class="s2">&quot;stress&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>    <span class="c1"># 1.2167  — 1.04 ** 5</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="computing-growth-factors">
+<h2>Computing growth factors<a class="headerlink" href="#computing-growth-factors" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GrowthRate.factor(t)</span></code> returns the cumulative growth factor at <strong>anniversary index</strong>
+<code class="docutils literal notranslate"><span class="pre">t</span></code> (a non-negative integer). See <a class="reference internal" href="#anniversary-convention">Anniversary convention</a>
+below for how the engine maps payment indices to anniversary indices.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>                      <span class="c1"># 1.0     — reference payment (no growth yet)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>                      <span class="c1"># 1.03</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>            <span class="c1"># 1.1593  — 1.03 ** 5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>  <span class="c1"># [1.     1.03   1.0609 1.1593]</span>
+</pre></div>
+</div>
+</section>
+<section id="using-with-table-methods">
+<h2>Using with table methods<a class="headerlink" href="#using-with-table-methods" title="Link to this heading">#</a></h2>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">gr=</span></code> to <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> annuity and insurance methods. A plain <code class="docutils literal notranslate"><span class="pre">float</span></code> is also
+accepted and wrapped automatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Escalating whole-life annuity-due at 3% interest</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">gr</span><span class="p">)</span>
+
+<span class="c1"># 20-year temporary annuity, monthly, using a plain float for growth</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Escalating whole-life insurance</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">gr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">gr=</span></code> parameter is accepted by the annuity methods <code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">ax</span></code> and their
+joint-life variants (<code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>), and by the insurance methods
+<code class="docutils literal notranslate"><span class="pre">Ax</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axyz</span></code>. Pure endowments (<code class="docutils literal notranslate"><span class="pre">nEx</span></code>, <code class="docutils literal notranslate"><span class="pre">nExy</span></code>, <code class="docutils literal notranslate"><span class="pre">nExyz</span></code>) do not support <code class="docutils literal notranslate"><span class="pre">gr=</span></code>.</p>
+</section>
+<section id="anniversary-convention">
+<span id="id1"></span><h2>Anniversary convention<a class="headerlink" href="#anniversary-convention" title="Link to this heading">#</a></h2>
+<p>Growth factors are indexed by the number of <strong>complete policy years</strong> elapsed before
+each payment. For payment frequency <span class="math notranslate nohighlight">\(m\)</span>, the <span class="math notranslate nohighlight">\(j\)</span>-th payment (0-based) receives
+factor <span class="math notranslate nohighlight">\(F\!\left(\lfloor j/m \rfloor\right)\)</span>. The deferment parameter <code class="docutils literal notranslate"><span class="pre">d=</span></code> shifts
+payment times but does <strong>not</strong> affect the anniversary index — growth always counts
+complete years from the first payment of the stream, regardless of when it starts.</p>
+<p>For the full mathematical derivation and worked examples, see <a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a>.</p>
+</section>
+<section id="piecewise-schedules-and-shifted">
+<h2>Piecewise schedules and <code class="docutils literal notranslate"><span class="pre">shifted()</span></code><a class="headerlink" href="#piecewise-schedules-and-shifted" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GrowthRate.shifted(ts)</span></code> returns a new <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> with the first <code class="docutils literal notranslate"><span class="pre">int(ts)</span></code>
+anniversary years of the schedule consumed. The engine calls it automatically when
+<code class="docutils literal notranslate"><span class="pre">ts</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> so that the in-force growth schedule is correctly aligned from the
+valuation date.</p>
+<p>Only the <strong>integer part</strong> of <code class="docutils literal notranslate"><span class="pre">ts</span></code> advances the schedule: <code class="docutils literal notranslate"><span class="pre">shifted(2.5)</span></code> produces
+the same result as <code class="docutils literal notranslate"><span class="pre">shifted(2)</span></code>. The fractional remainder does not move the growth
+horizon — growth still revaluates at whole-year policy anniversaries counted from
+contract inception. <code class="docutils literal notranslate"><span class="pre">config.force_integer_ts</span></code> (default <code class="docutils literal notranslate"><span class="pre">False</span></code>) controls whether
+fractional <code class="docutils literal notranslate"><span class="pre">ts</span></code> values are accepted at the annuity level (with a <code class="docutils literal notranslate"><span class="pre">UserWarning</span></code>
+reminding that the fractional part has no effect on the growth schedule) or raise
+a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. For full context and worked examples see <a class="reference internal" href="prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a>.</p>
+<p>For the mathematical derivation of the schedule-shifting formula, see <a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a>.</p>
+</section>
+<section id="combining-growth-and-interest">
+<h2>Combining growth and interest<a class="headerlink" href="#combining-growth-and-interest" title="Link to this heading">#</a></h2>
+<p>When both <code class="docutils literal notranslate"><span class="pre">gr=</span></code> and <code class="docutils literal notranslate"><span class="pre">ir=</span></code> are specified, the annuity engine compounds the growth
+factor with the discount factor for each payment. For constant geometric growth, the
+effective growth-adjusted discount factor per complete year simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[v_g = \frac{1 + g}{1 + i}\]</div>
+<p>For piecewise or arithmetic schedules, and for sub-annual frequency <span class="math notranslate nohighlight">\(m &gt; 1\)</span>, the
+engine evaluates each payment individually. <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> and <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> are
+independent objects: neither modifies the other.</p>
+</section>
+<section id="inspecting-a-growthrate">
+<h2>Inspecting a GrowthRate<a class="headerlink" href="#inspecting-a-growthrate" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">print(gr)</span></code> or <code class="docutils literal notranslate"><span class="pre">gr.summary()</span></code> (alias for <code class="docutils literal notranslate"><span class="pre">str(gr)</span></code>) to get a human-readable
+description of the current growth rate curve:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span>
+<span class="c1"># GrowthRate: geometric, constant rate = 0.030000</span>
+
+<span class="n">gr_neg</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="o">-</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_neg</span><span class="p">)</span>
+<span class="c1"># GrowthRate: geometric, constant rate = -0.010000 (negative rate — shrinkage)</span>
+
+<span class="n">gr_pw</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="p">)</span>
+<span class="c1"># GrowthRate: geometric, piecewise terms=[5], rates=[0.02 0.03]</span>
+</pre></div>
+</div>
+<p>Zero rates and negative rates are explicitly annotated so that they are visible in
+IFRS 17 and Solvency II reserving contexts. Multi-scenario containers list all
+scenario names alongside the active scenario.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">repr(gr)</span></code> for a compact, copy-pasteable constructor form (e.g. in logs or
+debugging sessions).</p>
+</section>
+<section id="mutating-rates-and-terms">
+<h2>Mutating rates and terms<a class="headerlink" href="#mutating-rates-and-terms" title="Link to this heading">#</a></h2>
+<p>After construction, the rate values and segment durations of a piecewise schedule
+can be updated in-place via the <code class="docutils literal notranslate"><span class="pre">rates</span></code> and <code class="docutils literal notranslate"><span class="pre">terms</span></code> setters. The array length (i.e.
+number of segments) cannot be changed — create a new <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> for structural
+changes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># Update a constant rate in-place</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">gr</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.03</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>    <span class="c1"># 1.1593  — 1.03 ** 5</span>
+
+<span class="c1"># Update rates in a piecewise schedule</span>
+<span class="n">gr_pw</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">gr_pw</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.035</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>               <span class="c1"># 1.025</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">6</span><span class="p">))</span>     <span class="c1"># 1.114582  — 1.025 ** 3 × 1.035</span>
+
+<span class="c1"># Update segment durations (structure stays the same, only durations change)</span>
+<span class="n">gr_pw</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span>   <span class="c1"># segment now lasts 5 years instead of 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">get_segment_info</span><span class="p">(</span><span class="mi">4</span><span class="p">)[</span><span class="s2">&quot;segment_end&quot;</span><span class="p">])</span>    <span class="c1"># 5</span>
+</pre></div>
+</div>
+<p>Setters validate the new values with the same rules as the constructor. Passing a
+wrong-length array, a rate that violates the growth type constraint, or a non-positive
+term raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p>Both setters are unavailable on multi-scenario containers — set individual scenario
+instances directly. The <code class="docutils literal notranslate"><span class="pre">terms</span></code> setter is also unavailable on constant <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code>
+instances (they have no segment structure).</p>
+<section id="copying-to-preserve-the-original">
+<h3>Copying to preserve the original<a class="headerlink" href="#copying-to-preserve-the-original" title="Link to this heading">#</a></h3>
+<p>If you need to keep the original schedule intact while experimenting with a variant,
+use <code class="docutils literal notranslate"><span class="pre">gr.copy()</span></code> instead of mutating in-place:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr_base</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="n">gr_stress</span> <span class="o">=</span> <span class="n">gr_base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gr_stress</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">]</span>   <span class="c1"># only gr_stress changes</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_base</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>    <span class="c1"># 1.0303  (unchanged)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_stress</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># 1.0612</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gr.copy()</span></code> produces an independent deep copy; arrays are not shared with the original.</p>
+</section>
+</section>
+<section id="querying-rates-and-segment-metadata">
+<h2>Querying rates and segment metadata<a class="headerlink" href="#querying-rates-and-segment-metadata" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">get_rate(t)</span></code> retrieves the growth rate of the segment that applies at period <code class="docutils literal notranslate"><span class="pre">t</span></code>.
+It accepts scalar or array input and follows the same scalar/array return convention
+as <code class="docutils literal notranslate"><span class="pre">factor()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">get_rate</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>              <span class="c1"># 0.02</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">get_rate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]))</span>     <span class="c1"># [0.02 0.02 0.02]</span>
+
+<span class="n">gr_pw</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">get_rate</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>               <span class="c1"># 0.01  — period 2 is in segment 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">get_rate</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>               <span class="c1"># 0.02  — period 3 starts the tail</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_pw</span><span class="o">.</span><span class="n">get_rate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">]))</span>   <span class="c1"># [0.01 0.01 0.02 0.02]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">get_segment_info(t)</span></code> returns a dict with full metadata about which segment applies
+at period <code class="docutils literal notranslate"><span class="pre">t</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">gr_pw</span><span class="o">.</span><span class="n">get_segment_info</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;type&#39;: &#39;piecewise&#39;,</span>
+<span class="c1">#   &#39;rate&#39;: 0.01,</span>
+<span class="c1">#   &#39;growth_type&#39;: &#39;geometric&#39;,</span>
+<span class="c1">#   &#39;apply_from_first&#39;: False,</span>
+<span class="c1">#   &#39;segment_index&#39;: 0,</span>
+<span class="c1">#   &#39;segment_start&#39;: 0,</span>
+<span class="c1">#   &#39;segment_end&#39;: 3,</span>
+<span class="c1">#   &#39;is_terminal&#39;: False,</span>
+<span class="c1"># }</span>
+
+<span class="n">tail_info</span> <span class="o">=</span> <span class="n">gr_pw</span><span class="o">.</span><span class="n">get_segment_info</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1"># segment_end is None for the open-ended tail</span>
+</pre></div>
+</div>
+</section>
+<section id="validation-reports">
+<h2>Validation reports<a class="headerlink" href="#validation-reports" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">validate()</span></code> returns a structured dict describing the state of the growth rate
+curve, including zero-rate and negative-rate warnings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">report</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;type&#39;: &#39;piecewise&#39;,</span>
+<span class="c1">#   &#39;growth_type&#39;: &#39;geometric&#39;,</span>
+<span class="c1">#   &#39;apply_from_first&#39;: False,</span>
+<span class="c1">#   &#39;status&#39;: &#39;warnings&#39;,</span>
+<span class="c1">#   &#39;warnings&#39;: [&#39;Zero growth rate found (1 occurrence(s)) — flat growth, no revaluation.&#39;],</span>
+<span class="c1">#   &#39;rate_statistics&#39;: {&#39;min&#39;: 0.0, &#39;max&#39;: 0.02, &#39;mean&#39;: 0.01,</span>
+<span class="c1">#                       &#39;zero_count&#39;: 1, &#39;negative_count&#39;: 0},</span>
+<span class="c1">#   &#39;segment_count&#39;: 1,</span>
+<span class="c1">#   &#39;total_defined_term&#39;: 3,</span>
+<span class="c1"># }</span>
+</pre></div>
+</div>
+<p>Status is <code class="docutils literal notranslate"><span class="pre">'ok'</span></code> when no warnings are found, <code class="docutils literal notranslate"><span class="pre">'warnings'</span></code> otherwise. For
+multi-scenario containers, the dict includes a <code class="docutils literal notranslate"><span class="pre">'scenarios'</span></code> sub-dict with one
+entry per scenario.</p>
+</section>
+<section id="curve-analysis">
+<h2>Curve analysis<a class="headerlink" href="#curve-analysis" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">curve_analysis()</span></code> returns a quantitative summary of the growth curve, including
+monotonicity flags and key cumulative factors at standard horizons:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">ca</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">curve_analysis</span><span class="p">()</span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;type&#39;: &#39;piecewise&#39;,</span>
+<span class="c1">#   &#39;growth_type&#39;: &#39;geometric&#39;,</span>
+<span class="c1">#   &#39;rate_range&#39;: {&#39;min&#39;: 0.01, &#39;max&#39;: 0.03},</span>
+<span class="c1">#   &#39;curve_properties&#39;: {</span>
+<span class="c1">#       &#39;is_flat&#39;: False,</span>
+<span class="c1">#       &#39;is_monotone_inc&#39;: False,</span>
+<span class="c1">#       &#39;is_monotone_dec&#39;: False,</span>
+<span class="c1">#       &#39;has_zero_rates&#39;: False,</span>
+<span class="c1">#       &#39;has_negative_rates&#39;: False,</span>
+<span class="c1">#   },</span>
+<span class="c1">#   &#39;key_factors&#39;: {&#39;t1&#39;: ..., &#39;t5&#39;: ..., &#39;t10&#39;: ..., &#39;t20&#39;: ...},</span>
+<span class="c1">#   &#39;segment_count&#39;: 2,</span>
+<span class="c1">#   &#39;total_defined_term&#39;: 8,</span>
+<span class="c1"># }</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">key_factors</span></code> sub-dict provides the cumulative <code class="docutils literal notranslate"><span class="pre">factor(t)</span></code> at <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">1,</span> <span class="pre">5,</span> <span class="pre">10,</span> <span class="pre">20</span></code>, giving a quick cross-section of the curve without enumerating the full
+schedule.</p>
+</section>
+<section id="exporting">
+<h2>Exporting<a class="headerlink" href="#exporting" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">export()</span></code> serialises the growth rate configuration. In addition to the <code class="docutils literal notranslate"><span class="pre">'dict'</span></code>
+and <code class="docutils literal notranslate"><span class="pre">'json'</span></code> formats, the <code class="docutils literal notranslate"><span class="pre">'regulatory'</span></code> format produces a JSON string enriched
+with audit-trail metadata required for Solvency II and IFRS 17 reporting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Plain dict (default)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+
+<span class="c1"># JSON string</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
+
+<span class="c1"># Regulatory JSON — adds export_timestamp (UTC ISO 8601), format_version, library</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;regulatory&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;export_timestamp&quot;</span><span class="p">])</span>   <span class="c1"># e.g. &quot;2025-07-15T10:32:11.123456+00:00&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;format_version&quot;</span><span class="p">])</span>     <span class="c1"># &quot;1.0&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;library&quot;</span><span class="p">])</span>            <span class="c1"># &quot;lactuca&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="generating-cashflow-amounts">
+<h2>Generating cashflow amounts<a class="headerlink" href="#generating-cashflow-amounts" title="Link to this heading">#</a></h2>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">GrowthRate.amounts()</span></code> produces the escalated cashflow amount for each payment
+in a schedule, using the anniversary convention described above.  It is the
+companion to <code class="xref py py-func docutils literal notranslate"><span class="pre">payment_times()</span></code>: build the time grid first,
+then derive the amounts vector.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span><span class="p">,</span> <span class="n">payment_times</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>              <span class="c1"># 2 % geometric annual growth</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">payment_times</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>             <span class="c1"># monthly payments for 5 years</span>
+<span class="n">amounts</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">amounts</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">1_000.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># First year: 1 000 / month (no growth yet)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amounts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>     <span class="c1"># 1000.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amounts</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span>    <span class="c1"># 1000.0</span>
+<span class="c1"># Second year: × 1.02</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># 1020.0</span>
+<span class="c1"># Third year: × 1.02²</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># 1040.4</span>
+</pre></div>
+</div>
+<p>For arithmetic growth, the amount increases by a fixed additive amount each year:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gr_a</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">growth_type</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>   <span class="c1"># flat +5 % per year</span>
+<span class="n">times_a</span> <span class="o">=</span> <span class="n">payment_times</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr_a</span><span class="o">.</span><span class="n">amounts</span><span class="p">(</span><span class="n">times_a</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># [1000. 1050. 1100.]</span>
+</pre></div>
+</div>
+<p>For a piecewise schedule — for example, CPI-linked for 10 years, then a fixed rate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gr_pw</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>   <span class="c1"># 3% for 10 yr, 2% thereafter</span>
+<span class="n">times_pw</span> <span class="o">=</span> <span class="n">gpt</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">amounts_pw</span> <span class="o">=</span> <span class="n">gr_pw</span><span class="o">.</span><span class="n">amounts</span><span class="p">(</span><span class="n">times_pw</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts_pw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>    <span class="c1"># 500.0  — year 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts_pw</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>    <span class="c1"># 671.96 — year 10 (500 × 1.03^9)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts_pw</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># 692.12 — year 11 (500 × 1.03^10)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">amounts_pw</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># 705.96 — year 12 (500 × 1.03^10 × 1.02)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">gr.amounts(times,</span> <span class="pre">start,</span> <span class="pre">m)</span></code> and <code class="docutils literal notranslate"><span class="pre">lt.äx(x,</span> <span class="pre">gr=gr)</span></code> use the <strong>same</strong> anniversary
+index <span class="math notranslate nohighlight">\(\lfloor k/m \rfloor\)</span>.  Passing the <code class="docutils literal notranslate"><span class="pre">amounts</span></code> vector as <code class="docutils literal notranslate"><span class="pre">cashflow_amounts=</span></code>
+to <code class="xref py py-meth docutils literal notranslate"><span class="pre">ax()</span></code> always produces the same present value as using
+<code class="docutils literal notranslate"><span class="pre">gr=</span></code> in the formula — modulo rounding, because <code class="docutils literal notranslate"><span class="pre">cashflow_amounts</span></code> bypasses the
+engine’s internal growth loop and rounds at the input boundary.</p>
+</div>
+<p><strong>Batch / DataFrame usage:</strong> <code class="docutils literal notranslate"><span class="pre">gr=</span></code> accepts a Pandas or Polars <code class="docutils literal notranslate"><span class="pre">Series</span></code> directly.
+A numeric <code class="docutils literal notranslate"><span class="pre">Series</span></code> is converted to per-policy floats.  An <strong>object-dtype</strong> <code class="docutils literal notranslate"><span class="pre">Series</span></code> of
+<code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> instances (including piecewise curves) is treated identically to a list of
+the same objects — no <code class="docutils literal notranslate"><span class="pre">.to_numpy()</span></code> is needed and no object flattening occurs.
+Mixing <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> objects and numeric values in a single <code class="docutils literal notranslate"><span class="pre">Series</span></code> raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.
+See <a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a> — <em>Broadcasting rules</em> for the complete parameter table.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a> — full anniversary-convention reference and
+fractional-<code class="docutils literal notranslate"><span class="pre">ts</span></code> policy</p></li>
+<li><p><a class="reference internal" href="interest_rates_guide.html"><span class="doc">Interest Rates</span></a> — analogous guide for <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code></p></li>
+<li><p><a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> — how growth and interest interact across calculation
+modes</p></li>
+<li><p><a class="reference internal" href="irregular_cashflows.html"><span class="doc">Irregular Cashflows</span></a> — building non-standard cashflow schedules</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="deferment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deferred Life Contingencies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="joint_life_calculations.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Joint-Life Calculations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-growthrate">Creating a GrowthRate</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-geometric-growth">Constant geometric growth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-arithmetic-growth">Constant arithmetic growth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-schedule">Piecewise schedule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-growth-applies-apply-from-first">When growth applies: <code class="docutils literal notranslate"><span class="pre">apply_from_first</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-scenario-container">Multi-scenario container</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-growth-factors">Computing growth factors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-with-table-methods">Using with table methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anniversary-convention">Anniversary convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-schedules-and-shifted">Piecewise schedules and <code class="docutils literal notranslate"><span class="pre">shifted()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-growth-and-interest">Combining growth and interest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-a-growthrate">Inspecting a GrowthRate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mutating-rates-and-terms">Mutating rates and terms</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-to-preserve-the-original">Copying to preserve the original</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-rates-and-segment-metadata">Querying rates and segment metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-reports">Validation reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curve-analysis">Curve analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting">Exporting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-cashflow-amounts">Generating cashflow amounts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

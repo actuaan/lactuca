@@ -1,0 +1,1278 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Date Utilities Guide &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/dates_guide';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="qx Derivation Flow" href="qx_derivation_flow.html" />
+    <link rel="prev" title="Last Payment Adjustment" href="last_payment_adjustment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deferment.html">Deferred Life Contingencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates_guide.html">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspecting_cashflows.html">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="last_payment_adjustment.html">Last Payment Adjustment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Date Utilities Guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="date-utilities-guide">
+<h1>Date Utilities Guide<a class="headerlink" href="#date-utilities-guide" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">lactuca.dates</span></code> module provides vectorized date-manipulation and actuarial
+age-calculation functions. Date-oriented functions accept the broad range of input
+types listed in the <code class="docutils literal notranslate"><span class="pre">DateLike</span></code> section below. The module covers seven function groups:
+date construction and manipulation, component extraction, formatting, duration
+calculation, actuarial age, anniversary generation, and calendar utilities.</p>
+<section id="accepted-date-formats-datelike">
+<h2>Accepted date formats (<code class="docutils literal notranslate"><span class="pre">DateLike</span></code>)<a class="headerlink" href="#accepted-date-formats-datelike" title="Link to this heading">#</a></h2>
+<p>Date-oriented input functions in <code class="docutils literal notranslate"><span class="pre">lactuca.dates</span></code> accept <code class="docutils literal notranslate"><span class="pre">DateLike</span></code> inputs. In the API reference and
+error messages, <code class="docutils literal notranslate"><span class="pre">DateLike</span></code> refers to the set of accepted date input forms.</p>
+<p>String and numeric parsing rules depend on <code class="docutils literal notranslate"><span class="pre">config.date_format</span></code> (see
+<a class="reference internal" href="#dates-config"><span class="std std-ref">Configuration</span></a>):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">datetime.date</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">date(2024,</span> <span class="pre">1,</span> <span class="pre">15)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">datetime(2024,</span> <span class="pre">1,</span> <span class="pre">15,</span> <span class="pre">0,</span> <span class="pre">0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>ISO string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;2024-01-15&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>European date string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;15/01/2024&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">DD/MM/YYYY</span></code>, when <code class="docutils literal notranslate"><span class="pre">date_format=&quot;dmy&quot;</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>US date string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;01/15/2024&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">MM/DD/YYYY</span></code>, when <code class="docutils literal notranslate"><span class="pre">date_format=&quot;mdy&quot;</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Integer YYYYMMDD</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">20240115</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>pandas <code class="docutils literal notranslate"><span class="pre">Timestamp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.Timestamp(&quot;2024-01-15&quot;)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Polars <code class="docutils literal notranslate"><span class="pre">Date</span></code></p></td>
+<td><p>Polars date scalar</p></td>
+</tr>
+<tr class="row-even"><td><p>NumPy <code class="docutils literal notranslate"><span class="pre">datetime64</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.datetime64(&quot;2024-01-15&quot;)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Accepted string/number forms by configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config.date_format=&quot;ymd&quot;</span></code>: accepts <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> and <code class="docutils literal notranslate"><span class="pre">YYYY/MM/DD</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.date_format=&quot;dmy&quot;</span></code>: accepts <code class="docutils literal notranslate"><span class="pre">DD/MM/YYYY</span></code> and <code class="docutils literal notranslate"><span class="pre">DD-MM-YYYY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.date_format=&quot;mdy&quot;</span></code>: accepts <code class="docutils literal notranslate"><span class="pre">MM/DD/YYYY</span></code> and <code class="docutils literal notranslate"><span class="pre">MM-DD-YYYY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.date_format=&quot;ymd_int&quot;</span></code>: accepts 8-digit integers / numeric strings (<code class="docutils literal notranslate"><span class="pre">YYYYMMDD</span></code>)</p></li>
+</ul>
+<p>Sequence inputs (Python <code class="docutils literal notranslate"><span class="pre">list</span></code>, NumPy array, etc.) are accepted wherever documented.
+Age functions return <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Duration functions return
+<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of <code class="docutils literal notranslate"><span class="pre">int32</span></code> for days/months and <code class="docutils literal notranslate"><span class="pre">float64</span></code> for years. Date
+construction functions (<code class="docutils literal notranslate"><span class="pre">make_date</span></code>, <code class="docutils literal notranslate"><span class="pre">end_of_month</span></code>, <code class="docutils literal notranslate"><span class="pre">add_duration</span></code>,
+<code class="docutils literal notranslate"><span class="pre">anniversary_dates</span></code>) return a <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> list.</p>
+<p>When multiple sequence arguments are provided, lengths must be compatible for
+broadcasting (equal lengths, or length 1 to be broadcast). Incompatible lengths
+raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="date-construction-and-manipulation">
+<h2>Date construction and manipulation<a class="headerlink" href="#date-construction-and-manipulation" title="Link to this heading">#</a></h2>
+<section id="make-date-year-month-day-formatdates">
+<h3><code class="docutils literal notranslate"><span class="pre">make_date(year,</span> <span class="pre">month,</span> <span class="pre">day)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code><a class="headerlink" href="#make-date-year-month-day-formatdates" title="Link to this heading">#</a></h3>
+<p>Constructs one or more dates from integer year, month, and day components.  Returns a
+<code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> object — a list of <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> values with a <code class="docutils literal notranslate"><span class="pre">.format()</span></code> method for
+string conversion.  Any of the three arguments may be a sequence; scalar arguments are
+broadcast to match the longest sequence.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_date</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">make_date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>           <span class="c1"># FormatDates([datetime.date(2024, 3, 15)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>  <span class="c1"># &#39;2024-03-15&#39;</span>
+
+<span class="c1"># Vectorised: build one date per month, same year and day</span>
+<span class="n">monthly</span> <span class="o">=</span> <span class="n">make_date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">monthly</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>
+<span class="c1"># [&#39;2024-01-01&#39;, &#39;2024-02-01&#39;, &#39;2024-03-01&#39;, &#39;2024-04-01&#39;, &#39;2024-05-01&#39;, &#39;2024-06-01&#39;]</span>
+</pre></div>
+</div>
+</section>
+<section id="end-of-month-input-date-formatdates">
+<h3><code class="docutils literal notranslate"><span class="pre">end_of_month(input_date)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code><a class="headerlink" href="#end-of-month-input-date-formatdates" title="Link to this heading">#</a></h3>
+<p>Returns the last calendar day of the month containing <code class="docutils literal notranslate"><span class="pre">input_date</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">end_of_month</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">end_of_month</span><span class="p">(</span><span class="s2">&quot;2024-02-10&quot;</span><span class="p">))</span>  <span class="c1"># FormatDates([datetime.date(2024, 2, 29)])  (2024 is leap)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">end_of_month</span><span class="p">(</span><span class="s2">&quot;2023-02-10&quot;</span><span class="p">))</span>  <span class="c1"># FormatDates([datetime.date(2023, 2, 28)])</span>
+</pre></div>
+</div>
+</section>
+<section id="add-duration-start-date-years-0-months-0-days-0-formatdates">
+<h3><code class="docutils literal notranslate"><span class="pre">add_duration(start_date,</span> <span class="pre">*,</span> <span class="pre">years=0,</span> <span class="pre">months=0,</span> <span class="pre">days=0)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code><a class="headerlink" href="#add-duration-start-date-years-0-months-0-days-0-formatdates" title="Link to this heading">#</a></h3>
+<p>Adds an offset of years, months, and/or days to a date.  When the resulting
+day-of-month does not exist in the target month, it is clamped to the last valid day
+(e.g. January 31 + 1 month → February 28/29).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_duration</span>
+
+<span class="c1"># End-of-month clamping</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_duration</span><span class="p">(</span><span class="s2">&quot;2024-01-31&quot;</span><span class="p">,</span> <span class="n">months</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># FormatDates([datetime.date(2024, 2, 29)])</span>
+
+<span class="c1"># Add one year</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_duration</span><span class="p">(</span><span class="s2">&quot;2023-06-15&quot;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># FormatDates([datetime.date(2024, 6, 15)])</span>
+
+<span class="c1"># Combine years, months and days in one call</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_duration</span><span class="p">(</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">months</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># FormatDates([datetime.date(2025, 3, 25)])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="date-components">
+<h2>Date components<a class="headerlink" href="#date-components" title="Link to this heading">#</a></h2>
+<section id="year-month-day">
+<h3><code class="docutils literal notranslate"><span class="pre">year</span></code>, <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">day</span></code><a class="headerlink" href="#year-month-day" title="Link to this heading">#</a></h3>
+<p>Extract a single component from a date. Sequence inputs return a NumPy array
+(<code class="docutils literal notranslate"><span class="pre">int32</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">year</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">))</span>   <span class="c1"># 2024</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">month</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">))</span>  <span class="c1"># 7</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">day</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">))</span>    <span class="c1"># 15</span>
+</pre></div>
+</div>
+</section>
+<section id="quarter-input-date-prefix-none-suffix-none">
+<h3><code class="docutils literal notranslate"><span class="pre">quarter(input_date,</span> <span class="pre">*,</span> <span class="pre">prefix=None,</span> <span class="pre">suffix=None)</span></code><a class="headerlink" href="#quarter-input-date-prefix-none-suffix-none" title="Link to this heading">#</a></h3>
+<p>Returns the calendar quarter (1–4).  Optional <code class="docutils literal notranslate"><span class="pre">prefix</span></code> and <code class="docutils literal notranslate"><span class="pre">suffix</span></code> strings are
+prepended and appended to the result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">quarter</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">quarter</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">))</span>                               <span class="c1"># 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarter</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">))</span>                  <span class="c1"># &#39;Q3&#39;    (Anglo-Saxon)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarter</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">))</span>                  <span class="c1"># &#39;3T&#39;    (Spanish)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarter</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;/2024&quot;</span><span class="p">))</span>  <span class="c1"># &#39;Q3/2024&#39;</span>
+
+<span class="c1"># Sequence input</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarter</span><span class="p">([</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-12-31&quot;</span><span class="p">]))</span>
+<span class="c1"># [1, 3, 4]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="date-formatting">
+<h2>Date formatting<a class="headerlink" href="#date-formatting" title="Link to this heading">#</a></h2>
+<section id="formatdates-and-format">
+<h3><code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> and <code class="docutils literal notranslate"><span class="pre">.format()</span></code><a class="headerlink" href="#formatdates-and-format" title="Link to this heading">#</a></h3>
+<p>Functions such as <code class="docutils literal notranslate"><span class="pre">make_date</span></code>, <code class="docutils literal notranslate"><span class="pre">end_of_month</span></code>, <code class="docutils literal notranslate"><span class="pre">add_duration</span></code>, <code class="docutils literal notranslate"><span class="pre">next_anniversary</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">anniversary_dates</span></code> return a <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> object — a <code class="docutils literal notranslate"><span class="pre">list</span></code> subclass of
+<code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> values. Call <code class="docutils literal notranslate"><span class="pre">.format(date_format=None)</span></code> to convert to the
+configured output representation.
+When <code class="docutils literal notranslate"><span class="pre">date_format=None</span></code> the global <code class="docutils literal notranslate"><span class="pre">config.date_format</span></code> setting is used.</p>
+<p><code class="docutils literal notranslate"><span class="pre">.format()</span></code> returns a <strong>scalar</strong> when the wrapper contains a single date, and a
+<strong>list</strong> when it contains multiple dates. Values are strings for
+<code class="docutils literal notranslate"><span class="pre">&quot;ymd&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;dmy&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;mdy&quot;</span></code>, and integers for <code class="docutils literal notranslate"><span class="pre">&quot;ymd_int&quot;</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_date</span><span class="p">,</span> <span class="n">anniversary_dates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+
+<span class="c1"># Single date — scalar string</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">make_date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dates</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>        <span class="c1"># &#39;2024-07-15&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dates</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;dmy&quot;</span><span class="p">))</span>   <span class="c1"># &#39;15/07/2024&#39;</span>
+
+<span class="c1"># Multiple dates — list of strings</span>
+<span class="n">anns</span> <span class="o">=</span> <span class="n">anniversary_dates</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">anns</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>
+<span class="c1"># [&#39;2024-01-01&#39;, &#39;2024-04-01&#39;, &#39;2024-07-01&#39;, &#39;2024-10-01&#39;]</span>
+</pre></div>
+</div>
+</section>
+<section id="format-date-input-date-date-format-none">
+<h3><code class="docutils literal notranslate"><span class="pre">format_date(input_date,</span> <span class="pre">date_format=None)</span></code><a class="headerlink" href="#format-date-input-date-date-format-none" title="Link to this heading">#</a></h3>
+<p>Formats any <code class="docutils literal notranslate"><span class="pre">DateLike</span></code> input using the specified output format.
+Input parsing follows the global <code class="docutils literal notranslate"><span class="pre">config.date_format</span></code> setting. When
+<code class="docutils literal notranslate"><span class="pre">date_format=&quot;ymd_int&quot;</span></code>, the result is an <strong>integer</strong> in <code class="docutils literal notranslate"><span class="pre">YYYYMMDD</span></code> form; other
+formats return strings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_date</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">format_date</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s2">&quot;dmy&quot;</span><span class="p">))</span>      <span class="c1"># &#39;15/07/2024&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_date</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s2">&quot;ymd&quot;</span><span class="p">))</span>      <span class="c1"># &#39;2024-07-15&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_date</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s2">&quot;ymd_int&quot;</span><span class="p">))</span>  <span class="c1"># 20240715  (integer)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="duration-calculations">
+<h2>Duration calculations<a class="headerlink" href="#duration-calculations" title="Link to this heading">#</a></h2>
+<section id="days-between-date1-date2">
+<h3><code class="docutils literal notranslate"><span class="pre">days_between(date1,</span> <span class="pre">date2)</span></code><a class="headerlink" href="#days-between-date1-date2" title="Link to this heading">#</a></h3>
+<p>Returns the <strong>integer</strong> number of days (<span class="math notranslate nohighlight">\(\text{date}_2 - \text{date}_1\)</span>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">days_between</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">days_between</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)))</span>  <span class="c1"># 365</span>
+</pre></div>
+</div>
+</section>
+<section id="months-between-date1-date2">
+<h3><code class="docutils literal notranslate"><span class="pre">months_between(date1,</span> <span class="pre">date2)</span></code><a class="headerlink" href="#months-between-date1-date2" title="Link to this heading">#</a></h3>
+<p>Returns the number of <strong>complete</strong> calendar months elapsed.  A month is complete when
+the destination day-of-month is ≥ the start day-of-month.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">months_between</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">months_between</span><span class="p">(</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-06-20&quot;</span><span class="p">))</span>  <span class="c1"># 5</span>
+</pre></div>
+</div>
+</section>
+<section id="years-between-date1-date2-method-act-act">
+<h3><code class="docutils literal notranslate"><span class="pre">years_between(date1,</span> <span class="pre">date2,</span> <span class="pre">*,</span> <span class="pre">method='act_act')</span></code><a class="headerlink" href="#years-between-date1-date2-method-act-act" title="Link to this heading">#</a></h3>
+<p>Returns fractional years between two dates.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">method</span></code></p></th>
+<th class="head"><p>Convention</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">'act_act'</span></code></p></td>
+<td><p>Actual/Actual ISDA</p></td>
+<td><p>Year-by-year leap-year accumulation; highest precision</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">'exact'</span></code></p></td>
+<td><p>days / 365.25</p></td>
+<td><p>Faster; maximum error &lt; 0.003 years</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">years_between</span>
+
+<span class="c1"># Aligned 4-year span — both methods agree (1461 days / 365.25 = 4.0 exactly)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">years_between</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;act_act&quot;</span><span class="p">))</span>  <span class="c1"># 4.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">years_between</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;exact&quot;</span><span class="p">))</span>    <span class="c1"># 4.0</span>
+
+<span class="c1"># 3 non-leap years — methods diverge (1095 days / 365.25 &lt; 3.0)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">years_between</span><span class="p">(</span><span class="s2">&quot;2021-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;act_act&quot;</span><span class="p">))</span>  <span class="c1"># 3.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">years_between</span><span class="p">(</span><span class="s2">&quot;2021-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;exact&quot;</span><span class="p">))</span>    <span class="c1"># 2.9979466119096503</span>
+</pre></div>
+</div>
+</section>
+<section id="time-diff-date1-date2-unit-years-method-none">
+<h3><code class="docutils literal notranslate"><span class="pre">time_diff(date1,</span> <span class="pre">date2,</span> <span class="pre">*,</span> <span class="pre">unit='years',</span> <span class="pre">method=None)</span></code><a class="headerlink" href="#time-diff-date1-date2-unit-years-method-none" title="Link to this heading">#</a></h3>
+<p>Unified entry point for all duration calculations.  <code class="docutils literal notranslate"><span class="pre">unit</span></code> may be <code class="docutils literal notranslate"><span class="pre">'days'</span></code>, <code class="docutils literal notranslate"><span class="pre">'months'</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">'years'</span></code>.  For <code class="docutils literal notranslate"><span class="pre">unit='years'</span></code>, <code class="docutils literal notranslate"><span class="pre">method</span></code> is passed to <code class="docutils literal notranslate"><span class="pre">years_between</span></code> (defaults to
+<code class="docutils literal notranslate"><span class="pre">'act_act'</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">time_diff</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">time_diff</span><span class="p">(</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-12-31&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;days&quot;</span><span class="p">))</span>    <span class="c1"># 365</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time_diff</span><span class="p">(</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-06-20&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;months&quot;</span><span class="p">))</span>  <span class="c1"># 5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time_diff</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;years&quot;</span><span class="p">))</span>   <span class="c1"># 4.0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="actuarial-age">
+<h2>Actuarial age<a class="headerlink" href="#actuarial-age" title="Link to this heading">#</a></h2>
+<p>All age functions accept scalar dates or sequences.  A scalar input returns a Python
+<code class="docutils literal notranslate"><span class="pre">float</span></code>; a sequence returns a <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
+<section id="age-exact-birth-date-valuation-date-day-count-act-act">
+<h3><code class="docutils literal notranslate"><span class="pre">age_exact(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">*,</span> <span class="pre">day_count='act_act')</span></code><a class="headerlink" href="#age-exact-birth-date-valuation-date-day-count-act-act" title="Link to this heading">#</a></h3>
+<p>Exact fractional age in years, with no rounding.  Wraps
+<code class="docutils literal notranslate"><span class="pre">act_age(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">m=365,</span> <span class="pre">method='exact',</span> <span class="pre">day_count=day_count)</span></code>.
+Uses Actual/Actual ISDA by default; pass <code class="docutils literal notranslate"><span class="pre">day_count='exact'</span></code> for the faster
+days / 365.25 approximation (maximum error ≈ 0.003 years).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">age_exact</span>
+
+<span class="c1"># On exact birthday — integer result</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">age_exact</span><span class="p">(</span><span class="s2">&quot;1990-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">))</span>                      <span class="c1"># 34.0</span>
+
+<span class="c1"># Mid-year valuation — fractional result (Actual/Actual ISDA)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">age_exact</span><span class="p">(</span><span class="s2">&quot;1990-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-07-01&quot;</span><span class="p">))</span>                      <span class="c1"># 34.49726775956284</span>
+
+<span class="c1"># Fast approximation (days / 365.25)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">age_exact</span><span class="p">(</span><span class="s2">&quot;1990-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-07-01&quot;</span><span class="p">,</span> <span class="n">day_count</span><span class="o">=</span><span class="s2">&quot;exact&quot;</span><span class="p">))</span>   <span class="c1"># 34.496919917864474</span>
+</pre></div>
+</div>
+</section>
+<section id="rounded-age-conventions">
+<h3>Rounded age conventions<a class="headerlink" href="#rounded-age-conventions" title="Link to this heading">#</a></h3>
+<p>The three convenience functions apply standard actuarial rounding at integer birthday
+boundaries:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Notation</p></th>
+<th class="head"><p>Formula</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">age_last_birthday</span></code></p></td>
+<td><p>ALB, <span class="math notranslate nohighlight">\([x]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lfloor x_{\text{exact}} \rfloor\)</span></p></td>
+<td><p>Rounded <strong>down</strong> to last integer birthday</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></p></td>
+<td><p>ANB</p></td>
+<td><p><span class="math notranslate nohighlight">\(\operatorname{round}(x_{\text{exact}})\)</span></p></td>
+<td><p>Rounded to <strong>nearest</strong> integer birthday</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">age_next_birthday</span></code></p></td>
+<td><p>ANEXT</p></td>
+<td><p><span class="math notranslate nohighlight">\(\lceil x_{\text{exact}} \rceil\)</span></p></td>
+<td><p>Rounded <strong>up</strong> to next integer birthday</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All three share the same signature:
+<code class="docutils literal notranslate"><span class="pre">(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">*,</span> <span class="pre">day_count='act_act')</span></code>.</p>
+<p>Short-form aliases <code class="docutils literal notranslate"><span class="pre">alb</span></code>, <code class="docutils literal notranslate"><span class="pre">anb</span></code>, and <code class="docutils literal notranslate"><span class="pre">anextb</span></code> are exported at the top-level
+<code class="docutils literal notranslate"><span class="pre">lactuca</span></code> namespace for interactive use and scripting.  The name <code class="docutils literal notranslate"><span class="pre">anextb</span></code>
+(not <code class="docutils literal notranslate"><span class="pre">anext</span></code>) is used to avoid shadowing <code class="docutils literal notranslate"><span class="pre">builtins.anext</span></code> (Python 3.10+).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lc</span>
+
+<span class="n">birth</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;1990-06-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-03-01&quot;</span>  <span class="c1"># exact age ≈ 33.7</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">alb</span><span class="p">(</span><span class="n">birth</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>     <span class="c1"># 33.0   (Age Last Birthday)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">anb</span><span class="p">(</span><span class="n">birth</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>     <span class="c1"># 34.0   (Age Nearest Birthday)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">anextb</span><span class="p">(</span><span class="n">birth</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>  <span class="c1"># 34.0   (Age Next Birthday)</span>
+</pre></div>
+</div>
+</section>
+<section id="act-age-birth-date-valuation-date-m-365-method-exact-day-count-act-act">
+<h3><code class="docutils literal notranslate"><span class="pre">act_age(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">*,</span> <span class="pre">m=365,</span> <span class="pre">method='exact',</span> <span class="pre">day_count='act_act')</span></code><a class="headerlink" href="#act-age-birth-date-valuation-date-m-365-method-exact-day-count-act-act" title="Link to this heading">#</a></h3>
+<p>General actuarial age function with selectable rounding frequency <code class="docutils literal notranslate"><span class="pre">m</span></code> and method.
+Calling <code class="docutils literal notranslate"><span class="pre">act_age(birth,</span> <span class="pre">val)</span></code> with the defaults is identical to <code class="docutils literal notranslate"><span class="pre">age_exact(birth,</span> <span class="pre">val)</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">method</span></code></p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">'exact'</span></code></p></td>
+<td><p>No rounding — exact fractional age (same as <code class="docutils literal notranslate"><span class="pre">age_exact</span></code>). Requires <code class="docutils literal notranslate"><span class="pre">m=365</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">'last'</span></code></p></td>
+<td><p>Rounds <strong>down</strong> to the nearest <span class="math notranslate nohighlight">\(1/m\)</span> year (ALB when <span class="math notranslate nohighlight">\(m=1\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">'nearest'</span></code></p></td>
+<td><p>Rounds to the <strong>nearest</strong> <span class="math notranslate nohighlight">\(1/m\)</span> year (ANB when <span class="math notranslate nohighlight">\(m=1\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">'next'</span></code></p></td>
+<td><p>Rounds <strong>up</strong> to the nearest <span class="math notranslate nohighlight">\(1/m\)</span> year (ANEXT when <span class="math notranslate nohighlight">\(m=1\)</span>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To compute age rounded down to the nearest completed month (<span class="math notranslate nohighlight">\(m=12\)</span>, <code class="docutils literal notranslate"><span class="pre">method='last'</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">act_age</span>
+
+<span class="c1"># Monthly ALB: age rounded down to the nearest 1/12 year</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">act_age</span><span class="p">(</span><span class="s2">&quot;1989-07-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">))</span>  <span class="c1"># 34.5</span>
+
+<span class="c1"># Vectorised: one call for a portfolio of insured persons</span>
+<span class="n">births</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">(</span><span class="mi">1960</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">1975</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">act_age</span><span class="p">(</span><span class="n">births</span><span class="p">,</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">))</span>
+<span class="c1"># array([64., 48., 33.])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">method='exact'</span></code> enforces <code class="docutils literal notranslate"><span class="pre">m=365</span></code>.  Passing any other <code class="docutils literal notranslate"><span class="pre">m</span></code> value raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="anniversary-generation">
+<h2>Anniversary generation<a class="headerlink" href="#anniversary-generation" title="Link to this heading">#</a></h2>
+<section id="next-anniversary-birth-date-ref-date">
+<h3><code class="docutils literal notranslate"><span class="pre">next_anniversary(birth_date,</span> <span class="pre">ref_date)</span></code><a class="headerlink" href="#next-anniversary-birth-date-ref-date" title="Link to this heading">#</a></h3>
+<p>Returns the next occurrence of the birth month/day <strong>strictly after</strong> <code class="docutils literal notranslate"><span class="pre">ref_date</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">ref_date</span></code> falls exactly on an anniversary, the following year’s anniversary
+is returned.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">next_anniversary</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">next_anniversary</span><span class="p">(</span><span class="s2">&quot;1990-06-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-03-01&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>           <span class="c1"># FormatDates([datetime.date(2024, 6, 15)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>  <span class="c1"># &#39;2024-06-15&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="anniversary-dates-start-date-end-date-m-1-selected-periods-none-formatdates">
+<h3><code class="docutils literal notranslate"><span class="pre">anniversary_dates(start_date,</span> <span class="pre">end_date,</span> <span class="pre">*,</span> <span class="pre">m=1,</span> <span class="pre">selected_periods=None)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code><a class="headerlink" href="#anniversary-dates-start-date-end-date-m-1-selected-periods-none-formatdates" title="Link to this heading">#</a></h3>
+<p>Returns all <span class="math notranslate nohighlight">\(m\)</span>-thly anniversary dates from <code class="docutils literal notranslate"><span class="pre">start_date</span></code> (inclusive) to <code class="docutils literal notranslate"><span class="pre">end_date</span></code>
+(exclusive).  <code class="docutils literal notranslate"><span class="pre">m</span></code> must be one of <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">12,</span> <span class="pre">24,</span> <span class="pre">26,</span> <span class="pre">52,</span> <span class="pre">365}</span></code>.
+<code class="docutils literal notranslate"><span class="pre">m=24</span></code> uses a 15-day interval (360-day commercial convention).
+<code class="docutils literal notranslate"><span class="pre">m=26</span></code> uses a 14-day interval (biweekly, 364-day convention).
+<code class="docutils literal notranslate"><span class="pre">m=14</span></code> is <strong>not supported</strong> and raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>; model “14 pagas” as <code class="docutils literal notranslate"><span class="pre">m=12</span></code> plus
+two extraordinary cash flows instead.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">anniversary_dates</span>
+
+<span class="c1"># Annual payment dates over two years</span>
+<span class="n">anns</span> <span class="o">=</span> <span class="n">anniversary_dates</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">anns</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>
+<span class="c1"># [&#39;2024-01-01&#39;, &#39;2025-01-01&#39;]</span>
+
+<span class="c1"># Quarterly payment grid for 2024</span>
+<span class="n">quarterly</span> <span class="o">=</span> <span class="n">anniversary_dates</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarterly</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>
+<span class="c1"># [&#39;2024-01-01&#39;, &#39;2024-04-01&#39;, &#39;2024-07-01&#39;, &#39;2024-10-01&#39;]</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">selected_periods</span></code> to restrict to a subset of period indices within the range.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="calendar-utilities">
+<h2>Calendar utilities<a class="headerlink" href="#calendar-utilities" title="Link to this heading">#</a></h2>
+<section id="is-leap-year-year">
+<h3><code class="docutils literal notranslate"><span class="pre">is_leap_year(year)</span></code><a class="headerlink" href="#is-leap-year-year" title="Link to this heading">#</a></h3>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">year</span></code> is a Gregorian leap year.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_leap_year</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">is_leap_year</span><span class="p">(</span><span class="mi">2024</span><span class="p">))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_leap_year</span><span class="p">(</span><span class="mi">1900</span><span class="p">))</span>  <span class="c1"># False  (divisible by 100 but not by 400)</span>
+</pre></div>
+</div>
+</section>
+<section id="days-in-year-year-and-days-in-month-year-month">
+<h3><code class="docutils literal notranslate"><span class="pre">days_in_year(year)</span></code> and <code class="docutils literal notranslate"><span class="pre">days_in_month(year,</span> <span class="pre">month)</span></code><a class="headerlink" href="#days-in-year-year-and-days-in-month-year-month" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">days_in_year</span><span class="p">,</span> <span class="n">days_in_month</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">days_in_year</span><span class="p">(</span><span class="mi">2024</span><span class="p">))</span>      <span class="c1"># 366</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">days_in_year</span><span class="p">(</span><span class="mi">2023</span><span class="p">))</span>      <span class="c1"># 365</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">days_in_month</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># 29  (leap year)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">days_in_month</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># 28</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="vectorized-usage">
+<h2>Vectorized usage<a class="headerlink" href="#vectorized-usage" title="Link to this heading">#</a></h2>
+<p>All date functions broadcast over Python lists, NumPy arrays, and other sequences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">age_last_birthday</span><span class="p">,</span> <span class="n">years_between</span>
+
+<span class="c1"># Array of births, single valuation date</span>
+<span class="n">births</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">(</span><span class="mi">1960</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">1975</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">30</span><span class="p">)]</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="n">age_last_birthday</span><span class="p">(</span><span class="n">births</span><span class="p">,</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>
+<span class="c1"># array([63., 48., 33.])  (numpy.ndarray of float64)</span>
+
+<span class="c1"># Array of start dates paired with a common end date</span>
+<span class="n">starts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-01-01&quot;</span><span class="p">]</span>
+<span class="n">ends</span>   <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">years_between</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">))</span>
+<span class="c1"># array([4., 3.])</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="configuration">
+<span id="dates-config"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Allowed values</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.date_format</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;ymd&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;ymd&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;dmy&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;mdy&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ymd_int&quot;</span></code></p></td>
+<td><p>Controls parsing of ambiguous date inputs and default date output format (<code class="docutils literal notranslate"><span class="pre">&quot;ymd&quot;</span></code> → <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;dmy&quot;</span></code> → <code class="docutils literal notranslate"><span class="pre">DD/MM/YYYY</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;mdy&quot;</span></code> → <code class="docutils literal notranslate"><span class="pre">MM/DD/YYYY</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ymd_int&quot;</span></code> → integer <code class="docutils literal notranslate"><span class="pre">YYYYMMDD</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_date</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">date_format</span> <span class="o">=</span> <span class="s2">&quot;dmy&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_date</span><span class="p">(</span><span class="s2">&quot;2024-07-15&quot;</span><span class="p">))</span>  <span class="c1"># &#39;15/07/2024&#39;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">reset_to_defaults</span><span class="p">()</span>        <span class="c1"># restore defaults</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="notation_glossary.html"><span class="doc">Notation and Glossary</span></a> — age notation: <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\([x]\)</span>, <span class="math notranslate nohighlight">\(x_{\text{ANB}}\)</span></p></li>
+<li><p><a class="reference internal" href="interest_rates_guide.html"><span class="doc">Interest Rates</span></a> — how <code class="docutils literal notranslate"><span class="pre">days_per_year</span></code> affects interest factors</p></li>
+<li><p><a class="reference internal" href="decimals_rounding.html"><span class="doc">Decimal Precision and Rounding</span></a> — global decimal precision settings</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="last_payment_adjustment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Last Payment Adjustment</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="qx_derivation_flow.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">qx Derivation Flow</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accepted-date-formats-datelike">Accepted date formats (<code class="docutils literal notranslate"><span class="pre">DateLike</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#date-construction-and-manipulation">Date construction and manipulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-date-year-month-day-formatdates"><code class="docutils literal notranslate"><span class="pre">make_date(year,</span> <span class="pre">month,</span> <span class="pre">day)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-month-input-date-formatdates"><code class="docutils literal notranslate"><span class="pre">end_of_month(input_date)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-duration-start-date-years-0-months-0-days-0-formatdates"><code class="docutils literal notranslate"><span class="pre">add_duration(start_date,</span> <span class="pre">*,</span> <span class="pre">years=0,</span> <span class="pre">months=0,</span> <span class="pre">days=0)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#date-components">Date components</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#year-month-day"><code class="docutils literal notranslate"><span class="pre">year</span></code>, <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">day</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quarter-input-date-prefix-none-suffix-none"><code class="docutils literal notranslate"><span class="pre">quarter(input_date,</span> <span class="pre">*,</span> <span class="pre">prefix=None,</span> <span class="pre">suffix=None)</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#date-formatting">Date formatting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formatdates-and-format"><code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> and <code class="docutils literal notranslate"><span class="pre">.format()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#format-date-input-date-date-format-none"><code class="docutils literal notranslate"><span class="pre">format_date(input_date,</span> <span class="pre">date_format=None)</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duration-calculations">Duration calculations</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#days-between-date1-date2"><code class="docutils literal notranslate"><span class="pre">days_between(date1,</span> <span class="pre">date2)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#months-between-date1-date2"><code class="docutils literal notranslate"><span class="pre">months_between(date1,</span> <span class="pre">date2)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#years-between-date1-date2-method-act-act"><code class="docutils literal notranslate"><span class="pre">years_between(date1,</span> <span class="pre">date2,</span> <span class="pre">*,</span> <span class="pre">method='act_act')</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-diff-date1-date2-unit-years-method-none"><code class="docutils literal notranslate"><span class="pre">time_diff(date1,</span> <span class="pre">date2,</span> <span class="pre">*,</span> <span class="pre">unit='years',</span> <span class="pre">method=None)</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actuarial-age">Actuarial age</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#age-exact-birth-date-valuation-date-day-count-act-act"><code class="docutils literal notranslate"><span class="pre">age_exact(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">*,</span> <span class="pre">day_count='act_act')</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rounded-age-conventions">Rounded age conventions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#act-age-birth-date-valuation-date-m-365-method-exact-day-count-act-act"><code class="docutils literal notranslate"><span class="pre">act_age(birth_date,</span> <span class="pre">valuation_date,</span> <span class="pre">*,</span> <span class="pre">m=365,</span> <span class="pre">method='exact',</span> <span class="pre">day_count='act_act')</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anniversary-generation">Anniversary generation</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-anniversary-birth-date-ref-date"><code class="docutils literal notranslate"><span class="pre">next_anniversary(birth_date,</span> <span class="pre">ref_date)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anniversary-dates-start-date-end-date-m-1-selected-periods-none-formatdates"><code class="docutils literal notranslate"><span class="pre">anniversary_dates(start_date,</span> <span class="pre">end_date,</span> <span class="pre">*,</span> <span class="pre">m=1,</span> <span class="pre">selected_periods=None)</span></code> → <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calendar-utilities">Calendar utilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-leap-year-year"><code class="docutils literal notranslate"><span class="pre">is_leap_year(year)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#days-in-year-year-and-days-in-month-year-month"><code class="docutils literal notranslate"><span class="pre">days_in_year(year)</span></code> and <code class="docutils literal notranslate"><span class="pre">days_in_month(year,</span> <span class="pre">month)</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-usage">Vectorized usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

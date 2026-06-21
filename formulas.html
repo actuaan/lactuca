@@ -1,0 +1,1700 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Actuarial Formulas &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'formulas';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cookbook" href="cookbook.html" />
+    <link rel="prev" title="Date Utilities" href="api/dates.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Actuarial Formulas</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="actuarial-formulas">
+<h1>Actuarial Formulas<a class="headerlink" href="#actuarial-formulas" title="Link to this heading">#</a></h1>
+<p>Mathematical foundations and formulas used throughout Lactuca.</p>
+<p>This page is a concise mathematical reference for each actuarial quantity Lactuca
+computes.  Sections are ordered from foundational concepts to derived products.  Each
+section documents the formula in force, the required hypothesis or mode, and any
+input constraints — including the constraints whose violation raises a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p>For narrative explanations and runnable code examples see
+<a class="reference internal" href="user_guide/life_annuities_guide.html"><span class="doc">Life Annuities</span></a>, <a class="reference internal" href="user_guide/life_insurances_guide.html"><span class="doc">Life Insurances</span></a>, and
+<a class="reference internal" href="user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a>.  For a full list of errors see
+<a class="reference internal" href="errors_reference.html"><span class="doc">Error Reference</span></a>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Section</p></th>
+<th class="head"><p>Key symbols</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#survival-and-mortality-functions">Survival and mortality functions</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(l_x\)</span>, <span class="math notranslate nohighlight">\(d_x\)</span>, <span class="math notranslate nohighlight">\({}_tp_x\)</span>, <span class="math notranslate nohighlight">\({}_tq_x\)</span>, <span class="math notranslate nohighlight">\(L_x\)</span>, <span class="math notranslate nohighlight">\(T_x\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#select-ultimate-notation">Select-ultimate notation</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(q_{[x]+d}\)</span>, select period</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fractional-age-interpolation">Fractional age interpolation</a></p></td>
+<td><p>UDD (<code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>), CFM (<code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#commutation-functions">Commutation functions</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(D_x\)</span>, <span class="math notranslate nohighlight">\(N_x\)</span>, <span class="math notranslate nohighlight">\(S_x\)</span>, <span class="math notranslate nohighlight">\(C_x\)</span>, <span class="math notranslate nohighlight">\(M_x\)</span>, <span class="math notranslate nohighlight">\(R_x\)</span>, <span class="math notranslate nohighlight">\(L_x\)</span>, <span class="math notranslate nohighlight">\(L_{x+s}\)</span>, <span class="math notranslate nohighlight">\(T_x\)</span>, <span class="math notranslate nohighlight">\(T_{x+s}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#life-annuities">Life annuities</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(\ddot{a}_x\)</span>, temporary, deferred, <span class="math notranslate nohighlight">\(m\)</span>-thly, immediate, continuous</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#life-insurances">Life insurances</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(A_x\)</span>, term, endowment, pure endowment, deferred, continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#relationship-between-annuities-and-insurances">Annuity–insurance relationship</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(\ddot{a}_x = (1 - A_x)/d\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#life-expectancy">Life expectancy</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathring{e}_x\)</span>, <span class="math notranslate nohighlight">\(e_x\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#interest-rate-conversions">Interest rate conversions</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(i^{(m)}\)</span>, <span class="math notranslate nohighlight">\(\delta\)</span>, <span class="math notranslate nohighlight">\(d^{(m)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#growth-rates-escalating-benefits">Growth rates (escalating benefits)</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(v_g = (1+g)/(1+i)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#multiple-decrements">Multiple decrements</a></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_tq_x^{(j)}\)</span>, <span class="math notranslate nohighlight">\({}_tp_x^{(\tau)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#joint-life-and-last-survivor">Joint life and last survivor</a></p></td>
+<td><p><span class="math notranslate nohighlight">\(\ddot{a}_{xy}\)</span>, <span class="math notranslate nohighlight">\(\ddot{a}_{\overline{xy}}\)</span>, <span class="math notranslate nohighlight">\(A_{xy}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#formulas-by-calculation-mode">Formulas by calculation mode</a></p></td>
+<td><p>mode-specific formulas</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#references">References</a></p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="survival-and-mortality-functions">
+<span id="formulas-survival"></span><span id="id1"></span><h2>Survival and mortality functions<a class="headerlink" href="#survival-and-mortality-functions" title="Link to this heading">#</a></h2>
+<section id="life-table-functions">
+<h3>Life table functions<a class="headerlink" href="#life-table-functions" title="Link to this heading">#</a></h3>
+<p>The fundamental survival function <span class="math notranslate nohighlight">\(l_x\)</span> represents the number of lives at exact age <span class="math notranslate nohighlight">\(x\)</span> from an initial cohort <span class="math notranslate nohighlight">\(l_0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+l_x = l_0 \cdot \prod_{k=0}^{x-1} (1 - q_k)
+\]</div>
+</section>
+<section id="survival-probability">
+<h3>Survival probability<a class="headerlink" href="#survival-probability" title="Link to this heading">#</a></h3>
+<p>The probability that a life aged <span class="math notranslate nohighlight">\(x\)</span> survives to age <span class="math notranslate nohighlight">\(x+t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t p_x = \frac{l_{x+t}}{l_x}
+\]</div>
+</section>
+<section id="mortality-probability">
+<h3>Mortality probability<a class="headerlink" href="#mortality-probability" title="Link to this heading">#</a></h3>
+<p>The probability that a life aged <span class="math notranslate nohighlight">\(x\)</span> dies within <span class="math notranslate nohighlight">\(t\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t q_x = 1 - {}_t p_x = \frac{l_x - l_{x+t}}{l_x}
+\]</div>
+</section>
+<section id="deferred-mortality">
+<h3>Deferred mortality<a class="headerlink" href="#deferred-mortality" title="Link to this heading">#</a></h3>
+<p>The probability of surviving <span class="math notranslate nohighlight">\(u\)</span> years and then dying within the next <span class="math notranslate nohighlight">\(t\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{u|t} q_x = {}_u p_x \cdot {}_t q_{x+u}
+\]</div>
+</section>
+<section id="survivors-and-deaths">
+<h3>Survivors and deaths<a class="headerlink" href="#survivors-and-deaths" title="Link to this heading">#</a></h3>
+<p>The number of survivors in a cohort at aged <span class="math notranslate nohighlight">\(x\)</span> is the <strong>life table function</strong> <span class="math notranslate nohighlight">\(l_x\)</span>. Deaths
+between consecutive integer ages are:</p>
+<div class="math notranslate nohighlight">
+\[
+d_x = l_x - l_{x+1}
+\]</div>
+<p>The <strong>central exposed-to-risk</strong> (person-years lived in <span class="math notranslate nohighlight">\([x, x+1)\)</span>) under UDD is
+<span class="math notranslate nohighlight">\(L_x = l_x - d_x/2\)</span>. See the <a class="reference internal" href="#lx-function-person-years-lived">Lx commutation function</a>
+definition below.</p>
+</section>
+</section>
+<section id="select-ultimate-notation">
+<span id="formulas-select-notation"></span><span id="id2"></span><h2>Select-ultimate notation<a class="headerlink" href="#select-ultimate-notation" title="Link to this heading">#</a></h2>
+<p>For select-ultimate tables, mortality depends on both attained age <span class="math notranslate nohighlight">\(x\)</span> and duration <span class="math notranslate nohighlight">\(d\)</span>
+since underwriting.  The conventional actuarial notation for the rate at duration <span class="math notranslate nohighlight">\(d\)</span> is
+<span class="math notranslate nohighlight">\(q_{[x]+d}\)</span>, read as “the rate for a life selected at age <span class="math notranslate nohighlight">\(x\)</span> and now <span class="math notranslate nohighlight">\(d\)</span> years into the
+select period”.</p>
+<p>In Lactuca the minimum valid integer duration is given by <code class="docutils literal notranslate"><span class="pre">TableSource.start_duration</span></code>:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">start_duration</span> <span class="pre">=</span> <span class="pre">1</span></code></strong> — standard convention (e.g. DAV 2004 R, most international tables);
+<code class="docutils literal notranslate"><span class="pre">duration=1</span></code> is the freshly-underwritten rate <span class="math notranslate nohighlight">\(q_{[x]}\)</span>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">start_duration</span> <span class="pre">=</span> <span class="pre">0</span></code></strong> — CMI/UK convention (e.g. AM92/AF92);
+<code class="docutils literal notranslate"><span class="pre">duration=0</span></code> is the freshly-underwritten rate <span class="math notranslate nohighlight">\(q_{[x]+0}\)</span>.</p></li>
+</ul>
+<p>Durations at or beyond <code class="docutils literal notranslate"><span class="pre">start_duration</span> <span class="pre">+</span> <span class="pre">select_period</span></code> fall back to the ultimate column
+<span class="math notranslate nohighlight">\(q_{x+d}^{\text{ult}}\)</span> regardless of the value passed.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+q_{[x]+d} = \begin{cases}
+  q_{[x]+d}^{\text{select}} &amp; \text{if } d &lt; \text{start duration} + \text{select period} \\
+  q_{x+d}^{\text{ult}} &amp; \text{if } d \ge \text{start duration} + \text{select period}
+\end{cases}
+\end{split}\]</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For the fallback formula, code example, and <code class="docutils literal notranslate"><span class="pre">select_period</span></code> metadata field see
+<a class="reference internal" href="#select-and-ultimate-tables">Select-and-ultimate tables</a> below.</p>
+</div>
+<hr class="docutils" />
+</section>
+<section id="fractional-age-interpolation">
+<span id="formulas-interpolation"></span><span id="id3"></span><h2>Fractional age interpolation<a class="headerlink" href="#fractional-age-interpolation" title="Link to this heading">#</a></h2>
+<p>Lactuca supports two interpolation methods for <span class="math notranslate nohighlight">\(l_{x+s}\)</span> at fractional ages,
+controlled by <code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span> <span class="pre">=</span> <span class="pre">&quot;linear&quot;</span></code> (UDD, <strong>default</strong>) or <code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code> (CFM).
+Passing any other string raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.
+The mode affects all probability and annuity calculations at fractional ages.</p>
+</div>
+<section id="udd-uniform-distribution-of-deaths-linear">
+<h3>UDD — Uniform Distribution of Deaths (<code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>)<a class="headerlink" href="#udd-uniform-distribution-of-deaths-linear" title="Link to this heading">#</a></h3>
+<p>For <span class="math notranslate nohighlight">\(0 \leq s &lt; 1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+l_{x+s} = (1-s)\,l_x + s\,l_{x+1}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+{}_s p_x = 1 - s\,q_x, \qquad {}_{1/m}p_x = 1 - \frac{q_x}{m}
+\]</div>
+<p>Force of mortality under UDD (increasing throughout each year of age):</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_{x+s} = \frac{q_x}{1 - s\,q_x}
+\]</div>
+</section>
+<section id="cfm-constant-force-of-mortality-exponential">
+<h3>CFM — Constant Force of Mortality (<code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code>)<a class="headerlink" href="#cfm-constant-force-of-mortality-exponential" title="Link to this heading">#</a></h3>
+<p>For <span class="math notranslate nohighlight">\(0 \leq s &lt; 1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+l_{x+s} = l_x \cdot p_x^{\,s}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+{}_s p_x = p_x^{\,s} = e^{-\mu_x s}, \qquad {}_{1/m}p_x = p_x^{\,1/m}
+\]</div>
+<p>Force of mortality (truly constant within <span class="math notranslate nohighlight">\([x, x+1)\)</span> under CFM):</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_{x+s} = -\ln p_x
+\]</div>
+</section>
+</section>
+<section id="commutation-functions">
+<span id="formulas-commutation"></span><span id="id4"></span><h2>Commutation functions<a class="headerlink" href="#commutation-functions" title="Link to this heading">#</a></h2>
+<p>Commutation functions simplify actuarial calculations by precomputing discounted
+survival values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">Dx</span></code>, <code class="docutils literal notranslate"><span class="pre">Nx</span></code>, <code class="docutils literal notranslate"><span class="pre">Cx</span></code>, <code class="docutils literal notranslate"><span class="pre">Mx</span></code>, <code class="docutils literal notranslate"><span class="pre">Sx</span></code>, <code class="docutils literal notranslate"><span class="pre">Rx</span></code>, <code class="docutils literal notranslate"><span class="pre">Lx</span></code>, <code class="docutils literal notranslate"><span class="pre">Tx</span></code> require integer ages.</strong>
+Passing a fractional age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Lx_continuous</span></code> and <code class="docutils literal notranslate"><span class="pre">Tx_continuous</span></code> are the counterparts for fractional ages;
+they raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> for integer ages.</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Formula</p></th>
+<th class="head"><p>Actuarial use</p></th>
+<th class="head"><p>Lactuca method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(D_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^x l_x\)</span></p></td>
+<td><p>Denominator in all commutation formulas</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Dx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(N_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_{k \ge x} D_k\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\ddot{a}_x = N_x/D_x\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Nx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(S_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_{k \ge x} N_k\)</span></p></td>
+<td><p>Increasing annuities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Sx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(C_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^{x+f} d_x\)</span> *</p></td>
+<td><p>Building block for <span class="math notranslate nohighlight">\(M_x\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Cx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(M_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_{k \ge x} C_k\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(A_x = M_x/D_x\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Mx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(R_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_{k \ge x} M_k\)</span></p></td>
+<td><p>Increasing insurance</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Rx(x,</span> <span class="pre">ir=)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(L_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((l_x + l_{x+1})/2\)</span></p></td>
+<td><p>Person-years in <span class="math notranslate nohighlight">\([x, x+1)\)</span> (integer <span class="math notranslate nohighlight">\(x\)</span>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Lx(x)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(L_{x+s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\int_{x+s}^{x+s+1} l_t\,\mathrm{d}t\)</span></p></td>
+<td><p>Person-years at fractional age</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Lx_continuous(x+s,</span> <span class="pre">m=)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T_x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_{k=x}^{\omega-1} L_k\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathring{e}_x = T_x / l_x\)</span> (integer <span class="math notranslate nohighlight">\(x\)</span>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Tx(x)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(T_{x+s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\int_{x+s}^{\omega} l_t\,\mathrm{d}t\)</span></p></td>
+<td><p>Future person-years at fractional age</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lt.Tx_continuous(x+s,</span> <span class="pre">m=)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>* <span class="math notranslate nohighlight">\(f\)</span> = mortality placement fraction: <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> → 0.5 (default); <code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code> → 1.0; <code class="docutils literal notranslate"><span class="pre">&quot;beginning&quot;</span></code> → 0.
+See the <a class="reference internal" href="#c-function-deaths">C function definition</a> for details.</p>
+<section id="discount-factor">
+<h3>Discount factor<a class="headerlink" href="#discount-factor" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+v = \frac{1}{1+i}
+\]</div>
+</section>
+<section id="d-function">
+<h3>D function<a class="headerlink" href="#d-function" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+D_x = v^x \cdot l_x
+\]</div>
+</section>
+<section id="n-function-sum-of-d">
+<h3>N function (sum of D)<a class="headerlink" href="#n-function-sum-of-d" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+N_x = \sum_{k=x}^{\omega} D_k = D_x + D_{x+1} + \cdots + D_{\omega}
+\]</div>
+</section>
+<section id="s-function-sum-of-n">
+<h3>S function (sum of N)<a class="headerlink" href="#s-function-sum-of-n" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+S_x = \sum_{k=x}^{\omega} N_k
+\]</div>
+</section>
+<section id="c-function-deaths">
+<span id="id5"></span><h3>C function (deaths)<a class="headerlink" href="#c-function-deaths" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+C_x = v^{x+f} \cdot d_x = v^{x+f} \cdot (l_x - l_{x+1})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f\)</span> is the mortality placement fraction controlled by
+<code class="docutils literal notranslate"><span class="pre">config.mortality_placement</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;beginning&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 0\)</span>; <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 0.5\)</span> (<strong>default</strong>);
+<code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 1\)</span>.
+The classical actuarial formula <span class="math notranslate nohighlight">\(C_x = v^{x+1} d_x\)</span> (end-of-year) corresponds to
+<code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code>.  The commutation identity <span class="math notranslate nohighlight">\(A_x = M_x / D_x\)</span> holds <strong>exactly</strong> for any
+placement: <span class="math notranslate nohighlight">\(M_x = \sum C_k\)</span> uses the same offset <span class="math notranslate nohighlight">\(f\)</span> throughout, so different
+placements yield internally consistent but numerically distinct insurance values
+(representing payment timing at <span class="math notranslate nohighlight">\(k+f\)</span>, not approximations of each other).</p>
+</section>
+<section id="m-function-sum-of-c">
+<h3>M function (sum of C)<a class="headerlink" href="#m-function-sum-of-c" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+M_x = \sum_{k=x}^{\omega} C_k
+\]</div>
+</section>
+<section id="r-function-sum-of-m">
+<h3>R function (sum of M)<a class="headerlink" href="#r-function-sum-of-m" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+R_x = \sum_{k=x}^{\omega} M_k
+\]</div>
+</section>
+<section id="lx-function-person-years-lived">
+<span id="id6"></span><h3>Lx function (person-years lived)<a class="headerlink" href="#lx-function-person-years-lived" title="Link to this heading">#</a></h3>
+<p>At integer ages (uses <code class="docutils literal notranslate"><span class="pre">lt.Lx(x)</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+L_x = \int_0^1 l_{x+t}\,\mathrm{d}t \approx \frac{l_x + l_{x+1}}{2} = l_x - \frac{d_x}{2}
+\]</div>
+<p>Exact under UDD. Requires integer age; fractional age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p>At fractional ages (uses <code class="docutils literal notranslate"><span class="pre">lt.Lx_continuous(x+s,</span> <span class="pre">m=)</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+L_{x+s} = \int_{x+s}^{x+s+1} l_t\,\mathrm{d}t
+\]</div>
+<p>Evaluated via the trapezoidal rule with <span class="math notranslate nohighlight">\(m+1\)</span> equally-spaced nodes (default <span class="math notranslate nohighlight">\(m=12\)</span>).
+Requires a strictly fractional age; integer age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</section>
+<section id="tx-function-total-future-person-years">
+<h3>Tx function (total future person-years)<a class="headerlink" href="#tx-function-total-future-person-years" title="Link to this heading">#</a></h3>
+<p>At integer ages (uses <code class="docutils literal notranslate"><span class="pre">lt.Tx(x)</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+T_x = \sum_{k=x}^{\omega-1} L_k
+\]</div>
+<p>Used to compute life expectancy: <span class="math notranslate nohighlight">\(\mathring{e}_x = T_x / l_x\)</span>. Requires integer age.</p>
+<p>At fractional ages (uses <code class="docutils literal notranslate"><span class="pre">lt.Tx_continuous(x+s,</span> <span class="pre">m=)</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+T_{x+s} = \int_{x+s}^{\omega} l_t\,\mathrm{d}t
+\]</div>
+<p>Evaluated via the trapezoidal rule (default <span class="math notranslate nohighlight">\(m=12\)</span>). Requires a strictly fractional age;
+integer age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. Used internally by <code class="docutils literal notranslate"><span class="pre">ex_continuous</span></code>.</p>
+</section>
+</section>
+<section id="life-annuities">
+<span id="formulas-annuities"></span><span id="id7"></span><h2>Life annuities<a class="headerlink" href="#life-annuities" title="Link to this heading">#</a></h2>
+<section id="whole-life-annuity-due">
+<h3>Whole life annuity due<a class="headerlink" href="#whole-life-annuity-due" title="Link to this heading">#</a></h3>
+<p>Present value of annual payments of 1 at the beginning of each year while the annuitant survives:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_x = \sum_{k=0}^{\omega - x} v^k \cdot {}_k p_x = \frac{N_x}{D_x}
+\]</div>
+</section>
+<section id="temporary-annuity-due">
+<h3>Temporary annuity due<a class="headerlink" href="#temporary-annuity-due" title="Link to this heading">#</a></h3>
+<p>Present value for <span class="math notranslate nohighlight">\(n\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_{x:\overline{n}|} = \sum_{k=0}^{n-1} v^k \cdot {}_k p_x = \frac{N_x - N_{x+n}}{D_x}
+\]</div>
+</section>
+<section id="deferred-annuity">
+<h3>Deferred annuity<a class="headerlink" href="#deferred-annuity" title="Link to this heading">#</a></h3>
+<p>Annuity starting after <span class="math notranslate nohighlight">\(d\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_x = v^d \cdot {}_d p_x \cdot \ddot{a}_{x+d} = \frac{N_{x+d}}{D_x}
+\]</div>
+</section>
+<section id="deferred-temporary-annuity">
+<h3>Deferred temporary annuity<a class="headerlink" href="#deferred-temporary-annuity" title="Link to this heading">#</a></h3>
+<p>Annuity of at most <span class="math notranslate nohighlight">\(n\)</span> payments starting after a <span class="math notranslate nohighlight">\(d\)</span>-year deferral period:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_{x:\overline{n}|}^{(m)}
+  = \ddot{a}_{x:\overline{d+n}|}^{(m)} - \ddot{a}_{x:\overline{d}|}^{(m)}
+\]</div>
+<p>Equivalently, using the pure endowment:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}\ddot{a}_{x:\overline{n}|}^{(m)} = {}_d E_x \cdot \ddot{a}_{x+d:\overline{n}|}^{(m)}
+\]</div>
+<p>In Lactuca, pass <code class="docutils literal notranslate"><span class="pre">d=</span></code> and <code class="docutils literal notranslate"><span class="pre">n=</span></code> together: <code class="docutils literal notranslate"><span class="pre">lt.äx(x,</span> <span class="pre">n=n,</span> <span class="pre">d=d,</span> <span class="pre">ir=ir)</span></code>.</p>
+</section>
+<section id="m-thly-annuity-due">
+<h3>m-thly annuity due<a class="headerlink" href="#m-thly-annuity-due" title="Link to this heading">#</a></h3>
+<p>Payments <span class="math notranslate nohighlight">\(m\)</span> times per year:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_x^{(m)} = \frac{1}{m}\sum_{k=0}^{m(\omega-x)-1} v^{k/m} \cdot {}_{k/m} p_x
+\]</div>
+<p>Using Woolhouse approximation (first order):</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_x^{(m)} \approx \ddot{a}_x - \frac{m-1}{2m}
+\]</div>
+</section>
+<section id="immediate-annuity">
+<h3>Immediate annuity<a class="headerlink" href="#immediate-annuity" title="Link to this heading">#</a></h3>
+<p>Payments at the end of each period (<span class="math notranslate nohighlight">\(m = 1\)</span>, whole-life):</p>
+<div class="math notranslate nohighlight">
+\[
+a_x = \ddot{a}_x - 1
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(m\)</span>-thly frequency the relationship generalises to:</p>
+<div class="math notranslate nohighlight">
+\[
+a_x^{(m)} = \ddot{a}_x^{(m)} - \frac{1}{m}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+a_{x:\overline{n}|}^{(m)} = \ddot{a}_{x:\overline{n}|}^{(m)} - \frac{1}{m}\,(1 - {}_n E_x)
+\]</div>
+<p>These follow directly from Lactuca’s payment-grid definition: the first immediate payment
+falls at <span class="math notranslate nohighlight">\(1/m\)</span> rather than <span class="math notranslate nohighlight">\(0\)</span>, shifting every payment by <span class="math notranslate nohighlight">\(1/m\)</span> relative to the
+annuity-due.</p>
+</section>
+<section id="continuous-annuity">
+<h3>Continuous annuity<a class="headerlink" href="#continuous-annuity" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\bar{a}_x = \int_0^{\omega-x} v^t \cdot {}_t p_x \, dt
+\]</div>
+<p>Approximation used by <code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code> mode
+(see <a class="reference internal" href="#continuous-simplified-formulas"><span class="std std-ref">continuous_simplified</span></a> for the temporary variant):</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{a}_x \approx \ddot{a}_x - \frac{1}{2}
+\]</div>
+</section>
+</section>
+<section id="life-insurances">
+<span id="formulas-insurances"></span><span id="id8"></span><h2>Life insurances<a class="headerlink" href="#life-insurances" title="Link to this heading">#</a></h2>
+<section id="whole-life-insurance-discrete">
+<h3>Whole life insurance (discrete)<a class="headerlink" href="#whole-life-insurance-discrete" title="Link to this heading">#</a></h3>
+<p>Present value of 1 payable on death, discounted at the mortality placement offset:</p>
+<div class="math notranslate nohighlight">
+\[
+A_x = \sum_{k=0}^{\omega-x-1} v^{k+f} \cdot {}_k p_x \cdot q_{x+k} = \frac{M_x}{D_x}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f\)</span> is the mortality placement fraction (see <a class="reference internal" href="#c-function-deaths"><span class="math notranslate nohighlight">\(C_x\)</span></a>):
+<code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 0.5\)</span> (<strong>default</strong>); <code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 1\)</span>; <code class="docutils literal notranslate"><span class="pre">&quot;beginning&quot;</span></code> → <span class="math notranslate nohighlight">\(f = 0\)</span>.
+The classical textbook formula uses <span class="math notranslate nohighlight">\(v^{k+1}\)</span> and corresponds to <code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code> placement.
+The commutation identity <span class="math notranslate nohighlight">\(A_x = M_x/D_x\)</span> holds for any placement because Lactuca’s
+<span class="math notranslate nohighlight">\(M_x = \sum C_k\)</span> uses the same offset <span class="math notranslate nohighlight">\(f\)</span> throughout.</p>
+</section>
+<section id="term-insurance">
+<h3>Term insurance<a class="headerlink" href="#term-insurance" title="Link to this heading">#</a></h3>
+<p>Insurance payable only if death occurs within <span class="math notranslate nohighlight">\(n\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+A^1_{x:\overline{n}|} = \frac{M_x - M_{x+n}}{D_x}
+\]</div>
+</section>
+<section id="pure-endowment">
+<h3>Pure endowment<a class="headerlink" href="#pure-endowment" title="Link to this heading">#</a></h3>
+<p>Payment only if the insured survives <span class="math notranslate nohighlight">\(n\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_n E_x = v^n \cdot {}_n p_x = \frac{D_{x+n}}{D_x}
+\]</div>
+</section>
+<section id="endowment-insurance">
+<h3>Endowment insurance<a class="headerlink" href="#endowment-insurance" title="Link to this heading">#</a></h3>
+<p>Combination of term insurance and pure endowment:</p>
+<div class="math notranslate nohighlight">
+\[
+A_{x:\overline{n}|} = A^1_{x:\overline{n}|} + {}_n E_x
+\]</div>
+</section>
+<section id="continuous-whole-life-insurance">
+<h3>Continuous whole life insurance<a class="headerlink" href="#continuous-whole-life-insurance" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\bar{A}_x = \int_0^{\omega-x} v^t \cdot {}_t p_x \cdot \mu_{x+t} \, dt
+\]</div>
+<p>Classical UDD approximation (theoretical reference; not the formula Lactuca’s
+<code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code> mode uses — see <a class="reference internal" href="#continuous-simplified-formulas"><span class="std std-ref">continuous_simplified</span></a>):</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{A}_x \approx \frac{i}{\delta} A_x
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta = \ln(1+i)\)</span> is the force of interest.</p>
+</section>
+<section id="deferred-insurance">
+<h3>Deferred insurance<a class="headerlink" href="#deferred-insurance" title="Link to this heading">#</a></h3>
+<p>Present value of a 1-unit benefit payable on death <em>after</em> a deferment period of <span class="math notranslate nohighlight">\(d\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}A_x = {}_d E_x \cdot A_{x+d}
+\]</div>
+<p>For a deferred term insurance (benefit paid only if death occurs within <span class="math notranslate nohighlight">\(n\)</span> years after the
+deferment period):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_{d|}A^1_{x:\overline{n}|} = {}_d E_x \cdot A^1_{x+d:\overline{n}|}
+\]</div>
+<p>In Lactuca: <code class="docutils literal notranslate"><span class="pre">lt.Ax(x,</span> <span class="pre">d=d)</span></code> and <code class="docutils literal notranslate"><span class="pre">lt.Ax(x,</span> <span class="pre">d=d,</span> <span class="pre">n=n)</span></code>.  See <a class="reference internal" href="user_guide/deferment.html"><span class="doc">Deferred Life Contingencies</span></a>
+for code examples across all products.</p>
+</section>
+</section>
+<section id="relationship-between-annuities-and-insurances">
+<span id="formulas-annuity-insurance"></span><span id="id9"></span><h2>Relationship between annuities and insurances<a class="headerlink" href="#relationship-between-annuities-and-insurances" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Notation clash — <code class="docutils literal notranslate"><span class="pre">d</span></code> has two meanings on this page.</strong>
+In formulas below, <span class="math notranslate nohighlight">\(d = i/(1+i)\)</span> is the <strong>discount rate</strong> (a fixed finance constant).
+Elsewhere on this page (deferred annuities, Lactuca’s <code class="docutils literal notranslate"><span class="pre">d=</span></code> argument) <span class="math notranslate nohighlight">\(d\)</span> is the
+<strong>deferral period in years</strong>.  The two quantities are always typographically identical
+in standard actuarial notation; context determines which is meant.</p>
+</div>
+<p>Fundamental relationship:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_x = \frac{1 - A_x}{d}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(d = \frac{i}{1+i}\)</span> is the discount rate.</p>
+<p>For temporary annuity:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_{x:\overline{n}|} = \frac{1 - A_{x:\overline{n}|}}{d}
+\]</div>
+<p>For continuous modes the analogous relationship uses the force of interest
+<span class="math notranslate nohighlight">\(\delta = \ln(1+i)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{a}_x = \frac{1 - \bar{A}_x}{\delta}
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The discrete identities <span class="math notranslate nohighlight">\(\ddot{a}_x = (1-A_x)/d\)</span> and <span class="math notranslate nohighlight">\(\ddot{a}_{x:\overline{n}|} = (1-A_{x:\overline{n}|})/d\)</span>
+are classical algebraic results that hold when <span class="math notranslate nohighlight">\(A_x\)</span> is the <strong>end-of-year</strong> insurance
+(i.e., <code class="docutils literal notranslate"><span class="pre">config.mortality_placement</span> <span class="pre">=</span> <span class="pre">&quot;end&quot;</span></code>).  Under Lactuca’s default <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code>
+placement, <span class="math notranslate nohighlight">\(A_x\)</span> represents a mid-year benefit and these exact equalities do not hold,
+though the approximation error is small in practice.</p>
+</div>
+</section>
+<section id="life-expectancy">
+<span id="formulas-life-expectancy"></span><span id="id10"></span><h2>Life expectancy<a class="headerlink" href="#life-expectancy" title="Link to this heading">#</a></h2>
+<section id="complete-life-expectancy">
+<h3>Complete life expectancy<a class="headerlink" href="#complete-life-expectancy" title="Link to this heading">#</a></h3>
+<p>The <strong>complete (entire) expectation of life</strong> <span class="math notranslate nohighlight">\(\mathring{e}_x\)</span> is the expected total
+future lifetime of a life aged <span class="math notranslate nohighlight">\(x\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathring{e}_x = \int_0^{\omega-x} {}_t p_x \, dt
+\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ex(x)</span></code> requires an integer age.</strong>
+Passing a fractional age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ex(x)</span></code> — integer ages only</strong>: uses the UDD discrete approximation
+<span class="math notranslate nohighlight">\(T_x = \sum L_k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+T_x = \sum_{k=x}^{\omega-1} L_k \approx \sum_{k=x}^{\omega-1} \frac{l_k + l_{k+1}}{2},
+\qquad \mathring{e}_x = \frac{T_x}{l_x}
+\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ex_continuous(x</span> <span class="pre">+</span> <span class="pre">s,</span> <span class="pre">m=)</span></code> requires a strictly fractional age.</strong>
+Passing an integer age raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.  Default <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">12</span></code>.</p>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ex_continuous(x</span> <span class="pre">+</span> <span class="pre">s,</span> <span class="pre">m=)</span></code> — fractional ages only</strong>: integrates <span class="math notranslate nohighlight">\(l_t\)</span> numerically
+(trapezoidal rule with <span class="math notranslate nohighlight">\(m\)</span> sub-intervals per year):</p>
+<div class="math notranslate nohighlight">
+\[
+T_{x+s} = \int_{x+s}^{\omega} l_t \, dt, \qquad \mathring{e}_{x+s} = \frac{T_{x+s}}{l_{x+s}}
+\]</div>
+</section>
+<section id="curtate-life-expectancy">
+<h3>Curtate life expectancy<a class="headerlink" href="#curtate-life-expectancy" title="Link to this heading">#</a></h3>
+<p>Expected whole years of future life:</p>
+<div class="math notranslate nohighlight">
+\[
+e_x = \sum_{k=1}^{\omega-x} {}_k p_x
+\]</div>
+<p>Under UDD the two expectations are related by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathring{e}_x = e_x + \tfrac{1}{2}
+\]</div>
+</section>
+</section>
+<section id="interest-rate-conversions">
+<span id="id11"></span><h2>Interest rate conversions<a class="headerlink" href="#interest-rate-conversions" title="Link to this heading">#</a></h2>
+<section id="nominal-to-effective-rate-m-thly">
+<h3>Nominal to effective rate (m-thly)<a class="headerlink" href="#nominal-to-effective-rate-m-thly" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+i = \left(1 + \frac{i^{(m)}}{m}\right)^m - 1
+\]</div>
+</section>
+<section id="effective-to-m-thly-nominal-rate">
+<h3>Effective to m-thly nominal rate<a class="headerlink" href="#effective-to-m-thly-nominal-rate" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+i^{(m)} = m\left[(1+i)^{1/m} - 1\right]
+\]</div>
+</section>
+<section id="effective-to-force-of-interest">
+<h3>Effective to force of interest<a class="headerlink" href="#effective-to-force-of-interest" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\delta = \ln(1 + i)
+\]</div>
+</section>
+<section id="m-thly-discount-rate">
+<h3>m-thly discount rate<a class="headerlink" href="#m-thly-discount-rate" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+d^{(m)} = m \left[1 - (1+i)^{-1/m}\right]
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Term structures and EIOPA RFR.</strong> Piecewise discount curves are entered manually via
+<code class="docutils literal notranslate"><span class="pre">InterestRate(terms=...,</span> <span class="pre">rates=...)</span></code>.  Lactuca does not download or parse official EIOPA
+RFR files — build segment forward rates from published spot curves.  See
+<a class="reference internal" href="user_guide/interest_rates_guide.html"><span class="doc">Interest Rates</span></a> § EIOPA risk-free rate curve.</p>
+</div>
+</section>
+</section>
+<section id="growth-rates-escalating-benefits">
+<span id="id12"></span><h2>Growth rates (escalating benefits)<a class="headerlink" href="#growth-rates-escalating-benefits" title="Link to this heading">#</a></h2>
+<p>For benefits increasing at rate <span class="math notranslate nohighlight">\(g\)</span> per annum, the present value factor becomes:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{PV factor} = \left(\frac{1+g}{1+i}\right)^t = v_g^t
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(v_g = \frac{1+g}{1+i}\)</span> is the adjusted discount factor.</p>
+<p>Escalating whole-life annuity-due (annual payments, <span class="math notranslate nohighlight">\(m = 1\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_x^{(g)} = \sum_{k=0}^{\omega-x} (1+g)^k \cdot v^k \cdot {}_k p_x
+\]</div>
+<p>For fractional payment frequency (<span class="math notranslate nohighlight">\(m &gt; 1\)</span>), Lactuca uses an anniversary-based
+growth index: the <span class="math notranslate nohighlight">\(j\)</span>-th payment receives factor <span class="math notranslate nohighlight">\((1+g)^{\lfloor j/m \rfloor}\)</span>, so
+that growth increments occur only at whole-year policy anniversaries regardless of
+payment density. The complete <span class="math notranslate nohighlight">\(m\)</span>-thly growing annuity formulas are in
+<a class="reference internal" href="user_guide/growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a>.</p>
+</section>
+<section id="multiple-decrements">
+<span id="id13"></span><h2>Multiple decrements<a class="headerlink" href="#multiple-decrements" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Multiple-decrement table combination</strong> (<code class="docutils literal notranslate"><span class="pre">table_combination</span></code> on
+<code class="docutils literal notranslate"><span class="pre">modify_qx</span></code> / <code class="docutils literal notranslate"><span class="pre">modify_ix</span></code> / <code class="docutils literal notranslate"><span class="pre">modify_ox</span></code>) stores a collapsed total
+<span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> in the host table.  Default <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code> is
+<strong>independent competing risks</strong>; optional <code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> applies
+UDD associated singles (two or three causes) before collapsing.  For two or
+three causes the collapsed total equals the independent product exactly.
+Per-cause <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned in v1.  See
+<a class="reference internal" href="user_guide/modifying_decrements.html"><span class="doc">Modifying Decrements</span></a> and <a class="reference internal" href="#table-combination-formulas"><span class="std std-ref">Table combination (v1 collapsed total)</span></a> below.</p>
+</div>
+<section id="table-combination-v1-collapsed-total">
+<span id="table-combination-formulas"></span><h3>Table combination (v1 collapsed total)<a class="headerlink" href="#table-combination-v1-collapsed-total" title="Link to this heading">#</a></h3>
+<p><strong>Independent</strong> (default):</p>
+<div class="math notranslate nohighlight">
+\[
+q_x^{\mathrm{comb}} = 1 - (1 - q_x^{(0)}) \prod_j (1 - q_x^{(j)})
+\]</div>
+<p><strong>UDD</strong> (<code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code>, host plus one or two other tables only):</p>
+<p>Two causes — associated singles then sum:</p>
+<div class="math notranslate nohighlight">
+\[
+q'^{(1)} = q^{(0)}\left(1 - \frac{q^{(1)}}{2}\right), \quad
+q'^{(2)} = q^{(1)}\left(1 - \frac{q^{(0)}}{2}\right), \quad
+q_x^{\mathrm{comb}} = q'^{(1)} + q'^{(2)} = 1 - (1-q^{(0)})(1-q^{(1)})
+\]</div>
+<p>Three causes (Bowers/Jordan):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+q'^{(1)} &amp;= q^{(0)}\left(1 - \frac{q^{(1)}}{2} - \frac{q^{(2)}}{2} + \frac{q^{(1)}q^{(2)}}{3}\right) \\
+q'^{(2)} &amp;= q^{(1)}\left(1 - \frac{q^{(0)}}{2} - \frac{q^{(2)}}{2} + \frac{q^{(0)}q^{(2)}}{3}\right) \\
+q'^{(3)} &amp;= q^{(2)}\left(1 - \frac{q^{(0)}}{2} - \frac{q^{(1)}}{2} + \frac{q^{(0)}q^{(1)}}{3}\right)
+\end{aligned}
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[
+q_x^{\mathrm{comb}} = q'^{(1)} + q'^{(2)} + q'^{(3)}
+= 1 - (1-q^{(0)})(1-q^{(1)})(1-q^{(2)})
+\]</div>
+<p>For joint-life calculations and unmodified tables, <span class="math notranslate nohighlight">\({}_t p_x^{(\tau)} = \prod_j {}_t p_x^{(j)}\)</span> under the <strong>independence</strong> assumption. The general inclusion-exclusion form below is shown for mathematical completeness.</p>
+<p>For independent decrements <span class="math notranslate nohighlight">\(j = 1, 2, \ldots, n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t q_x^{(\tau)} = \sum_{j=1}^n {}_t q_x^{(j)} - \sum_{i&lt;j} {}_t q_x^{(i,j)} + \cdots
+\]</div>
+<p>Under independence:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t p_x^{(\tau)} = \prod_{j=1}^n {}_t p_x^{(j)}
+\]</div>
+<p>Single decrement probability (cause <span class="math notranslate nohighlight">\(j\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t q_x^{(j)} = \int_0^t {}_s p_x^{(\tau)} \cdot \mu_x^{(j)}(s) \, ds
+\]</div>
+</section>
+</section>
+<section id="joint-life-and-last-survivor">
+<span id="id14"></span><h2>Joint life and last survivor<a class="headerlink" href="#joint-life-and-last-survivor" title="Link to this heading">#</a></h2>
+<section id="joint-life-status">
+<h3>Joint life status<a class="headerlink" href="#joint-life-status" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> assumes <strong>statistical independence</strong> of lives in all joint calculations
+(<code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">Axyz</span></code>, etc.).
+Correlated mortality is not supported.</p>
+</div>
+<p>Survival of both lives (independence).  Lactuca evaluates products in <strong>log domain</strong>
+<span class="math notranslate nohighlight">\(\exp(\ln {}_t p_x + \ln {}_t p_y)\)</span> for numerical stability; this is equivalent to the
+product below, including for <span class="math notranslate nohighlight">\(t \le 1\)</span>.  See <a class="reference internal" href="user_guide/numerical_precision.html"><span class="doc">Numerical Precision</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t p_{xy} = {}_t p_x \cdot {}_t p_y \quad \text{(independence)}
+\]</div>
+<p>Joint life annuity:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_{xy} = \sum_{k=0}^{\infty} v^k \cdot {}_k p_{xy}
+\]</div>
+</section>
+<section id="last-survivor-status">
+<h3>Last survivor status<a class="headerlink" href="#last-survivor-status" title="Link to this heading">#</a></h3>
+<p>At least one life survives:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t p_{\overline{xy}} = {}_t p_x + {}_t p_y - {}_t p_{xy}
+\]</div>
+<p>Last survivor annuity:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_{\overline{xy}} = \ddot{a}_x + \ddot{a}_y - \ddot{a}_{xy}
+\]</div>
+</section>
+<section id="joint-life-insurance-and-pure-endowment">
+<h3>Joint life insurance and pure endowment<a class="headerlink" href="#joint-life-insurance-and-pure-endowment" title="Link to this heading">#</a></h3>
+<p>Joint life insurance — benefit on first death (uses <code class="docutils literal notranslate"><span class="pre">config.mortality_placement</span></code> offset <span class="math notranslate nohighlight">\(f\)</span>,
+same convention as single-life <code class="docutils literal notranslate"><span class="pre">Ax</span></code>):</p>
+<div class="math notranslate nohighlight">
+\[
+A_{xy} = \sum_{k=0}^{\infty} v^{k+f} \cdot {}_k p_{xy} \cdot (1 - p_{x+k}\,p_{y+k})
+\]</div>
+<p>Joint pure endowment — both lives survive <span class="math notranslate nohighlight">\(n\)</span> years:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_n E_{xy} = v^n \cdot {}_n p_{xy} = v^n \cdot {}_n p_x \cdot {}_n p_y
+\]</div>
+</section>
+<section id="three-life-joint-status">
+<h3>Three-life joint status<a class="headerlink" href="#three-life-joint-status" title="Link to this heading">#</a></h3>
+<p>Under independence of three lives:</p>
+<div class="math notranslate nohighlight">
+\[
+{}_t p_{xyz} = {}_t p_x \cdot {}_t p_y \cdot {}_t p_z
+\]</div>
+<p>Three-life joint annuity-due, insurance, and pure endowment:</p>
+<div class="math notranslate nohighlight">
+\[
+\ddot{a}_{xyz} = \sum_{k=0}^{\infty} v^k \cdot {}_k p_{xyz}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+A_{xyz} = \sum_{k=0}^{\infty} v^{k+f} \cdot {}_k p_{xyz} \cdot
+  (1 - p_{x+k}\,p_{y+k}\,p_{z+k})
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+{}_n E_{xyz} = v^n \cdot {}_n p_x \cdot {}_n p_y \cdot {}_n p_z
+\]</div>
+</section>
+</section>
+<section id="formulas-by-calculation-mode">
+<span id="id15"></span><h2>Formulas by calculation mode<a class="headerlink" href="#formulas-by-calculation-mode" title="Link to this heading">#</a></h2>
+<p>Lactuca provides four calculation modes (set via <code class="docutils literal notranslate"><span class="pre">config.calculation_mode</span></code>). The
+same method (<code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">Ax</span></code>, etc.) uses different formulae depending on the active mode.
+Full details in <a class="reference internal" href="user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Actuarial coherence.</strong> All four modes value the same product under shared global
+conventions (tables, <code class="docutils literal notranslate"><span class="pre">mortality_placement</span></code>, <code class="docutils literal notranslate"><span class="pre">lx_interpolation</span></code>, interest/growth). They are
+actuarially coherent but <strong>not</strong> required to return numerically identical results. See
+<a class="reference internal" href="user_guide/calculation_modes.html#actuarial-coherence-of-modes"><span class="std std-ref">Actuarial coherence across modes</span></a> in <a class="reference internal" href="user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Change mode globally with <code class="docutils literal notranslate"><span class="pre">config.calculation_mode</span> <span class="pre">=</span> <span class="pre">&quot;&lt;mode&gt;&quot;</span></code>.  Allowed values:
+<code class="docutils literal notranslate"><span class="pre">&quot;discrete_precision&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;discrete_simplified&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;continuous_precision&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;continuous_simplified&quot;</span></code>.
+Any other string raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.
+Call <code class="docutils literal notranslate"><span class="pre">config.reset_to_defaults()</span></code> to restore the default.</p>
+</div>
+<section id="discrete-precision-integer-ages-m-1">
+<h3><code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> — integer ages, <span class="math notranslate nohighlight">\(m = 1\)</span><a class="headerlink" href="#discrete-precision-integer-ages-m-1" title="Link to this heading">#</a></h3>
+<p>Closed-form equivalents (direct summation reduces to commutation formulas for
+integer ages and <span class="math notranslate nohighlight">\(m=1\)</span>).  All identities hold <strong>exactly</strong> for any value of
+<code class="docutils literal notranslate"><span class="pre">config.mortality_placement</span></code> (see <a class="reference internal" href="#c-function-deaths">C function</a> note above):</p>
+<div class="math notranslate nohighlight">
+\[\ddot{a}_{x:\overline{n}|} = \frac{N_x - N_{x+n}}{D_x}, \qquad \ddot{a}_x = \frac{N_x}{D_x}\]</div>
+<div class="math notranslate nohighlight">
+\[A^1_{x:\overline{n}|} = \frac{M_x - M_{x+n}}{D_x}, \qquad A_x = \frac{M_x}{D_x}\]</div>
+<div class="math notranslate nohighlight">
+\[{}_{n}E_x = \frac{D_{x+n}}{D_x}\]</div>
+</section>
+<section id="discrete-precision-m-1-or-fractional-age">
+<h3><code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> — <span class="math notranslate nohighlight">\(m &gt; 1\)</span> or fractional age<a class="headerlink" href="#discrete-precision-m-1-or-fractional-age" title="Link to this heading">#</a></h3>
+<p>Exact summation over the payment grid, using <span class="math notranslate nohighlight">\(\ell_x\)</span> interpolation at each grid
+point.</p>
+<p>Annuity-due:</p>
+<div class="math notranslate nohighlight">
+\[\ddot{a}_{x:\overline{n}|}^{(m)} = \frac{1}{m} \sum_{j=0}^{mn-1} v^{j/m} \cdot {}_{j/m}p_x\]</div>
+<p>Annuity-immediate:</p>
+<div class="math notranslate nohighlight">
+\[a_{x:\overline{n}|}^{(m)} = \frac{1}{m} \sum_{j=0}^{mn-1} v^{(j+1)/m} \cdot {}_{(j+1)/m}p_x\]</div>
+<p>Insurance (<span class="math notranslate nohighlight">\(m\)</span>-thly):</p>
+<div class="math notranslate nohighlight">
+\[A_x^{(m)} = \sum_{k=0}^{mn-1} v^{k/m\,+\,f/m} \cdot {}_{k/m}p_x \cdot {}_{1/m}q_{x+k/m}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f/m\)</span> is the mortality placement micro-offset within each <span class="math notranslate nohighlight">\(1/m\)</span>-year sub-period
+(<span class="math notranslate nohighlight">\(f \in \{0,\,0.5,\,1\}\)</span> from <code class="docutils literal notranslate"><span class="pre">config.mortality_placement</span></code>; see <a class="reference internal" href="#c-function-deaths">C function</a>).</p>
+<p>Survival and death probabilities are obtained by interpolating <span class="math notranslate nohighlight">\(\ell_x\)</span> with the
+method set in <code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span></code> (see <a class="reference internal" href="user_guide/lx_interpolation.html"><span class="doc">lx Interpolation</span></a>).</p>
+</section>
+<section id="discrete-simplified">
+<h3><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code><a class="headerlink" href="#discrete-simplified" title="Link to this heading">#</a></h3>
+<p>Classical Woolhouse first-order approximation converting <span class="math notranslate nohighlight">\(m=1\)</span> to frequency <span class="math notranslate nohighlight">\(m\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ddot{a}_{x:\overline{n}|}^{(m)} \approx \ddot{a}_{x:\overline{n}|} - \frac{m-1}{2m}\,(1 - {}_{n}E_x)\]</div>
+<div class="math notranslate nohighlight">
+\[\ddot{a}_x^{(m)} \approx \ddot{a}_x - \frac{m-1}{2m}\]</div>
+<p>Woolhouse approximation for <strong>annuities</strong> (insurances use adjacent-age linear
+interpolation — <strong>not</strong> <span class="math notranslate nohighlight">\((i/i^{(m)})A_x\)</span>; see <a class="reference internal" href="user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a>). When <span class="math notranslate nohighlight">\(n_\text{eff}\)</span> is fractional
+and <span class="math notranslate nohighlight">\(m&gt;1\)</span>, integer years <span class="math notranslate nohighlight">\(k=\lfloor n_\text{eff}\rfloor\)</span> use Woolhouse and the
+terminal fraction <span class="math notranslate nohighlight">\(s=n_\text{eff}-k\)</span> is summed on an exact m-thly grid:</p>
+<div class="math notranslate nohighlight">
+\[A_x^{(m)} \approx A_x + \frac{m-1}{2m}\left(A_{x+1} - A_x\right) \quad\text{(insurances; integer $n$ only)}\]</div>
+</section>
+<section id="continuous-precision">
+<h3><code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code><a class="headerlink" href="#continuous-precision" title="Link to this heading">#</a></h3>
+<p>Numerical integration over the unrounded <span class="math notranslate nohighlight">\(\ell_x\)</span> curve (raw values):</p>
+<div class="math notranslate nohighlight">
+\[\bar{a}_{x:\overline{n}|} = \int_0^n v^t \cdot {}_t p_x \, dt\]</div>
+<div class="math notranslate nohighlight">
+\[\bar{A}^1_{x:\overline{n}|} = \int_0^n v^t \cdot {}_t p_x \cdot \mu_{x+t} \, dt\]</div>
+<p>The force of mortality <span class="math notranslate nohighlight">\(\mu_{x+t}\)</span> is derived numerically from the raw <span class="math notranslate nohighlight">\(\ell_x\)</span> grid.
+The approximation method is controlled by <code class="docutils literal notranslate"><span class="pre">config.force_mortality_method</span></code>; allowed
+values: <code class="docutils literal notranslate"><span class="pre">&quot;finite_difference&quot;</span></code> (<strong>default</strong>), <code class="docutils literal notranslate"><span class="pre">&quot;spline&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;kernel&quot;</span></code>.
+Passing any other string raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</section>
+<section id="continuous-simplified">
+<span id="continuous-simplified-formulas"></span><h3><code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code><a class="headerlink" href="#continuous-simplified" title="Link to this heading">#</a></h3>
+<p>Arithmetic interpolation using the rounded <span class="math notranslate nohighlight">\(\ell_x\)</span> grid:</p>
+<div class="math notranslate nohighlight">
+\[\bar{a}_x \approx \ddot{a}_x - \frac{1}{2}\]</div>
+<div class="math notranslate nohighlight">
+\[\bar{a}_{x:\overline{n}|} \approx \ddot{a}_{x:\overline{n}|} - \frac{1}{2}\,(1 - {}_n E_x)\]</div>
+<div class="math notranslate nohighlight">
+\[\bar{A}_{x+s} \approx \frac{\bar{A}_x + \bar{A}_{x+1}}{2}, \quad 0 &lt; s &lt; 1\]</div>
+</section>
+</section>
+<section id="select-and-ultimate-tables">
+<span id="id16"></span><h2>Select-and-ultimate tables<a class="headerlink" href="#select-and-ultimate-tables" title="Link to this heading">#</a></h2>
+<p>Some tables are <strong>select</strong> tables: the mortality rate <span class="math notranslate nohighlight">\(q_{[x]+k}\)</span> depends not only
+on the attained age <span class="math notranslate nohighlight">\(x + k\)</span> but also on the time elapsed since selection <span class="math notranslate nohighlight">\(k\)</span> and the
+age at selection <span class="math notranslate nohighlight">\(x\)</span>.  Once the select period has elapsed, the rate reverts to the
+<strong>ultimate</strong> table which depends on attained age only.
+See <a class="reference internal" href="#formulas-select-notation">Select-ultimate notation</a> for the mathematical definition.</p>
+<p>Lactuca reads the select period from the table’s <code class="docutils literal notranslate"><span class="pre">select_period</span></code> metadata field.
+The fallback to ultimate mortality is applied automatically once duration reaches
+<code class="docutils literal notranslate"><span class="pre">start_duration</span> <span class="pre">+</span> <span class="pre">select_period</span></code> years — no code change is required in the calling layer.</p>
+<p><strong>Example — DAV 2004R Select-Ultimate (<code class="docutils literal notranslate"><span class="pre">select_period</span> <span class="pre">=</span> <span class="pre">5</span></code>):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># Load select-ultimate table at duration 1 (freshly underwritten)</span>
+<span class="n">dav</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;DAV2004R_SelUlt_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dav</span><span class="o">.</span><span class="n">select_period</span><span class="p">)</span>      <span class="c1"># 5</span>
+
+<span class="c1"># Select mortality at age [60], 2 years after selection: q_{[60]+2}</span>
+<span class="n">dav</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">q_sel</span> <span class="o">=</span> <span class="n">dav</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Ultimate mortality at attained age 65: q_65</span>
+<span class="n">dav</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;ult&quot;</span>
+<span class="n">q_ult</span> <span class="o">=</span> <span class="n">dav</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For a full treatment see <a class="reference internal" href="user_guide/tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a>.</p>
+</section>
+<section id="references">
+<span id="id17"></span><h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<section id="actuarial-mathematics">
+<h3>Actuarial mathematics<a class="headerlink" href="#actuarial-mathematics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Bowers, N.L., et al. (1997). <em>Actuarial Mathematics</em> (2nd ed.). Society of Actuaries.</p></li>
+<li><p>Dickson, D.C.M., Hardy, M.R., Waters, H.R. (2019). <em>Actuarial Mathematics for Life Contingent Risks</em> (3rd ed.). Cambridge University Press.</p></li>
+<li><p>Promislow, S.D. (2014). <em>Fundamentals of Actuarial Mathematics</em> (3rd ed.). Wiley.</p></li>
+<li><p>Gerber, H.U. (1997). <em>Life Insurance Mathematics</em> (3rd ed.). Springer / Swiss Association of Actuaries.</p></li>
+</ul>
+</section>
+<section id="numerical-methods-and-financial-mathematics">
+<h3>Numerical methods and financial mathematics<a class="headerlink" href="#numerical-methods-and-financial-mathematics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Shiu, E.S.W. (1984). Woolhouse’s formula and other summation techniques. <em>Transactions of the Society of Actuaries</em>, 36.</p></li>
+<li><p>Norberg, R. (1990). <em>Reserve formula for annuities and insurances with the focus on multiple state models</em>. Scandinavian Actuarial Journal.</p></li>
+<li><p>Press, W.H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3rd ed.). Cambridge University Press.</p></li>
+</ul>
+</section>
+<section id="multiple-decrements-and-multiple-state-models">
+<h3>Multiple decrements and multiple-state models<a class="headerlink" href="#multiple-decrements-and-multiple-state-models" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Haberman, S., Pitacco, E. (1999). <em>Actuarial Models for Disability Insurance</em>. Chapman &amp; Hall/CRC.</p></li>
+<li><p>Pitacco, E., Denuit, M., Haberman, S., Olivieri, A. (2009). <em>Modelling Longevity Dynamics for Pensions and Annuity Business</em>. Oxford University Press.</p></li>
+</ul>
+</section>
+<section id="mortality-table-sources">
+<h3>Mortality table sources<a class="headerlink" href="#mortality-table-sources" title="Link to this heading">#</a></h3>
+<p>The bundled tables are sourced from the official publications of each jurisdiction’s
+supervising authority or professional association.  See <a class="reference internal" href="user_guide/bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a>
+for the complete list and provenance of each table.</p>
+<hr class="docutils" />
+<p><strong>Note:</strong> All formulas assume integer ages unless fractional age interpolation (UDD/CFM) is explicitly specified.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api/dates.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Date Utilities</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cookbook.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Cookbook</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-and-mortality-functions">Survival and mortality functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#life-table-functions">Life table functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-probability">Survival probability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mortality-probability">Mortality probability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-mortality">Deferred mortality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survivors-and-deaths">Survivors and deaths</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-ultimate-notation">Select-ultimate notation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-age-interpolation">Fractional age interpolation</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#udd-uniform-distribution-of-deaths-linear">UDD — Uniform Distribution of Deaths (<code class="docutils literal notranslate"><span class="pre">"linear"</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cfm-constant-force-of-mortality-exponential">CFM — Constant Force of Mortality (<code class="docutils literal notranslate"><span class="pre">"exponential"</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commutation-functions">Commutation functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discount-factor">Discount factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-function">D function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-function-sum-of-d">N function (sum of D)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-function-sum-of-n">S function (sum of N)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-function-deaths">C function (deaths)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#m-function-sum-of-c">M function (sum of C)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-function-sum-of-m">R function (sum of M)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lx-function-person-years-lived">Lx function (person-years lived)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tx-function-total-future-person-years">Tx function (total future person-years)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-annuities">Life annuities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-life-annuity-due">Whole life annuity due</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporary-annuity-due">Temporary annuity due</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-annuity">Deferred annuity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-temporary-annuity">Deferred temporary annuity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#m-thly-annuity-due">m-thly annuity due</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#immediate-annuity">Immediate annuity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-annuity">Continuous annuity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-insurances">Life insurances</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-life-insurance-discrete">Whole life insurance (discrete)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#term-insurance">Term insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pure-endowment">Pure endowment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#endowment-insurance">Endowment insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-whole-life-insurance">Continuous whole life insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-insurance">Deferred insurance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-between-annuities-and-insurances">Relationship between annuities and insurances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-expectancy">Life expectancy</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-life-expectancy">Complete life expectancy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curtate-life-expectancy">Curtate life expectancy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interest-rate-conversions">Interest rate conversions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nominal-to-effective-rate-m-thly">Nominal to effective rate (m-thly)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effective-to-m-thly-nominal-rate">Effective to m-thly nominal rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effective-to-force-of-interest">Effective to force of interest</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#m-thly-discount-rate">m-thly discount rate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rates-escalating-benefits">Growth rates (escalating benefits)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-decrements">Multiple decrements</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-combination-v1-collapsed-total">Table combination (v1 collapsed total)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-and-last-survivor">Joint life and last survivor</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-status">Joint life status</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#last-survivor-status">Last survivor status</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-insurance-and-pure-endowment">Joint life insurance and pure endowment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-life-joint-status">Three-life joint status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas-by-calculation-mode">Formulas by calculation mode</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-precision-integer-ages-m-1"><code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> — integer ages, <span class="math notranslate nohighlight">\(m = 1\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-precision-m-1-or-fractional-age"><code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> — <span class="math notranslate nohighlight">\(m &gt; 1\)</span> or fractional age</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-simplified"><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-precision"><code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-simplified"><code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-and-ultimate-tables">Select-and-ultimate tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actuarial-mathematics">Actuarial mathematics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-methods-and-financial-mathematics">Numerical methods and financial mathematics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-decrements-and-multiple-state-models">Multiple decrements and multiple-state models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mortality-table-sources">Mortality table sources</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1670 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Getting Started &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/getting_started';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notation and Glossary" href="notation_glossary.html" />
+    <link rel="prev" title="User Guide" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deferment.html">Deferred Life Contingencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates_guide.html">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspecting_cashflows.html">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="last_payment_adjustment.html">Last Payment Adjustment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates_guide.html">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Getting Started</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
+<p>This guide walks you through the first steps with Lactuca: installing the library,
+loading an actuarial table, and running common probability and valuation calculations.
+No prior knowledge of the package is assumed.</p>
+<blockquote>
+<div><p><strong>Professional use</strong>: Results depend on inputs and assumptions chosen by the user.
+See the <a class="reference internal" href="../eula.html"><span class="doc">End User License Agreement</span></a> §10.2–10.3 for the full professional
+responsibility and regulatory disclaimer.</p>
+</div></blockquote>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>Lactuca runs on Windows, macOS, and Linux. <strong>Python ≥ 3.12</strong> is required.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>lactuca
+</pre></div>
+</div>
+<p>All other dependencies (NumPy ≥ 2.3, Pandas ≥ 2.3, SciPy ≥ 1.16, Polars ≥ 1.34) are installed automatically.</p>
+<p>All actuarial tables included in Lactuca are available immediately after installation —
+no separate download is required. See <a class="reference internal" href="bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a> for the complete catalogue.</p>
+</section>
+<section id="quick-example">
+<h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">äx</span>
+
+<span class="c1"># First-order individual annuitant table (PER 2020, born 1969)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="n">sex</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>
+
+<span class="c1"># 15-year temporary life annuity-due (annual payments, 3% interest)</span>
+<span class="n">annuity</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Life annuity value: </span><span class="si">{</span><span class="n">annuity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># The same calculation via the functional API:</span>
+<span class="n">annuity</span> <span class="o">=</span> <span class="n">äx</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">lt</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Life annuity value: </span><span class="si">{</span><span class="n">annuity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="how-lactuca-is-organised">
+<h2>How Lactuca is organised<a class="headerlink" href="#how-lactuca-is-organised" title="Link to this heading">#</a></h2>
+<p>Lactuca is structured as five layers.  As a user you interact exclusively with the
+<strong>Public API</strong> layer; the layers below it are handled automatically:</p>
+<div style="font-family: monospace; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; margin: 1em 0;">
+<table style="border-collapse: collapse; width: 100%; margin: 0;">
+<tr style="background: #e3f2fd;">
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc; font-weight: bold;">Public API</td>
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc;"><code>LifeTable</code>, <code>DisabilityTable</code>, <code>ExitTable</code>, <code>InterestRate</code>, <code>GrowthRate</code>, <code>Config</code>, functional API (<code>ax</code>, <code>äx</code>, <code>Ax</code>, <code>nEx</code>, …)</td>
+</tr>
+<tr style="background: #e8f5e9;">
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc; font-weight: bold;">Calculation layer</td>
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc;">Annuity, insurance, and endowment dispatchers; interest-rate and growth-rate models; global <code>Config</code> singleton</td>
+</tr>
+<tr style="background: #f3e5f5;">
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc; font-weight: bold;">Table layer</td>
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc;"><code>LifeTable</code> · <code>DisabilityTable</code> · <code>ExitTable</code> — load tables, compute probabilities, apply modifications</td>
+</tr>
+<tr style="background: #fff3e0;">
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc; font-weight: bold;">Core layer</td>
+  <td style="padding: 8px 16px; border-bottom: 1px solid #ccc;">Table reading, metadata validation, shared numerical helpers</td>
+</tr>
+<tr style="background: #fce4ec;">
+  <td style="padding: 8px 16px; font-weight: bold;">Data layer</td>
+  <td style="padding: 8px 16px;">Bundled actuarial table files (installed automatically with the package)</td>
+</tr>
+</table>
+</div>
+</section>
+<section id="actuarial-table-types">
+<h2>Actuarial table types<a class="headerlink" href="#actuarial-table-types" title="Link to this heading">#</a></h2>
+<p>Lactuca provides three table classes that mirror the standard actuarial taxonomy:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Decrement</p></th>
+<th class="head"><p>Typical use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LifeTable</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qx</span></code> — annual mortality</p></td>
+<td><p>Life insurance, pensions, annuities</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ix</span></code> — disability incidence</p></td>
+<td><p>Income protection, long-term care (dependency)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ExitTable</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ox</span></code> — withdrawal / termination</p></td>
+<td><p>Pension fund turnover, policy lapses</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All three are classified along two orthogonal dimensions (see <a class="reference internal" href="tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a>):</p>
+<ul class="simple">
+<li><p><strong>Insured structure</strong> — <em>Aggregate</em> tables apply uniform rates to all insured persons;
+<em>Select-Ultimate</em> tables distinguish recently underwritten lives from the general portfolio.</p></li>
+<li><p><strong>Temporal nature</strong> — <em>Static</em> tables use a fixed rate schedule with no improvement projection;
+<em>Generational</em> tables project rates forward from a base year using improvement factors
+tied to the insured’s birth cohort. Generational tables require the <code class="docutils literal notranslate"><span class="pre">cohort=</span></code> parameter.</p></li>
+</ul>
+<p>See <a class="reference internal" href="bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a> for every bundled table identifier.</p>
+</section>
+<section id="loading-a-table">
+<h2>Loading a table<a class="headerlink" href="#loading-a-table" title="Link to this heading">#</a></h2>
+<p>Before performing any calculation, create a table object. All constructors share the
+same two required arguments: the table identifier (a string) and the sex code
+(<code class="docutils literal notranslate"><span class="pre">&quot;m&quot;</span></code> for male, <code class="docutils literal notranslate"><span class="pre">&quot;f&quot;</span></code> for female).</p>
+<section id="static-life-table">
+<h3>Static life table<a class="headerlink" href="#static-life-table" title="Link to this heading">#</a></h3>
+<p>Static tables need no cohort. The object is ready to use immediately:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># PASEM 2020, 1st order — Spanish annuity reserves (conservative)</span>
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>   <span class="c1"># male</span>
+<span class="n">pasem_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">)</span> <span class="c1"># female</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem.sex: </span><span class="si">{</span><span class="n">pasem</span><span class="o">.</span><span class="n">sex</span><span class="si">}</span><span class="s2">, pasem_f.sex: </span><span class="si">{</span><span class="n">pasem_f</span><span class="o">.</span><span class="n">sex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generational-life-table-cohort-required">
+<h3>Generational life table (cohort required)<a class="headerlink" href="#generational-life-table-cohort-required" title="Link to this heading">#</a></h3>
+<p>For generational tables, pass the insured’s birth year via <code class="docutils literal notranslate"><span class="pre">cohort=</span></code>. The improvement
+factors are applied automatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># PER 2020 individual, 1st order — Spanish pension annuitants (born 1969)</span>
+<span class="n">per</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>
+
+<span class="c1"># DAV 2004 R aggregate, 2nd order — German private annuitants (born 1960)</span>
+<span class="n">dav</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;DAV2004R_Agg_2o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">)</span>
+
+<span class="c1"># GAM 1994 with Scale AA — US group annuity with projected improvement (born 1955)</span>
+<span class="n">gam</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GAM94_AA&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1955</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;per.cohort: </span><span class="si">{</span><span class="n">per</span><span class="o">.</span><span class="n">cohort</span><span class="si">}</span><span class="s2">, dav.cohort: </span><span class="si">{</span><span class="n">dav</span><span class="o">.</span><span class="n">cohort</span><span class="si">}</span><span class="s2">, gam.cohort: </span><span class="si">{</span><span class="n">gam</span><span class="o">.</span><span class="n">cohort</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="select-ultimate-table">
+<h3>Select-ultimate table<a class="headerlink" href="#select-ultimate-table" title="Link to this heading">#</a></h3>
+<p>Select-Ultimate tables distinguish recently underwritten lives (select period) from the
+general portfolio (ultimate period). Pass <code class="docutils literal notranslate"><span class="pre">duration=</span></code> to specify years-since-underwriting;
+<code class="docutils literal notranslate"><span class="pre">&quot;ult&quot;</span></code> explicitly selects the ultimate column:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># DAV 2004 R Select-Ultimate (generational) — 2 years since underwriting</span>
+<span class="n">dav_su</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;DAV2004R_SelUlt_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Same table — ultimate column (select period exhausted)</span>
+<span class="n">dav_ult</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;DAV2004R_SelUlt_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="s2">&quot;ult&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dav_su.duration: </span><span class="si">{</span><span class="n">dav_su</span><span class="o">.</span><span class="n">duration</span><span class="si">}</span><span class="s2">, dav_ult.duration: </span><span class="si">{</span><span class="n">dav_ult</span><span class="o">.</span><span class="n">duration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Some tables follow a <strong>Duration-0</strong> convention where the first select year is indexed as
+<code class="docutils literal notranslate"><span class="pre">duration=0</span></code> rather than <code class="docutils literal notranslate"><span class="pre">duration=1</span></code>.  The AM92/AF92 series (UK) is one such table.
+Check <code class="docutils literal notranslate"><span class="pre">table.start_duration</span></code> to see the minimum valid duration for any table:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># AM92/AF92 — UK select-ultimate (static), Duration-0 convention</span>
+<span class="n">am92_d0</span>  <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;AM92_AF92&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>     <span class="c1"># freshly underwritten</span>
+<span class="n">am92_d1</span>  <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;AM92_AF92&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># 1 year since underwriting</span>
+<span class="n">am92_ult</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;AM92_AF92&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="s2">&quot;ult&quot;</span><span class="p">)</span> <span class="c1"># ultimate column</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;start_duration: </span><span class="si">{</span><span class="n">am92_d0</span><span class="o">.</span><span class="n">start_duration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;select_period:  </span><span class="si">{</span><span class="n">am92_d0</span><span class="o">.</span><span class="n">select_period</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qx(17, d=0): </span><span class="si">{</span><span class="n">am92_d0</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>        <span class="c1"># 0.000427</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">duration=</span></code> parameter is supported by all three table classes.
+See <a class="reference internal" href="tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a> for the full Select-Ultimate type classification.</p>
+</section>
+<section id="disability-table">
+<h3>Disability table<a class="headerlink" href="#disability-table" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code> models the annual probability of transitioning from an active (healthy)
+state into disability. It is the standard tool for income-protection and long-term care
+products. The constructor signature is identical to <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>; the only difference is
+that the file must contain disability-incidence columns (<code class="docutils literal notranslate"><span class="pre">ix_m</span></code>, <code class="docutils literal notranslate"><span class="pre">ix_f</span></code>, or <code class="docutils literal notranslate"><span class="pre">ix_u</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">DisabilityTable</span>
+
+<span class="c1"># PEAI 2007 IAP individual — Spanish disability incidence (ages 18–64, period)</span>
+<span class="n">disability</span> <span class="o">=</span> <span class="n">DisabilityTable</span><span class="p">(</span><span class="s2">&quot;PEAI2007_IAP_Ind&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Disability ix at age 18: </span><span class="si">{</span><span class="n">disability</span><span class="o">.</span><span class="n">ix</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exit-withdrawal-table">
+<h3>Exit (withdrawal) table<a class="headerlink" href="#exit-withdrawal-table" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ExitTable</span></code> models the annual probability of voluntarily leaving the insured portfolio
+— policy surrender, employment termination, or any other cause of exit that is neither
+death nor disability. The constructor signature again mirrors <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>; the table
+file must contain exit-rate columns (<code class="docutils literal notranslate"><span class="pre">ox_m</span></code>, <code class="docutils literal notranslate"><span class="pre">ox_f</span></code>, or <code class="docutils literal notranslate"><span class="pre">ox_u</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExitTable</span>
+
+<span class="n">exit_tbl</span> <span class="o">=</span> <span class="n">ExitTable</span><span class="p">(</span><span class="s2">&quot;DummyEXIT&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exit ox at age 18: </span><span class="si">{</span><span class="n">exit_tbl</span><span class="o">.</span><span class="n">ox</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="unisex-blend">
+<h3>Unisex blend<a class="headerlink" href="#unisex-blend" title="Link to this heading">#</a></h3>
+<p>All three table classes (<code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>, <code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code>, <code class="docutils literal notranslate"><span class="pre">ExitTable</span></code>) support <code class="docutils literal notranslate"><span class="pre">sex=&quot;u&quot;</span></code>
+with a <code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code> weight in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code> to blend male and female decrement rates.
+The formula applied is <span class="math notranslate nohighlight">\(q_u = w \cdot q_m + (1 - w) \cdot q_f\)</span>, where <span class="math notranslate nohighlight">\(w\)</span> = <code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code>
+(0.0 = all female, 0.5 = equal blend, 1.0 = all male):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">DisabilityTable</span><span class="p">,</span> <span class="n">ExitTable</span>
+
+<span class="c1"># Life table — 60 % male / 40 % female blend (PASEM 2020)</span>
+<span class="n">pasem_u</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># Disability table — 50/50 blend</span>
+<span class="n">disability_u</span> <span class="o">=</span> <span class="n">DisabilityTable</span><span class="p">(</span><span class="s2">&quot;PEAI2007_IAP_Ind&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Exit table — 40 % male / 60 % female blend</span>
+<span class="n">exit_u</span> <span class="o">=</span> <span class="n">ExitTable</span><span class="p">(</span><span class="s2">&quot;DummyEXIT&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem_u.unisex_blend: </span><span class="si">{</span><span class="n">pasem_u</span><span class="o">.</span><span class="n">unisex_blend</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;disability_u.unisex_blend: </span><span class="si">{</span><span class="n">disability_u</span><span class="o">.</span><span class="n">unisex_blend</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;exit_u.unisex_blend: </span><span class="si">{</span><span class="n">exit_u</span><span class="o">.</span><span class="n">unisex_blend</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code> requires the table to carry <strong>both</strong> male and female rates (<code class="docutils literal notranslate"><span class="pre">qx_m</span></code> and <code class="docutils literal notranslate"><span class="pre">qx_f</span></code>).
+Tables that include only one sex — for example the Chilean CMF tables (<code class="docutils literal notranslate"><span class="pre">CB_H_2020</span></code> ♂,
+<code class="docutils literal notranslate"><span class="pre">RV_M_2020</span></code> ♀) or test tables like <code class="docutils literal notranslate"><span class="pre">DummyLIFE_1Sm</span></code> — cannot be blended and will raise a
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</div>
+</section>
+<section id="inspect-a-loaded-table">
+<h3>Inspect a loaded table<a class="headerlink" href="#inspect-a-loaded-table" title="Link to this heading">#</a></h3>
+<p>Once a table is loaded, its key attributes are accessible as properties. You can also
+create both male and female instances in a single call by passing a tuple of sex codes
+as the second argument — each instance is fully independent:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">ltm</span><span class="p">,</span> <span class="n">ltf</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">))</span>  <span class="c1"># returns two independent instances</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ltm</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>     <span class="c1"># formatted overview of the table</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ltm</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>    <span class="c1"># &quot;PASEM2020_Rel_1o&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ltm</span><span class="o">.</span><span class="n">table_type</span><span class="p">)</span>    <span class="c1"># &quot;life&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ltm</span><span class="o">.</span><span class="n">omega</span><span class="p">)</span>         <span class="c1"># terminal age ω</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ltm.sex = </span><span class="si">{</span><span class="n">ltm</span><span class="o">.</span><span class="n">sex</span><span class="si">}</span><span class="s2">, ltf.sex = </span><span class="si">{</span><span class="n">ltf</span><span class="o">.</span><span class="n">sex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="accessing-raw-table-data-with-tablesource">
+<h3>Accessing raw table data with TableSource<a class="headerlink" href="#accessing-raw-table-data-with-tablesource" title="Link to this heading">#</a></h3>
+<p>Every table instance exposes the parsed <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file via the <code class="docutils literal notranslate"><span class="pre">.table</span></code> property,
+which returns a <code class="docutils literal notranslate"><span class="pre">TableSource</span></code> object with metadata and the raw decrement arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">table</span>                  <span class="c1"># TableSource instance</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>              <span class="c1"># &quot;PASEM2020_Rel_1o&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">valid_sexes</span><span class="p">)</span>             <span class="c1"># [&#39;f&#39;, &#39;m&#39;]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>             <span class="c1"># first rows of the Polars DataFrame</span>
+</pre></div>
+</div>
+<p>You can also load a <code class="docutils literal notranslate"><span class="pre">TableSource</span></code> directly when you only need to inspect a file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">)</span>   <span class="c1"># .ltk extension optional</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>                              <span class="c1"># formatted summary of all metadata</span>
+</pre></div>
+</div>
+<p>For the full attribute reference see <code class="xref py py-class docutils literal notranslate"><span class="pre">lactuca.TableSource</span></code>.</p>
+</section>
+<section id="default-interest-rate">
+<h3>Default interest rate<a class="headerlink" href="#default-interest-rate" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> carries an optional <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> attribute
+that serves as the default for all annuity, insurance, and endowment calculations.
+It can be set at construction time or assigned later:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">InterestRate</span>
+
+<span class="c1"># At construction time</span>
+<span class="n">pasem_3pct</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem_3pct.interest_rate = </span><span class="si">{</span><span class="n">pasem_3pct</span><span class="o">.</span><span class="n">interest_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem.interest_rate = </span><span class="si">{</span><span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or assign afterwards</span>
+<span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem.interest_rate = </span><span class="si">{</span><span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Variable rate curve as default</span>
+<span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.035</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pasem.interest_rate = </span><span class="si">{</span><span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passing <code class="docutils literal notranslate"><span class="pre">ir=</span></code> explicitly in any method call overrides the table default for that call
+only; <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> is left unchanged:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">a_default</span>  <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>           <span class="c1"># uses 0.03</span>
+<span class="n">a_override</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># uses 0.05; interest_rate still 0.03</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_default  = </span><span class="si">{</span><span class="n">a_default</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_override = </span><span class="si">{</span><span class="n">a_override</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When creating multiple instances at once with vectorial syntax, <code class="docutils literal notranslate"><span class="pre">interest_rate=</span></code> is
+assigned to every instance in the same call — see <a class="reference internal" href="using_tables.html#vectorial-interest-rate"><span class="std std-ref">Default interest rate in vectorial creation</span></a>.</p>
+</section>
+</section>
+<section id="survival-and-mortality-probabilities">
+<h2>Survival and mortality probabilities<a class="headerlink" href="#survival-and-mortality-probabilities" title="Link to this heading">#</a></h2>
+<p>The simplest call returns a single probability for a single age. The same methods also
+accept multiple ages at once or no argument at all to return the complete vector for
+every age in the table.</p>
+<section id="single-integer-age">
+<h3>Single integer age<a class="headerlink" href="#single-integer-age" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2010&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.45</span><span class="p">)</span>
+
+<span class="c1"># Annual survival probability:  ₁p₅₀</span>
+<span class="n">p50</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">px</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p50 = </span><span class="si">{</span><span class="n">p50</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Annual mortality probability:  q₅₀  (= 1 − p₅₀ for life tables)</span>
+<span class="n">q50</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;q50 = </span><span class="si">{</span><span class="n">q50</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="all-ages-complete-table-vector">
+<h3>All ages — complete table vector<a class="headerlink" href="#all-ages-complete-table-vector" title="Link to this heading">#</a></h3>
+<p>Call without arguments to retrieve probabilities for every age from 0 through ω.
+The result is a NumPy array indexed by age:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2010&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.45</span><span class="p">)</span>
+
+<span class="n">all_px</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">px</span><span class="p">()</span>  <span class="c1"># NDArray, length ω + 1;  all_px[50] == p50</span>
+<span class="n">all_qx</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">qx</span><span class="p">()</span>  <span class="c1"># NDArray, same length</span>
+
+<span class="c1"># Example: plot qx on a log scale</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">all_qx</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PASEM 2010 Unisex&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$q_x$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-ages-at-once">
+<h3>Multiple ages at once<a class="headerlink" href="#multiple-ages-at-once" title="Link to this heading">#</a></h3>
+<p>Pass a list or NumPy array to compute probabilities for several ages simultaneously.
+The return value is a 1-D NumPy array in the same order as the input:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2010&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">)</span>
+
+<span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span>
+<span class="n">px_arr</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">px</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>    <span class="c1"># NumPy array of 5 survival probabilities</span>
+<span class="n">qx_arr</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>    <span class="c1"># NumPy array of 5 mortality probabilities</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">px_arr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qx_arr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="survivors-and-deaths-lx-and-dx">
+<h3>Survivors and deaths: lx and dx<a class="headerlink" href="#survivors-and-deaths-lx-and-dx" title="Link to this heading">#</a></h3>
+<p>Two fundamental table quantities complement the probability methods: <span class="math notranslate nohighlight">\(\ell_x\)</span> (number
+of survivors at exact age <span class="math notranslate nohighlight">\(x\)</span> from a radix cohort) and <span class="math notranslate nohighlight">\(d_x = l_x - l_{x+1}\)</span>
+(deaths between consecutive integer ages). Fractional ages are supported via <span class="math notranslate nohighlight">\(l_x\)</span>
+interpolation. For the full definitions — including the mid-year lives <span class="math notranslate nohighlight">\(L_x\)</span> and its
+role in life expectancy — see <a class="reference internal" href="../formulas.html"><span class="doc">Actuarial Formulas</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Survivors and deaths at integer ages</span>
+<span class="n">lx_65</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">lx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+<span class="n">dx_65</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Complete vectors for all ages (integers 0 … ω)</span>
+<span class="n">all_lx</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">lx</span><span class="p">()</span>    <span class="c1"># NDArray, length ω + 1</span>
+<span class="n">all_dx</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">dx</span><span class="p">()</span>    <span class="c1"># NDArray, length ω + 1</span>
+
+<span class="c1"># Multiple ages at once</span>
+<span class="n">lx_arr</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">lx</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">])</span>
+<span class="n">dx_arr</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">dx</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="fractional-ages">
+<h3>Fractional ages<a class="headerlink" href="#fractional-ages" title="Link to this heading">#</a></h3>
+<p>All probability methods accept non-integer ages. Lactuca interpolates <span class="math notranslate nohighlight">\(\ell_x\)</span> between
+integer ages using the method set in <code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> (equivalent
+to UDD; default) or <code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code> (constant force of mortality). See
+<a class="reference internal" href="lx_interpolation.html"><span class="doc">lx Interpolation</span></a> for the full derivation and comparison:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Survival from exact age 50.5 to exact age 51.5</span>
+<span class="n">p50_half</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">px</span><span class="p">(</span><span class="mf">50.5</span><span class="p">)</span>
+
+<span class="c1"># Quarter-year grid</span>
+<span class="n">frac_ages</span> <span class="o">=</span> <span class="p">[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">50.25</span><span class="p">,</span> <span class="mf">50.50</span><span class="p">,</span> <span class="mf">50.75</span><span class="p">]</span>
+<span class="n">p50_quarters</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">px</span><span class="p">(</span><span class="n">frac_ages</span><span class="p">)</span>    <span class="c1"># NumPy array of 4 values</span>
+</pre></div>
+</div>
+</section>
+<section id="sub-annual-frequency">
+<h3>Sub-annual frequency<a class="headerlink" href="#sub-annual-frequency" title="Link to this heading">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">m</span></code> parameter to obtain the per-period probability for payment frequencies of
+2, 4, 12, 52 or 365 periods per year:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Monthly survival probability at age 50:   (1/12)p₅₀</span>
+<span class="n">p50_monthly</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">px</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Quarterly mortality probability</span>
+<span class="n">q50_quarterly</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">qx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="multi-period-survival-and-mortality">
+<h3>Multi-period survival and mortality<a class="headerlink" href="#multi-period-survival-and-mortality" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">tpx</span></code> and <code class="docutils literal notranslate"><span class="pre">tqx</span></code> compute <span class="math notranslate nohighlight">\({}_{t}p_x\)</span> and <span class="math notranslate nohighlight">\({}_{t}q_x\)</span> for an arbitrary duration <code class="docutils literal notranslate"><span class="pre">t</span></code>
+(keyword-only argument). With <code class="docutils literal notranslate"><span class="pre">t=1</span></code> they are equivalent to <code class="docutils literal notranslate"><span class="pre">px</span></code> and <code class="docutils literal notranslate"><span class="pre">qx</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># 10-year survival:   ₁₀p₅₀</span>
+<span class="n">ten_px</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">tpx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># 5-year mortality:   ₅q₄₀</span>
+<span class="n">five_qx</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">tqx</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Fractional t — 18-month survival from age 50</span>
+<span class="n">p50_18m</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">tpx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Pass an array to <code class="docutils literal notranslate"><span class="pre">t</span></code> to compute a whole survival curve in a single call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="n">t_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>                     <span class="c1"># t = 1, 2, ..., 20</span>
+<span class="n">survival_curve</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">tpx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t_values</span><span class="p">)</span>       <span class="c1"># 1-D array, length 20</span>
+</pre></div>
+</div>
+<p>Pass arrays to both <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> to get a 2-D matrix (rows = starting ages,
+columns = durations):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">]</span>
+<span class="n">durations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">tpx_matrix</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">tpx</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">durations</span><span class="p">)</span>        <span class="c1"># shape (4, 4)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="life-expectancy">
+<h2>Life expectancy<a class="headerlink" href="#life-expectancy" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ex()</span></code> computes the <strong>complete (entire) expectation of life</strong> <span class="math notranslate nohighlight">\(\mathring{e}_x\)</span> at integer
+ages via the discrete approximation <span class="math notranslate nohighlight">\(\mathring{e}_x = T_x / l_x\)</span>, where
+<span class="math notranslate nohighlight">\(T_x = \sum_{k=x}^{\omega-1} L_k\)</span> and <span class="math notranslate nohighlight">\(L_k \approx (l_k + l_{k+1})/2\)</span> under UDD.
+<code class="docutils literal notranslate"><span class="pre">ex_continuous()</span></code> evaluates the same formula at fractional starting ages using the
+trapezoidal rule with <code class="docutils literal notranslate"><span class="pre">m</span></code> sub-intervals per year (default <code class="docutils literal notranslate"><span class="pre">m=12</span></code>).
+For the complete mathematical derivation see <a class="reference internal" href="../formulas.html"><span class="doc">Actuarial Formulas</span></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Complete life expectancy at integer age 65: ẽ₆₅</span>
+<span class="n">e_65</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">ex</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complete life expectancy at 65: </span><span class="si">{</span><span class="n">e_65</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> years&quot;</span><span class="p">)</span>
+
+<span class="c1"># Complete life expectancy at a fractional age (ex_continuous requires non-integer ages)</span>
+<span class="n">e_65_cont</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">ex_continuous</span><span class="p">(</span><span class="mf">65.5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complete life expectancy at 65.5: </span><span class="si">{</span><span class="n">e_65_cont</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> years&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="commutation-functions">
+<h2>Commutation functions<a class="headerlink" href="#commutation-functions" title="Link to this heading">#</a></h2>
+<p>Commutation functions — <span class="math notranslate nohighlight">\(D_x\)</span>, <span class="math notranslate nohighlight">\(N_x\)</span>, <span class="math notranslate nohighlight">\(C_x\)</span>, <span class="math notranslate nohighlight">\(M_x\)</span> and their higher-order sums <span class="math notranslate nohighlight">\(S_x\)</span>,
+<span class="math notranslate nohighlight">\(R_x\)</span> — absorb discount factors and survival probabilities into reusable, age-indexed
+building blocks. They enable classical closed-form expressions such as
+<span class="math notranslate nohighlight">\(\ddot{a}_x = N_x / D_x\)</span> and <span class="math notranslate nohighlight">\(A_x = M_x / D_x\)</span>, and are available as standalone
+methods for custom calculations and for verifying results against classical formulas.
+Note that Lactuca’s annuity and insurance methods (<code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">Ax</span></code>, etc.) do <strong>not</strong>
+use commutation functions internally — all calculation modes, including
+<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code>, always evaluate <strong>exact payment-grid summation</strong> over survival
+probabilities and discount factors. For the full dependency chain and usage, see
+<a class="reference internal" href="commutation_functions.html"><span class="doc">Commutation Functions</span></a> and <a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">ir</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+
+<span class="c1"># Dx, Nx, Cx, Mx at age 50 with 3% annual effective interest</span>
+
+<span class="n">Dx_val</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">Dx</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">Nx_val</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">Nx</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">Cx_val</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">Cx</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">Mx_val</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">Mx</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dx(50) = </span><span class="si">{</span><span class="n">Dx_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nx(50) = </span><span class="si">{</span><span class="n">Nx_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cx(50) = </span><span class="si">{</span><span class="n">Cx_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mx(50) = </span><span class="si">{</span><span class="n">Mx_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interest-rates">
+<h2>Interest rates<a class="headerlink" href="#interest-rates" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> encapsulates an effective annual rate used for discounting and
+accumulation. It supports constant rates, piecewise term structures (yield curves),
+and named scenario collections. Any <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> method accepts either an
+<code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> object or a plain <code class="docutils literal notranslate"><span class="pre">float</span></code> in the <code class="docutils literal notranslate"><span class="pre">ir=</span></code> argument; a plain <code class="docutils literal notranslate"><span class="pre">float</span></code> is
+wrapped automatically. For the complete API — discount factors, accumulation,
+nominal-rate conversions, and scenarios — see <a class="reference internal" href="interest_rates_guide.html"><span class="doc">Interest Rates</span></a>.</p>
+<section id="constant-rate">
+<h3>Constant rate<a class="headerlink" href="#constant-rate" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span>
+
+<span class="c1"># 3% annual effective rate</span>
+<span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="piecewise-term-structure">
+<h3>Piecewise term structure<a class="headerlink" href="#piecewise-term-structure" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span>
+
+<span class="c1"># 5 years at 2%, next 5 years at 2.5%, then 3.5% thereafter</span>
+<span class="n">ir_term</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.035</span><span class="p">])</span>
+
+<span class="c1"># Discount factor for t = 7 years</span>
+<span class="n">v7</span> <span class="o">=</span> <span class="n">ir_term</span><span class="o">.</span><span class="n">vn</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;v(7) = </span><span class="si">{</span><span class="n">v7</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="growth-rates">
+<h2>Growth rates<a class="headerlink" href="#growth-rates" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> models a per-period revaluation factor applied to benefit amounts in
+annuities and insurances. It is not limited to escalating benefits: common
+applications include pension CPI indexation, salary-scale projections, guaranteed
+annual increases, and any context where the benefit amount changes from one
+anniversary to the next. Like <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code>, it supports constant rates, piecewise
+schedules, geometric or arithmetic growth, and multi-scenario containers. For the
+complete API, see <a class="reference internal" href="growth_rates_guide.html"><span class="doc">Growth Rates</span></a>.</p>
+<section id="constant-growth">
+<h3>Constant growth<a class="headerlink" href="#constant-growth" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># Geometric (compound) growth: F(t) = (1+g)^t</span>
+<span class="n">gr_geom</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;geometric factor(3) = </span><span class="si">{</span><span class="n">gr_geom</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># (1.02)^3 ≈ 1.0612</span>
+
+<span class="c1"># Arithmetic (linear additive) growth: F(t) = 1 + g·t</span>
+<span class="n">gr_arith</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">growth_type</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;arithmetic factor(3) = </span><span class="si">{</span><span class="n">gr_arith</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># 1 + 0.02 × 3 = 1.06</span>
+</pre></div>
+</div>
+</section>
+<section id="piecewise-schedule">
+<h3>Piecewise schedule<a class="headerlink" href="#piecewise-schedule" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span>
+
+<span class="c1"># 1% for the first year, 2% thereafter (e.g. CPI step schedule)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;factor(1) = </span><span class="si">{</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># 1.01     — anniversary 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;factor(2) = </span><span class="si">{</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># 1.0302   — 1.01 × 1.02</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;factor(3) = </span><span class="si">{</span><span class="n">gr</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># 1.050804 — 1.01 × 1.02²</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
+<p>Lactuca exposes a global singleton <code class="docutils literal notranslate"><span class="pre">config</span></code> that controls all calculations in the
+session: calculation mode (discrete vs. continuous), interpolation method for
+fractional ages, numerical rounding precision per output type, and the file-system
+path for custom table files. Changes take effect immediately and persist until
+explicitly reset or the process restarts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
+<span class="c1"># Calculation mode</span>
+<span class="c1"># Options: &#39;discrete_precision&#39;, &#39;discrete_simplified&#39;,</span>
+<span class="c1">#          &#39;continuous_precision&#39;, &#39;continuous_simplified&#39;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>
+
+<span class="c1"># Interpolation method for fractional ages: &#39;linear&#39; or &#39;exponential&#39;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">lx_interpolation</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+
+<span class="c1"># Rounding precision for individual output types</span>
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">qx</span> <span class="o">=</span> <span class="mi">6</span>            <span class="c1"># mortality probability</span>
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">Dx</span> <span class="o">=</span> <span class="mi">4</span>            <span class="c1"># commutation function Dx</span>
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">8</span>     <span class="c1"># annuity present values</span>
+
+<span class="c1"># Days per year convention for date calculations</span>
+<span class="n">config</span><span class="o">.</span><span class="n">days_per_year</span> <span class="o">=</span> <span class="mf">365.25</span>
+
+<span class="c1"># Path to custom .ltk table files (defaults to the included tables directory)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">tables_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/my/custom/tables&quot;</span>
+</pre></div>
+</div>
+<p>For the full list of settings, TOML-file format, and the persistence API, see
+<a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
+</section>
+<section id="life-annuities">
+<h2>Life annuities<a class="headerlink" href="#life-annuities" title="Link to this heading">#</a></h2>
+<p>A life annuity pays a recurring benefit while the annuitant survives. Lactuca
+provides four standard variants — whole life, temporary, deferred, and continuous
+— at any payment frequency <span class="math notranslate nohighlight">\(m\)</span> and with optional benefit escalation (<code class="docutils literal notranslate"><span class="pre">gr=</span></code>). When
+<code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> is set on the table, the <code class="docutils literal notranslate"><span class="pre">ir=</span></code> argument can be omitted.</p>
+<section id="whole-life-annuities">
+<h3>Whole life annuities<a class="headerlink" href="#whole-life-annuities" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Whole life annuity-due (annual payments): äx(65)</span>
+<span class="n">adue</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Monthly payments: äx^(12)(65)</span>
+<span class="n">amonthly</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Annuity-immediate (payment at end of period): ax(65)</span>
+<span class="n">aimmediate</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Geometrically escalating (2% p.a.): plain float is auto-wrapped as GrowthRate(0.02)</span>
+<span class="n">agrowth</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="temporary-annuities">
+<h3>Temporary annuities<a class="headerlink" href="#temporary-annuities" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># 20-year temporary annuity-due: ä65:20|</span>
+<span class="n">atemp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># 15-year temporary, monthly payments: ä50:15|^(12)</span>
+<span class="n">atemp_monthly</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Simplest growth: plain float auto-wrapped as GrowthRate(0.02) — geometric compound</span>
+<span class="n">atemp_gr_float</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Equivalent explicit form: GrowthRate object (geometric, 2% p.a.)</span>
+<span class="n">atemp_geom</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">))</span>
+
+<span class="c1"># Arithmetic salary-scale (flat 2 pp additive per year)</span>
+<span class="n">atemp_arith</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">GrowthRate</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">growth_type</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="deferred-annuities">
+<h3>Deferred annuities<a class="headerlink" href="#deferred-annuities" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># 10-year deferred whole life annuity: 10|äx(55)</span>
+<span class="n">adef</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adef</span><span class="p">)</span>         <span class="c1"># → 11.3534</span>
+
+<span class="c1"># 5-year deferred, 20-year temporary: 5|ä60:20|</span>
+<span class="n">adef_temp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adef_temp</span><span class="p">)</span>    <span class="c1"># → 11.3491</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For deferred insurances, fractional deferment, multi-frequency examples, and joint-life
+deferred products, see <a class="reference internal" href="deferment.html"><span class="doc">Deferred Life Contingencies</span></a>.</p>
+</section>
+<section id="continuous-annuities">
+<h3>Continuous annuities<a class="headerlink" href="#continuous-annuities" title="Link to this heading">#</a></h3>
+<p>Continuous mode is activated globally via <code class="docutils literal notranslate"><span class="pre">config.calculation_mode</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_precision&quot;</span>
+
+<span class="c1"># Continuous whole life annuity: āx(65)</span>
+<span class="n">acont</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Continuous temporary: ā65:20|</span>
+<span class="n">acont_temp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore default</span>
+</pre></div>
+</div>
+<p>The default mode is <code class="docutils literal notranslate"><span class="pre">&quot;discrete_precision&quot;</span></code>. Changing it affects all subsequent calls
+in the session until explicitly reset. For all available modes and their trade-offs,
+see <a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> and <a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
+</section>
+</section>
+<section id="life-insurances">
+<h2>Life insurances<a class="headerlink" href="#life-insurances" title="Link to this heading">#</a></h2>
+<section id="whole-life-and-term-insurance">
+<h3>Whole life and term insurance<a class="headerlink" href="#whole-life-and-term-insurance" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Discrete whole life insurance: Ax(50)</span>
+<span class="n">Ax_val</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># 20-year term insurance: A¹x:20|(50)</span>
+<span class="n">Aterm</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Geometrically escalating term insurance (sum insured grows 2% per anniversary year)</span>
+<span class="n">Aterm_geom</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="continuous-insurance">
+<h3>Continuous insurance<a class="headerlink" href="#continuous-insurance" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_precision&quot;</span>
+
+<span class="c1"># Continuous whole life: Āx(50)</span>
+<span class="n">Ax_cont</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="pure-endowment">
+<h3>Pure endowment<a class="headerlink" href="#pure-endowment" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># 10-year pure endowment: 10Ex(40)</span>
+<span class="n">nEx_val</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">nEx</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Joint-life and last-survivor insurances (e.g. <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">äjoint</span></code>) are covered in
+<a class="reference internal" href="joint_life_calculations.html"><span class="doc">Joint-Life Calculations</span></a>.</p>
+</section>
+</section>
+<section id="disability-tables">
+<h2>Disability tables<a class="headerlink" href="#disability-tables" title="Link to this heading">#</a></h2>
+<p>A disability (incidence) table models the annual rate at which active lives transition
+into a disabled state. All constructor parameters — <code class="docutils literal notranslate"><span class="pre">sex=</span></code>, <code class="docutils literal notranslate"><span class="pre">cohort=</span></code>, <code class="docutils literal notranslate"><span class="pre">duration=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">unisex_blend=</span></code> — follow the same conventions as <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code> exposes the disability incidence probability via <code class="docutils literal notranslate"><span class="pre">ix()</span></code>, which
+accepts the same argument forms as <code class="docutils literal notranslate"><span class="pre">qx()</span></code> on a life table:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">DisabilityTable</span>
+
+<span class="c1"># PEAI 2007 IAP individual (Spanish disability table, period; ages 18–64)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DisabilityTable</span><span class="p">(</span><span class="s2">&quot;PEAI2007_IAP_Ind&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Annual disability incidence at age 40: ix(40)</span>
+<span class="n">ix_val</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">ix</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="c1"># Multiple ages at once</span>
+<span class="n">ix_arr</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">ix</span><span class="p">([</span><span class="mf">40.1012</span><span class="p">,</span> <span class="mf">45.25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">])</span>
+
+<span class="c1"># Complete incidence vector for all ages</span>
+<span class="n">all_ix</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">ix</span><span class="p">()</span>
+
+<span class="c1"># Monthly disability incidence:  _(1/12)ix^(12)(40)</span>
+<span class="n">ix_monthly</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">ix</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exit-tables">
+<h2>Exit tables<a class="headerlink" href="#exit-tables" title="Link to this heading">#</a></h2>
+<p>Exit tables model the withdrawal or lapse rate — the probability that a policyholder
+or pension-scheme member leaves the active portfolio for a reason other than death
+(e.g., voluntary surrender or employment termination). Constructor parameters follow
+the same conventions as <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> and <code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ExitTable</span></code> exposes the withdrawal probability via <code class="docutils literal notranslate"><span class="pre">ox()</span></code>, with the same call patterns
+as <code class="docutils literal notranslate"><span class="pre">qx()</span></code> and <code class="docutils literal notranslate"><span class="pre">ix()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExitTable</span>
+
+<span class="n">et</span> <span class="o">=</span> <span class="n">ExitTable</span><span class="p">(</span><span class="s2">&quot;DummyEXIT&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Annual withdrawal probability at age 45</span>
+<span class="n">ox_val</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">ox</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="c1"># Multiple ages</span>
+<span class="n">ox_arr</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">ox</span><span class="p">([</span><span class="mf">30.21</span><span class="p">,</span> <span class="mf">40.30</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+<span class="c1"># Complete withdrawal vector for all ages</span>
+<span class="n">all_ox</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">ox</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="functional-api">
+<h2>Functional API<a class="headerlink" href="#functional-api" title="Link to this heading">#</a></h2>
+<p>All calculation methods are also available as standalone module-level functions in
+<code class="docutils literal notranslate"><span class="pre">lactuca.functional</span></code> — useful in pipelines and custom workflows. The functional
+form takes the table instance as the first argument; all remaining arguments are
+identical to the method call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca.functional</span><span class="w"> </span><span class="kn">import</span> <span class="n">äx</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">Ax</span><span class="p">,</span> <span class="n">nEx</span><span class="p">,</span> <span class="n">lx</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">ix</span><span class="p">,</span> <span class="n">ox</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">DisabilityTable</span><span class="p">,</span> <span class="n">ExitTable</span>
+
+<span class="n">ir</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DisabilityTable</span><span class="p">(</span><span class="s2">&quot;PEAI2007_IAP_Ind&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">et</span> <span class="o">=</span> <span class="n">ExitTable</span><span class="p">(</span><span class="s2">&quot;DummyEXIT&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+
+<span class="n">äx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># whole-life annuity-due</span>
+<span class="n">ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># whole-life immediate annuity</span>
+<span class="n">Ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>               <span class="c1"># whole-life insurance</span>
+<span class="n">nEx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>        <span class="c1"># 10-year pure endowment</span>
+
+<span class="n">lx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># survivors at age 65</span>
+<span class="n">qx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>               <span class="c1"># annual mortality probability at 50</span>
+<span class="n">ix</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>               <span class="c1"># annual disability incidence at 40</span>
+<span class="n">ox</span><span class="p">(</span><span class="n">et</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>               <span class="c1"># annual withdrawal probability at 45</span>
+</pre></div>
+</div>
+<p>For the complete function reference, see <a class="reference internal" href="functional_api.html"><span class="doc">Functional API</span></a>.</p>
+</section>
+<section id="time-shift-ts-for-off-anniversary-reserves">
+<h2>Time shift (<code class="docutils literal notranslate"><span class="pre">ts</span></code>) for off-anniversary reserves<a class="headerlink" href="#time-shift-ts-for-off-anniversary-reserves" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ts</span></code> parameter displaces the start of an annuity or insurance calculation by
+<code class="docutils literal notranslate"><span class="pre">ts</span></code> years from the policy-anniversary age. Its primary use is computing <strong>reserves
+at a valuation date other than an exact policy anniversary</strong> — for example, when
+3.25 years have elapsed since inception and the next anniversary falls in 0.75 years.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ts</span></code> is conceptually different from the <code class="docutils literal notranslate"><span class="pre">t</span></code> argument of <code class="docutils literal notranslate"><span class="pre">tpx</span></code>/<code class="docutils literal notranslate"><span class="pre">tqx</span></code>: <code class="docutils literal notranslate"><span class="pre">t</span></code> is the
+<em>duration</em> of a survival interval, whereas <code class="docutils literal notranslate"><span class="pre">ts</span></code> shifts the entire payment grid
+forward so that all discount and survival factors are evaluated from age <span class="math notranslate nohighlight">\(x + ts\)</span>
+onward.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Mid-year reserve: 15-year annuity-due at age 50, 6 months into the policy year</span>
+<span class="n">a_midyear</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Off-anniversary reserve: 3.25 years since inception (next anniversary in 0.75 yr)</span>
+<span class="n">a_offann</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">ts</span></code> is fractional <strong>and a <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> is active</strong> (<code class="docutils literal notranslate"><span class="pre">gr=</span></code> specified), Lactuca
+emits a <code class="docutils literal notranslate"><span class="pre">UserWarning</span></code> as a reminder that benefit revaluation follows whole-year
+anniversaries, not fractional ones. Without a <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code>, fractional <code class="docutils literal notranslate"><span class="pre">ts</span></code> is
+silently accepted. To reject fractional shifts entirely, set
+<code class="docutils literal notranslate"><span class="pre">config.force_integer_ts</span> <span class="pre">=</span> <span class="pre">True</span></code>. Full details in <a class="reference internal" href="growth_conventions.html"><span class="doc">Growth Rate Conventions</span></a>.</p>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Explore the <a class="reference internal" href="../api/index.html"><span class="doc">API Reference</span></a> for detailed API documentation</p></li>
+<li><p>Check <a class="reference internal" href="../formulas.html"><span class="doc">Actuarial Formulas</span></a> for mathematical foundations</p></li>
+<li><p>See <a class="reference internal" href="bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a> for the complete list of bundled tables</p></li>
+<li><p>Pricing a portfolio? See <a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a> for batch mode and BEL calculations</p></li>
+<li><p>Inspect per-payment flows? See <a class="reference internal" href="inspecting_cashflows.html"><span class="doc">Inspecting Cash Flows</span></a></p></li>
+<li><p>Review <a class="reference internal" href="../changelog.html"><span class="doc">[0.0.31-test] - 2026-06-21</span></a> for version history</p></li>
+</ul>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading">#</a></h2>
+<p>For bug reports, feature requests, and questions, see the <a class="reference internal" href="../support.html"><span class="doc">Support</span></a> page.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="notation_glossary.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Notation and Glossary</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-lactuca-is-organised">How Lactuca is organised</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actuarial-table-types">Actuarial table types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-a-table">Loading a table</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#static-life-table">Static life table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generational-life-table-cohort-required">Generational life table (cohort required)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#select-ultimate-table">Select-ultimate table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disability-table">Disability table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exit-withdrawal-table">Exit (withdrawal) table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unisex-blend">Unisex blend</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-a-loaded-table">Inspect a loaded table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-raw-table-data-with-tablesource">Accessing raw table data with TableSource</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-interest-rate">Default interest rate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-and-mortality-probabilities">Survival and mortality probabilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-integer-age">Single integer age</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-ages-complete-table-vector">All ages — complete table vector</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-ages-at-once">Multiple ages at once</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survivors-and-deaths-lx-and-dx">Survivors and deaths: lx and dx</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-ages">Fractional ages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sub-annual-frequency">Sub-annual frequency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-period-survival-and-mortality">Multi-period survival and mortality</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-expectancy">Life expectancy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commutation-functions">Commutation functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interest-rates">Interest rates</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-rate">Constant rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-term-structure">Piecewise term structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rates">Growth rates</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-growth">Constant growth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-schedule">Piecewise schedule</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-annuities">Life annuities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-life-annuities">Whole life annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporary-annuities">Temporary annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-annuities">Deferred annuities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-annuities">Continuous annuities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-insurances">Life insurances</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-life-and-term-insurance">Whole life and term insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-insurance">Continuous insurance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pure-endowment">Pure endowment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disability-tables">Disability tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exit-tables">Exit tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-api">Functional API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-shift-ts-for-off-anniversary-reserves">Time shift (<code class="docutils literal notranslate"><span class="pre">ts</span></code>) for off-anniversary reserves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support">Support</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

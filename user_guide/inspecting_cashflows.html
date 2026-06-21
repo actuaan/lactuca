@@ -1,0 +1,1472 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Inspecting Cash Flows &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/inspecting_cashflows';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Force of Mortality Methods" href="force_mortality_methods.html" />
+    <link rel="prev" title="Irregular Cashflows" href="irregular_cashflows.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deferment.html">Deferred Life Contingencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates_guide.html">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="last_payment_adjustment.html">Last Payment Adjustment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates_guide.html">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inspecting Cash Flows</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="inspecting-cash-flows">
+<h1>Inspecting Cash Flows<a class="headerlink" href="#inspecting-cash-flows" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> parameter causes supported calculation methods to return not just a scalar
+present value but a <strong>full dict of the arrays that produced it</strong>.  This is the primary
+mechanism for regulatory traceability, BEL reconciliation, and debugging complex calculations
+under IFRS 17 and Solvency II.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># result is a dict — inspect all available keys:</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1"># [&#39;time_grid&#39;, &#39;interest_rate&#39;, &#39;discount_factor&#39;, &#39;survival_probability&#39;,</span>
+<span class="c1">#  &#39;growth&#39;, &#39;payment_adjustment&#39;, &#39;present_value_raw&#39;, &#39;present_value&#39;]</span>
+
+<span class="c1"># Reconstruct the scalar PV:</span>
+<span class="n">pv</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2805</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>The structure of the returned dict depends on whether the call is single-policy or batch.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Call mode</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> returns</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Single-policy</strong> — scalar age (<code class="docutils literal notranslate"><span class="pre">x</span></code> is <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">ages[0]</span></code> is <code class="docutils literal notranslate"><span class="pre">float</span></code>)</p></td>
+<td><p>Per-payment engine dict — many keys, detailed arrays. This page documents this structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Batch</strong> — array of ages (<code class="docutils literal notranslate"><span class="pre">x</span></code> is a list/array, <code class="docutils literal notranslate"><span class="pre">ages[0]</span></code> is an array)</p></td>
+<td><p>Compact portfolio dict with exactly four keys: <code class="docutils literal notranslate"><span class="pre">{'time_grid',</span> <span class="pre">'expected_cf',</span> <span class="pre">'pv_cf',</span> <span class="pre">'total_pv'}</span></code>. See <a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A one-element list or array such as <code class="docutils literal notranslate"><span class="pre">x=[65]</span></code> <strong>triggers batch mode</strong> and returns the
+compact four-key dict — not the detailed per-payment dict:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Scalar x — detailed per-payment engine dict</span>
+<span class="n">flows_scalar</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flows_scalar</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1"># [&#39;time_grid&#39;, &#39;interest_rate&#39;, &#39;discount_factor&#39;, &#39;survival_probability&#39;,</span>
+<span class="c1">#  &#39;growth&#39;, &#39;payment_adjustment&#39;, &#39;present_value_raw&#39;, &#39;present_value&#39;]</span>
+
+<span class="c1"># 1-element list — compact portfolio dict (batch schema, same as N &gt; 1)</span>
+<span class="n">flows_batch1</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">([</span><span class="mi">65</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flows_batch1</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1"># [&#39;time_grid&#39;, &#39;expected_cf&#39;, &#39;pv_cf&#39;, &#39;total_pv&#39;]</span>
+</pre></div>
+</div>
+<p>The key <code class="docutils literal notranslate"><span class="pre">time_grid</span></code> exists at <strong>both</strong> levels: in single-policy calls it holds per-payment
+times; in batch calls it holds the union grid across all policies.  Code that processes
+<code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> dicts can rely on <code class="docutils literal notranslate"><span class="pre">time_grid</span></code> being present regardless of call mode.</p>
+<p><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code> and <code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code> modes support <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> in
+single-policy calls (returning the per-engine diagnostic dict documented below) but raise
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when used in batch mode.</p>
+</div>
+<p>The structure of the per-payment dict (single-policy calls) also depends on the
+<strong>calculation mode</strong> in effect:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Active mode</p></th>
+<th class="head"><p>Dict structure</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> (default)</p></td>
+<td><p>Flat arrays — see <a class="reference internal" href="#annuity-cash-flow-keys-discrete-precision">Annuity keys</a>, <a class="reference internal" href="#insurance-cash-flow-keys-discrete-precision">Insurance keys</a>, <a class="reference internal" href="#pure-endowment-cash-flow-keys">Pure endowment</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code></p></td>
+<td><p>Integration-grid arrays — see <a class="reference internal" href="#continuous-mode-keys">Continuous mode keys</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code> / <code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code></p></td>
+<td><p>Nested dicts (annuity/insurance); flat scalars (endowment) — see <a class="reference internal" href="#simplified-modes-nested-structure">Simplified modes</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="annuity-cash-flow-keys-discrete-precision">
+<span id="id1"></span><h2>Annuity cash-flow keys (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code>)<a class="headerlink" href="#annuity-cash-flow-keys-discrete-precision" title="Link to this heading">#</a></h2>
+<p>All arrays contain one entry per payment interval.
+For <span class="math notranslate nohighlight">\(m\)</span> payments per year over <span class="math notranslate nohighlight">\(n\)</span> years that is <span class="math notranslate nohighlight">\(m \times n\)</span> entries
+(e.g. <span class="math notranslate nohighlight">\(12 \times 20 = 240\)</span> for the example below).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Payment times <span class="math notranslate nohighlight">\(t_j = j/m + d\)</span>, <span class="math notranslate nohighlight">\(j = 0, 1, \ldots, mn-1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">interest_rate</span></code></p></td>
+<td><p>Effective annual rates at each <span class="math notranslate nohighlight">\(t_j\)</span> (piecewise-term aware)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discount_factor</span></code></p></td>
+<td><p>Discount factors <span class="math notranslate nohighlight">\(v^{t_j}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">survival_probability</span></code></p></td>
+<td><p>Survival probabilities <span class="math notranslate nohighlight">\({}_{t_j}p_x\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">growth</span></code></p></td>
+<td><p>Benefit growth factors at <span class="math notranslate nohighlight">\(t_j\)</span> (1.0 if no <code class="docutils literal notranslate"><span class="pre">gr=</span></code>); key is <code class="docutils literal notranslate"><span class="pre">&quot;amount&quot;</span></code> instead when <code class="docutils literal notranslate"><span class="pre">cashflow_amounts</span></code> is provided</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">payment_adjustment</span></code></p></td>
+<td><p>Fractional-final-payment scale (1.0 for full payments; &lt; 1 for the last fractional period)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">present_value_raw</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{t_j}p_x \cdot v^{t_j} \cdot g(t_j) \cdot \text{adj}_j\)</span> — element-wise product before frequency scaling</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">present_value</span></code></p></td>
+<td><p>Contribution of each payment to the total PV: <span class="math notranslate nohighlight">\(\text{raw}_j / m\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The total annuity value is <code class="docutils literal notranslate"><span class="pre">result[&quot;present_value&quot;].sum()</span></code>.</p>
+<hr class="docutils" />
+</section>
+<section id="insurance-cash-flow-keys-discrete-precision">
+<span id="id2"></span><h2>Insurance cash-flow keys (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code>)<a class="headerlink" href="#insurance-cash-flow-keys-discrete-precision" title="Link to this heading">#</a></h2>
+<p>All arrays contain one entry per payment interval — same length semantics as the annuity
+table above (<span class="math notranslate nohighlight">\(m \times n\)</span> entries total).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">payment_index</span></code></p></td>
+<td><p>Integer interval indices <span class="math notranslate nohighlight">\(j = 0, 1, \ldots\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Policy-year starts for each interval: <span class="math notranslate nohighlight">\(t_j = j/m + d\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discount_time</span></code></p></td>
+<td><p>Times at which the benefit is discounted: <span class="math notranslate nohighlight">\(t_j +\)</span> <code class="docutils literal notranslate"><span class="pre">mortality_placement</span> <span class="pre">/</span> <span class="pre">m</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">interest_rate</span></code></p></td>
+<td><p>Effective annual rates at <code class="docutils literal notranslate"><span class="pre">discount_time</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discount_factor</span></code></p></td>
+<td><p>Discount factors <span class="math notranslate nohighlight">\(v^{\text{discount\_time}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">death_probability_raw</span></code></p></td>
+<td><p>Raw per-interval death probabilities from the table</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">death_probability_adjustment</span></code></p></td>
+<td><p>Fractional-final-period scale</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">death_probability</span></code></p></td>
+<td><p>Adjusted death probabilities used in the summation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">growth</span></code></p></td>
+<td><p>Benefit growth factors (1.0 if no <code class="docutils literal notranslate"><span class="pre">gr=</span></code>); key is <code class="docutils literal notranslate"><span class="pre">&quot;amount&quot;</span></code> instead when <code class="docutils literal notranslate"><span class="pre">cashflow_amounts</span></code> is provided</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">present_value</span></code></p></td>
+<td><p>PV contribution of each interval</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The total insurance value is <code class="docutils literal notranslate"><span class="pre">result[&quot;present_value&quot;].sum()</span></code>.</p>
+<hr class="docutils" />
+</section>
+<section id="pure-endowment-cash-flow-keys">
+<span id="id3"></span><h2>Pure-endowment cash-flow keys<a class="headerlink" href="#pure-endowment-cash-flow-keys" title="Link to this heading">#</a></h2>
+<p>Because a pure endowment has a single payment at time <span class="math notranslate nohighlight">\(n\)</span>, all dict values are <strong>scalars</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Single-element array <code class="docutils literal notranslate"><span class="pre">np.array([n])</span></code> — maturity time</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">joint_survival_probability</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{n}p_x\)</span> (single-life) or <span class="math notranslate nohighlight">\(\prod_i {}_{n}p_{x_i}\)</span> (joint)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">discount_factor</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">expected_cf</span></code></p></td>
+<td><p>Single-element array <span class="math notranslate nohighlight">\([{}_{n}p_{\text{joint}}]\)</span> — survival probability at maturity</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pv_cf</span></code></p></td>
+<td><p>Single-element array <span class="math notranslate nohighlight">\([{}_{n}E_{\text{joint}}]\)</span> — discounted survival at maturity</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">total_pv</span></code></p></td>
+<td><p>Scalar — <span class="math notranslate nohighlight">\({}_{n}E_{\text{joint}}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> and <code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code> return this same six-key structure.
+For <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> and <code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code>, see the sections below.</p>
+<p><strong>Endowment insurance (<code class="docutils literal notranslate"><span class="pre">nEx</span></code>) vs. pure endowment flows.</strong>  Standalone <code class="docutils literal notranslate"><span class="pre">nEx(...,</span> <span class="pre">return_flows=True)</span></code> always exposes the <strong>maturity</strong> representation above (<code class="docutils literal notranslate"><span class="pre">time_grid</span> <span class="pre">=</span> <span class="pre">[np.array([n])]</span></code>).  For <strong>endowment insurance</strong> in continuous modes, annuity and insurance
+legs may include integration grids over <span class="math notranslate nohighlight">\([0, n]\)</span>; the endowment survival leg is still
+reported as a single payment at <span class="math notranslate nohighlight">\(t = n\)</span> in the batch-oriented keys — not on the integration
+grid.  See <a class="reference internal" href="#continuous-mode-keys"><span class="std std-ref">Continuous mode keys</span></a> § Endowment.</p>
+</div>
+<hr class="docutils" />
+</section>
+<section id="continuous-mode-keys">
+<span id="id4"></span><h2>Continuous mode keys<a class="headerlink" href="#continuous-mode-keys" title="Link to this heading">#</a></h2>
+<p>For <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code>, methods return <strong>integration grid arrays</strong> over <span class="math notranslate nohighlight">\([d, d+n]\)</span>
+instead of per-payment arrays:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Unified time-axis key</strong></p>
+<p>Both scalar and batch dicts use <code class="docutils literal notranslate"><span class="pre">&quot;time_grid&quot;</span></code> as the time-axis key.  For scalar calls
+(single age), <code class="docutils literal notranslate"><span class="pre">&quot;time_grid&quot;</span></code> contains the per-policy payment times or integration grid;
+for batch calls (array of ages), it holds the union grid of all policy times.
+Generic code that processes <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> dicts works at both levels with the
+same key.</p>
+</div>
+<p><strong>Annuity (<code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code>)</strong>:</p>
+<p>All arrays are evaluated on a linearly-spaced integration grid over <span class="math notranslate nohighlight">\([d,\, d+n]\)</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Grid points <span class="math notranslate nohighlight">\(t\)</span> over <span class="math notranslate nohighlight">\([d,\, d+n]\)</span> — the integration time axis</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">survival_probability</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{t}p_x\)</span> (raw <span class="math notranslate nohighlight">\(\ell_x\)</span>, no rounding applied)</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">discount_factor</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^t\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">interest_rate</span></code></p></td>
+<td><p>Effective annual rates <span class="math notranslate nohighlight">\(i(t)\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">growth</span></code></p></td>
+<td><p>Growth factors <span class="math notranslate nohighlight">\(g(t)\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">integrand</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{t}p_x \cdot v^t \cdot g(t)\)</span> — raw density (no <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">expected_cf</span></code></p></td>
+<td><p>Undiscounted density × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>: <span class="math notranslate nohighlight">\({}_{t}p_x \cdot g(t) \cdot \mathrm{d}t\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">pv_cf</span></code></p></td>
+<td><p>PV density × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>: <code class="docutils literal notranslate"><span class="pre">integrand</span></code> × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>; <code class="docutils literal notranslate"><span class="pre">np.sum(pv_cf)</span></code> ≈ <span class="math notranslate nohighlight">\(\bar{a}_x\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">total_pv</span></code></p></td>
+<td><p>Scalar — <code class="docutils literal notranslate"><span class="pre">np.sum(pv_cf)</span></code> (consistent with scalar return value)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The continuous annuity dict does <strong>not</strong> include a <code class="docutils literal notranslate"><span class="pre">&quot;present_value&quot;</span></code> key; use <code class="docutils literal notranslate"><span class="pre">total_pv</span></code>
+instead, which equals <code class="docutils literal notranslate"><span class="pre">np.sum(pv_cf)</span></code>.  You can also reconstruct <span class="math notranslate nohighlight">\(\bar{a}_x\)</span> manually by
+integrating the <code class="docutils literal notranslate"><span class="pre">integrand</span></code> array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_precision&quot;</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;integrand&quot;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;time_grid&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2532</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>
+</pre></div>
+</div>
+</div>
+<p><strong>Insurance (<code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code>)</strong>:</p>
+<p>All arrays are evaluated on the same integration grid; <code class="docutils literal notranslate"><span class="pre">present_value</span></code> is a scalar.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Integration grid points — the time axis</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">survival</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{t}p_x\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">force_mortality</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mu_{x+t}\)</span> (numerically derived)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">discount</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^t\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">growth</span></code></p></td>
+<td><p>Benefit growth factors</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">integrand</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(v^t \cdot {}_t p_x \cdot \mu_{x+t} \cdot g(t)\)</span> — raw density (no <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">expected_cf</span></code></p></td>
+<td><p>Undiscounted density × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>: <span class="math notranslate nohighlight">\({}_{t}p_x \cdot \mu_{x+t} \cdot g(t) \cdot \mathrm{d}t\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">pv_cf</span></code></p></td>
+<td><p>PV density × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>: <code class="docutils literal notranslate"><span class="pre">integrand</span></code> × <span class="math notranslate nohighlight">\(\mathrm{d}t\)</span>; <code class="docutils literal notranslate"><span class="pre">np.sum(pv_cf)</span></code> ≈ <span class="math notranslate nohighlight">\(\bar{A}_x\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">total_pv</span></code></p></td>
+<td><p>Scalar — <code class="docutils literal notranslate"><span class="pre">np.sum(pv_cf)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">present_value</span></code></p></td>
+<td><p><strong>Scalar</strong> — trapezoidal integral <span class="math notranslate nohighlight">\(\bar{A}_x\)</span> (authoritative value)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Endowment (<code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code>)</strong>:</p>
+<p>The endowment component pays at maturity <span class="math notranslate nohighlight">\(t = n\)</span> as a single event.
+The dict has two logical groups: the continuous integration grid used internally,
+followed by the single-payment representation used by the batch interface.</p>
+<p><em>Integration grid (internal computation):</em></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">joint_survival_probability</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\({}_t p_{\text{joint}}\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">combined_force_mortality</span></code></p></td>
+<td><p>Combined force of mortality <span class="math notranslate nohighlight">\(\sum_i \mu_i(t)\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">force_interest</span></code></p></td>
+<td><p>Force of interest <span class="math notranslate nohighlight">\(\delta(t)\)</span> at each grid point</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">combined_integrand</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\delta(t) + \sum_i \mu_i(t)\)</span> — integrand of <span class="math notranslate nohighlight">\(-\ln({}_{n}E_x)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">integral</span></code></p></td>
+<td><p><strong>Scalar</strong> — <span class="math notranslate nohighlight">\(\int_0^n [\delta(t) + \sum_i \mu_i(t)]\,\mathrm{d}t\)</span> (trapezoidal)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>Single-payment representation (batch interface + result):</em></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">time_grid</span></code></p></td>
+<td><p>Single-element array <code class="docutils literal notranslate"><span class="pre">np.array([n])</span></code> — maturity time</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">expected_cf</span></code></p></td>
+<td><p>Single-element array <span class="math notranslate nohighlight">\([{}_{n}p_{\text{joint}}]\)</span> — survival probability at maturity</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">pv_cf</span></code></p></td>
+<td><p>Single-element array <span class="math notranslate nohighlight">\([{}_{n}E_{\text{joint}}]\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">total_pv</span></code></p></td>
+<td><p>Scalar — <span class="math notranslate nohighlight">\({}_{n}E_{\text{joint}}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="simplified-modes-nested-structure">
+<span id="id5"></span><h2>Simplified modes — nested structure<a class="headerlink" href="#simplified-modes-nested-structure" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code> and <code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code> return <strong>nested dicts</strong> for annuity
+and insurance methods.
+For <strong>annuity</strong> methods the inner <code class="docutils literal notranslate"><span class="pre">&quot;due&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;immediate&quot;</span></code> components are
+themselves full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> flow dicts.
+For <strong>insurance</strong> methods the structure differs — see below.
+For <strong>endowment</strong> methods, both modes return flat scalar dicts — see below.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code></strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_simplified&quot;</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">due_flows</span>    <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;due&quot;</span><span class="p">]</span>           <span class="c1"># full discrete_precision dict for annual äx</span>
+<span class="n">imm_flows</span>    <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;immediate&quot;</span><span class="p">]</span>     <span class="c1"># full discrete_precision dict for annual ax</span>
+<span class="n">pv_due</span>       <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pv_due&quot;</span><span class="p">]</span>        <span class="c1"># scalar: sum of due component</span>
+<span class="n">pv_immediate</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pv_immediate&quot;</span><span class="p">]</span>  <span class="c1"># scalar: sum of immediate component</span>
+<span class="n">coef_due</span>     <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;coef_due&quot;</span><span class="p">]</span>      <span class="c1"># Woolhouse weight for due component</span>
+<span class="n">coef_imm</span>     <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;coef_immediate&quot;</span><span class="p">]</span>
+<span class="n">pv_final</span>     <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">]</span>  <span class="c1"># scalar PV: coef_due*pv_due + coef_imm*pv_immediate</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;coef_due=</span><span class="si">{</span><span class="n">coef_due</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, coef_imm=</span><span class="si">{</span><span class="n">coef_imm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 0.5417, 0.4583</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv_final</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 15.6316</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;pv_due&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;pv_immediate&quot;</span></code> are only present when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">1</span></code> the method delegates to <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> and the returned dict has only
+five keys: <code class="docutils literal notranslate"><span class="pre">&quot;due&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;immediate&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;coef_due&quot;</span></code> (= 1.0), <code class="docutils literal notranslate"><span class="pre">&quot;coef_immediate&quot;</span></code> (= 0.0),
+and <code class="docutils literal notranslate"><span class="pre">&quot;interpolated&quot;</span></code>. In this case <code class="docutils literal notranslate"><span class="pre">&quot;due&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;immediate&quot;</span></code> alias the <strong>same</strong> underlying
+dict — mutations to one will be reflected in the other.</p>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code></strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_simplified&quot;</span>
+
+<span class="c1"># Integer n — fractional sub-dict is empty</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1"># [&#39;due&#39;, &#39;immediate&#39;, &#39;interpolated&#39;, &#39;fractional&#39;]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2555</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">])</span>              <span class="c1"># {}</span>
+
+<span class="c1"># Fractional n — fractional sub-dict holds the two-point quadrature tail</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">20.5</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">frac</span> <span class="o">=</span> <span class="n">result2</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">frac</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1"># [&#39;time_grid&#39;, &#39;interest_rate&#39;, &#39;discount_factor&#39;,</span>
+<span class="c1">#  &#39;survival_probability&#39;, &#39;growth&#39;, &#39;present_value&#39;]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.4242</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;due&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>Annual annuity-due flows over the <strong>integer portion</strong> <span class="math notranslate nohighlight">\(k = \lfloor n \rfloor\)</span> (a full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> dict)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;immediate&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>Annual annuity-immediate flows over <span class="math notranslate nohighlight">\(k = \lfloor n \rfloor\)</span> (a full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> dict)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;interpolated&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Woolhouse PV from annual due/immediate components (integer <span class="math notranslate nohighlight">\(k\)</span> years) plus tail PV when <span class="math notranslate nohighlight">\(n\)</span> is fractional</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;fractional_tail&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>When <span class="math notranslate nohighlight">\(n_\text{eff}\)</span> is fractional and <span class="math notranslate nohighlight">\(m&gt;1\)</span>: full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> flows for m-thly tail <span class="math notranslate nohighlight">\((k,\,n_\text{eff}]\)</span>; empty when <span class="math notranslate nohighlight">\(k=0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;fractional&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code> only: two-point trapezoidal tail; empty dict <code class="docutils literal notranslate"><span class="pre">{}</span></code> when <span class="math notranslate nohighlight">\(n\)</span> is an integer</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">&quot;fractional&quot;</span></code> is populated (fractional <span class="math notranslate nohighlight">\(n\)</span>), its six inner arrays are <strong>Python lists of two
+elements</strong> — not NumPy arrays.  Use <code class="docutils literal notranslate"><span class="pre">sum(frac[&quot;present_value&quot;])</span></code> or
+<code class="docutils literal notranslate"><span class="pre">np.add(*frac[&quot;present_value&quot;])</span></code> rather than <code class="docutils literal notranslate"><span class="pre">frac[&quot;present_value&quot;].sum()</span></code>.</p>
+</div>
+<p><strong>Insurance (<code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code>, <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>)</strong>:</p>
+<p>Insurance uses <strong>linear age interpolation</strong> (not Woolhouse). When <span class="math notranslate nohighlight">\(n_\text{eff}\)</span> is
+fractional, integer years <span class="math notranslate nohighlight">\(k=\lfloor n_\text{eff}\rfloor\)</span> use the interpolation
+below and the terminal fraction is in <code class="docutils literal notranslate"><span class="pre">&quot;fractional_tail&quot;</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;Ax1&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>Full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> dict at age <span class="math notranslate nohighlight">\(x\)</span> for duration <span class="math notranslate nohighlight">\(k\)</span> (annual, m=1)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;Ax2&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>Full <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> dict at age <span class="math notranslate nohighlight">\(x+1\)</span> for duration <span class="math notranslate nohighlight">\(k-1\)</span> (annual, m=1)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;factor&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Interpolation weight <span class="math notranslate nohighlight">\(\frac{m-1}{2m}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;fractional_tail&quot;</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>m-thly <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> flows for <span class="math notranslate nohighlight">\((k,\,n_\text{eff}]\)</span> when <span class="math notranslate nohighlight">\(s&gt;0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;present_value&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Interpolated integer-year PV plus tail sum</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Insurance (<code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code>)</strong>:</p>
+<p>Returns three <strong>scalar</strong> trapezoidal totals from underlying <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code>
+integrations (per-grid arrays are available only from a direct
+<code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> call with <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> on each leg).</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the simplified insurance value is the arithmetic mean of two precision
+legs:</p>
+<ul class="simple">
+<li><p><strong>Ax1</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;pv_x&quot;</span></code>): <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> at term <code class="docutils literal notranslate"><span class="pre">n</span></code> with
+<code class="docutils literal notranslate"><span class="pre">prob_func_method=&quot;Ax1&quot;</span></code>.</p></li>
+<li><p><strong>Ax2</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;pv_x1&quot;</span></code>): <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> at term <code class="docutils literal notranslate"><span class="pre">max(n</span> <span class="pre">-</span> <span class="pre">1,</span> <span class="pre">0)</span></code> with
+<code class="docutils literal notranslate"><span class="pre">prob_func_method=&quot;Ax2&quot;</span></code>.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_simplified&quot;</span>
+<span class="n">flows</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flows</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>  <span class="c1"># [&#39;present_value&#39;, &#39;pv_x&#39;, &#39;pv_x1&#39;]</span>
+<span class="k">assert</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">flows</span><span class="p">[</span><span class="s2">&quot;pv_x&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;pv_x1&quot;</span><span class="p">])</span>
+
+<span class="n">flows_short</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">flows_short</span><span class="p">[</span><span class="s2">&quot;pv_x1&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="n">flows_short</span><span class="p">[</span><span class="s2">&quot;pv_x&quot;</span><span class="p">]</span>  <span class="c1"># Ax2 leg absent</span>
+<span class="k">assert</span> <span class="n">flows_short</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">flows_short</span><span class="p">[</span><span class="s2">&quot;pv_x&quot;</span><span class="p">]</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;pv_x&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Trapezoidal total from the <strong>Ax1</strong> leg (<code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> at term <code class="docutils literal notranslate"><span class="pre">n</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;pv_x1&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Trapezoidal total from the <strong>Ax2</strong> leg (term <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> when <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;present_value&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>: <code class="docutils literal notranslate"><span class="pre">0.5</span> <span class="pre">*</span> <span class="pre">(pv_x</span> <span class="pre">+</span> <span class="pre">pv_x1)</span></code>; when <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>: equals <code class="docutils literal notranslate"><span class="pre">pv_x</span></code> (no interpolation)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>, the Ax2 leg is not evaluated: <code class="docutils literal notranslate"><span class="pre">&quot;pv_x1&quot;</span></code> <strong>aliases</strong> <code class="docutils literal notranslate"><span class="pre">&quot;pv_x&quot;</span></code> (same
+object). Do not interpret the duplicate as an independent <span class="math notranslate nohighlight">\(\bar{A}_{x+1}\)</span> estimate.
+For integration-grid detail, call <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> with <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> on
+each leg separately.</p>
+</div>
+<p><strong>Endowment (<code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code>)</strong>:</p>
+<p>Returns the same four-key flat scalar structure as <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> — see
+<a class="reference internal" href="#pure-endowment-cash-flow-keys">Pure-endowment cash-flow keys</a>.</p>
+<p><strong>Endowment (<code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code>)</strong>:</p>
+<p>Uses average-force approximation <span class="math notranslate nohighlight">\({}_{n}E_x \approx e^{-n(\bar{\delta} + \sum_i \bar{\mu}_i)}\)</span>.
+All values except <code class="docutils literal notranslate"><span class="pre">&quot;time_grid&quot;</span></code> are <strong>scalars</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;time_grid&quot;</span></code></p></td>
+<td><p>ndarray</p></td>
+<td><p>Maturity time as single-element array <code class="docutils literal notranslate"><span class="pre">np.array([n])</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;average_interest_force&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\(\bar{\delta} = -\ln(v^n)/n\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;average_mortality_force&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sum_i \bar{\mu}_i = \sum_i(-\ln({}_np_{x_i})/n)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;total_average_force&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\(\bar{\delta} + \sum_i \bar{\mu}_i\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;expected_cf&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{n}p_{\text{joint}}\)</span> — joint survival probability at maturity</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;pv_cf&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\({}_{n}E_{\text{joint}}\)</span> — discounted joint survival</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;total_pv&quot;</span></code></p></td>
+<td><p>float</p></td>
+<td><p><span class="math notranslate nohighlight">\(\exp\!\bigl(-n\cdot(\bar{\delta}+\sum_i \bar{\mu}_i)\bigr)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="decomposing-and-verifying-a-present-value">
+<h2>Decomposing and verifying a present value<a class="headerlink" href="#decomposing-and-verifying-a-present-value" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> makes it possible to inspect every factor that contributed to a
+present value and verify that they compose exactly as expected.  This kind of
+component-level traceability is the building block for model validation tasks —
+such as auditing an actuarial cash-flow model or cross-checking a single benefit
+stream inside a larger IFRS 17 / Solvency II projection.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A real BEL under IFRS 17 / Solvency II covers a full portfolio (many policyholders),
+multiple cash-flow types (benefits, premiums, expenses), multiple decrement causes
+(mortality, lapse, disability …), and a Risk Adjustment / Risk Margin on top of the
+pure present value.  The example below isolates <strong>one benefit stream for a single
+policy</strong>: it demonstrates the decomposition pattern, not a complete BEL calculation.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">12</span>
+<span class="n">flows</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 240 entries — one per payment (m=12 per year × n=20 years)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;time_grid&quot;</span><span class="p">]</span>               <span class="c1"># t_j = j/12, j = 0, …, 239</span>
+<span class="n">v_t</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;discount_factor&quot;</span><span class="p">]</span>       <span class="c1"># v^{t_j}</span>
+<span class="n">tpx</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;survival_probability&quot;</span><span class="p">]</span>  <span class="c1"># _{t_j}p_x</span>
+<span class="n">g_t</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;growth&quot;</span><span class="p">]</span>                <span class="c1"># 1.0 everywhere (no gr=)</span>
+<span class="n">adj</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;payment_adjustment&quot;</span><span class="p">]</span>    <span class="c1"># 1.0 for all full payments</span>
+<span class="n">pv_per_pmnt</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span> <span class="c1"># = tpx * v_t * g_t * adj / m</span>
+
+<span class="n">pv</span> <span class="o">=</span> <span class="n">pv_per_pmnt</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV: </span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># PV: 13.2805</span>
+
+<span class="c1"># Verify that each element matches its formula component-by-component</span>
+<span class="n">reconstructed</span> <span class="o">=</span> <span class="n">tpx</span> <span class="o">*</span> <span class="n">v_t</span> <span class="o">*</span> <span class="n">g_t</span> <span class="o">*</span> <span class="n">adj</span> <span class="o">/</span> <span class="n">m</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">pv_per_pmnt</span><span class="p">,</span> <span class="n">reconstructed</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Components verified ✓&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="summary-audit-snapshots">
+<h2><code class="docutils literal notranslate"><span class="pre">summary()</span></code> — audit snapshots<a class="headerlink" href="#summary-audit-snapshots" title="Link to this heading">#</a></h2>
+<p>Every main Lactuca object implements <code class="docutils literal notranslate"><span class="pre">summary()</span></code>, returning a human-readable snapshot
+of its current state.  This is the standard audit header for IFRS 17 and Solvency II
+model documentation.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>What <code class="docutils literal notranslate"><span class="pre">summary()</span></code> shows</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LifeTable</span></code></p></td>
+<td><p>Table name, sex, ω, active modifications, decimals, sample <span class="math notranslate nohighlight">\(q_x\)</span> values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DecrementTable</span></code></p></td>
+<td><p>Same header as <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> plus active decrement columns</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code></p></td>
+<td><p>Table name, age range, sample incidence/recovery rates</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ExitTable</span></code></p></td>
+<td><p>Table name and lapse-rate sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InterestRate</span></code></p></td>
+<td><p>Rate type (constant / piecewise), rate values, scenario name if multi-scenario</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code></p></td>
+<td><p>Growth type (geometric / arithmetic), rate values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TableBuilder</span></code></p></td>
+<td><p>Builder configuration and included tables</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">InterestRate</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="c1"># LifeTable: PASEM2020_Rel_1er.orden</span>
+<span class="c1"># Sex: m</span>
+<span class="c1">#   Table: PASEM2020_Rel_1er.orden  |  Type: life</span>
+<span class="c1">#   Age range: 0-109  |  Valid sexes: f, m</span>
+<span class="c1">#   Generational: False</span>
+<span class="c1"># w (current): 109</span>
+<span class="c1"># Modified: False</span>
+<span class="c1"># Decimals: qx=15</span>
+<span class="c1"># Sample qx values (first 5):</span>
+<span class="c1">#   qx(0) = 0.0020038</span>
+<span class="c1">#   ...</span>
+<span class="c1"># Sample qx values (last 5):</span>
+<span class="c1">#   ...</span>
+<span class="c1">#   qx(109) = 1.0</span>
+
+<span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="c1"># InterestRate: constant rate = 0.030000</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> — which mode to choose for regulatory calculations</p></li>
+<li><p><a class="reference internal" href="prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a> — the <code class="docutils literal notranslate"><span class="pre">ts=</span></code> parameter and mid-year reserve calculations</p></li>
+<li><p><a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a> — <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> with array ages for portfolio BEL (IFRS 17 / Solvency II)</p></li>
+<li><p><a class="reference internal" href="../formulas.html"><span class="doc">Actuarial Formulas</span></a> — mathematical definitions of each quantity</p></li>
+<li><p><a class="reference internal" href="numerical_precision.html"><span class="doc">Numerical Precision</span></a> — float64 precision policy for the arrays returned</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="irregular_cashflows.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Irregular Cashflows</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="force_mortality_methods.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Force of Mortality Methods</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annuity-cash-flow-keys-discrete-precision">Annuity cash-flow keys (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insurance-cash-flow-keys-discrete-precision">Insurance cash-flow keys (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pure-endowment-cash-flow-keys">Pure-endowment cash-flow keys</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-mode-keys">Continuous mode keys</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplified-modes-nested-structure">Simplified modes — nested structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decomposing-and-verifying-a-present-value">Decomposing and verifying a present value</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-audit-snapshots"><code class="docutils literal notranslate"><span class="pre">summary()</span></code> — audit snapshots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,866 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Last Payment Adjustment &#8212; Lactuca 0.0.31</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=d5d76a5c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/last_payment_adjustment';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.0.31';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Date Utilities Guide" href="dates_guide.html" />
+    <link rel="prev" title="Force of Mortality Methods" href="force_mortality_methods.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.31" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.0.31-test] - 2026-06-21
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation_glossary.html">Notation and Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lx_interpolation.html">lx Interpolation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tables_taxonomy.html">Table Taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bundled_tables.html">Bundled Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_tables.html">Using Actuarial Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_tables.html">Building Custom Table Files (.ltk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mortality_improvement.html">Mortality Improvement (MI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_decrements.html">Modifying Decrements</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rates_guide.html">Interest Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_annuities_guide.html">Life Annuities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_insurances_guide.html">Life Insurances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prospective_reserve.html">Prospective Reserves and the <code class="docutils literal notranslate"><span class="pre">ts</span></code> Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutation_functions.html">Commutation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deferment.html">Deferred Life Contingencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates_guide.html">Growth Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joint_life_calculations.html">Joint-Life Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculation_modes.html">Calculation Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimals_rounding.html">Decimal Precision and Rounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_precision.html">Numerical Precision</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional_api.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_calculations.html">Batch Calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probable_flows.html">Probable Flows and Portfolio Reserves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_conventions.html">Growth Rate Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="irregular_cashflows.html">Irregular Cashflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspecting_cashflows.html">Inspecting Cash Flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_mortality_methods.html">Force of Mortality Methods</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Last Payment Adjustment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates_guide.html">Date Utilities Guide</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qx_derivation_flow.html">qx Derivation Flow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Last Payment Adjustment</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="last-payment-adjustment">
+<h1>Last Payment Adjustment<a class="headerlink" href="#last-payment-adjustment" title="Link to this heading">#</a></h1>
+<p>When the product <span class="math notranslate nohighlight">\(n \cdot m\)</span> of a term and payment frequency is not an integer, the final
+sub-annual period is <strong>incomplete</strong>.  Lactuca applies a proportional weight to that last
+period so that the present value reflects the true contracted term <span class="math notranslate nohighlight">\(n\)</span> — not the nearest
+aligned grid point.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This adjustment applies <strong>only to <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> mode</strong> for the standard
+<code class="docutils literal notranslate"><span class="pre">payments_frac</span></code> scaling on the full payment grid.  In <code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code>
+with fractional <code class="docutils literal notranslate"><span class="pre">n_eff</span></code> and <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the terminal fraction <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">n_eff</span> <span class="pre">-</span> <span class="pre">k</span></code>
+is valued on an exact m-thly tail (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> conventions) rather
+than via Woolhouse on the annual grid.  Continuous modes do not implement
+fractional final-period scaling on the simplified path.</p>
+</div>
+<section id="annuity-due-versus-annuity-immediate">
+<h2>Annuity-due versus annuity-immediate<a class="headerlink" href="#annuity-due-versus-annuity-immediate" title="Link to this heading">#</a></h2>
+<p>Lactuca exposes separate methods for each payment convention:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method family</p></th>
+<th class="head"><p>Convention</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Fractional adjustment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">äjoint</span></code></p></td>
+<td><p>Annuity-<strong>due</strong> — payments at the <strong>start</strong> of each sub-period</p></td>
+<td><p><span class="math notranslate nohighlight">\(\ddot{a}^{(m)}\)</span></p></td>
+<td><p><strong>None</strong> — last payment is at <span class="math notranslate nohighlight">\(\lfloor nm \rfloor / m \le n\)</span> with full weight</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">ajoint</span></code></p></td>
+<td><p>Annuity-<strong>immediate</strong> — payments at the <strong>end</strong> of each sub-period</p></td>
+<td><p><span class="math notranslate nohighlight">\(a^{(m)}\)</span></p></td>
+<td><p>Last payment scaled by <span class="math notranslate nohighlight">\(w\)</span> when <span class="math notranslate nohighlight">\(w &gt; 0\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For annuity-due methods (<code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">äjoint</span></code>), the last payment is at
+<span class="math notranslate nohighlight">\(\lfloor nm \rfloor / m \le n\)</span> and is included with full weight — no scaling.  The next
+payment would fall at <span class="math notranslate nohighlight">\((\lfloor nm \rfloor + 1)/m &gt; n\)</span> and is simply excluded.</p>
+<p>For annuity-immediate methods (<code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">ajoint</span></code>), the final period ends at
+<span class="math notranslate nohighlight">\((\lfloor nm \rfloor + 1)/m &gt; n\)</span>, so the last payment is pulled back to <span class="math notranslate nohighlight">\(n\)</span> and
+proportionally reduced by <span class="math notranslate nohighlight">\(w\)</span>.</p>
+</section>
+<section id="the-fractional-weight">
+<h2>The fractional weight<a class="headerlink" href="#the-fractional-weight" title="Link to this heading">#</a></h2>
+<p>The core quantity is the fractional part of <span class="math notranslate nohighlight">\(n \cdot m\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[w = n \cdot m - \lfloor n \cdot m \rfloor \in [0, 1)\]</div>
+<p>When <span class="math notranslate nohighlight">\(w = 0\)</span> the term is exactly aligned with the payment grid and no adjustment is needed.
+When <span class="math notranslate nohighlight">\(w &gt; 0\)</span> the final period is incomplete and <span class="math notranslate nohighlight">\(w\)</span> is used as the scaling weight.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When a time shift <code class="docutils literal notranslate"><span class="pre">ts</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> and deferment <code class="docutils literal notranslate"><span class="pre">d</span></code> are used together, <span class="math notranslate nohighlight">\(w\)</span> is computed from the
+<strong>effective</strong> term <span class="math notranslate nohighlight">\(n_\text{eff} = n - \max(ts - d,\, 0)\)</span> rather than from raw <span class="math notranslate nohighlight">\(n\)</span>.
+When <span class="math notranslate nohighlight">\(ts \le d\)</span> the shift falls entirely within the deferment period and <span class="math notranslate nohighlight">\(n_\text{eff} = n\)</span>.</p>
+</div>
+<p><strong>Example 1 — aligned</strong> (<span class="math notranslate nohighlight">\(n = 10.75\)</span>, <span class="math notranslate nohighlight">\(m = 4\)</span>, quarterly):</p>
+<div class="math notranslate nohighlight">
+\[nm = 10.75 \times 4 = 43, \qquad w = 43 - 43 = 0\]</div>
+<p>No fractional adjustment is applied.</p>
+<p><strong>Example 2 — incomplete</strong> (<span class="math notranslate nohighlight">\(n = 10.6\)</span>, <span class="math notranslate nohighlight">\(m = 4\)</span>, quarterly):</p>
+<div class="math notranslate nohighlight">
+\[nm = 10.6 \times 4 = 42.4, \qquad w = 42.4 - \lfloor 42.4 \rfloor = 0.4\]</div>
+<p>The last quarter covers only <span class="math notranslate nohighlight">\(w/m = 0.1\)</span> year out of a full sub-period of <span class="math notranslate nohighlight">\(1/m = 0.25\)</span> years.</p>
+</section>
+<section id="annuity-adjustment">
+<h2>Annuity adjustment<a class="headerlink" href="#annuity-adjustment" title="Link to this heading">#</a></h2>
+<p>For <code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">ajoint</span></code> (annuity-immediate) with <span class="math notranslate nohighlight">\(w &gt; 0\)</span>:</p>
+<ul class="simple">
+<li><p>The <strong>last payment time</strong> is the exact term endpoint <span class="math notranslate nohighlight">\(n_\text{eff} + d\)</span> (where <span class="math notranslate nohighlight">\(d\)</span> is
+the deferment period; for the common case <span class="math notranslate nohighlight">\(d = 0\)</span> this is simply <span class="math notranslate nohighlight">\(n_\text{eff}\)</span>).</p></li>
+<li><p>The <strong>last payment amount</strong> is scaled by <span class="math notranslate nohighlight">\(w\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{PV contribution}_{\text{last}} = \frac{w}{m} \cdot {}_{n_\text{eff}}p_x \cdot v^{n_\text{eff}+d} \cdot g(n_\text{eff}+d)\]</div>
+<p>where <span class="math notranslate nohighlight">\(g(\cdot)\)</span> is the growth factor and <span class="math notranslate nohighlight">\({}_{n_\text{eff}}p_x\)</span> is the survival probability
+from the shifted age to <span class="math notranslate nohighlight">\(n_\text{eff}\)</span> (for multi-life methods <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">ajoint</span></code>,
+this is the joint survival probability of all lives).</p>
+<p>This is exposed in the <code class="docutils literal notranslate"><span class="pre">payment_adjustment</span></code> array returned by <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code>
+(see <a class="reference internal" href="inspecting_cashflows.html"><span class="doc">Inspecting Cash Flows</span></a>): all elements are 1.0 except the last, which equals <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">äxy</span></code>, <code class="docutils literal notranslate"><span class="pre">äxyz</span></code>, <code class="docutils literal notranslate"><span class="pre">äjoint</span></code> (annuity-due), <span class="math notranslate nohighlight">\(w\)</span> does not produce a scaled final payment:
+the last payment was already made at <span class="math notranslate nohighlight">\(\lfloor nm \rfloor / m\)</span> with full weight.</p>
+</section>
+<section id="insurance-adjustment">
+<h2>Insurance adjustment<a class="headerlink" href="#insurance-adjustment" title="Link to this heading">#</a></h2>
+<p>For all insurance methods — <code class="docutils literal notranslate"><span class="pre">Ax</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">Afirst</span></code>, and their term and deferred
+variants — the fractional-period scaling applies whenever <span class="math notranslate nohighlight">\(w &gt; 0\)</span>.  Insurances have no
+due/immediate distinction (that concept is replaced by <code class="docutils literal notranslate"><span class="pre">mortality_placement</span></code>), so the
+adjustment fires regardless of any annuity-related convention:</p>
+<ul class="simple">
+<li><p>The <strong>last period’s death probability</strong> is scaled by <span class="math notranslate nohighlight">\(w\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[{}_{1/m}q_{x + t_{\text{last}}}^{\text{adjusted}} = w \cdot {}_{1/m}q_{x + t_{\text{last}}}\]</div>
+<ul class="simple">
+<li><p>The <strong>last period’s discount time</strong> offset is also scaled:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[t_{\text{discount,\,last}} = t_{\text{last}} + \delta_m \cdot w\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_m\)</span> is the <code class="docutils literal notranslate"><span class="pre">mortality_placement</span></code> offset (<span class="math notranslate nohighlight">\(0\)</span>, <span class="math notranslate nohighlight">\(1/(2m)\)</span>, or <span class="math notranslate nohighlight">\(1/m\)</span>).</p>
+<p>Both effects are visible in the <code class="docutils literal notranslate"><span class="pre">return_flows=True</span></code> dict via the
+<code class="docutils literal notranslate"><span class="pre">death_probability_adjustment</span></code> and <code class="docutils literal notranslate"><span class="pre">discount_time</span></code> arrays — see <a class="reference internal" href="inspecting_cashflows.html"><span class="doc">Inspecting Cash Flows</span></a>.</p>
+</section>
+<section id="irregular-cashflows">
+<h2>Irregular cashflows<a class="headerlink" href="#irregular-cashflows" title="Link to this heading">#</a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">cashflow_times</span></code> and <code class="docutils literal notranslate"><span class="pre">cashflow_amounts</span></code> instead of the <code class="docutils literal notranslate"><span class="pre">n</span></code>/<code class="docutils literal notranslate"><span class="pre">m</span></code> grid, the
+fractional adjustment is <strong>not applied</strong> — the programmer controls each payment’s timing
+and amount directly.  See <a class="reference internal" href="irregular_cashflows.html"><span class="doc">Irregular Cashflows</span></a> for details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">äjoint</span></code> does not accept <code class="docutils literal notranslate"><span class="pre">cashflow_times</span></code> (annuity-due with multiple lives uses the
+standard grid only).  For irregular schedules with multiple lives use <code class="docutils literal notranslate"><span class="pre">ajoint</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">axyz</span></code>, or <code class="docutils literal notranslate"><span class="pre">ax</span></code> with explicit <code class="docutils literal notranslate"><span class="pre">cashflow_times</span></code>.</p>
+</div>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="inspecting_cashflows.html"><span class="doc">Inspecting Cash Flows</span></a> — <code class="docutils literal notranslate"><span class="pre">payment_adjustment</span></code> and <code class="docutils literal notranslate"><span class="pre">death_probability_adjustment</span></code> arrays</p></li>
+<li><p><a class="reference internal" href="calculation_modes.html"><span class="doc">Calculation Modes</span></a> — <code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> is the only mode that applies this adjustment</p></li>
+<li><p><a class="reference internal" href="irregular_cashflows.html"><span class="doc">Irregular Cashflows</span></a> — arbitrary cashflow timing</p></li>
+<li><p><a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a> — <code class="docutils literal notranslate"><span class="pre">force_integer_ts</span></code> and other calculation settings</p></li>
+<li><p><a class="reference internal" href="notation_glossary.html"><span class="doc">Notation and Glossary</span></a> — <span class="math notranslate nohighlight">\(\ddot{a}\)</span>, <span class="math notranslate nohighlight">\(a\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(n\)</span> symbol definitions</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="force_mortality_methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Force of Mortality Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dates_guide.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Date Utilities Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annuity-due-versus-annuity-immediate">Annuity-due versus annuity-immediate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fractional-weight">The fractional weight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annuity-adjustment">Annuity adjustment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insurance-adjustment">Insurance adjustment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#irregular-cashflows">Irregular cashflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
