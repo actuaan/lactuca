@@ -56,8 +56,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://www.lactuca.io"
 Documentation = "https://www.lactuca.io/latest/"
-Repository = "https://github.com/actuaan/lactuca-dev"
-"Public Repository" = "https://github.com/actuaan/lactuca"
+Repository = "https://github.com/actuaan/lactuca"
 Issues = "https://github.com/actuaan/lactuca/issues"
 Changelog = "https://www.lactuca.io/latest/changelog.html"
 
