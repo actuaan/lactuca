@@ -13,7 +13,7 @@
 pip install lactuca
 ```
 
-Requires **Python ≥ 3.12**. Core runtime dependencies include NumPy, SciPy, Pandas, Polars, msgpack, PyNaCl, requests, and platformdirs (see `pyproject.toml` for pinned ranges).
+Requires **Python ≥ 3.12**. Runs on **Windows, Linux, and macOS** (wheels for CPython 3.12–3.14). Core runtime dependencies include NumPy, SciPy, Pandas, Polars, msgpack, PyNaCl, requests, and platformdirs (see `pyproject.toml` for pinned ranges).
 
 ## Activation
 
@@ -56,11 +56,21 @@ python -c "from importlib.metadata import version; print(version('lactuca'))"
 
 ## Quick Start
 
+> **Requires an activated license** — see [Activation](#activation) above (`LACTUCA_LICENSE_KEY`, `license.json`, or the interactive trial).
+
+Lactuca centres on three table classes — `LifeTable` (mortality), `DisabilityTable` (disability incidence), and `ExitTable` (withdrawals) — plus `InterestRate`, `GrowthRate`, and a global `Config` for calculation defaults. **Generational** tables require a `cohort` birth year; **select-ultimate** tables require a `duration` (select year, or `"ult"` for ultimate); some tables need both.
+
 ```python
 from lactuca import LifeTable, äx
 
-# Load a generational mortality table (PASEM 2020, male)
+# Generational mortality table (PASEM 2020, male)
 lt = LifeTable("PASEM2020_Gen_2o", "m")
+
+# First-order individual table with explicit cohort (PER 2020, male, born 1969)
+lt_cohort = LifeTable("PER2020_Ind_1o", "m", cohort=1969)
+
+# Select-ultimate table (UK AM92/AF92, male) — duration picks the select slice (1 = first select year)
+lt_select = LifeTable("AM92_AF92", "m", duration=1)
 
 # 15-year temporary life annuity-due, annual payments (m=1), 3% interest
 # n = term in years, m = payment frequency per year (1=annual, 12=monthly)
@@ -81,15 +91,17 @@ print(f"Life annuity value: {annuity:.4f}")
   - **UK**: AM92, AF92
   - **Chile (CMF NCG 305/2023)**: CB, MI, RV, B tables
   - **Other**: IASS90, SS90
-- ✅ **Generational mortality** with exponential, linear, and discrete improvement factors
-- ✅ **Life, disability, and exit tables** with multiple decrements
+- ✅ **Generational mortality** with exponential, linear, and discrete improvement factors (`cohort`); **select-ultimate** tables with duration-dependent rates (`duration` or `"ult"`)
+- ✅ **`LifeTable`**, **`DisabilityTable`**, and **`ExitTable`** — mortality, disability incidence, and exit/withdrawal decrements (including multiple-decrement combinations)
+- ✅ **Custom tables** — build proprietary `.ltk` tables with `TableBuilder` or load them via `read_table`
 - ✅ **Annuities** (discrete/continuous, immediate/due, fractional frequencies)
 - ✅ **Life insurances** (term, whole life, endowment)
 - ✅ **Commutation functions** (Dx, Nx, Cx, Mx, Rx, Sx, Lx, Tx, ex and joint-life variants)
-- ✅ **Functional API** (scalar and vectorized: `ax`, `äx`, `Ax`, `tpx`, `ex`, `nEx`, joint-life `axy`, `Axy`…)
+- ✅ **Functional API** (scalar and vectorized: `ax`, `äx`, `Ax`, `tpx`, `ex`, `nEx`, joint-life `axy`, `Axy`, first-death `Afirst`, N-life `ajoint`…)
 - ✅ **Batch API** — vectorized multi-policy calculations with scalar equivalence when N=1
-- ✅ **Flexible interest rates** with `InterestRate` (constant rate or piecewise term structure)
+- ✅ **Flexible interest rates** with `InterestRate` (flat rate, piecewise term structure, named scenarios)
 - ✅ **Growth rate scenarios** with `GrowthRate` for benefit escalation
+- ✅ **Global `Config`** — calculation modes (`discrete_precision`, `continuous_precision`, …), mortality placement, and interpolation defaults
 - ✅ **Fractional time shifts** (ts) with UDD/CFM interpolation methods
 - ✅ **Actuarial date utilities** (exact age, last/nearest/next birthday, anniversary dates)
 - ✅ **Highly optimized** with NumPy vectorization and Cython compilation
