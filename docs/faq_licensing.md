@@ -409,9 +409,9 @@ use Lactuca simultaneously on that server:
 
 - **Individual**: permits 1 named user and **1 concurrent session**. Server-side use is
   allowed but limited to that same user's own calculations, one at a time.
-- **Team**: one server activation shares the 30-slot pool; up to **10 concurrent
+- **Team**: one server activation shares the 10-device pool; up to **10 concurrent
   sessions** across the server — suitable for a team running calculations in parallel.
-- **Enterprise**: up to 150 activations — suitable for multi-server infrastructure with
+- **Enterprise**: up to 50 activations — suitable for multi-server infrastructure with
   up to **50 concurrent sessions** across all activated devices combined.
 
 Internal users accessing Lactuca through the server do not need their own key. Users

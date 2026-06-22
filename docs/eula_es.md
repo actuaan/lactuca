@@ -2,7 +2,7 @@
 
 **Lactuca — Biblioteca de Cálculo Actuarial de Vida para Python**
 
-*Fecha de entrada en vigor: 2026-04-20. Última actualización: 2026-04-21.*
+*Fecha de entrada en vigor: 2026-04-20. Última actualización: 2026-06-22.*
 
 ---
 
@@ -757,7 +757,7 @@ Tras la cancelación o la no renovación:
 
 Las suscripciones Enterprise —ya sean facturadas mensualmente a través de Lemon Squeezy
 o anualmente mediante contrato directo— confieren **derechos de uso idénticos**: el
-mismo grupo de activaciones (150 activaciones de máquina), el mismo máximo de 50
+mismo grupo de activaciones (50 activaciones de máquina), el mismo máximo de 50
 sesiones simultáneas y los mismos escenarios de despliegue permitidos (instalación
 directa en estación de trabajo y despliegue en servidor o compartido para usuarios
 internos). La diferencia entre Enterprise mensual y anual es únicamente el canal de

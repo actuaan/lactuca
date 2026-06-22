@@ -2,7 +2,7 @@
 
 **Lactuca — Life Actuarial Calculation Library for Python**
 
-*Effective date: 2026-04-20. Last updated: 2026-04-21.*
+*Effective date: 2026-04-20. Last updated: 2026-06-22.*
 
 ---
 
@@ -737,7 +737,7 @@ Upon cancellation or non-renewal:
 ### 11.5 Enterprise annual contracts
 Enterprise subscriptions — whether billed monthly through Lemon Squeezy or
 annually through a direct contract — confer **identical usage rights**: the
-same activation pool (150 machine activations), the same maximum of 50
+same activation pool (50 machine activations), the same maximum of 50
 concurrent sessions, and the same permitted deployment scenarios (direct
 workstation installation and server/shared deployment for internal users).
 The difference between monthly and annual Enterprise is solely the billing
