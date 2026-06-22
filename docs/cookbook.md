@@ -498,9 +498,9 @@ print(f"Total liability (batch):  {total_liability:>14,.2f}")
 
 :::{important}
 In both **scalar** and **batch** mode, `n=None` means whole-life — including
-`None` entries in a per-policy `n` list.  You may also write `np.inf` explicitly
-in batch vectors; both forms are equivalent.  Pure endowments (`nEx`, …) require
-a finite term and reject whole-life sentinels.
+`None` or missing values in a per-policy `n` list or DataFrame column (`Series`).
+You may also write `np.inf` explicitly; both forms are equivalent.  Pure endowments
+(`nEx`, …) require a finite term and reject whole-life sentinels.
 See {doc}`user_guide/batch_calculations` for per-policy parameters, `on_error='nan'`,
 and aggregate cash-flow patterns.
 :::
