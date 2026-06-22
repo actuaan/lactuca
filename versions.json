@@ -1,4 +1,3 @@
 [
-  {"name": "0.0.31-test", "version": "0.0.31-test", "url": "/lactuca/v0.0.31-test/"},
-  {"name": "latest", "version": "latest", "url": "/lactuca/latest/"}
+  {"name": "latest", "version": "latest", "url": "/latest/"}
 ]
