@@ -496,6 +496,16 @@ total_liability = float(pv_arr.sum())
 print(f"Total liability (batch):  {total_liability:>14,.2f}")
 ```
 
+:::{note}
+**Row vs column layout.**  `portfolio` is a list of row dicts (as in recipe 9) because it matches
+typical JSON/CSV records and keeps per-policy enrichment (`age`, `cohort`, `pv`) simple.
+The list comprehensions above extract parallel columns for the batch call.
+If your data is already column-oriented — `{'age': [...], 'n': [...], ...}` — pass
+`portfolio['age']`, `portfolio['n']`, and so on directly; `gr` still needs a
+`GrowthRate` wrapper per element.  For Excel or database sources, prefer recipes
+10–12 (Polars or Pandas DataFrames).
+:::
+
 :::{important}
 In both **scalar** and **batch** mode, `n=None` means whole-life — including
 `None` or missing values in a per-policy `n` list or DataFrame column (`Series`).
