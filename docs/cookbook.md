@@ -483,7 +483,7 @@ table_list = [
     for p in portfolio
 ]
 ages     = [p['age'] for p in portfolio]
-n_list   = [np.inf if p['n'] is None else p['n'] for p in portfolio]   # batch whole-life
+n_list   = [p['n'] for p in portfolio]   # None -> whole-life (same as scalar)
 gr_list  = [GrowthRate(p['g']) if p['g'] else None for p in portfolio]
 benefits = [p['pension'] for p in portfolio]
 
@@ -497,8 +497,10 @@ print(f"Total liability (batch):  {total_liability:>14,.2f}")
 ```
 
 :::{important}
-In **scalar** mode, `n=None` means whole-life. In **batch** mode, use `np.inf` for
-whole-life entries — `None` in an `n` array is interpreted as invalid.
+In both **scalar** and **batch** mode, `n=None` means whole-life — including
+`None` entries in a per-policy `n` list.  You may also write `np.inf` explicitly
+in batch vectors; both forms are equivalent.  Pure endowments (`nEx`, …) require
+a finite term and reject whole-life sentinels.
 See {doc}`user_guide/batch_calculations` for per-policy parameters, `on_error='nan'`,
 and aggregate cash-flow patterns.
 :::

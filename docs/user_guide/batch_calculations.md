@@ -354,7 +354,7 @@ raises `ValueError`.
 | Parameter | Per-policy? | Notes |
 |---|---|---|
 | `x` or `ages` | ✅ Yes | The batch dimension — pass a list, array, or Pandas/Polars Series |
-| `n` | ✅ Yes | Term in years; `np.inf` for whole-life; accepts Pandas/Polars Series |
+| `n` | ✅ Yes | Term in years; `None` or `np.inf` for whole-life in lists/arrays; scalar `n=None` broadcasts whole-life to all policies |
 | `ir` | ✅ Yes | Scalar `float`, `InterestRate`, NDArray, list/tuple, or Pandas/Polars Series (numeric float **or** object-dtype `InterestRate` instances, including piecewise curves) per policy |
 | `m` | ✅ Yes | Payment frequency per year; accepts Pandas/Polars Series of ints |
 | `d` | ✅ Yes | Deferral period in years; accepts Pandas/Polars Series |
@@ -364,6 +364,15 @@ raises `ValueError`.
 | `cashflow_amounts` | ❌ Shared | Per-payment-period amount schedule — same for all policies |
 | `cashflow_times` | ❌ Shared | Payment timing grid — same for all policies |
 | `t_output` | ❌ Shared | Reporting time grid for `return_flows=True`; requires `return_flows=True` — raises `ValueError` otherwise |
+
+:::{note}
+**Whole-life duration (`n`).**  Scalar `n=None` means whole-life for every policy
+(same as in scalar mode).  In per-policy `list` / `tuple` vectors, Python
+`None` at index *i* also denotes whole-life for policy *i* (internally mapped to
+`np.inf` before calculation).  `np.inf` in a numeric array is equivalent.
+Pure endowments (`nEx`, `nExy`, …) require a finite positive term and reject
+whole-life sentinels.  `NaN` in a float column is **not** treated as whole-life.
+:::
 
 (multi-scenario-ir-gr-batch)=
 :::{note}
