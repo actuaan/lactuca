@@ -58,6 +58,12 @@ lt2.interest_rate = ir
 print(round(lt.ax(65, n=20), 4))   # same result from either option
 ```
 
+Multi-scenario `InterestRate` containers can be passed as `interest_rate=` or assigned
+via `lt.interest_rate = ir`.  `lt.interest_rate` holds a **reference** to the same
+object — calculations without an explicit `ir=` use whichever scenario is active
+**at each call**.  To freeze the scenario, pass `ir.copy()` or a simple sub-curve
+from `ir.scenarios["base"]`.  See {ref}`interest-rate-scenarios-lifetable`.
+
 ## Vectorial creation
 
 For small families or scenario analysis, pass a sequence for `sex`,

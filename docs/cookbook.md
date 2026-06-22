@@ -81,12 +81,12 @@ print(f"Last-survivor:          {a_ls:.4f}")
 
 Compare annuity values across named interest rate scenarios using a multiscenario
 `InterestRate` — the natural pattern for sensitivity analyses and Solvency II stress tests.
-Each scenario is activated in turn by setting `active_scenario`:
+
+**Pattern A — iterate sub-curves.**  Extract each simple scenario and pass it as `ir=`:
 
 ```python
 from lactuca import LifeTable, InterestRate
 
-# Named scenarios: base + two stress levels
 ir = InterestRate({
     'base':      0.03,
     'adverse':   0.01,
@@ -99,6 +99,33 @@ for name, scenario in ir.scenarios.items():
     value = lt.äx(x=65, ir=scenario)
     print(f"{name:<10}  i = {scenario.rate:.2%}  →  ä_65 = {value:.4f}")
 ```
+
+**Pattern B — switch `active_scenario` on a shared container.**  Attach the
+multi-scenario object once (to `LifeTable` or via `ir=`) and switch scenarios in place:
+
+```python
+from lactuca import LifeTable, InterestRate
+
+ir = InterestRate({
+    'base':      0.03,
+    'adverse':   0.01,
+    'stressed':  0.00,
+})
+
+lt = LifeTable('PASEM2020_Gen_2o', 'm', interest_rate=ir)
+
+ir.active_scenario = 'base'
+bel_base = lt.äx(65)
+
+ir.active_scenario = 'stressed'
+bel_stressed = lt.äx(65)
+
+print(f"base: {bel_base:.4f}  stressed: {bel_stressed:.4f}")
+```
+
+Both patterns yield the same PV per scenario.  Pattern B avoids allocating separate
+`InterestRate` wrappers in a loop; Pattern A makes each scenario explicit at the call site.
+See {ref}`interest-rate-scenarios-lifetable` for `copy()` snapshotting and batch semantics.
 
 ## 6. Cohort vs. period projection
 

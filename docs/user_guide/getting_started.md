@@ -545,6 +545,8 @@ and named scenario collections. Any `LifeTable` method accepts either an
 `InterestRate` object or a plain `float` in the `ir=` argument; a plain `float` is
 wrapped automatically. For the complete API — discount factors, accumulation,
 nominal-rate conversions, and scenarios — see {doc}`interest_rates_guide`.
+Multi-scenario containers resolve the active scenario **at each calculation call**; see
+{ref}`interest-rate-scenarios-lifetable` in {doc}`interest_rates_guide`.
 
 ### Constant rate
 

@@ -365,6 +365,37 @@ raises `ValueError`.
 | `cashflow_times` | ❌ Shared | Payment timing grid — same for all policies |
 | `t_output` | ❌ Shared | Reporting time grid for `return_flows=True`; requires `return_flows=True` — raises `ValueError` otherwise |
 
+(multi-scenario-ir-gr-batch)=
+:::{note}
+**Multi-scenario `ir` and `gr`.**  When several policies share the same
+`InterestRate` or `GrowthRate` container (scalar `ir=ir`, default `lt.interest_rate`,
+or `gr=[gr, gr, gr]`), each batch call uses the **active scenario at call time**.
+Building the list does not snapshot the scenario.  Use `ir.copy()` / `gr.copy()` per
+policy when you need independent scenario state.  See {ref}`interest-rate-scenarios-lifetable`.
+:::
+
+```python
+import numpy as np
+from lactuca import GrowthRate, InterestRate, LifeTable
+
+ir = InterestRate({"base": 0.02, "piecewise": ([5, 10], [0.01, 0.02, 0.025])})
+lt = LifeTable("PASEM2020_Gen_2o", "m")
+ages = np.array([50.0, 55.0, 60.0])
+
+ir.active_scenario = "base"
+batch_base = lt.ax(ages, n=20, ir=ir)
+
+ir.active_scenario = "piecewise"
+batch_piecewise = lt.ax(ages, n=20, ir=ir)   # differs from batch_base
+
+gr = GrowthRate({"base": 0.02, "stress": 0.04})
+gr.active_scenario = "base"
+pv_base = lt.ax(ages, n=20, ir=0.03, gr=[gr, gr, gr])
+
+gr.active_scenario = "stress"
+pv_stress = lt.ax(ages, n=20, ir=0.03, gr=[gr, gr, gr])   # differs from pv_base
+```
+
 ```python
 from lactuca import LifeTable, InterestRate, config
 

@@ -100,6 +100,68 @@ print(round(ir_b.vn(10), 4))   # 0.7014  (stress)
 `ir.copy()` uses `copy.deepcopy` internally; the `Config` singleton is shared
 (not duplicated), and a fresh thread lock is created for the copy.
 
+(interest-rate-scenarios-lifetable)=
+### Scenarios with LifeTable and batch methods
+
+Multi-scenario `InterestRate` containers are passed **by reference** to `LifeTable`
+and to every `ir=` argument.  Each annuity, insurance, endowment, or commutation call
+reads the **currently active scenario at call time** — the scenario is **not**
+snapshotted when you construct `LifeTable` or when you build a per-policy list such as
+`ir=[ir, ir, ir]`.
+
+:::{important}
+**Reference semantics.**  `lt.interest_rate` is the same object you passed at
+construction (or assigned later).  Changing `ir.active_scenario` after creating
+`lt` changes subsequent results from `lt.ax()`, `lt.äx()`, and all other methods
+that use the table default rate, unless you override with an explicit `ir=` for that
+call only.
+:::
+
+```python
+from lactuca import InterestRate, LifeTable
+
+ir = InterestRate({
+    "base":      0.02,
+    "piecewise": ([5, 10], [0.01, 0.02, 0.025]),
+})
+lt = LifeTable("PASEM2020_Gen_2o", "m", interest_rate=ir)
+
+ir.active_scenario = "base"
+a_base = lt.ax(65, n=20)
+
+ir.active_scenario = "piecewise"
+a_piecewise = lt.ax(65, n=20)   # differs from a_base
+```
+
+To **freeze** the scenario active when you attach a rate to a table, pass a deep copy:
+
+```python
+lt = LifeTable("PASEM2020_Gen_2o", "m", interest_rate=ir.copy())
+# lt.interest_rate is independent; parent ir.active_scenario switches do not affect lt
+```
+
+The same contract applies when you pass a multi-scenario container explicitly:
+
+```python
+ir.active_scenario = "base"
+val = lt.ax(65, n=20, ir=ir)          # uses base
+ir.active_scenario = "piecewise"
+val2 = lt.ax(65, n=20, ir=ir)         # uses piecewise
+```
+
+#### Sensitivity patterns
+
+| Pattern | When to use |
+|---------|-------------|
+| `for name, scen in ir.scenarios.items(): lt.äx(..., ir=scen)` | Compare scenarios explicitly; each `scen` is a simple curve |
+| `ir.active_scenario = "stress"; lt.äx(...)` | One shared container; switch in place (see {doc}`../cookbook` recipe 5) |
+| `interest_rate=ir.copy()` | Fix the active scenario at copy time on a `LifeTable` |
+| `return_flows=True` then `ecf.dot(ir.vn(tg))` | Many discount scenarios on the same mortality cashflows (see {doc}`probable_flows`) |
+
+`GrowthRate` multi-scenario containers follow the same call-time rule for `gr=`;
+see {doc}`growth_rates_guide` — [Multi-scenario `gr=` with LifeTable](#growth-rate-scenarios-lifetable).
+Batch broadcasting details: {doc}`batch_calculations` — [Multi-scenario `ir` and `gr`](#multi-scenario-ir-gr-batch).
+
 ## Discount factors
 
 The discount factor $v^n = (1+i)^{-n}$ is the present value of one unit payable in $n$ years.

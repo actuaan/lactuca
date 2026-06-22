@@ -40,6 +40,14 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | $i^{(m)}$ | — (no direct method; used implicitly via parameter `m`) | Nominal rate convertible $m$ times per year |
 | $d^{(m)}$ | — (no direct method; used implicitly via parameter `m`) | Nominal discount rate convertible $m$ times per year; $d^{(m)} = m\left(1 - v^{1/m}\right)$ |
 
+## Multi-scenario rate containers
+
+| Term | Lactuca meaning |
+|------|-----------------|
+| Active scenario | Name of the sub-curve (`base`, `stress`, …) used by `vn()`, `ax()`, `factor()`, etc. on **this** call |
+| Reference semantics | `LifeTable.interest_rate` and `ir=` / `gr=` share the container object; the active scenario is **not** snapshotted at construction |
+| `copy()` | Deep copy that isolates `active_scenario` and sub-curves from the parent container |
+
 ## Commutation functions
 
 | Symbol | Lactuca method | Formula |

@@ -140,6 +140,29 @@ The `gr=` parameter is accepted by the annuity methods `äx`, `ax` and their
 joint-life variants (`äxy`, `axy`, `äxyz`, `axyz`), and by the insurance methods
 `Ax`, `Axy`, `Axyz`. Pure endowments (`nEx`, `nExy`, `nExyz`) do not support `gr=`.
 
+(growth-rate-scenarios-lifetable)=
+### Multi-scenario `gr=` with LifeTable
+
+Multi-scenario `GrowthRate` containers follow the same **call-time** contract as
+`InterestRate`: the active scenario is read on **each** `gr=` use, not when you build
+a per-policy list such as `gr=[gr, gr, gr]`.
+
+```python
+from lactuca import LifeTable, GrowthRate
+
+lt = LifeTable("PASEM2020_Rel_1o", "m")
+gr = GrowthRate({"base": 0.02, "stress": 0.04})
+
+gr.active_scenario = "base"
+a_base = lt.ax(65, n=10, ir=0.03, gr=gr)
+
+gr.active_scenario = "stress"
+a_stress = lt.ax(65, n=10, ir=0.03, gr=gr)   # higher escalation → higher PV
+```
+
+Pass `gr.copy()` when you need a snapshot isolated from later `active_scenario` changes
+on the parent container.  Interest-rate scenarios: {ref}`interest-rate-scenarios-lifetable`.
+
 (anniversary-convention)=
 ## Anniversary convention
 
