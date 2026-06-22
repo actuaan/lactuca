@@ -163,6 +163,10 @@ Column guide:
 | `GAM71` | m/f | USA (SOA) | life · agg–static | — |
 | `GAM83` | m/f | USA (SOA) | life · agg–static | — |
 | `GAM94_AA` | m/f | USA (SOA) | life · agg–gen-a † | — |
+| `GRMF80` | m/f | Switzerland (SOA) | life · agg–static | — |
+| `GRMF95` | m/f | Switzerland (SOA) | life · agg–static | — |
+| `GKMF80` | m/f | Switzerland (SOA) | life · agg–static | — |
+| `GKMF95` | m/f | Switzerland (SOA) | life · agg–static | — |
 | `AM92_AF92` | m/f | UK (CMIB) | life · sel–static ‡‡ | — |
 | `CB_H_2020` | m | Chile (CMF) | life · agg–gen-c | — |
 | `MI_H_2020` | m | Chile (CMF) | life · agg–gen-c | — |

@@ -85,12 +85,13 @@ print(f"Life annuity value: {annuity:.4f}")
 ## Features
 
 - ✅ **International actuarial tables** — bundled and ready to use:
-  - **Spain**: PASEM2010, PASEM2020 (Gen/NoRel/Rel/Dec), PER2020 (Col/Ind)
-  - **Germany**: DAV2004R (Aggregate and Select-Ultimate, 1st/2nd order)
-  - **USA**: GAM71, GAM83, GAM94
-  - **UK**: AM92, AF92
+  - **Spain (DGSFP)**: PASEM2010, PASEM2020 (Gen/NoRel/Rel/Dec), PER2020 (Col/Ind), PEAI2007
+  - **Spain (SS)**: IASS90, SS90
+  - **Germany (DAV)**: DAV2004R (Aggregate and Select-Ultimate, 1st/2nd order)
+  - **USA (SOA)**: GAM71, GAM83, GAM94
+  - **UK (CMIB)**: AM92_AF92
+  - **Switzerland (SOA)**: GRMF80, GRMF95, GKMF80, GKMF95
   - **Chile (CMF NCG 305/2023)**: CB, MI, RV, B tables
-  - **Other**: IASS90, SS90
 - ✅ **Generational mortality** with exponential, linear, and discrete improvement factors (`cohort`); **select-ultimate** tables with duration-dependent rates (`duration` or `"ult"`)
 - ✅ **`LifeTable`**, **`DisabilityTable`**, and **`ExitTable`** — mortality, disability incidence, and exit/withdrawal decrements (including multiple-decrement combinations)
 - ✅ **Custom tables** — build proprietary `.ltk` tables with `TableBuilder` or load them via `read_table`
