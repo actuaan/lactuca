@@ -2,9 +2,35 @@
 
 Practical, self-contained recipes for common actuarial tasks using Lactuca.
 
+Each snippet below is copy-paste ready: imports, table identifiers, and parameters match
+the bundled catalogue. Run them in an activated Python session (see {doc}`activation`).
+
 Tables are loaded by string identifier and sex code (`'m'`, `'f'`, or `'u'`).
 See {doc}`user_guide/bundled_tables` for the full catalogue of available tables.
 For bulk portfolio work, see {ref}`bulk-portfolios` in {doc}`user_guide/using_tables`.
+
+## Recipes
+
+| # | Topic | Pattern |
+|---|-------|---------|
+| 1 | Term life insurance | `Ax(x, n=…)` |
+| 2 | Whole-life annuity-due | `äx(x)` |
+| 3 | Monthly pension liability | `äx(x, m=12)` + benefit scaling |
+| 4 | Joint-life / last-survivor pension | vectorized `LifeTable` + inclusion–exclusion |
+| 5 | Interest-rate sensitivity | multi-scenario `InterestRate` |
+| 6 | Period vs generational mortality | `cohort=` setter |
+| 7 | Tiered benefit schedule | `payment_times` + `tiered_amounts` |
+| 8 | Complete expectation of life | `ex` / `ex_continuous` |
+| 9 | Portfolio liability (plain Python) | loop + cohort setter |
+| 10 | Portfolio liability (Polars) | `iter_rows` + cohort setter |
+| 11 | Polars `map_elements` PV column | fixed table, expression pipeline |
+| 12 | Portfolio liability (Pandas) | `itertuples` + cohort setter |
+| 13 | Portfolio liability (batch API) | functional `äx` + `benefits=` |
+| 14 | Net annual premium | `Ax / äx` (equivalence principle) |
+| 15 | Deferred pension | `äx(x, d=…)` |
+| 16 | Prospective reserve | `ts=` + `Ax - P * äx` |
+
+---
 
 ## 1. Price a term life insurance
 
@@ -13,13 +39,16 @@ using the PASEM2020 individual non-reinsurance table (first order) and a 3 % fla
 
 $$A^1_{x:\overline{n}|} = \sum_{k=0}^{n-1} v^{k+1} \cdot {}_k p_x \cdot q_{x+k}$$
 
+Pass `n=20` to {meth}`~lactuca.tables.LifeTable.Ax` for a temporary insurance; omit `n`
+for whole-life.
+
 ```python
 from lactuca import LifeTable
 
 lt = LifeTable('PASEM2020_NoRel_1o', 'm', interest_rate=0.03)
 
-a1 = lt.Ax(x=45, n=20)
-print(f"A_45:20 = {a1:.6f}")
+term_pv = lt.Ax(x=45, n=20)
+print(f"Term insurance APV (A^1_45:20) = {term_pv:.6f}")
 ```
 
 ## 2. Whole-life annuity-due
@@ -34,8 +63,8 @@ from lactuca import LifeTable
 
 lt = LifeTable('PASEM2020_Rel_1o', 'f', interest_rate=0.03)
 
-a = lt.äx(x=60)
-print(f"ä_60 = {a:.6f}")
+a_due = lt.äx(x=60)
+print(f"Whole-life annuity-due (a_dd_60) = {a_due:.6f}")
 ```
 
 ## 3. Pension liability (monthly payments, generational mortality)
@@ -48,10 +77,17 @@ from lactuca import LifeTable
 
 lt = LifeTable('PER2020_Ind_1o', 'm', cohort=1961, interest_rate=0.02)
 
-monthly_annuity = lt.äx(x=65, m=12)
-liability = 1_000 * 12 * monthly_annuity
-print(f"Pension PV = €{liability:,.2f}")
+monthly_annuity = lt.äx(x=65, m=12)   # unit annual benefit, m-thly (IAA ä_x^{(12)})
+liability = 1_000 * 12 * monthly_annuity   # EUR 1 000/month = EUR 12 000/year
+print(f"Pension PV = EUR {liability:,.2f}")
 ```
+
+:::{note}
+`äx(..., m=12)` follows standard actuarial notation: it values **one currency unit
+per year** payable in 12 instalments (not one unit per monthly payment).
+Scale by the **annual** pension — here `1_000 * 12` — or equivalently
+`12_000 * monthly_annuity`.
+:::
 
 ## 4. Joint-life pension (couple, vectorized instantiation)
 
@@ -68,14 +104,17 @@ lt_m, lt_f = LifeTable('PASEM2020_Rel_1o', ('m', 'f'), interest_rate=0.02)
 
 a_x     = lt_m.äx(x=65, m=12)
 a_y     = lt_f.äx(x=62, m=12)
-a_joint = lt_m.äxy(ages=[65, 62], table_y=lt_f, m=12)
-a_ls    = a_x + a_y - a_joint
+a_joint = lt_m.äxy(ages=[65, 62], table_y=lt_f, m=12)   # both survive
+a_ls    = a_x + a_y - a_joint                            # last survivor
 
 print(f"Individual (male  65): {a_x:.4f}")
 print(f"Individual (female 62): {a_y:.4f}")
-print(f"Joint first-death:      {a_joint:.4f}")
-print(f"Last-survivor:          {a_ls:.4f}")
+print(f"Joint-life (both alive): {a_joint:.4f}")
+print(f"Last-survivor:           {a_ls:.4f}")
 ```
+
+See {doc}`user_guide/joint_life_calculations` for first-death insurances (`Axy`, `Afirst`)
+and other derivable joint-life formulas.
 
 ## 5. Interest rate sensitivity
 
@@ -97,7 +136,7 @@ lt = LifeTable('PASEM2020_Gen_2o', 'm')
 
 for name, scenario in ir.scenarios.items():
     value = lt.äx(x=65, ir=scenario)
-    print(f"{name:<10}  i = {scenario.rate:.2%}  →  ä_65 = {value:.4f}")
+    print(f"{name:<10}  i = {scenario.rate:.2%}  ->  a_dd_65 = {value:.4f}")
 ```
 
 **Pattern B — switch `active_scenario` on a shared container.**  Attach the
@@ -127,6 +166,11 @@ Both patterns yield the same PV per scenario.  Pattern B avoids allocating separ
 `InterestRate` wrappers in a loop; Pattern A makes each scenario explicit at the call site.
 See {ref}`interest-rate-scenarios-lifetable` for `copy()` snapshotting and batch semantics.
 
+:::{note}
+`scenario.rate` is defined for **constant** sub-curves (as in this example).
+For piecewise scenarios, use `scenario.get_rate(t)` or inspect `scenario.rates`.
+:::
+
 ## 6. Cohort vs. period projection
 
 Compare period and generational annuity values. A 65-year-old in 2026 was born
@@ -136,10 +180,10 @@ in 1961. The generational table `PER2020_Ind_2o` embeds projection improvements:
 from lactuca import LifeTable
 
 lt_period = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
-lt_cohort  = LifeTable('PER2020_Ind_2o',   'm', cohort=1961, interest_rate=0.03)
+lt_cohort = LifeTable('PER2020_Ind_2o',   'm', cohort=1961, interest_rate=0.03)
 
 a_period = lt_period.äx(x=65)
-a_cohort  = lt_cohort.äx(x=65)
+a_cohort = lt_cohort.äx(x=65)
 
 print(f"Period annuity:  {a_period:.4f}")
 print(f"Cohort annuity:  {a_cohort:.4f}")
@@ -160,7 +204,7 @@ times   = payment_times(n=40, m=1)
 amounts = tiered_amounts(times, breakpoints=[10], values=[12_000.0, 8_000.0])
 
 pv = lt.ax(x=65, cashflow_times=times, cashflow_amounts=amounts)
-print(f"Custom benefit PV = €{pv:,.2f}")
+print(f"Custom benefit PV = EUR {pv:,.2f}")
 ```
 
 ## 8. Complete expectation of life
@@ -176,8 +220,8 @@ lt = LifeTable('PASEM2020_Rel_1o', 'm')
 ex_int  = lt.ex(65)
 ex_frac = lt.ex_continuous(65.5)
 
-print(f"ė_65   = {ex_int:.2f} years  (integer age)")
-print(f"ė_65.5 = {ex_frac:.2f} years  (fractional age)")
+print(f"e_65   = {ex_int:.2f} years  (integer age, discrete)")
+print(f"e_65.5 = {ex_frac:.2f} years  (fractional age, continuous)")
 ```
 
 (portfolio-liability)=
@@ -195,7 +239,7 @@ from lactuca import LifeTable, GrowthRate, alb
 VALUATION_DATE = '2026-04-09'
 
 # Pension portfolio: birth date, sex, annual pension,
-# term in years (n=None → whole-life), escalation rate.
+# term in years (n=None -> whole-life), escalation rate.
 portfolio = [
     {'id': 'P001', 'birth': '1955-03-15', 'sex': 'm', 'pension': 18_000, 'n': 25,   'g': 0.020},
     {'id': 'P002', 'birth': '1958-11-22', 'sex': 'f', 'pension': 12_000, 'n': None, 'g': 0.010},
@@ -257,10 +301,10 @@ df = pl.DataFrame({
     'birth':   ['1955-03-15', '1958-11-22', '1950-07-04', '1962-01-30', '1957-09-10'],
     'sex':     ['m', 'f', 'm', 'f', 'm'],
     'pension': [18_000.0, 12_000.0, 24_000.0, 9_600.0, 15_000.0],
-    'n':       [25, None, 20, None, 28],         # None → whole-life annuity
+    'n':       [25, None, 20, None, 28],         # None -> whole-life annuity
     'g':       [0.020, 0.010, 0.025, 0.000, 0.015],
 }).with_columns(
-    pl.col('birth').str.to_date()               # parse ISO 8601 strings → pl.Date
+    pl.col('birth').str.to_date()               # parse ISO 8601 strings -> pl.Date
 )
 
 # Add age-at-last-birthday (vectorized) and cohort (birth year) columns
@@ -356,7 +400,7 @@ df = pd.DataFrame({
     'birth':   ['1955-03-15', '1958-11-22', '1950-07-04', '1962-01-30', '1957-09-10'],
     'sex':     ['m', 'f', 'm', 'f', 'm'],
     'pension': [18_000.0, 12_000.0, 24_000.0, 9_600.0, 15_000.0],
-    'n':       [25, None, 20, None, 28],         # None → whole-life annuity
+    'n':       [25, None, 20, None, 28],         # None -> whole-life annuity
     'g':       [0.020, 0.010, 0.025, 0.000, 0.015],
 })
 df['birth'] = pd.to_datetime(df['birth'])
@@ -397,6 +441,162 @@ intermediate conversion.
 and is significantly faster than `iterrows` for large DataFrames.
 :::
 
+(portfolio-liability-batch)=
+## 13. Portfolio liability valuation (batch API)
+
+Vectorized alternative to recipes 9–12: one functional call prices the entire portfolio
+without a Python loop over policies. Build one `LifeTable` per unique `(sex, cohort)` pair,
+then pass a per-policy table list to {func}`~lactuca.functional.äx` with `benefits=`.
+
+```python
+import numpy as np
+from lactuca import LifeTable, TableKey, GrowthRate, alb, äx
+
+VALUATION_DATE = '2026-04-09'
+
+portfolio = [
+    {'id': 'P001', 'birth': '1955-03-15', 'sex': 'm', 'pension': 18_000, 'n': 25,   'g': 0.020},
+    {'id': 'P002', 'birth': '1958-11-22', 'sex': 'f', 'pension': 12_000, 'n': None, 'g': 0.010},
+    {'id': 'P003', 'birth': '1950-07-04', 'sex': 'm', 'pension': 24_000, 'n': 20,   'g': 0.025},
+    {'id': 'P004', 'birth': '1962-01-30', 'sex': 'f', 'pension':  9_600, 'n': None, 'g': 0.000},
+    {'id': 'P005', 'birth': '1957-09-10', 'sex': 'm', 'pension': 15_000, 'n': 28,   'g': 0.015},
+]
+
+births   = [p['birth'] for p in portfolio]
+ages_alb = alb(births, VALUATION_DATE)
+for p, age in zip(portfolio, ages_alb):
+    p['age']    = int(age)
+    p['cohort'] = int(p['birth'][:4])
+
+# One LifeTable per unique (sex, cohort) — not one per policy row
+unique_pairs = sorted({(p['sex'], p['cohort']) for p in portfolio})
+tables_by_key = LifeTable(
+    'PER2020_Ind_1o',
+    [s for s, _ in unique_pairs],
+    cohort=[c for _, c in unique_pairs],
+    return_dict=True,
+    interest_rate=0.03,
+)
+
+table_list = [
+    tables_by_key[TableKey('PER2020_Ind_1o', p['sex'], p['cohort'])]
+    for p in portfolio
+]
+ages     = [p['age'] for p in portfolio]
+n_list   = [np.inf if p['n'] is None else p['n'] for p in portfolio]   # batch whole-life
+gr_list  = [GrowthRate(p['g']) if p['g'] else None for p in portfolio]
+benefits = [p['pension'] for p in portfolio]
+
+pv_arr = äx(table_list, ages, n=n_list, m=12, gr=gr_list, benefits=benefits)
+
+for p, pv in zip(portfolio, pv_arr):
+    p['pv'] = round(float(pv), 2)
+
+total_liability = float(pv_arr.sum())
+print(f"Total liability (batch):  {total_liability:>14,.2f}")
+```
+
+:::{important}
+In **scalar** mode, `n=None` means whole-life. In **batch** mode, use `np.inf` for
+whole-life entries — `None` in an `n` array is interpreted as invalid.
+See {doc}`user_guide/batch_calculations` for per-policy parameters, `on_error='nan'`,
+and aggregate cash-flow patterns.
+:::
+
+
+(net-premium)=
+## 14. Net annual premium (equivalence principle)
+
+Under the equivalence principle, the net level annual premium for a unit benefit is the
+ratio of the insurance APV to the premium annuity-due APV:
+
+$$P = \frac{A_{x:\overline{n}|}}{\ddot{a}_{x:\overline{n}|}}$$
+
+Complements recipe 1 (term insurance `Ax`); adjust `x`, `n`, and `interest_rate` as needed.
+
+```python
+from lactuca import LifeTable
+
+lt = LifeTable('PASEM2020_NoRel_1o', 'm', interest_rate=0.03)
+
+x, n = 45, 20
+benefit_pv  = lt.Ax(x=x, n=n)
+premium_ann = lt.äx(x=x, n=n)
+net_premium = benefit_pv / premium_ann
+
+print(f"Benefit APV  A^1_{x}:{n} = {benefit_pv:.6f}")
+print(f"Premium APV  a_dd_{x}:{n} = {premium_ann:.4f}")
+print(f"Net annual premium P      = {net_premium:.6f}")
+```
+
+(deferred-pension)=
+## 15. Deferred pension to retirement age
+
+Value an annual pension of EUR 24 000 starting at age 65 for a member currently aged 52.
+Pass the deferment in years as `d=` — payments begin at age `x + d`:
+
+$$\ddot{a}_{x:\overline{n}|}^{(m)} \text{ with deferment } d \quad\Rightarrow\quad {}_d|\ddot{a}_x^{(m)}$$
+
+```python
+from lactuca import LifeTable
+
+lt = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
+
+current_age    = 52
+retirement_age = 65
+defer_years    = retirement_age - current_age
+
+unit_annuity = lt.äx(x=current_age, d=defer_years, m=12)
+annual_pension = 24_000
+liability = annual_pension * unit_annuity
+
+print(f"Unit deferred annuity (m=12) = {unit_annuity:.4f}")
+print(f"Deferred pension PV          = EUR {liability:,.2f}")
+```
+
+:::{note}
+`d=` is **future** deferment before the first payment. For valuation *after* issue,
+use `ts=` instead (see {ref}`recipe 16 <prospective-reserve>` and {doc}`user_guide/deferment`).
+Benefit is **annual**; `äx(..., m=12)` uses standard IAA notation (one unit per year
+in 12 instalments) — scale by the annual amount directly.
+:::
+
+(prospective-reserve)=
+## 16. Prospective reserve at policy anniversaries
+
+The prospective reserve at elapsed time $t$ is future benefits minus future net premiums,
+both evaluated from attained age $x + t$. In Lactuca, pass the issue age `x`, full term `n`,
+and elapsed years `ts=t`:
+
+$${}_t V_x = A_{x+t:\overline{n-t}|} - P \cdot \ddot{a}_{x+t:\overline{n-t}|}$$
+
+```python
+from lactuca import LifeTable
+
+lt = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
+
+x, n = 40, 25
+
+# Net level premium at issue (ts = 0)
+P = lt.Ax(x, n=n) / lt.äx(x, n=n)
+print(f"Net level premium P = {P:.6f}")
+
+# Prospective reserve at selected anniversaries
+print(f"\n{'t':>4}  {'A(x+t)':>12}  {'a_dd(x+t)':>12}  {'tV':>12}")
+for t in (0, 5, 10, 15, 20, 25):
+    At = lt.Ax(x, n=n, ts=t)
+    at = lt.äx(x, n=n, ts=t)
+    tV = At - P * at
+    print(f"{t:>4}  {At:>12.6f}  {at:>12.6f}  {tV:>12.6f}")
+```
+
+:::{note}
+At `ts=0` the reserve is zero by construction (equivalence principle). At `ts=n` both
+benefit and premium APVs are zero, so ${}_n V_x = 0`. See {doc}`user_guide/prospective_reserve`
+for fractional `ts`, interaction with `d=`, and joint-life products.
+:::
+
+
 ## See also
 
 - {doc}`user_guide/using_tables` — vectorized construction, cohort setter, bulk portfolios
@@ -404,4 +604,6 @@ and is significantly faster than `iterrows` for large DataFrames.
 - {doc}`user_guide/building_tables` — create custom `.ltk` files with `TableBuilder`
 - {doc}`user_guide/interest_rates_guide` — `InterestRate` construction and scenarios
 - {doc}`user_guide/joint_life_calculations` — joint-life annuities, insurances, and derivable formulas
+- {doc}`user_guide/deferment` — deferred benefits (`d=`) and distinction from `ts`
+- {doc}`user_guide/prospective_reserve` — fractional `ts`, growth with reserves, joint-life
 - {doc}`user_guide/irregular_cashflows` — arbitrary cashflow timing
