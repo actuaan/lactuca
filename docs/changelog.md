@@ -1,8 +1,79 @@
 ## [Unreleased]
 
+### ♻️ Refactoring
+
+- **helpers**: Dedupe n-life batch helpers and harden IR/GR paths
+
+- **ir**: Harden wheel typing and dedupe annuity batch entry
+
+
+### ✅ Testing
+
+- **tests**: Cover I-M1 machine resolution and CLI sync paths
+
+- **tests**: Cover active_scenario resolution for ir/gr
+
+
+### ✨ Features
+
+- **batch**: Map None to np.inf in per-policy n vectors
+
+- **batch**: Map missing n in Pandas/Polars Series to whole-life
+
+
+### 🐛 Bug Fixes
+
+- **_activation**: Resolve device machine_id by fingerprint (I-M1)
+
+- **build**: Point PyPI Repository URL to public actuaan/lactuca
+
+- **validators**: Harden range guards and gr arithmetic boundary
+
+
+### 📚 Documentation
+
+- **docs**: Close K2-Keygen N>1 and MPE live run 27898713330
+
+- **docs**: Close K2-Keygen trial via B3 and add ops guide §12.6
+
+- **docs**: Mark K5 Vercel and T3 trial webhook ops complete
+
+- **docs**: Sync IMPL MPE header to rev 19 (K5/T3)
+
+- **docs**: Update T-02 runbook for serial E2E and LAC-1014 retries
+
+- **docs**: Close 9.D-9 combination_mode plan rev 4.2
+
+- **docs**: Archive MPE and sync CI/CD plan to v0.0.30-test
+
+- **docs**: Close F.8, 9.H Gate #29 and update licensing plan
+
+- **readme**: Enrich PyPI landing with license notice and table params
+
+- **docs**: Add pre-Fase 10 chain §9.R and post-prod §10.4
+
+- **docs**: Document active_scenario call-time semantics for ir/gr
+
+- **docs**: Expand cookbook with 16 verified actuarial recipes
+
+
+### 🔧 CI/CD
+
+- **ci**: Serialize E2E license matrix and retry LAC-1014 setup
+
+- **sync-public**: Re-enable push trigger and fix versions.json URLs
+
+
+## [0.0.31-test] - 2026-06-21
+
 ### 🐛 Bug Fixes
 
 - **tests**: Isolate MPE CLI smoke from wheel_test license env
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.31 [test release]
 
 
 ## [0.0.30-test] - 2026-06-21
