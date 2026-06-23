@@ -495,6 +495,11 @@ rates is more efficient than creating separate instances.
 :::{note}
 To price policies with **different payment schedules**, use the per-product grouping pattern
 in the next section — `cashflow_times` is shared by all policies in a single call.
+
+In `discrete_precision`, a **shared** irregular `cashflow_times` grid is vectorised in
+batch for single-life (`ax`, `Ax`) and multi-life (`axy`, `axyz`, `ajoint`, `Axy`,
+`Axyz`, `Afirst`) — see {doc}`irregular_cashflows` for performance notes.  Annuity-due
+methods (`äx`, `äxy`, `äxyz`, `äjoint`) do not accept `cashflow_times`.
 :::
 
 ### Custom payment schedules: per-product grouping

@@ -278,6 +278,12 @@ Pure endowment methods (`nExy`, `nExyz`, `nEjoint`) accept only `n` (required), 
 All joint-life methods support batch mode: pass arrays for **every** life's ages
 simultaneously.  Results are `NDArray[float64]` of the same length.
 
+With `calculation_mode='discrete_precision'`, you may pass a shared `cashflow_times` grid
+to immediate annuities (`axy`, `axyz`, `ajoint`) and first-death insurance (`Axy`, `Axyz`,
+`Afirst`) in batch — the schedule is vectorised across all policies.  See
+{doc}`irregular_cashflows` and {doc}`batch_calculations` for constraints (shared grid,
+grouping by product when schedules differ).
+
 ### Two-life batch
 
 ```python

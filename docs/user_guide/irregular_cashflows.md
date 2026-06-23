@@ -202,7 +202,16 @@ See {doc}`inspecting_cashflows` for the full key reference.
 ## Performance notes
 
 For very long benefit schedules (e.g., 1 200 monthly payments), the engine is vectorised
-over the full `cashflow_times` array using NumPy — no Python loop is executed.
+over the full `cashflow_times` array using NumPy — no Python loop is executed.  This
+applies to **single-life** batch (`ax`, `Ax`, …) as well as scalar calls whenever
+`calculation_mode='discrete_precision'`.
+
+In **multi-life** batch with `calculation_mode='discrete_precision'`, the same
+vectorisation applies to products that accept `cashflow_times` (`axy`, `axyz`,
+`ajoint`, `Axy`, `Axyz`, `Afirst`): one shared schedule is priced for *N* policies
+in a single vectorised kernel, not *N* serial scalar calls.  Other calculation modes
+still loop policy-by-policy.  Per-policy **different** schedules are not supported in
+one call — group by product type as in {doc}`batch_calculations`.
 
 ## Custom per-payment amounts on a uniform schedule
 
