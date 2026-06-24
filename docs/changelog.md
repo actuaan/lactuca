@@ -2,9 +2,72 @@
 
 ### ♻️ Refactoring
 
+- **batch_infra**: DRY single-life annuity and insurance batch dispatchers
+
+- **batch_infra**: DRY scalar policy commit and remove dead WL param
+
+- **batch_infra**: Unify insurance unknown-mode serial dispatch
+
+- **api**: Tighten entrypoint exports after entrypoints audit
+
+
+### ✅ Testing
+
+- **tests**: Add batch dispatcher golden and path regression harness
+
+
+### ✨ Features
+
+- **scripts**: Add lactuca-source-auditor orchestrator
+
+
+### 🐛 Bug Fixes
+
+- **batch_infra**: Pass payment_timing in insurance serial_ir fallback
+
+- **helpers**: Restore parenthesized multi-except for Cython STRICT
+
+- **api,helpers,tests**: Bool m guard and batch test alignment
+
+- **src**: Close audit docstring hygiene and bool m guards
+
+
+### 📚 Documentation
+
+- **batch_infra**: Close DRY single-life batch epic documentation
+
+- **helpers**: Align _process_validated_array Returns docstring
+
+- **ci**: Sync plan with v0.0.31-test post-tag state
+
+- **audit**: Record lactuca-source-auditor sweep 2026-06-24
+
+- **audit**: Record entrypoints session 2 in audit artifacts
+
+- **ci**: Close §9.R.4 threat model Mode A T1–T10
+
+
+### 🧹 Miscellaneous
+
+- **scripts**: Note test_56 and test_57 in pre-push hook comment
+
+
+## [dry-batch-baseline-v1] - 2026-06-23
+
+### ♻️ Refactoring
+
 - **helpers**: Dedupe n-life batch helpers and harden IR/GR paths
 
 - **ir**: Harden wheel typing and dedupe annuity batch entry
+
+- **tables**: Life.py audit — docstrings, dedup, item() paths
+
+- **tables**: Centralize single-life batch return_flows absorption
+
+
+### ⚡ Performance
+
+- **batch**: Add D-2 and D-3 deferred profiling benchmarks
 
 
 ### ✅ Testing
@@ -13,12 +76,24 @@
 
 - **tests**: Cover active_scenario resolution for ir/gr
 
+- **tests**: Add Swiss SOA table validation suite
+
+- **tests**: Align REPO_TABLES count and GrowthRate resolve_gr test
+
+- **batch**: Add T-C6-16..27 parity tests for irregular cashflow_times
+
+- **batch**: Add T-C6-13 chunked parity for n-life fast path
+
 
 ### ✨ Features
 
 - **batch**: Map None to np.inf in per-policy n vectors
 
 - **batch**: Map missing n in Pandas/Polars Series to whole-life
+
+- **data**: Add Swiss SOA Gruppen Renten/Kapital tables
+
+- **batch**: Vectorize cashflow_times in n-life discrete_precision fast path
 
 
 ### 🐛 Bug Fixes
@@ -28,6 +103,16 @@
 - **build**: Point PyPI Repository URL to public actuaan/lactuca
 
 - **validators**: Harden range guards and gr arithmetic boundary
+
+- **tables,helpers**: Align finite whole-life n with vitalicia sentinels
+
+- **helpers**: Unify integer validation and cashflow align guard
+
+- **validators,tests**: Unify actuarial range validation with batch path
+
+- **batch,tables**: Serial IR flows, uniform ts select, and batch DRY
+
+- **helpers**: Batch audit hardening for m, ir, and finiteness
 
 
 ### 📚 Documentation
@@ -56,12 +141,38 @@
 
 - **docs**: Expand cookbook with 16 verified actuarial recipes
 
+- **docs**: Clarify row vs column layout in batch portfolio recipe
+
+- **ci**: Update implementation plan rev 2.115
+
+- **docs**: Sync unreleased changelog entries
+
+- **docs**: Complete 9.A.3b legal delta audit
+
+- **docs**: Catalogue Swiss tables and update Gate #21 plan
+
+- **docs**: Close Gate #21 as Swiss SOA tables only
+
+- **api**: Complete §9.R.2 docstring audit across lactuca
+
+- **docs**: Close Gate #26 and §9.R.2 in CI/CD plan
+
+- **docs**: Document irregular cashflow batch vectorization
+
+- **batch**: Close D-1 in GAP-C6 plan and update batch skills
+
+- **batch**: Record D-2 and D-3 no-go verdicts in GAP-C6 plan
+
+- **batch**: Close D-4..D-6 deferred items in GAP-C6 plan
+
 
 ### 🔧 CI/CD
 
 - **ci**: Serialize E2E license matrix and retry LAC-1014 setup
 
 - **sync-public**: Re-enable push trigger and fix versions.json URLs
+
+- **docs**: Route test doc deploys to latest-test on gh-pages
 
 
 ## [0.0.31-test] - 2026-06-21

@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "lactuca"
-version = "0.0.31"
+version = "0.0.32"
 description = "Professional life actuarial library for Python with compiled performance and international tables"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
