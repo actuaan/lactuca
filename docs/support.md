@@ -32,6 +32,9 @@ Requests are evaluated against the project roadmap.
 For general questions about using Lactuca, open an issue on GitHub with the *question* label.
 Keeping answers in GitHub Issues makes them visible and searchable for the whole community.
 
+For **AI-assisted coding** (Cursor, Copilot, ChatGPT), see the
+{doc}`user_guide/using_ai_assistants` guide and downloadable context files.
+
 ## Commercial and licensing inquiries
 
 For licensing, commercial use, or other business enquiries, contact the maintainer directly:

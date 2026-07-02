@@ -25,9 +25,9 @@ Each instance is uniquely identified at runtime by a {class}`lactuca.TableKey`
 
 | Type | Python class | Decrement columns |
 |---|---|---|
-| Life | `LifeTable` | `qx_m`, `qx_f` |
-| Disability | `DisabilityTable` | `ix_m`, `ix_f` |
-| Exit | `ExitTable` | `ox_m`, `ox_f` |
+| Life | `LifeTable` | `qx_m`, `qx_f` (or `qx_u` when sex-independent) |
+| Disability | `DisabilityTable` | `ix_m`, `ix_f` (or `ix_u` when sex-independent) |
+| Exit | `ExitTable` | `ox_m`, `ox_f` (or `ox_u` when sex-independent) |
 
 :::
 
@@ -53,7 +53,8 @@ that vary by duration since underwriting — a concept that only exists in selec
 ## Aggregate – Static
 
 **Columns**: `qx_m`, `qx_f` / `ix_m`, `ix_f` / `ox_m`, `ox_f` (raw annual decrement rates,
-where `m` = male and `f` = female).  No improvement factors.
+where `m` = male and `f` = female; sex-independent tables use a single `qx_u` / `ix_u` /
+`ox_u` column instead).  No improvement factors.
 
 The decrement vector is loaded as-is from the `.ltk` file.  No `cohort` parameter is accepted.
 
@@ -121,8 +122,10 @@ ex = ExitTable("DummyEXIT_Gen", "m", cohort=1970)
 Improvement factors are provided as an annual grid: columns `mi_m_YYYY`, `mi_f_YYYY`
 (`YYYY` ∈ [1900, 2200]).  Three projection formulas are available
 (`exponential_improvement`, `linear_improvement`, `discrete_improvement`).  For each age
-$x$ the calendar year $t = \text{cohort} + x$ is mapped to the nearest available grid
-column (years outside the grid are clamped to its boundary).
+$x$ the calendar year $t = \text{cohort} + x$ is clamped to the grid bounds, then
+mapped via ceiling lookup to the smallest grid year $\geq t$ (see {doc}`mortality_improvement` §
+*Constant vs. year-indexed MI factors*).  Years below the first grid year use the first factor;
+years beyond the last use the last factor.
 
 ```python
 from lactuca import LifeTable, DisabilityTable, ExitTable
@@ -185,8 +188,10 @@ mortality.
 force $d$ full years since inception, pass `duration=d` while $d$ is within the select
 period; once the select period is exhausted, pass `duration="ult"`. Statutory reserves
 for recently underwritten lives must use select mortality rates if the table provides
-them; using ultimate rates *before* the select period ends overstates projected
-mortality and understates the reserve, which is non-conservative.
+them. Using ultimate rates before the select period ends:
+
+- **Annuities / pensions:** overstates projected mortality → **understates** the reserve (non-conservative).
+- **Death benefits (term / whole-life insurance):** overstates mortality → **overstates** the reserve (conservative).
 
 ## Select-Ultimate — duration indexing
 
@@ -218,8 +223,9 @@ print(am92_d0.table.start_duration)   # 0
 
 ## Select-Ultimate – Static
 
-**Columns**: `qx_m_s1` … `qx_m_s{k}`, `qx_m_ult` (and female equivalents).  No improvement
-factors.  No `cohort` parameter is accepted.
+**Columns**: `qx_m_s{N}` … `qx_m_s{k}`, `qx_m_ult` (and female equivalents), where
+`N = \text{start_duration}` (typically `1`; `0` for CMI/UK tables such as `AM92_AF92`).
+No improvement factors.  No `cohort` parameter is accepted.
 
 The select period (duration since underwriting) determines which column is used.  Once the
 select period is exhausted ($d \ge \text{select_period} + \text{start_duration}$) the
@@ -354,7 +360,7 @@ For full details — sex coverage, country, and actuarial order — see {doc}`bu
 
 | Category | Life | Disability | Exit |
 |---|---|---|---|
-| **Aggregate – Static** | `PASEM2020_Rel_1o`, `PASEM2020_NoRel_1o`, `PASEM2020_Dec_1o`, `PASEM2020_Dec_2o`, `PASEM2020_Gen_2o`, `PASEM2010`, `GAM71`, `GAM83`, `Dummy_qx0`†, `DummyLIFE_1Sm`†, `DummyLIFE_1Sf`†, `DummyLIFE_Unisex`†‡ | `PEAI2007_IAP_Ind`, `PEAI2007_IAP_Col`, `IASS90`‡, `SS90TOT`‡, `SS90ABS`‡, `DummySD2015`†, `DummySD_Unisex`†‡ | `DummyEXIT`†, `DummyEXIT_Unisex`†‡ |
+| **Aggregate – Static** | `PASEM2020_Rel_1o`, `PASEM2020_NoRel_1o`, `PASEM2020_Dec_1o`, `PASEM2020_Dec_2o`, `PASEM2020_Gen_2o`, `PASEM2010`, `GAM71`, `GAM83`, `GRMF80`, `GRMF95`, `GKMF80`, `GKMF95`, `Dummy_qx0`†, `DummyLIFE_1Sm`†, `DummyLIFE_1Sf`†, `DummyLIFE_Unisex`†‡ | `PEAI2007_IAP_Ind`, `PEAI2007_IAP_Col`, `IASS90`‡, `SS90TOT`‡, `SS90ABS`‡, `DummySD2015`†, `DummySD_Unisex`†‡ | `DummyEXIT`†, `DummyEXIT_Unisex`†‡ |
 | **Aggregate – Gen (a), exponential** | `PER2020_Ind_1o`, `PER2020_Ind_2o`, `PER2020_Col_1o`, `PER2020_Col_2o`, `DAV2004R_Agg_1o` | `DummySD2015Gen`† | `DummyEXIT_Gen`† |
 | **Aggregate – Gen (a), linear** | `DummyLIFE_LinearGen`† | `DummySD_LinearGen`† | `DummyEXIT_LinearGen`† |
 | **Aggregate – Gen (a), discrete** | `GAM94_AA`, `DummyLIFE_DiscreteGen`† | `DummySD_DiscreteGen`† | `DummyEXIT_DiscreteGen`† |

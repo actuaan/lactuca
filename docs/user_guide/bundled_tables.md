@@ -41,7 +41,7 @@ construction time.
 ```python
 from lactuca.tables.data import Tables
 
-# Install all bundled tables to the default directory (Config.tables_path)
+# Install all bundled tables to the default directory (config.tables_path)
 Tables.install()
 
 # Install a single table by its Python variable name
@@ -50,8 +50,9 @@ Tables.install("PER2020_Ind_1o")
 # Install multiple tables at once (list or tuple)
 Tables.install(["PER2020_Ind_1o", "PASEM2020_Rel_1o", "DAV2004R_Agg_2o"])
 
-# Install to a custom directory for this call only (overrides Config.tables_path)
-Tables.install(tables_path="/srv/actuarial/tables")
+# Install to a subdirectory under config.tables_path for this call only
+# (paths outside config.tables_path raise ValueError — set config.tables_path first to relocate)
+Tables.install(tables_path="actuarial_tables/archive")
 
 # Overwrite existing .ltk files (default: overwrite=False, skips existing)
 Tables.install("PER2020_Ind_1o", overwrite=True)
@@ -74,16 +75,16 @@ available = Tables.list_available()
 print(available[:3])   # ['PER2020_Col_2o.ltk', 'PER2020_Col_1o.ltk', 'PER2020_Ind_2o.ltk']
                        # order reflects internal registration order; may vary across releases
 
-# List .ltk filenames not yet present in Config.tables_path
+# List .ltk filenames not yet present in config.tables_path
 missing = Tables.list_missing()
 print(missing)         # [] when all tables are installed, or e.g. ['IASS90.ltk']
 
-# Check against a specific directory instead of the configured default
-missing_custom = Tables.list_missing(tables_path="/srv/actuarial/tables")
+# Check a subdirectory (same path rules as install)
+missing_custom = Tables.list_missing(tables_path="actuarial_tables/archive")
 
 # Install only the missing tables — safe to call repeatedly (idempotent)
-result = Tables.install_missing()      # dict[str, bool] — only newly installed tables appear
-print(result)          # {'IASS90.ltk': True}  — {} when all tables were already present
+result = Tables.install_missing()      # dict[str, bool] — True if installed, False if skipped
+print(result)          # {'IASS90.ltk': True} when one table was missing; all False when none were
 ```
 
 ### Accessing a single table entry
@@ -95,12 +96,12 @@ from lactuca.tables.data import Tables
 entry = Tables.get("PASEM2020_Rel_1o")
 if entry is not None:
     print(entry.varname)               # 'PASEM2020_Rel_1o'  (also the .ltk file stem)
-    print(entry.payload["table_name"]) # 'PASEM 2020 Relativo 1er orden'
+    print(entry.payload["table_name"]) # 'PASEM2020_Rel_1er.orden'
     entry.install()                    # install this table individually
 ```
 
 The default install directory is `actuarial_tables/` at the project root, controlled by
-`Config.tables_path`.  Each table is saved under its Python variable name; for example,
+`config.tables_path`.  Each table is saved under its Python variable name; for example,
 `PER2020_Ind_1o` is saved as `PER2020_Ind_1o.ltk`.
 
 | Parameter | Type | Default | Description |
@@ -109,7 +110,8 @@ The default install directory is `actuarial_tables/` at the project root, contro
 | `filename` | `str` or `None` | `None` | Override the on-disk filename for single-table installs (ignored for batch) |
 | `tables_path` | `str` or `None` | `None` | Override install directory for this call |
 | `overwrite` | `bool` | `False` | Replace existing `.ltk` files |
-| `strict` | `bool` | `True` | Raise on validation errors; `False` emits warnings |
+| `strict` | `bool` | `True` | Raise on builder/validation errors; `False` continues on errors and records `False` in the results dict (no guaranteed warning) |
+| `continue_on_normalization_error` | `bool` | `False` | Batch / `install_missing` only: when `True`, record name-resolution failures and continue; scalar `Tables.install("name")` always raises on unresolved names |
 
 See {doc}`configuration` for how to change the default install path.
 
@@ -138,7 +140,7 @@ Column guide:
 - **Country** — origin country or publishing organisation.
 - **Type** — taxonomy code (see {doc}`tables_taxonomy`): combines the class
   (`life` / `disability` / `exit`) with the temporal–structure cell
-  (`agg–static`, `agg–gen-a`, `agg–gen-b`, `agg–gen-c`, `sel–static`, `sel–gen-a`, `sel–gen-b`).
+  (`agg–static`, `agg–gen-a`, `agg–gen-b`, `agg–gen-c`, `sel–static`, `sel–gen-a`, `sel–gen-b`, `sel–gen-c`, `sel–gen-d`).
 - **Order** — actuarial loading: `1st` = prudential (pricing/reserves); `2nd` = best-estimate;
   `—` = not applicable.
 

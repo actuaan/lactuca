@@ -42,7 +42,7 @@ When $w > 0$ the final period is incomplete and $w$ is used as the scaling weigh
 
 :::{note}
 When a time shift `ts > 0` and deferment `d` are used together, $w$ is computed from the
-**effective** term $n_\text{eff} = n - \max(ts - d,\, 0)$ rather than from raw $n$.
+**effective** term $n_\text{eff} = \max\!\bigl(n - \max(ts - d,\, 0),\, 0\bigr)$ rather than from raw $n$.
 When $ts \le d$ the shift falls entirely within the deferment period and $n_\text{eff} = n$.
 :::
 
@@ -62,15 +62,15 @@ The last quarter covers only $w/m = 0.1$ year out of a full sub-period of $1/m =
 
 For `ax`, `axy`, `axyz`, `ajoint` (annuity-immediate) with $w > 0$:
 
-- The **last payment time** is the exact term endpoint $n_\text{eff} + d$ (where $d$ is
-  the deferment period; for the common case $d = 0$ this is simply $n_\text{eff}$).
+- The **last payment time** is the exact term endpoint $n_\text{eff} + d_\text{eff}$, where $d_\text{eff}=\max(d-ts,\,0)$ is the effective deferment after the time shift (for $ts=0$ or when the shift falls inside the deferment period, this reduces to $n_\text{eff}+d$).
 - The **last payment amount** is scaled by $w$:
 
-$$\text{PV contribution}_{\text{last}} = \frac{w}{m} \cdot {}_{n_\text{eff}}p_x \cdot v^{n_\text{eff}+d} \cdot g(n_\text{eff}+d)$$
+$$\text{PV contribution}_{\text{last}} = \frac{w}{m} \cdot {}_{n_\text{eff}}p_x \cdot v^{n_\text{eff}+d_\text{eff}} \cdot g(n_\text{eff}+d_\text{eff})$$
 
-where $g(\cdot)$ is the growth factor and ${}_{n_\text{eff}}p_x$ is the survival probability
+where $g(\cdot)$ is the growth factor, ${}_{n_\text{eff}}p_x$ is the survival probability
 from the shifted age to $n_\text{eff}$ (for multi-life methods `axy`, `axyz`, `ajoint`,
-this is the joint survival probability of all lives).
+this is the joint survival probability of all lives), and $d_\text{eff}=\max(d-ts,\,0)$;
+see {doc}`prospective_reserve`.
 
 This is exposed in the `payment_adjustment` array returned by `return_flows=True`
 (see {doc}`inspecting_cashflows`): all elements are 1.0 except the last, which equals $w$.
@@ -105,15 +105,18 @@ fractional adjustment is **not applied** — the programmer controls each paymen
 and amount directly.  See {doc}`irregular_cashflows` for details.
 
 :::{note}
-`äjoint` does not accept `cashflow_times` (annuity-due with multiple lives uses the
-standard grid only).  For irregular schedules with multiple lives use `ajoint`, `axy`,
-`axyz`, or `ax` with explicit `cashflow_times`.
+Annuity-due methods (`äx`, `äxy`, `äxyz`, `äjoint`) do **not** accept
+`cashflow_times` — they always use the standard `n`/`m` grid.  For irregular
+schedules with multiple lives use the immediate counterparts (`ax`, `axy`, `axyz`,
+`ajoint`) with explicit `cashflow_times` / `cashflow_amounts`.
 :::
 
 ## See also
 
 - {doc}`inspecting_cashflows` — `payment_adjustment` and `death_probability_adjustment` arrays
-- {doc}`calculation_modes` — `discrete_precision` is the only mode that applies this adjustment
+- {doc}`calculation_modes` — `discrete_precision` applies `payments_frac` scaling on
+  the uniform grid; `discrete_simplified` values fractional `n_eff` via an exact
+  m-thly tail (not Woolhouse on the last period)
 - {doc}`irregular_cashflows` — arbitrary cashflow timing
 - {doc}`configuration` — `force_integer_ts` and other calculation settings
 - {doc}`notation_glossary` — $\ddot{a}$, $a$, $m$, $n$ symbol definitions

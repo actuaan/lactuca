@@ -182,7 +182,7 @@ mathjax3_config = {
             "Rx": ["R_{#1}", 1],
             # Life expectancy
             "ex": ["\\mathring{e}_{#1}", 1],  # Complete life expectancy
-            "edotx": ["\\ddot{e}_{#1}", 1],  # Curtate life expectancy
+            "edotx": ["\\ddot{e}_{#1}", 1],  # Misnamed — do not use for curtate e_x; use literal $e_x$
             # Interest and discount factors
             "vx": ["v^{#1}", 1],  # Discount factor
             "vn": ["v^{#1}", 1],  # n-year discount

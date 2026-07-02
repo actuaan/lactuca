@@ -10,6 +10,16 @@ This guide covers all aspects of using Lactuca for actuarial calculations in Pyt
 getting_started
 ```
 
+## Working with AI assistants
+
+Use Lactuca with Cursor, Copilot, ChatGPT, and other assistants — context files and workflows.
+
+```{toctree}
+:maxdepth: 2
+
+using_ai_assistants
+```
+
 ## Foundations
 
 ```{toctree}

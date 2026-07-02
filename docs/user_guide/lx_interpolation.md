@@ -32,6 +32,12 @@ $$
 l_{x+s} = l_x \cdot \left(\frac{l_{x+1}}{l_x}\right)^s = l_x \cdot p_x^s
 $$
 
+**Survival probability** under constant force:
+
+$$
+{}_s p_x = p_x^s
+$$
+
 Equivalent to assuming $\mu_{x+s} = -\ln p_x$ constant throughout $[x, x+1)$.
 
 ## Configuration in Lactuca
@@ -154,17 +160,25 @@ situations:
 3. **`continuous_precision` mode** — the integration grid is always dense with fractional
    time points, so fractional-age lx evaluation is structurally unavoidable.
 
-Two modes structurally avoid fractional lx evaluation when the starting age is integer,
-regardless of `m`:
+Two modes avoid fractional lx evaluation on their main path when the starting age and
+effective term are both integers (no hybrid tail):
 
-- **`discrete_simplified`** — the Woolhouse approximation resolves sub-annual payments
+- **`discrete_simplified` endowments** — evaluate ${}_n p_x$ with a year-wise UDD
+  construction on integer $q_x$; they do **not** read `config.lx_interpolation`
+  (unlike `discrete_precision` endowments and survival grids).
+- **`discrete_simplified` annuities** — the Woolhouse approximation resolves sub-annual payments
   algebraically from two annual-step annuities, without ever requesting $l_x$ at a
-  sub-annual grid point.
+  sub-annual grid point when $n_\text{eff}$ is an integer.
 - **`continuous_simplified`** — ignores `m` internally and operates on annual-step
-  annuities (due and immediate), so with integer starting age only integer-age $l_x$
-  values are ever evaluated.
+  annuities (due and immediate), so with integer starting age and integer term $n$,
+  only integer-age $l_x$ values are evaluated on the annual due/immediate path.
 
-In both cases, `config.lx_interpolation` has no effect when the starting age is integer.
+In both cases, `config.lx_interpolation` has no effect when the starting age is integer
+and the effective term `n` is also an integer (no fractional tail). When $n_\text{eff}$
+is fractional, `discrete_simplified` evaluates the hybrid $k+s$ m-thly tail via
+`discrete_precision` conventions (fractional sub-annual ages), and `continuous_simplified`
+evaluates the terminal trapezoid over $[k, n]$ using fractional-duration survival —
+both honor `config.lx_interpolation` even for integer starting age.
 
 ## Numerical comparison: UDD vs CFM
 
@@ -200,8 +214,12 @@ for x in ages:
         diff  = a_cfm - a_udd
         print(f"{x:>4}  {m:>4}  {a_udd:>14.6f}  {a_cfm:>14.6f}  {diff:>+10.6f}")
 
-config.reset()
+config.reset_to_defaults()
 ```
+
+:::{note}
+Printed values depend on table build, interest rate, and installed version; the listing is illustrative.
+:::
 
 **Key observations:**
 
@@ -216,9 +234,28 @@ config.reset()
   higher frequencies: geometric interpolation is concave, placing fewer expected
   survivors at sub-annual checkpoints than the uniform distribution assumed by UDD.
 
-For **regulatory or pricing use**, the difference is negligible for $m \le 12$.
-For **continuous modes** (`continuous_precision`) the distinction matters more; see
+For typical production ages and standard tables, the UDD vs CFM gap at $m \le 12$ is usually
+small; validate against your tolerance when CFM consistency or continuous modes matter.
+For **continuous modes** (especially `continuous_precision`) the distinction matters more; see
 {doc}`calculation_modes`.
+
+## Integer commutations vs fractional survival
+
+`config.lx_interpolation` controls **fractional-age** survival (`px`, `tpx`, `qx` at
+non-integer ages) and sub-annual grids in `discrete_precision` / continuous integration.
+It does **not** change the closed-form **integer-age** commutation block:
+
+| Method | Formula at integer $x$ | Uses `lx_interpolation`? |
+|--------|------------------------|---------------------------|
+| `Lx(x)` | $L_x = l_x(1 - q_x/2)$ (UDD person-years) | **No** |
+| `Tx(x)` | $T_x = \sum_k L_k$ | **No** |
+| `ex(x)` | $\mathring{e}_x = T_x / l_x$ | **No** |
+
+With `lx_interpolation = "exponential"` (CFM), `px(65.5)` and `tpx` at fractional $t$
+follow CFM, while `Lx(65)`, `Tx(65)`, and `ex(65)` remain on the UDD integer
+commutation path above.  For a fully CFM-consistent analysis at all ages, use
+fractional APIs (`Lx_continuous`, `Tx_continuous`, `ex_continuous`) or engine modes
+that integrate $l_t$ at sub-annual nodes.  See {ref}`ex-fractional` in {doc}`commutation_functions`.
 
 ## See also
 

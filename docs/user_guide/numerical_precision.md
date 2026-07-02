@@ -48,8 +48,8 @@ at any single step is negligible, but it compounds measurably over long annuity 
 reaching up to $\omega - x$ steps.
 
 Both `"continuous_precision"` and `"continuous_simplified"` use the full-precision store for
-annuity and insurance calculations.  The sole exception is the **average-force endowment
-approximation** in `"continuous_simplified"` mode.  This method evaluates the pure endowment as
+annuity, insurance, and pure-endowment calculations.  In `"continuous_simplified"` mode the
+average-force endowment evaluates
 
 $${}_{n}E_x = \exp\!\left[-n\!\left(\bar{\delta} + \bar{\mu}_{x:\overline{n}|}\right)\right]$$
 
@@ -57,14 +57,11 @@ where the combined force is constructed from two average-force components:
 
 - $\bar{\delta} = \delta$ — the constant force of interest (exact, from the interest rate).
 - $\bar{\mu}_{x:\overline{n}|} = -\dfrac{\ln {}_{n}p_x}{n}$ — the average force of mortality
-  over $[x,\, x+n]$, derived from the public (rounded) value of ${}_{n}p_x$.
+  over $[x,\, x+n]$, derived from the **unrounded** internal ${}_{n}p_x$ (same store as
+  continuous annuities and insurances).
 
-Because $\bar{\mu}$ is derived from the **rounded** survivor quotient ${}_{n}p_x = l_{x+n}/l_x$,
-the rounded survivor values flow through this path rather than the full-precision store
-described in the *Dual survivor store* section above.  This is inherent to the approximation
-model, not a precision gap: the average-force endowment is defined in terms of a period
-survival probability, so using the canonical public ${}_{n}p_x$ is both correct and
-numerically stable.
+The period survival underlying $\bar{\mu}$ therefore follows the full-precision survivor
+column, consistent with {doc}`calculation_modes` (`continuous_simplified` endowment row).
 
 ## Log-domain joint-life products
 
@@ -117,7 +114,7 @@ rejected, using only NumPy — no table required:
 ```python
 import numpy as np
 
-# _EPS_INT ≈ 2.22e-12
+# Integer tolerance (same formula as the engine)
 eps_int = max(np.finfo(np.float64).eps * 1e4, 1e-12)   # 2.220446049250313e-12
 
 # --- Accepted as integer ---
@@ -152,9 +149,9 @@ Passing a fractional age raises `ValueError` with a message that names the metho
 the continuous counterpart if one exists:
 
 ```python
-from lactuca import LifeTable, Config
+from lactuca import LifeTable, config
 
-Config.reset()
+config.reset_to_defaults()
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 
 lt.Dx(50.5)
@@ -165,10 +162,10 @@ lt.Dx(50.5)
 The same validation applies to all commutation functions.  Correct usage passes an integer age:
 
 ```python
-from lactuca import LifeTable, Config
+from lactuca import LifeTable, config
 import numpy as np
 
-Config.reset()
+config.reset_to_defaults()
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 
 # Integer age — accepted:
@@ -178,7 +175,7 @@ lt.Mx(50)     # returns M_50 = Σ C_k  for k = 50, …, ω
 
 # Float64 residual from arithmetic — also accepted (within ε_int of 50):
 age = np.float64(50) + np.float64(1e-13)
-lt.Dx(age)    # identical result to lt.Dx(50, ir=0.03)
+lt.Dx(age)    # identical result to lt.Dx(50)
 ```
 
 ### Fractional contract: continuous methods
@@ -188,9 +185,9 @@ ages and raise `ValueError` when an integer is passed, directing the user to the
 counterpart:
 
 ```python
-from lactuca import LifeTable, Config
+from lactuca import LifeTable, config
 
-Config.reset()
+config.reset_to_defaults()
 lt = LifeTable("PASEM2020_Rel_1o", "m")
 
 lt.ex_continuous(50)   # 50 is integer-valued
@@ -205,7 +202,7 @@ is value-based, not type-based:
 ```python
 lt.ex_continuous(50.0)
 # ValueError: [ex_continuous] Requires fractional (non-integer) ages.
-# Got integer age(s): [50.0].
+# Got integer age(s): [50].
 # Use ex() for integer ages instead.
 ```
 
@@ -213,7 +210,10 @@ For each integer age there are two complementary calls — one discrete, one con
 
 ```python
 # Discrete: complete life expectancy at the integer birthday (e.g. exact age 50):
-lt.ex(50)              # ė_50  (discrete UDD approximation)
+lt.ex(50)              # complete e_ring_50  (discrete UDD)
+
+# Curtate (whole-year) expectation at integer ages:
+lt.ex_curtate(50)      # curtate e_50 = sum of tpx terms
 
 # Continuous: complete life expectancy at a fractional age,
 # e.g. six months after the 50th birthday:
@@ -221,9 +221,13 @@ lt.ex_continuous(50.5)           # trapezoidal integration, default m=12
 lt.ex_continuous(50.5, m=52)     # finer grid: 52 sub-intervals per year (weekly)
 ```
 
+All three life-expectancy outputs above are rounded with `config.decimals.ex` (default 15).
+`ex_curtate` sums public `tpx` terms, each rounded per `decimals.tpx` before the final
+`decimals.ex` pass.
+
 The `m` parameter controls the number of integration sub-intervals per year of age.
 The default `m=12` (monthly grid) is sufficient for all standard actuarial valuations.
-Valid values are 1, 2, 3, 4, 6, 12, 52, and 365.
+Valid values match annuity payment frequencies: 1, 2, 3, 4, 6, 12, 14, 24, 26, 52, and 365.
 
 ### Hot-path optimization
 

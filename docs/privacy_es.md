@@ -2,7 +2,7 @@
 
 **Lactuca — Biblioteca de Cálculo Actuarial de Vida para Python**
 
-*Fecha de entrada en vigor: 2026-04-01. Última actualización: 2026-06-19.*
+*Versión 1.0 de la Política de Privacidad. Fecha de entrada en vigor: 02-07-2026. Última actualización: 02-07-2026.*
 *Responsable del tratamiento: Alberto Aragoneses Nebreda, que opera bajo la marca Actuaan.*
 *Contacto: [support@lactuca.io](mailto:support@lactuca.io)*
 
@@ -53,7 +53,7 @@ Software por primera vez, recabamos:
 | Huella digital del hardware (hash) | Prevenir el abuso de la prueba (una prueba por dispositivo) | Keygen.sh (a través del webhook de Vercel) |
 | Dirección IP (inherente al HTTP saliente) | Implícita en la solicitud de red al webhook de prueba | Registros de acceso de Vercel; registros de Keygen.sh |
 
-La **huella digital del hardware** es un hash SHA-256 derivado de los atributos de
+La **huella digital del hardware** es un hash unidireccional derivado de los atributos de
 hardware del dispositivo (dirección MAC, nombre de host, arquitectura de CPU). Los
 valores brutos **nunca se transmiten** —solo se envía y almacena el hash
 irreversible—. La huella digital constituye **datos seudonimizados** en el sentido del
@@ -252,8 +252,7 @@ incluidas:
 
 - Comunicación exclusivamente por HTTPS entre la biblioteca y los servidores de
   licencias
-- Firmas digitales Ed25519 en todos los registros de licencias para evitar
-  manipulaciones
+- Validación resistente a manipulaciones de los registros de licencia almacenados localmente en su dispositivo
 - Hash de la huella digital del hardware antes de la transmisión (los datos de hardware
   brutos nunca abandonan su dispositivo)
 - Claves de la API de licencias almacenadas como variables de entorno, nunca codificadas

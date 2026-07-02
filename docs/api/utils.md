@@ -42,7 +42,7 @@ $(n, m)$ combination, or when building {doc}`../user_guide/irregular_cashflows`.
 {func}`~lactuca.tiered_amounts` maps each payment time to a cashflow amount
 according to a step-up / step-down schedule defined by breakpoints and values.
 It is the recommended way to build piecewise-constant benefit schedules for use
-with {func}`~lactuca.LifeTable.ax`.
+with {meth}`~lactuca.LifeTable.ax`.
 
 ```{seealso}
 {doc}`../user_guide/irregular_cashflows` — Step-up pension example and further use cases.

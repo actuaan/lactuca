@@ -4,10 +4,11 @@ This page documents the anniversary-based growth convention used throughout Lact
 for all actuarial functions that accept a `gr` (growth rate) parameter:
 
 - Single-life: `äx`, `ax`, `Ax`
-- Named joint-life shortcuts (2 and 3 lives): `äxy`, `axy`, `äxyz`, `axyz`, `Axy`, `Axyz`
+- Joint-life annuities (2 and 3 lives): `äxy`, `axy`, `äxyz`, `axyz`
+- First-death insurances (2 and 3 lives): `Axy`, `Axyz`
 - Generic N-life variants: `äjoint`, `ajoint`, `Afirst`
 
-Pure endowments (`nEx`, `nExy`, `nExyz`) do **not** accept `gr=`.
+Pure endowments (`nEx`, `nExy`, `nExyz`, `nEjoint`) do **not** accept `gr=`.
 
 
 :::{warning}
@@ -75,10 +76,10 @@ time. The growth factor applied at time $t$ with deferment $d$ is
 $F(\lfloor t - d \rfloor)$: growth steps at each full-year anniversary of the
 payment stream, regardless of payment density.
 
-`continuous_simplified` uses an integer-grid approximation. Both modes apply the
-same anniversary convention when $d = 0$ (the most common case). For $d > 0$,
-the fractional terminal period in `continuous_simplified` uses $\lfloor t \rfloor$
-rather than $\lfloor t - d \rfloor$.
+`continuous_simplified` uses an integer-grid approximation (annual due/immediate
+components plus a two-point trapezoidal tail). Both continuous modes apply the
+same anniversary index $\lfloor t - d \rfloor$ when growth is active, including
+the fractional tail in `continuous_simplified`.
 
 ## Net effective interest rate
 
@@ -174,10 +175,10 @@ print(round(val, 4))
 ## Policy on fractional `ts`
 
 The `UserWarning` emitted on fractional `ts` fires **only when a `GrowthRate` is
-active** (`gr != None`). Without a growth rate, fractional `ts` is silently accepted
-regardless of `config.force_integer_ts`. This distinction is growth-specific: the
-warning is meaningful only for escalating-benefit schedules where whole-year
-anniversary indices matter.
+active** (`gr != None`). That warning is growth-specific: it flags non-integer
+anniversary indices on escalating-benefit schedules. It does **not** override
+`config.force_integer_ts`, which still enforces integer `ts` on annuity and insurance
+methods (`ValueError` when `force_integer_ts=True`, even with `gr=None`).
 
 For the full `force_integer_ts` reference — including the behaviour table and
 interaction with `d` — see {doc}`prospective_reserve`.

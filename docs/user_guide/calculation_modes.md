@@ -48,11 +48,11 @@ Each mode makes two independent decisions:
 1. **Computation method** — exact payment-grid sum, Woolhouse/UDD interpolation from annual
    values, or numerical integration.
 2. **Mortality table precision** — whether survival probabilities are derived from the
-   *rounded* $l_x$ values stored in the published table, or from the *unrounded*
-   floating-point $l_x$ values retained internally during table construction. Rounding is
+   *rounded* $l_x$ values in the published table column, or from full float64-precision
+   $l_x$ used by continuous modes (higher precision than the published column). Rounding is
    configured via `config.decimals.lx` (default 15 decimal places). Discrete modes use
    rounded values — consistent with classical commutation-function practice. Continuous modes
-   bypass rounding for higher precision in integration.
+   use the higher-precision path for integration.
 
 ## Mode comparison
 
@@ -61,7 +61,7 @@ Each mode makes two independent decisions:
 | `discrete_precision` | Exact payment-grid summation | Rounded | Production (default) |
 | `discrete_simplified` | Woolhouse interpolation from annual values | Rounded | Fast estimates, $m>1$ |
 | `continuous_precision` | Trapezoidal numerical integration | Unrounded | Highest accuracy |
-| `continuous_simplified` | Annual calculations + fractional interpolation | Unrounded | Continuous approximation |
+| `continuous_simplified` | Annual calculations + fractional interpolation | Unrounded (all products, including endowment ${}_np_x$ for average-force) | Continuous approximation |
 
 ## Mode descriptions
 
@@ -98,13 +98,16 @@ Here ${}_{j/m}p_x$ and ${}_{1/m}q_{x+j/m}$ follow `lx_interpolation`; $\delta_m$
 
 $${}_{n}E_x = v^n \cdot {}_np_x$$
 
-Because this mode constructs the exact payment timing grid, it is the **only** one that
-handles **fractional final payments** — applicable to both annuities and insurances. When
-$n$ is not an exact multiple of $1/m$: for annuities the last payment amount is
-proportionally reduced; for insurances both the death probability of the last sub-annual
-period and the benefit timing offset are scaled by the fractional weight. See
-{doc}`last_payment_adjustment` for details. `discrete_simplified` and the continuous modes
-do not apply this adjustment.
+Because this mode constructs the exact payment timing grid, it is the reference for
+**fractional final payments** on the full term — applicable to both annuities and
+insurances. When $n$ is not an exact multiple of $1/m$: for annuities the last payment
+amount is proportionally reduced; for insurances both the death probability of the last
+sub-annual period and the benefit timing offset are scaled by the fractional weight. See
+{doc}`last_payment_adjustment` for details. **`continuous_precision`** and
+**`continuous_simplified`** do not apply this discrete m-thly tail adjustment.
+**`discrete_simplified`** uses Woolhouse on the integer-year portion; when the effective
+term is fractional ($k + s$ hybrid), only the **$s$-year m-thly tail** is evaluated with
+`discrete_precision` conventions (including proportional last-payment scaling).
 
 :::{note}
 Commutation function formulas such as $\ddot{a}_x = N_x / D_x$ are **not** used internally
@@ -131,6 +134,9 @@ For $m=1$ both formulas reduce to their annual counterpart (no approximation nee
 **Insurances** — linear age interpolation between consecutive annual insurance values:
 
 $$A_x^{(m)} \approx A_x + \frac{m-1}{2m}\bigl(A_{x+1} - A_x\bigr)$$
+
+For term $n$, $A_{x+1}$ means $A^1_{x+1:\overline{n-1}|}$ (shorter remaining term), not
+whole-life $A_{x+1}$.
 
 (Woolhouse applies to **annuities only**; insurances use adjacent-age linear
 interpolation — **not** the textbook $(i/i^{(m)})A_x$ UDD frequency adjustment.)
@@ -184,22 +190,31 @@ $${}_{n}E_x = \exp\!\left(-\int_0^n \bigl[\delta(t) + \mu_{x+t}\bigr]\,\mathrm{d
 
 The integrals are evaluated with the **trapezoidal rule** over a fine uniform grid.
 Default resolution differs by product type: **annuities** use 200 steps per unit of time
-(total steps $= \lceil 200n \rceil$, scaling with term length);
-**insurances** use exactly 1000 integration points;
-**pure endowments** use $\max(1000,\, 50n)$ points — ensuring at least 50 steps per year
-for long-duration contracts (the extra resolution kicks in when $n > 20$ years).
+(total steps $= \max(2,\, \lceil 200n \rceil)$, scaling with term length);
+**insurances** use a fixed default of 1000 integration points on the public LifeTable API
+(not user-configurable from table methods);
+**pure endowments** use $\max(\text{integration\_points},\, \max(\lfloor 50n \rfloor,\, 100))$
+points (default `integration_points=1000`, so effectively $\max(1000,\, 50n)$ for $n \ge 20$ years)
+— ensuring at least 50 steps per year for long-duration contracts.
 All survival probability evaluations use unrounded $l_x$ values, giving the highest precision.
 
 ### `continuous_simplified`
 
 Avoids numerical integration by combining exact annual calculations with actuarial
-interpolation. Like `continuous_precision`, unrounded $l_x$ values are used throughout.
+interpolation. Annuities, insurances, and pure endowments in this mode use unrounded $l_x$
+values (like `continuous_precision`). Endowments apply the average-force shortcut described
+below; the period survival ${}_np_x$ underlying $\bar{\mu}_x$ is also derived from unrounded
+lx, not the rounded public table column.
 
 **Annuities** — for term $n$ with integer part $k = \lfloor n \rfloor$ and fractional part
 $s = n - k$, the implementation applies a composite trapezoidal rule with step 1 for the
 integer portion and a single trapezoidal step of width $s$ for the terminal fractional period:
 
-$$\bar{a}_{x:\overline{n}|} \approx \frac{\ddot{a}_{x:\overline{k}|} + a_{x:\overline{k}|}}{2} + \frac{s}{2}\!\left(v^k\,{}_kp_x + v^n\,{}_np_x\right)$$
+$$\bar{a}_{x:\overline{n}|} \approx \frac{\ddot{a}_{x:\overline{k}|} + a_{x:\overline{k}|}}{2} + \frac{s}{2}\!\left(v^{k+d}\,{}_{k+d}p_x\,G(k) + v^{n+d}\,{}_{n+d}p_x\,G(\lfloor n \rfloor)\right)$$
+
+where $d$ is deferment (years) and $G(j)$ is the benefit growth factor at policy anniversary
+$j$ when `gr` is set ($G(j)=1$ for level benefits). With $d=0$ and no growth, the second
+term reduces to $\frac{s}{2}(v^k\,{}_kp_x + v^n\,{}_np_x)$.
 
 The first term — average of the $m=1$ due and immediate annuities — is the
 composite trapezoidal approximation of $\bar{a}_{x:\overline{k}|}$. The second
@@ -214,11 +229,12 @@ the same order as the standard trapezoidal rule. For higher precision, switch to
 per year) and achieves correspondingly smaller errors.
 :::
 
-**Insurances** — the value is the arithmetic mean of two `continuous_precision`
-evaluations at ages $x$ and $x+1$. Denoting the precision result at age $y$ as
-$\bar{A}_y^{\text{prec}}$, the simplified result is:
+**Insurances** — for term $n > 1$, the value is the arithmetic mean of two
+`continuous_precision` evaluations: one at age $x$ for term $n$, and one at age
+$x+1$ for the shortened term $\max(n-1,\,0)$. When $n \le 1$, only the $n$-term
+`continuous_precision` result is returned (no averaging):
 
-$$\bar{A}_x^{(\text{simp})} = \tfrac{1}{2}\!\left(\bar{A}_x^{\text{prec}} + \bar{A}_{x+1}^{\text{prec}}\right)$$
+$$\bar{A}_{x:\overline{n}|}^{(\text{simp})} = \tfrac{1}{2}\!\left(\bar{A}_{x:\overline{n}|}^{\text{prec}} + \bar{A}_{x+1:\overline{\max(n-1,\,0)}|}^{\text{prec}}\right)$$
 
 This formula applies for all starting ages (integer or fractional).
 
@@ -252,8 +268,12 @@ For a full reference of all configuration settings, see {doc}`configuration`.
 
 ## Payment frequencies
 
-The `m` parameter (payments per year) applies to all four modes and is restricted to these
-values:
+The `m` parameter is accepted by annuity and insurance methods (`äx`, `ax`, `Ax`, and
+joint-life analogues); pure endowments (`nEx`, `nExy`, …) do not take `m`. Invalid
+values raise `ValueError`. Only **`discrete_precision`** and **`discrete_simplified`**
+use `m` in the valuation.
+**`continuous_precision`** and **`continuous_simplified`** ignore `m` internally
+(continuous integration or annual continuous shortcuts). Allowed values:
 
 | `m` | Payments per year |
 |-----|-------------------|
@@ -289,8 +309,8 @@ actuarial language, but they control **different calculation steps**. Changing o
 
 | Setting | Controls | Used in | Does **not** affect |
 |---------|----------|---------|---------------------|
-| `config.lx_interpolation` | Bridging integer-age $l_x$ to fractional ages — UDD (`"linear"`) or constant force (`"exponential"`) | ${}_{j/m}p_x$, ${}_{1/m}q_x$, annuity payment grids, pure endowment ${}_np_x$, continuous-mode integration | Insurance discount offset $\delta_m$; classical identity $1 = d\,\ddot{a}_x + A_x$ |
-| `config.mortality_placement` | Timing of the death **benefit payment** within each sub-annual period ($\delta_m$ in insurance discount) | **Insurances** (`Ax`) only; commutation $C_x$ exponent | Annuities ($\ddot{a}_x$, $a_x$); pure endowments (${}_n E_x$); how ${}_{j/m}p_x$ is computed |
+| `config.lx_interpolation` | Bridging integer-age $l_x$ to fractional ages — UDD (`"linear"`) or constant force (`"exponential"`) | ${}_{j/m}p_x$, ${}_{1/m}q_x$, annuity payment grids, **`discrete_precision` ${}_np_x$**, continuous-mode integration (not `discrete_simplified` endowments — those use UDD on $q_x$ regardless of this setting) | Insurance discount offset $\delta_m$; classical identity $1 = d\,\ddot{a}_x + A_x$ |
+| `config.mortality_placement` | Timing of the death **benefit payment** within each sub-annual period ($\delta_m$ in insurance discount) | **`discrete_precision` / `discrete_simplified` insurances** (`Ax`); commutation $C_x$ exponent (not continuous insurance modes) | Annuities ($\ddot{a}_x$, $a_x$); pure endowments (${}_n E_x$); how ${}_{j/m}p_x$ is computed |
 
 In `discrete_precision` insurance, both settings compose: survival probabilities and
 interval death probabilities come from `lx_interpolation`; the present-value exponent
@@ -301,9 +321,11 @@ adds $\delta_m$ from `mortality_placement`. See {doc}`lx_interpolation` and
 ## Insurance: mortality placement
 
 `config.mortality_placement` controls when within each sub-annual period the death benefit
-is assumed to be paid. It affects **insurances only** — annuities and pure endowments are
-not affected. This setting is **independent** of `config.lx_interpolation` (fractional-age
-survival); see {ref}`two-independent-knobs`.
+is assumed to be paid. It affects **`discrete_precision` and `discrete_simplified`
+insurances** (and commutation $C_x$) — not continuous insurance modes (benefit timing is
+implicit in the $\mu$ integrand), and not annuities or pure endowments. This setting is
+**independent** of `config.lx_interpolation` (fractional-age survival); see
+{ref}`two-independent-knobs`.
 
 | `mortality_placement` | $\delta_m$ | Time offset within period | Convention |
 |-----------------------|------------|--------------------------|------------|
@@ -377,6 +399,8 @@ does not certify compliance with any standard.
 | IFRS 17 fulfilment cash flows (BEL / expected CF component) | Same as BEL | PV machinery only — not measurement model choice (GMM vs PAA), contract boundary, or discounting methodology beyond user inputs |
 | IFRS 17 risk adjustment (RA), CSM, loss component | **Out of scope** | User responsibility outside Lactuca |
 | Solvency II SCR / internal model | **Out of scope** | No stressed scenarios or correlation engine |
+
+Professional responsibility and regulatory limits: {doc}`../eula` §10.2–10.3.
 
 For BEL-style work, `discrete_precision` with $m \leq 12$ is the usual discrete reference
 (see {ref}`actuarial-coherence-of-modes` and **Accuracy comparison** above). Continuous modes

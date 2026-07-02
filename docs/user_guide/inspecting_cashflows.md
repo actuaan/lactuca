@@ -1,9 +1,10 @@
 # Inspecting Cash Flows
 
 The `return_flows=True` parameter causes supported calculation methods to return not just a scalar
-present value but a **full dict of the arrays that produced it**.  This is the primary
-mechanism for regulatory traceability, BEL reconciliation, and debugging complex calculations
-under IFRS 17 and Solvency II.
+present value but a **full dict of the arrays that produced it**.  This supports BEL/FCF
+**building-block** traceability, reconciliation checks, and debugging — not a complete IFRS 17
+GMM (CSM, RA) or Solvency II SCR calculation by itself.  See {ref}`regulatory-reporting-scope`
+and the note in § [Decomposing and verifying a present value](#decomposing-and-verifying-a-present-value) below.
 
 ```python
 from lactuca import LifeTable
@@ -51,6 +52,9 @@ The key `time_grid` exists at **both** levels: in single-policy calls it holds p
 times; in batch calls it holds the union grid across all policies.  Code that processes
 `return_flows=True` dicts can rely on `time_grid` being present regardless of call mode.
 
+For a key-by-key mapping between scalar and batch dicts in `discrete_precision`, see
+{ref}`scalar-batch-discrete-precision-mapping`.
+
 `discrete_simplified` and `continuous_simplified` modes support `return_flows=True` in
 single-policy calls (returning the per-engine diagnostic dict documented below) but raise
 `ValueError` when used in batch mode.
@@ -76,7 +80,7 @@ For $m$ payments per year over $n$ years that is $m \times n$ entries
 
 | Key | Description |
 |-----|-------------|
-| `time_grid` | Payment times $t_j = j/m + d$, $j = 0, 1, \ldots, mn-1$ |
+| `time_grid` | Payment times: due (`äx`, …) $t_j = j/m + d$; immediate (`ax`, …) $t_j = (j+1)/m + d$ — $j = 0, 1, \ldots, mn-1$ |
 | `interest_rate` | Effective annual rates at each $t_j$ (piecewise-term aware) |
 | `discount_factor` | Discount factors $v^{t_j}$ |
 | `survival_probability` | Survival probabilities ${}_{t_j}p_x$ |
@@ -99,7 +103,7 @@ table above ($m \times n$ entries total).
 |-----|-------------|
 | `payment_index` | Integer interval indices $j = 0, 1, \ldots$ |
 | `time_grid` | Policy-year starts for each interval: $t_j = j/m + d$ |
-| `discount_time` | Times at which the benefit is discounted: $t_j +$ `mortality_placement / m` |
+| `discount_time` | Times at which the benefit is discounted: $t_j + \text{offset}/m$, where `offset` is 0, 0.5, or 1 from `config.mortality_placement` (`"beginning"`, `"mid"`, `"end"`) |
 | `interest_rate` | Effective annual rates at `discount_time` |
 | `discount_factor` | Discount factors $v^{\text{discount\_time}}$ |
 | `death_probability_raw` | Raw per-interval death probabilities from the table |
@@ -115,7 +119,9 @@ The total insurance value is `result["present_value"].sum()`.
 (pure-endowment-cash-flow-keys)=
 ## Pure-endowment cash-flow keys
 
-Because a pure endowment has a single payment at time $n$, all dict values are **scalars**:
+Because a pure endowment has a single payment at time $n$, the dict uses scalar
+survival and discount fields plus **single-element arrays** for the maturity
+time grid and cash-flow slots (batch-compatible schema):
 
 | Key | Description |
 |-----|-------------|
@@ -136,6 +142,74 @@ return_flows=True)` always exposes the **maturity** representation above (`time_
 legs may include integration grids over $[0, n]$; the endowment survival leg is still
 reported as a single payment at $t = n$ in the batch-oriented keys — not on the integration
 grid.  See {ref}`continuous-mode-keys` § Endowment.
+:::
+
+(scalar-batch-discrete-precision-mapping)=
+## Scalar–batch key mapping (`discrete_precision`)
+
+Single-policy calls return a **diagnostic** dict (per-payment arrays and actuarial
+components).  Batch calls return a **portfolio** dict with exactly four keys.
+The underlying quantities match; only the key names and aggregation level differ.
+The table below applies when `calculation_mode='discrete_precision'`, benefits are
+level (`gr=None`, no custom `cashflow_amounts`), and insurance uses unit sum insured.
+
+Let $g_j$ be `flows["growth"][j]` (or `flows["amount"][j]` when custom amounts
+are provided).  In batch mode, each policy is weighted by `benefits[i]` when
+`benefits=` is supplied; the scalar formulas are per policy before that scaling.
+
+| Portfolio concept | Batch key | Scalar role |
+|---|---|---|
+| Payment or event times | `time_grid` | `time_grid[j]` — batch holds the **union** grid across policies |
+| Undiscounted expected cash flow | `expected_cf` | Product-specific column below |
+| Discounted contribution | `pv_cf` | Product-specific column below |
+| Total present value | `total_pv` | Sum of the scalar discounted column |
+
+### Annuity (`ax`, `äx`, joint and *n*-life annuity methods)
+
+| Batch aggregate at $t_j$ | Reconstruct from scalar dict |
+|---|---|
+| `expected_cf[j]` | `survival_probability[j] * g_j * payment_adjustment[j] / m` |
+| `pv_cf[j]` | `present_value[j]` |
+| `total_pv` | `present_value.sum()` |
+
+For annuity-due (`äx`, …) with a fractional final period, `payment_adjustment`
+scales the last payment; batch aggregation applies the same convention on the
+merged grid.
+
+### Insurance (`Ax`, `Axy`, …)
+
+| Batch aggregate at $t_j$ | Reconstruct from scalar dict |
+|---|---|
+| `expected_cf[j]` | `death_probability[j] * g_j` |
+| `pv_cf[j]` | `present_value[j]` |
+| `total_pv` | `present_value.sum()` |
+
+Scalar insurance dicts expose `death_probability`, **not** `expected_cf`.  When
+rebuilding a portfolio manually from per-policy scalar calls, stack
+`death_probability` (times per-policy `benefits` if needed).  Discounting uses
+`discount_time` semantics (`time_grid[j] + offset/m` from `config.mortality_placement`),
+already reflected in scalar `present_value[j]`.  See {doc}`batch_calculations`
+§ *When to avoid `benefits=`*.
+
+### Pure endowment (`nEx`, `nExy`, `nExyz`, `nEjoint`)
+
+Scalar `discrete_precision` already uses the same key names as batch (single
+maturity payment):
+
+| Key | Scalar (one policy) | Batch (portfolio) |
+|---|---|---|
+| `time_grid` | `[n]` | Union of maturity times |
+| `expected_cf` | `[{}_n p]` | Sum of survival probabilities at each grid point |
+| `pv_cf` | `[{}_n E]` | Sum of discounted contributions |
+| `total_pv` | `${}_n E$` | `np.sum(pv_cf)` |
+
+For one policy, scalar `nEx(x, …)` and batch `nEx([x], …)` agree exactly
+(float64); batch only reshapes when policies mature at different $n$.
+
+:::{note}
+Batch `return_flows=True` is supported only for `discrete_precision` and
+`continuous_precision`.  Simplified modes return incompatible nested dicts in
+scalar calls; see {ref}`simplified-modes-nested-structure`.
 :::
 
 ---
@@ -271,9 +345,15 @@ config.calculation_mode = "discrete_precision"  # restore
 `"pv_due"` and `"pv_immediate"` are only present when `m > 1`.
 For `m = 1` the method delegates to `discrete_precision` and the returned dict has only
 five keys: `"due"`, `"immediate"`, `"coef_due"` (= 1.0), `"coef_immediate"` (= 0.0),
-and `"interpolated"`. In this case `"due"` and `"immediate"` alias the **same** underlying
-dict — mutations to one will be reflected in the other.
+and `"interpolated"`. The `"due"` and `"immediate"` sub-dicts are **separate**
+`discrete_precision` results (annual due vs annual immediate); for `äx` only the due
+leg contributes because `coef_immediate = 0`.
 :::
+
+When $n_\text{eff}$ is fractional and $m > 1$, the return dict also includes
+``"fractional_tail"`` (m-thly ``discrete_precision`` tail flows over $(k,\,n_\text{eff}]$;
+empty dict when $k = 0$), alongside ``"pv_due"``, ``"pv_immediate"``, and
+``"interpolated"``.
 
 **`continuous_simplified`**:
 
@@ -306,13 +386,14 @@ config.calculation_mode = "discrete_precision"  # restore
 | `"due"` | dict | Annual annuity-due flows over the **integer portion** $k = \lfloor n \rfloor$ (a full `discrete_precision` dict) |
 | `"immediate"` | dict | Annual annuity-immediate flows over $k = \lfloor n \rfloor$ (a full `discrete_precision` dict) |
 | `"interpolated"` | float | Woolhouse PV from annual due/immediate components (integer $k$ years) plus tail PV when $n$ is fractional |
-| `"fractional_tail"` | dict | When $n_\text{eff}$ is fractional and $m>1$: full ``discrete_precision`` flows for m-thly tail $(k,\,n_\text{eff}]$; empty when $k=0$ |
 | `"fractional"` | dict | ``continuous_simplified`` only: two-point trapezoidal tail; empty dict `{}` when $n$ is an integer |
 
 :::{note}
-When `"fractional"` is populated (fractional $n$), its six inner arrays are **Python lists of two
-elements** — not NumPy arrays.  Use `sum(frac["present_value"])` or
-`np.add(*frac["present_value"])` rather than `frac["present_value"].sum()`.
+When `"fractional"` is populated (fractional $n$), five fields (`interest_rate`,
+`discount_factor`, `survival_probability`, `growth`, `present_value`) are **Python lists of
+two elements**; `time_grid` is a **two-element `NDArray[np.float64]`**.  Use
+`sum(frac["present_value"])` or `np.add(*frac["present_value"])` rather than
+`frac["present_value"].sum()`.
 :::
 
 **Insurance (`discrete_simplified`, `m > 1`)**:
@@ -338,10 +419,10 @@ integrations (per-grid arrays are available only from a direct
 When ``n > 1``, the simplified insurance value is the arithmetic mean of two precision
 legs:
 
-- **Ax1** (``"pv_x"``): `continuous_precision` at term ``n`` with
-  ``prob_func_method="Ax1"``.
-- **Ax2** (``"pv_x1"``): `continuous_precision` at term ``max(n - 1, 0)`` with
-  ``prob_func_method="Ax2"``.
+- **First leg** (``"pv_x"``): `continuous_precision` whole-life insurance at the
+  valuation age, term ``n``.
+- **Second leg** (``"pv_x1"``): `continuous_precision` at term ``max(n - 1, 0)``
+  (one-year-shorter duration at age $x+1$ when ``n > 1``).
 
 ```python
 from lactuca import LifeTable, config
@@ -374,13 +455,14 @@ each leg separately.
 
 **Endowment (`discrete_simplified`)**:
 
-Returns the same four-key flat scalar structure as `discrete_precision` — see
+Returns the same six-key flat structure as `discrete_precision` — see
 [Pure-endowment cash-flow keys](#pure-endowment-cash-flow-keys).
 
 **Endowment (`continuous_simplified`)**:
 
 Uses average-force approximation ${}_{n}E_x \approx e^{-n(\bar{\delta} + \sum_i \bar{\mu}_i)}$.
-All values except `"time_grid"` are **scalars**:
+Force-related keys are scalars; maturity cash-flow keys use single-element arrays (as in
+`discrete_precision`).
 
 | Key | Type | Description |
 |-----|------|-------------|
@@ -388,12 +470,13 @@ All values except `"time_grid"` are **scalars**:
 | `"average_interest_force"` | float | $\bar{\delta} = -\ln(v^n)/n$ |
 | `"average_mortality_force"` | float | $\sum_i \bar{\mu}_i = \sum_i(-\ln({}_np_{x_i})/n)$ |
 | `"total_average_force"` | float | $\bar{\delta} + \sum_i \bar{\mu}_i$ |
-| `"expected_cf"` | float | ${}_{n}p_{\text{joint}}$ — joint survival probability at maturity |
-| `"pv_cf"` | float | ${}_{n}E_{\text{joint}}$ — discounted joint survival |
+| `"expected_cf"` | ndarray | Single-element array $[{}_{n}p_{\text{joint}}]$ — approximate joint survival at maturity |
+| `"pv_cf"` | ndarray | Single-element array $[{}_{n}E_{\text{joint}}]$ — discounted joint survival |
 | `"total_pv"` | float | $\exp\!\bigl(-n\cdot(\bar{\delta}+\sum_i \bar{\mu}_i)\bigr)$ |
 
 ---
 
+(decomposing-and-verifying-a-present-value)=
 ## Decomposing and verifying a present value
 
 `return_flows=True` makes it possible to inspect every factor that contributed to a
@@ -419,7 +502,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 x, n, m = 65, 20, 12
 flows = lt.äx(x, n=n, m=m, return_flows=True)
 
-# 240 entries — one per payment (m=12 per year × n=20 years)
+# 240 entries — one per payment (m=12 per year × n=20 years; d=0 due grid)
 t = flows["time_grid"]               # t_j = j/12, j = 0, …, 239
 v_t = flows["discount_factor"]       # v^{t_j}
 tpx = flows["survival_probability"]  # _{t_j}p_x
@@ -446,10 +529,9 @@ model documentation.
 
 | Class | What `summary()` shows |
 |-------|------------------------|
-| `LifeTable` | Table name, sex, ω, active modifications, decimals, sample $q_x$ values |
-| `DecrementTable` | Same header as `LifeTable` plus active decrement columns |
-| `DisabilityTable` | Table name, age range, sample incidence/recovery rates |
-| `ExitTable` | Table name and lapse-rate sample |
+| `LifeTable` | Shared decrement header (table name, sex, taxonomy, cohort/duration, `w`, modification state) plus decimals and sample $q_x$ values |
+| `DisabilityTable` | Same shared header plus decimals and sample $i_x$ values |
+| `ExitTable` | Same shared header plus decimals and sample $o_x$ (exit) values |
 | `InterestRate` | Rate type (constant / piecewise), rate values, scenario name if multi-scenario |
 | `GrowthRate` | Growth type (geometric / arithmetic), rate values |
 | `TableBuilder` | Builder configuration and included tables |

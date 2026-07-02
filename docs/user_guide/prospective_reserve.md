@@ -23,9 +23,9 @@ elapsed since the reference age `x`.  Two equivalent parameterisations are equal
   of the current policy year.
 
 Both produce identical results because the engine only uses $x + ts$ internally.
-It is available on all main life-contingency methods: `äx`, `ax`, `Ax` and their
-joint-life variants (`äxy`, `äxyz`, `Axy`, `Axyz`), as well as the pure endowment
-`nEx`.
+It is available on all main life-contingency methods: `äx`, `ax`, `Ax`, joint-life
+annuities (`äxy`, `äxyz`, `ajoint`, …), first-death insurances (`Axy`, `Axyz`,
+`Afirst`), as well as the pure endowment `nEx`.
 
 `ts` enables **prospective reserve calculations** at any point in the life of a
 contract:
@@ -115,11 +115,12 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 reserve_ann = lt.äx(50, n=15)
 print(reserve_ann)
 
-# Reserve at the 3rd anniversary: ts = 3 advances age to 53, remaining term to 12
+# APV of premium annuity-due from attained age 53 (remaining term 12) — one leg of
+# the prospective reserve formula, not ${}_t V$ by itself (see worked example below)
 reserve_3 = lt.äx(50, n=15, ts=3)
 print(reserve_3)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 **Fractional `ts`** is used when the valuation date falls between two anniversaries.
@@ -143,7 +144,7 @@ print(reserve_off)
 reserve_multi = lt.äx(50, n=10, ts=2.75)
 print(reserve_multi)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ---
@@ -188,7 +189,7 @@ print(reserve_combined)
 reserve_past_d = lt.äx(50, n=20, d=5, ts=6)
 print(reserve_past_d)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -225,9 +226,10 @@ config.decimals.annuities = 4
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 lt.äx(50, n=15, ts=0.5)
 # ValueError: [äx] Parameter 'ts' (shift) must be an integer value (got ts=0.5).
-# To allow fractional shifts, set 'Config.force_integer_ts = False'.
+# To allow fractional shifts, set 'Config.force_integer_ts = False'. Note that GrowthRate
+# schedules use whole-year anniversary indices, consistent with standard actuarial convention.
 
-config.reset()                          # restore defaults after the example above
+config.reset_to_defaults()                          # restore defaults after the example above
 ```
 
 The following table summarises all input combinations:
@@ -241,9 +243,13 @@ The following table summarises all input combinations:
 
 :::{note}
 `force_integer_ts` is enforced by **annuity and insurance** methods (`ax`, `äx`,
-`Ax`, and all joint-life variants). Pure endowment methods (`nEx`, `nExy`, `nExyz`,
-`nEjoint`) currently do not enforce this setting — they accept fractional `ts`
-regardless of its value, because endowments never carry a `GrowthRate`.
+`Ax`, and all joint-life variants) in both scalar and batch mode.
+
+Pure endowment methods (`nEx`, `nExy`, `nExyz`, `nEjoint`) accept fractional `ts` in
+**scalar** calls regardless of `force_integer_ts` (no `GrowthRate` on endowments; the
+endowment dispatcher does not pass `ts_integer` to shift validation). In **batch** mode
+(array `x` or array `ages`), the same `force_integer_ts` check applies as for annuities
+and insurances.
 :::
 
 ---
@@ -269,7 +275,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m")
 reserve = lt.äx(50, n=10, ts=2.5, ir=ir)
 print(reserve)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -301,7 +307,7 @@ gr = GrowthRate(rates=[0.03, 0.02], terms=[2])
 reserve = lt.äx(50, n=8, ts=2, gr=gr)
 print(reserve)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 With **fractional `ts`** and a `GrowthRate`, the same integer-anniversary convention
@@ -323,7 +329,7 @@ reserve = lt.äx(50, n=15, ts=0.5, gr=gr)
 #   fractional shifts.
 print(reserve)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -354,21 +360,24 @@ For further detail on growth shifts see {doc}`growth_conventions`.
 | `continuous_simplified` | ✅ | ✅ |
 
 All four modes support fractional `ts`.  For highest accuracy at fractional ages use
-`discrete_precision` (exact $\ell_x$ interpolation under the Uniform Distribution of Deaths
-(UDD) assumption, `config.lx_interpolation = "linear"`) or `continuous_precision` (numerical
-integration over the raw $\ell_x$ curve under the Constant Force of Mortality (CFM)
-assumption, `config.lx_interpolation = "exponential"`).
+`discrete_precision` (exact fractional-$\ell_x$ interpolation via `config.lx_interpolation`,
+default `"linear"` / UDD) or `continuous_precision` (numerical integration over the
+unrounded $\ell_x$ curve — respects whichever `lx_interpolation` is active).
+`force_mortality_method` applies only in continuous modes; see {doc}`force_mortality_methods`.
 
 ---
 
 ## Portfolio reserves
 
-Compute reserves for multiple policies by iterating over a portfolio.  For each
-policy pass the reference age, the full remaining term from that reference, and the
-elapsed fraction — the engine applies the shift internally.  Each policy requires a
-separate call, so a plain list comprehension is the natural approach:
+Compute reserves for multiple policies in one vectorized batch call or policy-by-policy.
+For each policy pass the reference age, the full remaining term from that reference, and
+the elapsed fraction — the engine applies the shift internally.  When every policy shares
+one `LifeTable`, pass aligned arrays for `x`, `n`, and `ts` (see {doc}`batch_calculations`).
+For joint-life reserves with aligned `ts` arrays, see {doc}`joint_life_calculations` § Batch
+joint-life calculations.
 
 ```python
+import numpy as np
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
@@ -379,13 +388,18 @@ ages   = [50, 55, 60, 65]
 terms  = [20, 15, 10,  5]
 shifts = [0.0, 0.25, 0.5, 0.75]
 
-reserves = [
+# Vectorized batch (preferred when all policies use the same table)
+reserves = lt.äx(ages, n=terms, ts=shifts)
+print(reserves)
+
+# Equivalent list comprehension (same inputs, one call per policy)
+reserves_loop = [
     lt.äx(age, n=term, ts=ts_val)
     for age, term, ts_val in zip(ages, terms, shifts)
 ]
-print(reserves)
+assert np.allclose(reserves, reserves_loop)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ---
@@ -438,7 +452,7 @@ for t in range(0, n + 1, 5):
     tV  = At - P * at             # prospective reserve
     print(f"{t:>4}  {At:>12.6f}  {at:>12.6f}  {tV:>12.6f}")
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -480,7 +494,7 @@ for t in [0, 5, 10, 20, 30]:
     tV = lt.Ax(x, ts=t) - P_wl * lt.äx(x, ts=t)
     print(f"  t={t:2d}: tV = {tV:.6f}")
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -502,7 +516,8 @@ proceeding to production calculations.
 |----------|---------|
 | Annuities (single-life) | `ax`, `äx` |
 | Annuities (joint-life) | `axy`, `äxy`, `axyz`, `äxyz`, `ajoint`, `äjoint` |
-| Insurances | `Ax`, `Axy`, `Axyz`, `Afirst` |
+| Insurances (single-life) | `Ax` |
+| Insurances (first-death) | `Axy`, `Axyz`, `Afirst` |
 | Pure endowments | `nEx`, `nExy`, `nExyz`, `nEjoint` |
 
 **Probability, commutation, and life-expectancy methods do not accept `ts`** and

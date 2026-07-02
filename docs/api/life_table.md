@@ -2,11 +2,14 @@
 
 {class}`~lactuca.LifeTable` is the core actuarial table class in Lactuca.
 It inherits from {class}`~lactuca.tables.DecrementTable` and adds the full
-set of life annuity ($\ddot{a}_x$, $a_x$, $\bar{a}_x$), life insurance ($A_x$),
-pure endowment (${}_{n}E_x$), commutation function ($D_x$, $N_x$, $M_x$, …),
-and life expectancy ($\mathring{e}_x$) methods.
+set of life annuity ($\ddot{a}_x$ via {meth}`~lactuca.LifeTable.äx`,
+$a_x$ via {meth}`~lactuca.LifeTable.ax`, continuous $\bar{a}_x$ via
+{doc}`../user_guide/calculation_modes`), life insurance ($A_x$),
+pure endowment (${}_{n}E_x$), commutation functions ($D_x$, $N_x$, $M_x$, …),
+complete life expectancy ($\mathring{e}_x$ via `ex`), and curtate $e_x$ via `ex_curtate`.
 
-A life table is identified by a table name (`.ltk` file), a sex code
+A life table is identified by a **repository table name** (bundled with Lactuca or
+installed as a `.ltk` file), a sex code
 (`'m'`, `'f'`, or `'u'`), and optionally a birth-year cohort for
 generational tables that include mortality improvement factors.
 
@@ -16,7 +19,8 @@ generational tables that include mortality improvement factors.
 {doc}`../user_guide/life_insurances_guide` — Insurance and endowment reference.\
 {doc}`../user_guide/commutation_functions` — Commutation functions reference.\
 {doc}`../user_guide/calculation_modes` — Discrete vs. continuous modes.\
-{doc}`../user_guide/joint_life_calculations` — Joint-life methods (äxy, axy, Axy, …).\
+{doc}`../user_guide/joint_life_calculations` — Multi-life annuities, first-death
+insurances (`Axy`, `Axyz`, `Afirst`), and derivable last-survivor formulas.\
 {doc}`../user_guide/lx_interpolation` — Fractional-age survival assumptions (UDD vs. CFM).\
 {doc}`../user_guide/deferment` — Deferred annuities and the ``d=`` parameter.\
 {doc}`../user_guide/mortality_improvement` — Generational tables and improvement factors.\
@@ -105,6 +109,7 @@ for full documentation of each member.
    ~lactuca.tables.DecrementTable.generational_formula_type
    ~lactuca.tables.DecrementTable.select
    ~lactuca.tables.DecrementTable.select_period
+   ~lactuca.tables.DecrementTable.select_improvement_diagonal
    ~lactuca.tables.DecrementTable.start_duration
    ~lactuca.tables.DecrementTable.mi_by_duration
    ~lactuca.tables.DecrementTable.mi_structure

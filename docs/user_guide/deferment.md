@@ -34,9 +34,10 @@ Key properties:
 - **Type**: non-negative float; sub-year values such as `d=0.5` are fully supported.
   A negative value raises a `ValueError`.
 - **Scope**: `d` is accepted by all life annuity methods (`äx`, `ax`, `äxy`, `axy`,
-  `äxyz`, `axyz`), all life insurance methods (`Ax`, `Axy`, `Axyz`), and the financial
-  annuity methods on `InterestRate` (`ä`, `a`).  Pure endowment methods (`nEx`, `nExy`,
-  `nExyz`) do **not** accept `d`; see [Interaction with pure endowments](#interaction-with-pure-endowments).
+  `äxyz`, `axyz`, `ajoint`, `äjoint`), all life insurance methods (`Ax`, `Axy`, `Axyz`,
+  `Afirst`), and the financial annuity methods on `InterestRate` (`ä`, `a`).  Pure
+  endowment methods (`nEx`, `nExy`, `nExyz`, `nEjoint`) do **not** accept `d`; see
+  [Interaction with pure endowments](#interaction-with-pure-endowments).
 
 ---
 
@@ -158,7 +159,7 @@ print(a_def_temp_imm)     # → 9.1223
 a_reference = lt.äx(65)
 print(a_reference)        # → 16.0899
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 The pure endowment factorisation produces the same result:
@@ -177,7 +178,7 @@ print(a_direct)                                     # → 11.3534
 via_endowment = round(lt.nEx(55, n=10) * lt.äx(65), 4)
 print(via_endowment)                                # → 11.3534
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Single-life insurance
@@ -200,7 +201,7 @@ print(lt.Ax(55, d=10))        # → 0.380524
 # 5-year deferred, 20-year term insurance:  5|A¹55:20|
 print(lt.Ax(55, n=20, d=5))   # → 0.144705
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
@@ -223,7 +224,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 a_half = lt.äx(60, d=0.5, n=20)
 print(a_half)    # → 13.8892
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 Survival at the fractional age $x + d$ is evaluated under the configured interpolation
@@ -244,14 +245,16 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 a_monthly = lt.äx(55, d=10, m=12)
 print(a_monthly)    # → 11.0274
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ---
 
 ## Joint-life deferred contingencies
 
-All joint-life annuity and insurance methods accept `d`:
+All joint-life **annuity** methods and first-death **insurance** methods (`äxy`, `axy`,
+`äxyz`, `axyz`, `ajoint`, `äjoint`, `Axy`, `Axyz`, `Afirst`) accept `d`. Joint-life
+pure endowments (`nExy`, `nExyz`, `nEjoint`) do **not** — see [Interaction with pure endowments](#interaction-with-pure-endowments):
 
 ```python
 from lactuca import LifeTable, config
@@ -276,7 +279,7 @@ print(a_joint_def_tmp)   # → 6.9214
 Axy_def = lt_m.Axy([60, 58], table_y=lt_f, d=5)
 print(Axy_def)           # → 0.481055
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 For the independence assumption, last-survivor and reversionary annuity formulas, see
@@ -302,18 +305,18 @@ ir = InterestRate(0.03)
 print(ir.ä(n=10))          # → 8.7861
 
 # The same annuity deferred 5 years:
-print(ir.ä(n=10, d=5))     # → 7.5789
+print(ir.ä(n=10, d=5))     # → 7.5790
 
 # Annuity-immediate, 5-year deferred:
 print(ir.a(n=10, d=5))     # → 7.3582
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 For a flat interest rate the scaling is exact:
 $\ddot{a}(d, n) = v^d \cdot \ddot{a}(n)$, i.e.\ a 5-year deferment at 3% multiplies
 the undeferrred value by $v^5 = 1.03^{-5} \approx 0.8626$, giving
-approximately $0.8626 \times 8.7861 \approx 7.5789$.
+approximately $0.8626 \times 8.7861 \approx 7.5790$.
 
 ---
 
@@ -355,11 +358,11 @@ nex = lt.nEx(55, n=10)
 a_factor = round(nex * lt.äx(65, gr=gr), 4)
 print(a_factor)             # → 14.1698
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 :::{note}
-This is **different** from `ts` (time shift): `ts=5` consumes the first 5 anniverary
+This is **different** from `ts` (time shift): `ts=5` consumes the first 5 anniversary
 years from the growth schedule, while `d=5` merely delays the first payment without
 altering the growth starting point.  See {doc}`growth_conventions` for the complete
 interaction between `gr`, `d`, and `ts`.
@@ -370,7 +373,7 @@ interaction between `gr`, `d`, and `ts`.
 (interaction-with-pure-endowments)=
 ## Interaction with pure endowments
 
-Pure endowment methods (`nEx`, `nExy`, `nExyz`) do **not** accept a `d` parameter.
+Pure endowment methods (`nEx`, `nExy`, `nExyz`, `nEjoint`) do **not** accept a `d` parameter.
 This is intentional: the pure endowment $\nEx{n}{x} = v^n \cdot \px{n}{x}$ already
 has a fixed observation horizon $n$; adding deferment on top of it would simply be
 equivalent to changing $n$.  To value a deferred pure endowment, increase `n` directly:
@@ -398,7 +401,12 @@ summarises how each mode integrates the shift:
 | `"continuous_precision"` | Numerical integration | Integration starts at $t = d$; the grid spans $[d,\, d+n]$ |
 | `"continuous_simplified"` | Trapezoidal approximation | Sub-calculations shifted by $d$; results averaged to approximate continuous integral |
 
-Both continuous modes use unrounded $l_x$ values (full float64 precision, no intermediate rounding).
+Both continuous modes evaluate survival probabilities at full float64 precision without intermediate rounding.
+
+:::{note}
+For **annuity-immediate** (`ax`, …) with deferment `d`, the payment grid uses
+$t_j = (j+1)/m + d$ instead of $t_j = j/m + d$ for annuity-due (`äx`, …).
+:::
 
 No configuration changes are needed when using `d` with any mode.  Switch modes via
 `config.calculation_mode`; see {doc}`calculation_modes` for full details.

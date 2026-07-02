@@ -25,9 +25,12 @@ All life-table and financial-annuity methods in Lactuca support batch mode:
 | Life annuity-due | `lt.äx(ages, …)` | `äx(lt, ages, …)` |
 | Life insurance (term / whole) | `lt.Ax(ages, …)` | `Ax(lt, ages, …)` |
 | Pure endowment | `lt.nEx(ages, …)` | `nEx(lt, ages, …)` |
-| Two-life joint | `lt.axy(…)`, `lt.äxy(…)`, `lt.Axy(…)`, `lt.nExy(…)` | `axy(…)`, `äxy(…)`, `Axy(…)`, `nExy(…)` |
-| Three-life joint | `lt.axyz(…)`, `lt.äxyz(…)`, `lt.Axyz(…)`, `lt.nExyz(…)` | `axyz(…)`, `äxyz(…)`, `Axyz(…)`, `nExyz(…)` |
-| *n*-life joint | `lt.ajoint(…)`, `lt.äjoint(…)`, `lt.Afirst(…)`, `lt.nEjoint(…)` | `ajoint(…)`, `äjoint(…)`, `Afirst(…)`, `nEjoint(…)` |
+| Two-life joint annuity / endowment | `lt.axy(…)`, `lt.äxy(…)`, `lt.nExy(…)` | `axy(…)`, `äxy(…)`, `nExy(…)` |
+| Two-life first-death insurance | `lt.Axy(…)` | `Axy(…)` |
+| Three-life joint annuity / endowment | `lt.axyz(…)`, `lt.äxyz(…)`, `lt.nExyz(…)` | `axyz(…)`, `äxyz(…)`, `nExyz(…)` |
+| Three-life first-death insurance | `lt.Axyz(…)` | `Axyz(…)` |
+| *n*-life joint (all survive) | `lt.ajoint(…)`, `lt.äjoint(…)`, `lt.nEjoint(…)` | `ajoint(…)`, `äjoint(…)`, `nEjoint(…)` |
+| *n*-life first death | `lt.Afirst(…)` | `Afirst(…)` |
 | Financial annuity (no mortality) | `ir.a(…)`, `ir.ä(…)` | — |
 
 ---
@@ -42,8 +45,11 @@ All life-table and financial-annuity methods in Lactuca support batch mode:
 | Per-policy payment frequency with shared age (e.g. pricing grid over `m`) | Scalar `x` + array `m` → `lt.ax(65, n=20, m=[1, 6, 12])` — `m` alone triggers batch |
 | Portfolio split across multiple tables (sex, cohort…) | Functional API with `table=[lt_m, lt_f, …]` |
 | Two-life joint portfolio | `axy([lt_m, lt_f], (x_arr, y_arr))` |
+| Two-life first-death portfolio (`Axy`) | `Axy([lt_m, lt_f], (x_arr, y_arr))` |
 | Three-life joint portfolio | `axyz([lt_x, lt_y, lt_z], (x_arr, y_arr, z_arr))` |
-| *n*-life joint portfolio (`äjoint`, `ajoint`, `Afirst`, `nEjoint`) | Tables list + ages list of arrays, one per life |
+| Three-life first-death portfolio (`Axyz`) | `Axyz([lt_x, lt_y, lt_z], (x_arr, y_arr, z_arr))` |
+| *n*-life joint portfolio (`äjoint`, `ajoint`, `nEjoint`) | Tables list + ages list of arrays, one per life |
+| *n*-life first-death portfolio (`Afirst`) | Tables list + ages list of arrays, one per life |
 | Per-policy duration with shared ages (e.g. pricing grid over `n`) | Scalar ages + array `n` → `lt.axy([65, 60], n=[10, 20, 30])` — `n` alone triggers batch |
 | Aggregate expected cash flows (APV, BEL, PVDBO) | `return_flows=True` with array `x` (precision modes) |
 | Portfolio BEL/PVDBO with per-policy sum insured | `benefits=sums_insured` + array `x` (scaled PVs in all modes; aggregate flows only in precision modes) |
@@ -95,7 +101,8 @@ same rule applies to `ages` and the other parameters.
 | All parameters are `int` / `float` scalars or 0-d `ndarray` | `float` |
 | Any parameter is a `list` or `tuple` — even length 1 | `NDArray[float64]` |
 | Any parameter is a `numpy.ndarray` of ndim ≥ 1 | `NDArray[float64]` |
-| Any parameter is a Pandas or Polars `Series` (any length ≥ 1) | `NDArray[float64]` |
+| Any parameter is a Pandas or Polars `Series` (any length, including 0) | `NDArray[float64]` |
+| Empty list, tuple, `ndarray`, or Series (`N=0`) | `NDArray[float64]` shape `(0,)` |
 
 :::{important}
 A **length-1 list, tuple, or `ndarray` of shape `(1,)`** returns an `NDArray` of shape
@@ -156,7 +163,7 @@ if report:
 ### Tracking records with `record_ids`
 
 Pass a sequence of identifiers via `record_ids` to label invalid records in the error
-report:
+report.  When supplied, `record_ids` length must equal the batch size `N`:
 
 ```python
 from lactuca import LifeTable
@@ -206,7 +213,7 @@ Values are used as policy identifiers in error reports and are not converted num
 | `valid_mask` | `NDArray[bool]` | Boolean mask — `True` at valid positions |
 | `invalid_indices` | `NDArray[int64]` | Positions of invalid records |
 | `record_ids` | `list \| None` | User IDs for invalid records; `None` if not supplied |
-| `messages` | `list[str]` | One error message per invalid record |
+| `messages` | `list[str]` | Validation texts (one entry per violated constraint; `len(messages)` is not required to equal `n_errors`) |
 | `bool(report)` | `bool` | `True` when `n_errors > 0` |
 
 `.to_dataframe()` returns a **Polars** `DataFrame` with columns `idx` and `record_id`:
@@ -698,7 +705,7 @@ print(result)
 config.reset_to_defaults()
 ```
 
-For *n*-life calculations (`äjoint`, `ajoint`, `Afirst`, `nEjoint`), pass all tables
+For *n*-life joint calculations (`äjoint`, `ajoint`, `nEjoint`) and first-death insurance (`Afirst`), pass all tables
 as a single list and all ages as a list of arrays — one array per life:
 
 ```python
@@ -931,9 +938,11 @@ returns the per-payment engine dict documented in {doc}`inspecting_cashflows`.
 
 `return_flows=True` is supported for all joint-life and *n*-life **method families** (two-life,
 three-life, and *n*-life), with the same precision-mode requirement as single-life batch.
-This includes two-life
-(`axy`, `äxy`, `Axy`, `nExy`), three-life (`axyz`, `äxyz`, `Axyz`, `nExyz`), and *n*-life
-(`ajoint`, `äjoint`, `Afirst`, `nEjoint`) variants.  The returned dict has the same
+This includes two-life joint annuities and pure endowments (`axy`, `äxy`, `nExy`),
+two-life first-death insurance (`Axy`), three-life joint annuities and pure endowments
+(`axyz`, `äxyz`, `nExyz`), three-life first-death insurance (`Axyz`), *n*-life joint
+(`ajoint`, `äjoint`, `nEjoint`), and *n*-life first-death insurance (`Afirst`) variants.
+The returned dict has the same
 structure as for single-life batch:
 
 ```python
@@ -992,7 +1001,7 @@ sums  = [100_000, 150_000, 200_000, 80_000]
 eiopa_curve = InterestRate(0.0342)
 
 unit_apv_eiopa = lt.Ax(ages, n=20, ir=eiopa_curve)      # unit APV at EIOPA rate, shape (4,)
-bel_eiopa      = np.dot(unit_apv_eiopa, sums)     # portfolio BEL under IFRS 17 / Solvency II
+bel_eiopa      = np.dot(unit_apv_eiopa, sums)     # BEL building block (IFRS 17 / Solvency II best-estimate component)
 print(f"BEL = {bel_eiopa:.2f}")
 # BEL = 106953.84
 ```
@@ -1001,17 +1010,18 @@ print(f"BEL = {bel_eiopa:.2f}")
 
 Use `return_flows=True` together with `benefits=sums` to obtain the portfolio BEL in
 `flows["total_pv"]` alongside the time-bucketed aggregate cash flows — all in a single
-call.  This approach also gives access to the full cash-flow timeline, which is required
-for IFRS 17 GMM / CSM calculations or ALM analysis.
+call.  This approach also gives access to the full cash-flow timeline, which can be
+exported to **external** IFRS 17 GMM / CSM engines or ALM tools — Lactuca does not
+compute CSM, RA, or risk margin.
 
 The result dict exposes three equivalent paths to the same BEL figure:
 
 - **`flows["total_pv"]`** — scalar sum pre-computed by the engine.
 - **`np.sum(flows["pv_cf"])`** — explicit sum of the per-bucket discounted cash flows
   (`pv_cf[k]` already includes the discount factor, mortality weight, and mortality-placement offset).
-- **`np.dot(flows["expected_cf"], ir.vn(t_grid + offset))`** — manual re-discounting of
+- **`np.dot(flows["expected_cf"], ir.vn(flows["time_grid"] + offset))`** — manual re-discounting of
   the undiscounted expected cash flows `expected_cf[k]` at the *correct* discount time
-  `t_grid[k] + offset`.  For `Ax` with `mortality_placement='mid'` (default) and annual
+  `flows["time_grid"][k] + offset`.  For `Ax` with `mortality_placement='mid'` (default) and annual
   payments ($m = 1$) the offset is $0.5/m = 0.5$; deaths are assumed to occur at the
   midpoint of each annual interval.
 
@@ -1076,9 +1086,10 @@ sums = [100_000, 150_000, 200_000, 80_000]
 # Per-policy flows — per_policy[i] is the per-payment dict for policy i
 per_policy  = [lt.Ax(x, n=20, ir=0.03, return_flows=True) for x in ages]
 
-# Reconstruct the portfolio aggregate
+# Reconstruct the portfolio aggregate (scalar: death_probability, not expected_cf;
+# see inspecting_cashflows, Scalar-batch key mapping (discrete_precision))
 t_grid      = per_policy[0]["time_grid"]
-all_cf      = np.array([f["expected_cf"] for f in per_policy])  # shape (N, T)
+all_cf      = np.array([f["death_probability"] for f in per_policy])  # shape (N, T)
 sums_arr    = np.asarray(sums, dtype=np.float64)                 # shape (N,)
 weighted_cf = sums_arr @ all_cf                                  # shape (T,) — portfolio aggregate
 
@@ -1194,9 +1205,12 @@ Two exact alternatives:
 
 - Pass `ir=eiopa_curve` directly → `flows["total_pv"]` is already the exact
   EIOPA-discounted BEL, and `pv_cf` contains the per-bucket exact contributions.
-- Or use `t_output=None` (exact 240-entry monthly grid for `m=12, n=20`) and
-  discount at the exact payment times:
-  `np.dot(flows["expected_cf"], eiopa_curve.vn(flows["time_grid"]))`.
+- Or use `t_output=None` (exact union grid) and re-discount undiscounted flows at
+  the actuarial discount time: for **annuities** (`ax`, `äx`, …),
+  `np.dot(flows["expected_cf"], eiopa_curve.vn(flows["time_grid"]))`; for
+  **insurance** (`Ax`, …),
+  `np.dot(flows["expected_cf"], eiopa_curve.vn(flows["time_grid"] + offset/m))`
+  with `offset` from `config.mortality_placement` (see {doc}`inspecting_cashflows`).
 :::
 
 **Output grid regimes**
@@ -1633,7 +1647,7 @@ face values, pension amounts, or capital amounts — whether you need per-policy
 or aggregate portfolio cash flows.
 
 **Requirements and compatibility:**
-- `benefits` requires batch mode (array `n`, `d`, `ts`, `m`, or `gr`)
+- `benefits` requires batch mode (array `x`/`ages` or any batch-triggering parameter: `n`, `ts`, `d`, `ir`, `gr`, or `m`)
 - Compatible with `return_flows=False`: returns `NDArray[float64]` of scaled per-policy PVs
 - Compatible with `return_flows=True`: returns aggregate portfolio flows dict
 - Compatible with `on_error='nan'`: invalid entries produce `NaN`; `NaN × benefit = NaN`

@@ -18,10 +18,34 @@ pip install lactuca
 
 All other dependencies (NumPy ≥ 2.3, Pandas ≥ 2.3, SciPy ≥ 1.16, Polars ≥ 1.34) are installed automatically.
 
-All actuarial tables included in Lactuca are available immediately after installation —
-no separate download is required. See {doc}`bundled_tables` for the complete catalogue.
+## Activation
+
+A valid license is required before `import lactuca` can run calculations.
+See {doc}`../activation` for environment variables, the CLI (`python -m lactuca`), and the
+free trial.
+
+## Bundled tables (one-time setup)
+
+Table payloads ship inside the package but must be written to disk as `.ltk` files before use.
+Run this once per environment (or after upgrading Lactuca):
+
+```python
+from lactuca.tables.data import Tables
+
+Tables.install()  # all bundled tables → ./actuarial_tables/ by default
+```
+
+Install only what you need: `Tables.install("PER2020_Ind_1o")`. The default directory is
+`actuarial_tables/` under your current working directory; change it with
+`lactuca.config.tables_path`. See {doc}`bundled_tables` for the complete catalogue and
+{ref}`managing-bundled-tables` for install options.
 
 ## Quick example
+
+:::{note}
+Requires an **activated license** ({doc}`../activation`) and **bundled tables on disk**
+(see above).
+:::
 
 ```python
 from lactuca import LifeTable, äx
@@ -63,7 +87,7 @@ Lactuca is structured as five layers.  As a user you interact exclusively with t
 </tr>
 <tr style="background: #fce4ec;">
   <td style="padding: 8px 16px; font-weight: bold;">Data layer</td>
-  <td style="padding: 8px 16px;">Bundled actuarial table files (installed automatically with the package)</td>
+  <td style="padding: 8px 16px;">Bundled actuarial table payloads (written to disk via <code>Tables.install()</code>)</td>
 </tr>
 </table>
 </div>
@@ -90,7 +114,8 @@ See {doc}`bundled_tables` for every bundled table identifier.
 
 ## Loading a table
 
-Before performing any calculation, create a table object. All constructors share the
+Before performing any calculation, ensure the table file exists on disk (see
+{ref}`managing-bundled-tables`) and create a table object. All constructors share the
 same two required arguments: the table identifier (a string) and the sex code
 (`"m"` for male, `"f"` for female).
 
@@ -160,7 +185,7 @@ am92_ult = LifeTable("AM92_AF92", "m", duration="ult") # ultimate column
 
 print(f"start_duration: {am92_d0.start_duration}")  # 0
 print(f"select_period:  {am92_d0.select_period}")   # 2
-print(f"qx(17, d=0): {am92_d0.qx(17):.6f}")        # 0.000427
+print(f"qx(17) [duration=0]: {am92_d0.qx(17):.6f}")        # 0.000427
 ```
 
 The `duration=` parameter is supported by all three table classes.
@@ -244,10 +269,15 @@ print(ltm.omega)         # terminal age ω
 print(f"ltm.sex = {ltm.sex}, ltf.sex = {ltf.sex}")
 ```
 
+For zip-mode broadcast rules, Cartesian-product grids (`cartesian=True`),
+dict returns (`return_dict=True`), {class}`lactuca.TableKey` lookup, and heterogeneous
+table pairing in zip mode, see {doc}`using_tables` ({ref}`heterogeneous-tables-zip`,
+{ref}`cartesian-product-creation`).
+
 ### Accessing raw table data with TableSource
 
-Every table instance exposes the parsed `.ltk` file via the `.table` property,
-which returns a ``TableSource`` object with metadata and the raw decrement arrays:
+Every `LifeTable` links to its `TableSource` metadata and decrement arrays via the `.table` property
+(which returns a ``TableSource`` object with metadata and the raw decrement arrays):
 
 ```python
 from lactuca import LifeTable
@@ -312,7 +342,10 @@ print(f"a_override = {a_override:.6f}")
 ```
 
 When creating multiple instances at once with vectorial syntax, `interest_rate=` is
-assigned to every instance in the same call — see {ref}`vectorial-interest-rate`.
+assigned to every instance in the same call — see {ref}`vectorial-interest-rate` in
+{doc}`using_tables`.  The same vectorial constructor also supports
+`cartesian=True` and `return_dict=True` for study grids and structured lookup — see
+{ref}`cartesian-product-creation`.
 
 ## Survival and mortality probabilities
 
@@ -357,6 +390,11 @@ plt.ylabel("$q_x$")
 plt.legend()
 plt.show()
 ```
+
+:::{note}
+This plot example requires **matplotlib**, which is not a core Lactuca dependency.
+Install with `pip install matplotlib` if needed.
+:::
 
 ### Multiple ages at once
 
@@ -423,8 +461,10 @@ p50_quarters = pasem.px(frac_ages)    # NumPy array of 4 values
 
 ### Sub-annual frequency
 
-Use the `m` parameter to obtain the per-period probability for payment frequencies of
-2, 4, 12, 52 or 365 periods per year:
+Use the `m` parameter to obtain the per-period probability for payment frequency `m`.
+Accepted values are **1, 2, 3, 4, 6, 12, 14, 24, 26, 52, 365** (not every integer
+between 1 and 365). Common values include 2, 4, 6, 12, 26, 52, and 365; the full list
+is in {doc}`calculation_modes`:
 
 ```python
 from lactuca import LifeTable
@@ -506,6 +546,16 @@ e_65_cont = pasem.ex_continuous(65.5, m=12)
 print(f"Complete life expectancy at 65.5: {e_65_cont:.2f} years")
 ```
 
+### Curtate expectation $e_x$ — `ex_curtate`
+
+Textbooks often denote **curtate** future lifetime by plain $e_x =
+\sum_{k=1}^{\omega-x} {}_kp_x$ (whole years survived).  Use
+`ex_curtate()` for this quantity; `ex()` returns the **complete**
+$\mathring{e}_x = T_x/l_x$ instead — typically about $0.5$ years
+higher under UDD ($\mathring{e}_x \approx e_x + \tfrac{1}{2}$).  See
+{ref}`ex-curtate-workaround` in {doc}`commutation_functions` and
+{ref}`life-expectancy` in {doc}`../formulas`.
+
 ## Commutation functions
 
 Commutation functions — $D_x$, $N_x$, $C_x$, $M_x$ and their higher-order sums $S_x$,
@@ -572,8 +622,8 @@ print(f"v(7) = {v7:.6f}")
 
 ## Growth rates
 
-`GrowthRate` models a per-period revaluation factor applied to benefit amounts in
-annuities and insurances. It is not limited to escalating benefits: common
+`GrowthRate` models benefit escalation at **policy-year anniversaries** (not each
+sub-annual payment). It is not limited to escalating benefits: common
 applications include pension CPI indexation, salary-scale projections, guaranteed
 annual increases, and any context where the benefit amount changes from one
 anniversary to the next. Like `InterestRate`, it supports constant rates, piecewise
@@ -634,8 +684,10 @@ config.decimals.annuities = 8     # annuity present values
 # Days per year convention for date calculations
 config.days_per_year = 365.25
 
-# Path to custom .ltk table files (defaults to the included tables directory)
-config.tables_path = "/path/to/my/custom/tables"
+# Path to custom bundled table files (`.ltk`); defaults to the package tables directory
+# config.tables_path = "/path/to/my/custom/tables"
+
+config.reset_to_defaults()  # restore defaults after the illustrative settings above
 ```
 
 For the full list of settings, TOML-file format, and the persistence API, see
@@ -681,6 +733,9 @@ atemp = lt.äx(65, n=20)
 # 15-year temporary, monthly payments: ä50:15|^(12)
 atemp_monthly = lt.äx(50, n=15, m=12)
 
+# With m=12, a 2% growth step applies once per policy year (all 12 monthly payments
+# in year k share factor (1+g)^k), not each month — see {doc}`growth_rates_guide`.
+
 # Simplest growth: plain float auto-wrapped as GrowthRate(0.02) — geometric compound
 atemp_gr_float = lt.äx(65, n=20, gr=0.02)
 
@@ -707,11 +762,11 @@ print(adef)         # → 11.3534
 adef_temp = lt.äx(60, n=20, d=5)
 print(adef_temp)    # → 11.3491
 
-config.reset()
+config.reset_to_defaults()
 ```
 
-For deferred insurances, fractional deferment, multi-frequency examples, and joint-life
-deferred products, see {doc}`deferment`.
+For deferred insurances, fractional deferment, multi-frequency examples, and multi-life
+deferred products (joint annuities and first-death insurances), see {doc}`deferment`.
 
 ### Continuous annuities
 
@@ -780,8 +835,9 @@ pasem = LifeTable("PASEM2020_Rel_1o", "m")
 nEx_val = pasem.nEx(40, n=10, ir=0.03)
 ```
 
-Joint-life and last-survivor insurances (e.g. `Axy`, `äxy`, `äjoint`) are covered in
-{doc}`joint_life_calculations`.
+Multi-life annuities (`äxy`, `äjoint`, …) and first-death insurances (`Axy`, `Axyz`,
+`Afirst`) are covered in {doc}`joint_life_calculations`.  Last-survivor products are
+derivable via inclusion-exclusion (no dedicated method).
 
 ## Disability tables
 
@@ -868,15 +924,16 @@ For the complete function reference, see {doc}`functional_api`.
 
 ## Time shift (`ts`) for off-anniversary reserves
 
-The `ts` parameter displaces the start of an annuity or insurance calculation by
-`ts` years from the policy-anniversary age. Its primary use is computing **reserves
-at a valuation date other than an exact policy anniversary** — for example, when
-3.25 years have elapsed since inception and the next anniversary falls in 0.75 years.
+The `ts` parameter records how many years have elapsed since contract
+inception; the calculation proceeds as if that shift has already occurred. Its
+primary use is computing **reserves at a valuation date other than an exact policy
+anniversary** — for example, when 3.25 years have elapsed since inception and the
+next anniversary falls in 0.75 years.
 
 `ts` is conceptually different from the `t` argument of `tpx`/`tqx`: `t` is the
-*duration* of a survival interval, whereas `ts` shifts the entire payment grid
-forward so that all discount and survival factors are evaluated from age $x + ts$
-onward.
+*duration* of a survival interval, whereas `ts` shortens the remaining term and
+re-anchors survival and discount factors to the valuation date (for `d=0`, this is
+equivalent to calling at attained age $x + ts$ with remaining term $n_\text{eff}=\max(n-ts,\,0)$; in general $n_\text{eff}=\max(n-\max(ts-d,\,0),\,0)$ and $d_\text{eff}=\max(d-ts,\,0)$ — see {doc}`prospective_reserve` and {doc}`last_payment_adjustment`).
 
 ```python
 from lactuca import LifeTable
@@ -887,7 +944,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 a_midyear = lt.äx(50, n=15, ts=0.5)
 
 # Off-anniversary reserve: 3.25 years since inception (next anniversary in 0.75 yr)
-a_offann = lt.äx(50, n=10, ts=0.25)
+a_offann = lt.äx(50, n=10, ts=3.25)
 ```
 
 When `ts` is fractional **and a `GrowthRate` is active** (`gr=` specified), Lactuca
@@ -898,6 +955,7 @@ silently accepted. To reject fractional shifts entirely, set
 
 ## Next steps
 
+- Use Lactuca with AI assistants: {doc}`using_ai_assistants` (context files for Cursor, Copilot, ChatGPT)
 - Explore the {doc}`../api/index` for detailed API documentation
 - Check {doc}`../formulas` for mathematical foundations
 - See {doc}`bundled_tables` for the complete list of bundled tables

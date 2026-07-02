@@ -170,7 +170,7 @@ See the [Activation Guide](activation) for step-by-step instructions.
 2. Licenses are reviewed and issued within 2–3 business days.
 3. The license is valid for 1 year and can be renewed following the same process.
 
-Academic licenses are **non-commercial only** — see §3 of the [EULA](eula) for the
+Academic licenses are **non-commercial only** — see §4 of the [EULA](eula) for the
 full restrictions.
 
 ---
@@ -191,6 +191,12 @@ full restrictions.
 | Devices per user | 1 | 1 | 1 | 1 | 1 |
 | Duration | 30 days | Monthly | Monthly | Monthly / direct annual | 1 year |
 
+:::{note}
+**Multiple-decrement:** v1 returns a collapsed total $q$ only; optional
+`combination_mode="udd"` supports two or three causes.  See
+{doc}`user_guide/modifying_decrements`.
+:::
+
 ---
 
 ## FAQ
@@ -208,7 +214,7 @@ jurisdiction at checkout.
 
 **Can I use Lactuca in a CI/CD pipeline?**
 Yes — set the `LACTUCA_LICENSE_KEY` environment variable. See the
-[Activation Guide](server-mode-and-cicd).
+{ref}`Server mode and CI/CD <server-mode-and-cicd>` section.
 
 ---
 

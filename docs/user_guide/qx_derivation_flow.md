@@ -203,7 +203,7 @@ from lactuca import config
 
 config.lx_interpolation = "linear"       # UDD — linear interpolation (default)
 config.lx_interpolation = "exponential"  # constant force of mortality
-config.reset()                           # restore default
+config.reset_to_defaults()               # restore default
 ```
 
 See {doc}`lx_interpolation` for a detailed comparison including derived survival formulas
@@ -276,13 +276,16 @@ print(lt.dx(65))   # expected deaths between exact ages 65 and 66
 ## Boundary at the terminal age
 
 Every table defines a terminal age $\omega$: the last age index stored in the
-file.  For life tables, $q_\omega = 1.0$ is required at build and load time
-(see {doc}`building_tables`).  `LifeTable.qx(omega)` therefore returns $1.0$ for
+file.  For life tables, $q_\omega = 1.0$ is required on the ultimate row at build
+and load time (ultimate column only for select-and-ultimate tables; see
+{doc}`building_tables`).  `LifeTable.qx(omega)` therefore returns $1.0$ for
 integer annual frequency ($m = 1$).
 
 Beyond the table limit the query API applies:
 
-- $l_x = 0$ for any $x > \omega$ — ages beyond the table range are out of scope.
+- $l_x = 0$ for any $x > \omega$ — ages strictly beyond the table range.
+- At $x = \omega$, $l_\omega$ is the cohort remaining at exact age $\omega$ (generally
+  $> 0$); $q_\omega = 1.0$ applies during $[\omega, \omega + 1)$.
 - ${}_{t}p_x = 0$ and ${}_{t}q_x = 1$ whenever $x + t \ge \omega$ — any interval
   that extends to or past $\omega$ has zero survival probability and certain death.
 
@@ -293,8 +296,9 @@ $l_{x+t} = 0$.
 from lactuca import LifeTable
 
 lt = LifeTable("PASEM2020_Rel_1o", "m")
-print(lt.omega)                     # terminal age omega
-print(lt.lx(lt.omega))             # 0.0: no survivors at omega
+print(lt.omega)                      # terminal age omega
+print(lt.lx(lt.omega + 1))           # 0.0: strictly beyond omega
+print(lt.qx(lt.omega))               # 1.0: certain death during [omega, omega+1)
 print(lt.tpx(lt.omega - 5, t=10))  # 0.0: interval extends past omega
 print(lt.tqx(lt.omega - 5, t=10))  # 1.0: certain death within the interval
 ```

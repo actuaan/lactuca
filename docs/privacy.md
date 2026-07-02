@@ -2,7 +2,7 @@
 
 **Lactuca — Life Actuarial Calculation Library for Python**
 
-*Effective date: 2026-04-01. Last updated: 2026-06-19.*
+*Privacy Policy version 1.0. Effective date: 2026-07-02. Last updated: 2026-07-02.*
 *Data controller: Alberto Aragoneses Nebreda, operating under the brand Actuaan.*
 *Contact: [support@lactuca.io](mailto:support@lactuca.io)*
 
@@ -40,7 +40,7 @@ When you request a free trial through the activation prompt when first importing
 | Hardware fingerprint (hash) | Prevent trial abuse (one trial per device) | Keygen.sh (via Vercel webhook) |
 | IP address (inherent to outbound HTTP) | Implicit in network request to trial webhook | Vercel access logs; Keygen.sh logs |
 
-The **hardware fingerprint** is a SHA-256 hash derived from hardware attributes of the
+The **hardware fingerprint** is a one-way hash derived from hardware attributes of the
 device (MAC address, hostname, CPU architecture). The raw values are **never
 transmitted** — only the irreversible hash is sent and stored. The fingerprint
 constitutes **pseudonymous data** within the meaning of Art. 4(5) GDPR: it cannot
@@ -219,7 +219,7 @@ We implement appropriate technical and organisational measures to protect your p
 data against accidental loss, unauthorised access, disclosure, or destruction, including:
 
 - HTTPS-only communication between the library and license servers
-- Ed25519 digital signatures on all license records to prevent tampering
+- Tamper-resistant validation of license records stored locally on your device
 - Hardware fingerprint hashing before transmission (raw hardware data never leaves your device)
 - License API keys stored as environment variables, never hard-coded
 

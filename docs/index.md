@@ -27,6 +27,20 @@ Get started with Lactuca in minutes. Load actuarial tables, calculate life annui
 Step-by-step guides covering tables, calculation modes, interest rates, joint-life calculations, off-anniversary reserves, and more.
 :::
 
+:::{grid-item-card} {octicon}`cpu;1.5em` AI Assistants
+:link: user_guide/using_ai_assistants
+:link-type: doc
+
+Context files and workflows for Cursor, Copilot, ChatGPT, and other AI tools.
+:::
+
+:::{grid-item-card} {octicon}`beaker;1.5em` Cookbook
+:link: cookbook
+:link-type: doc
+
+Copy-paste actuarial recipes for common valuation tasks.
+:::
+
 :::{grid-item-card} {octicon}`mortar-board;1.5em` Actuarial Formulas
 :link: formulas
 :link-type: doc
@@ -38,7 +52,7 @@ Mathematical foundations and actuarial formulas used throughout the library, wit
 :link: api/index
 :link-type: doc
 
-Complete API documentation with detailed function signatures, parameters, and examples for all modules.
+Complete API documentation for all public classes, functions, and parameters.
 :::
 
 ::::
@@ -48,15 +62,15 @@ Complete API documentation with detailed function signatures, parameters, and ex
 **Tables**
 
 - ✅ **Aggregate, select-ultimate, static and generational tables** — all major table structures supported
-- ✅ **Ready-to-use bundled tables** from Spain, Germany, Chile, USA — see the [complete list](user_guide/bundled_tables)
-- ✅ **Generational mortality** with exponential and linear improvement scales
+- ✅ **Ready-to-use bundled tables** from Spain, Germany, Chile, USA, UK, Switzerland, and more — see the [complete list](user_guide/bundled_tables)
+- ✅ **Generational mortality** with exponential, linear, discrete, and projected improvement formulas
 
 **Calculations**
 
-- ✅ **Life, disability, and exit tables** with multiple decrements
+- ✅ **Multiple-decrement models** — life, disability, and exit tables combinable via `table_combination`
 - ✅ **Annuities** (discrete/continuous, immediate/due, fractional frequencies)
 - ✅ **Life insurances** (term, whole life, endowment)
-- ✅ **Flexible interest rates** with `InterestRate` class (constant/piecewise term structures)
+- ✅ **Flexible interest rates** with `InterestRate` (constant, piecewise, and named scenarios)
 - ✅ **Growth rate scenarios** with `GrowthRate` class for benefit escalation
 - ✅ **Fractional time shifts** (`ts`) with configurable integer-enforcement policy
 - ✅ **Actuarial date utilities** (exact age calculation, anniversary dates)

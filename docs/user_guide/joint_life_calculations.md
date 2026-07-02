@@ -111,7 +111,7 @@ return the present value of 1 payable if *all* specified lives survive $n$ years
 
 $${}_{n}E_{xy} = v^n \cdot {}_{n}p_{xy}$$
 
-Note: `n` is a **required** keyword argument for all joint endowment methods.
+Note: `n` is a **required** keyword argument for all joint pure endowment methods.
 
 ```python
 from lactuca import LifeTable
@@ -255,8 +255,9 @@ A_last = Ax_val + Ay_val - Axy_val
 
 ## Parameter reference
 
-Annuity and insurance methods (`äxy`, `axy`, `äjoint`, `ajoint`, `äxyz`, `axyz`,
-`Axy`, `Axyz`, `Afirst`) share these keyword-only parameters:
+Joint-life annuity and first-death insurance methods (`äxy`, `axy`, `äjoint`,
+`ajoint`, `äxyz`, `axyz`, `Axy`, `Axyz`, `Afirst`) share these keyword-only
+parameters:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -266,7 +267,7 @@ Annuity and insurance methods (`äxy`, `axy`, `äjoint`, `ajoint`, `äxyz`, `axy
 | `ts` | `float` | `0.0` | Time shift for off-anniversary reserves |
 | `ir` | `float \| InterestRate` | table default | Interest rate |
 | `gr` | `float \| GrowthRate \| None` | `None` | Benefit growth rate |
-| `return_flows` | `bool` | `False` | Return detailed cash-flow dict |
+| `return_flows` | `bool` | `False` | Scalar: engine dict (`discrete_precision` / `continuous_precision`: per-payment arrays; simplified modes: nested structure — see {doc}`inspecting_cashflows`); batch: portfolio flow dict (precision modes only) |
 
 Pure endowment methods (`nExy`, `nExyz`, `nEjoint`) accept only `n` (required), `ts`,
 `ir`, and `return_flows`. They do not accept `d`, `m`, or `gr`.
@@ -280,7 +281,9 @@ simultaneously.  Results are `NDArray[float64]` of the same length.
 
 With `calculation_mode='discrete_precision'`, you may pass a shared `cashflow_times` grid
 to immediate annuities (`axy`, `axyz`, `ajoint`) and first-death insurance (`Axy`, `Axyz`,
-`Afirst`) in batch — the schedule is vectorised across all policies.  See
+`Afirst`) in batch — the schedule is vectorised across all policies.  Due joint annuities
+(`äxy`, `äxyz`, `äjoint`) also accept a shared `cashflow_amounts` vector on the standard
+due payment grid in batch (no `cashflow_times`).  See
 {doc}`irregular_cashflows` and {doc}`batch_calculations` for constraints (shared grid,
 grouping by product when schedules differ).
 
@@ -302,6 +305,10 @@ result_ann = äxy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
 result_ins = Axy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
 
 net_premium = result_ins / result_ann
+
+# OOP equivalent — shared table for life x, table_y for life y
+result_ann_oop = lt_m.äxy((x_ages, y_ages), table_y=lt_f, n=20)
+result_ins_oop = lt_m.Axy((x_ages, y_ages), table_y=lt_f, n=20)
 ```
 
 ### Three-life batch
@@ -320,7 +327,9 @@ result = äxyz(
 )
 ```
 
-### *n*-life batch (`äjoint`, `ajoint`, `Afirst`, `nEjoint`)
+### *n*-life batch — joint annuities / pure endowments / first-death insurance
+
+(`äjoint`, `ajoint`, `nEjoint` require all lives to survive; `Afirst` pays on first death.)
 
 For the n-life methods, pass **all tables** as a single list and **all ages** as a list
 of arrays — one per life:
@@ -336,21 +345,49 @@ result = äjoint(
 ```
 
 For a **per-policy multi-table dispatch** (each policy has its own set of tables),
-each element of the tables list must itself be a list of N `LifeTable` instances —
-one per policy:
+use the **functional API** (`äjoint`, `ajoint`, `Afirst`, `nEjoint`). Pass one
+inner list per **life** (not per policy); each inner list has length `N` (one
+`LifeTable` per policy for that life):
 
 ```python
-# 3 policies, 3 lives each — different table per policy per life
+# Functional API — 3 policies, 3 lives; tables[j][i] = table for life j, policy i
 tables = [
-    [lt_m, lt_f, lt_m],   # table for life 0, one entry per policy
-    [lt_f, lt_m, lt_f],   # table for life 1, one entry per policy
-    [lt_z, lt_z, lt_m],   # table for life 2, one entry per policy
+    [lt_m, lt_f, lt_m],   # life 0
+    [lt_f, lt_m, lt_f],   # life 1
+    [lt_z, lt_z, lt_m],   # life 2
 ]
 result = äjoint(tables, ages=[x_ages, y_ages, z_ages], n=20)  # NDArray shape (3,)
 ```
 
+On the **OOP** path (`lt.äjoint(ages, tables_others=…)`), pass a length-`N` list of
+`(n_lives - 1)`-element table lists — one inner list per **policy** (see
+{doc}`batch_calculations` § Multi-table batch).
+
 See {doc}`batch_calculations` for full batch documentation, including aggregate
 portfolio flows for BEL calculations.
+
+---
+
+## Inspecting flows (`return_flows`)
+
+With `return_flows=True`, joint-life methods return the same dict structures as their
+single-life counterparts — per-payment or integration grids for annuities and insurances;
+pure endowments (`nExy`, `nExyz`, `nEjoint`) return a maturity-focused dict
+(`joint_survival_probability`, `expected_cf`, …) instead of a payment schedule:
+
+| Call mode | `return_flows=True` returns |
+|-----------|----------------------------|
+| **Scalar** — `ages[0]` is a single `float` | Per-payment engine dict (`time_grid`, `present_value`, …). See {doc}`inspecting_cashflows`. |
+| **Batch** — every `ages[i]` is an array | Compact portfolio dict: `time_grid`, `expected_cf`, `pv_cf`, `total_pv`. See {doc}`batch_calculations`. |
+
+Batch aggregate flows require `calculation_mode='discrete_precision'` or
+`'continuous_precision'`. `discrete_simplified` and `continuous_simplified` raise
+`ValueError` in batch mode when `return_flows=True`.
+
+Per-policy benefit weighting in batch uses `benefits=` (shape `(N,)`), not
+`cashflow_amounts`. The `cashflow_amounts` schedule is **shared** across all policies
+in one call — for heterogeneous sums insured, scale via `benefits=` or post-multiply
+unit flows. See {doc}`irregular_cashflows`.
 
 ---
 

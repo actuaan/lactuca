@@ -7,6 +7,13 @@ actuarial present value (APV) of the portfolio — the **Best Estimate Liability
 under IFRS 17 and Solvency II, or the **Present Value of the Defined Benefit Obligation
 (PVDBO)** under IAS 19.
 
+:::{important}
+Discounted expected cash flows are a **building block** for BEL (IFRS 17), technical
+provisions (Solvencia II), and PVDBO (IAS 19).  Lactuca does **not** compute risk
+adjustment, CSM, SCR, expenses, or contract boundaries.  Professional responsibility
+and regulatory limits: {doc}`../eula` §10.2–10.3.
+:::
+
 This guide covers the theory, the Lactuca API, and complete worked examples for:
 
 - IFRS 17 Best Estimate Liability (life insurance contracts)
@@ -51,7 +58,9 @@ $$\mathbb{E}[\text{CF}_{t_j}] = S \cdot {}_{t_{j-1}}p_x \cdot q_{x+t_{j-1}}^{(1/
 
 where $q_{x+s}^{(1/m)}$ is the mortality probability over one sub-period.
 The APV is $A_{x:\overline{n}|}^{1} = \sum_j v^{t_j^*} \cdot \mathbb{E}[\text{CF}_{t_j}]$,
-where $t_j^*$ is the discounting time within the interval.
+where $t_j^*$ is the actuarial discount time within the interval (`time_grid + \delta_m`
+from `config.mortality_placement`; see {doc}`inspecting_cashflows` and
+{doc}`irregular_cashflows`).
 
 ### Portfolio aggregation
 
@@ -79,19 +88,25 @@ When `return_flows=True` is passed with an array of ages the method returns a
 
 This aggregate-flow path requires `config.calculation_mode` in
 `'discrete_precision'` or `'continuous_precision'`. In simplified modes,
-batch calls with `return_flows=True` raise `ValueError`.
+batch calls with `return_flows=True` raise `ValueError` (scalar simplified
+calls still return a per-policy diagnostic dict — see {doc}`inspecting_cashflows`).
 
 | Key | Type | Content |
 |---|---|---|
 | `time_grid` | `NDArray[float64]` | Union of all policy payment times, sorted ascending |
 | `expected_cf` | `NDArray[float64]` | Undiscounted aggregate expected cash flows at each grid point |
-| `pv_cf` | `NDArray[float64]` | Discounted contributions: `expected_cf * discount_factor` |
+| `pv_cf` | `NDArray[float64]` | Present-value contribution at each `time_grid` point (discounted at the actuarial discount time before aggregation; sum equals `total_pv`) |
 | `total_pv` | `float` | `np.sum(pv_cf)` — total APV / BEL / PVDBO |
 
 The **separation of `expected_cf` and `pv_cf`** is the key design decision: because
 undiscounted flows are stored independently, you can apply *any* discount curve after
 the fact — the EIOPA risk-free curve, a corporate bond yield, a government curve with
 VA/MA adjustment — without re-running the mortality calculation.
+
+When re-discounting `expected_cf` manually for **insurance** (`Ax`, …), use the
+actuarial discount time `time_grid + offset/m` from `config.mortality_placement`
+(see {doc}`inspecting_cashflows`).  **Annuity** products (`ax`, …) discount at
+payment times on `time_grid` with no placement offset.
 
 ---
 
@@ -108,7 +123,7 @@ The discount curve is external to the mortality model — Lactuca separates them
 ### Worked example: term life insurance portfolio
 
 ```python
-from lactuca import LifeTable, InterestRate
+from lactuca import LifeTable, InterestRate, config
 
 # ── Portfolio data (50 policies) ─────────────────────────────────────────────
 ages  = [35, 40, 42, 38, 55, 60, 45, 50, 48, 52,
@@ -133,10 +148,14 @@ expected_cf = flows["expected_cf"] * sum_insured   # scale: unit flows × capita
 
 # ── Step 2: apply EIOPA risk-free discount curve ─────────────────────────────
 # (Replace 0.0342 with the published flat-rate approximation or a term-structure)
-eiopa_rate  = InterestRate(0.0342)
-v_eiopa     = eiopa_rate.vn(t_grid)     # discount factors at each t_grid point
+eiopa_rate = InterestRate(0.0342)
+# Insurance discount time: time_grid + mortality-placement offset (default mid → +0.5 for m=1)
+OFFSET_MAP = {"beginning": 0.0, "mid": 0.5, "end": 1.0}
+m_ins = 1  # annual term insurance (default Ax)
+offset = OFFSET_MAP[config.mortality_placement] / m_ins
+v_eiopa = eiopa_rate.vn(t_grid + offset)
 
-bel         = expected_cf.dot(v_eiopa)
+bel = expected_cf.dot(v_eiopa)
 print(f"BEL (EIOPA @ 3.42%): {bel:,.2f}")   # illustrative
 
 # ── Step 3: BEL at technical rate (for comparison) ──────────────────────────
@@ -149,8 +168,10 @@ print(f"APV at technical rate (3.00%): {flows['total_pv'] * sum_insured:,.2f}")
 The primary API for per-policy benefit amounts is `benefits=`:
 
 ```python
+# Subset of four policies (lt and eiopa_rate from the worked example above)
+ages_subset = [35, 40, 42, 38]
 sums = [100_000, 150_000, 200_000, 80_000]
-flows = lt.Ax(ages, n=20, ir=eiopa_rate,
+flows = lt.Ax(ages_subset, n=20, ir=eiopa_rate,
               return_flows=True, benefits=sums)
 bel = flows["total_pv"]   # already weighted and discounted
 ```
@@ -162,17 +183,21 @@ For scalar BEL without per-period flows, the direct alternative is unit APV dott
 with the benefit vector:
 
 ```python
-unit_apv = lt.Ax(ages, n=20, ir=eiopa_rate)   # NDArray shape (N,)
+ages_subset = [35, 40, 42, 38]
 sums = [100_000, 150_000, 200_000, 80_000]
+unit_apv = lt.Ax(ages_subset, n=20, ir=eiopa_rate)   # NDArray shape (4,)
 bel = unit_apv @ sums
 ```
 :::
 
 :::{note}
 The two BEL values differ because the discount rate differs.  For IFRS 17 reporting,
-always apply the **EIOPA curve** (`eiopa_rate.vn(t_grid)`) rather than the pricing
-rate already embedded in the table.  The pricing rate is implicit in `total_pv`; the
-IFRS 17 BEL requires step 2 above.
+always apply the **EIOPA curve** at the actuarial discount time
+(`eiopa_rate.vn(t_grid + offset)` for insurance — see {doc}`inspecting_cashflows`
+and {ref}`payment-time-grid-options`) rather than the pricing rate already embedded
+in the table.  The pricing rate is implicit in `total_pv`; the IFRS 17 BEL requires
+step 2 above.  When only the scalar BEL is needed, prefer `benefits=` with `ir=eiopa_rate`
+so `flows["total_pv"]` is exact without manual re-discounting.
 :::
 
 ### Term-structure discount curve
@@ -183,7 +208,7 @@ rates to `InterestRate`:
 The variables `t_grid` and `expected_cf` are defined in the worked example above.
 
 ```python
-from lactuca import LifeTable, InterestRate
+from lactuca import LifeTable, InterestRate, config
 
 # ── Reproduce the shared setup ────────────────────────────────────────────────
 ages = [35, 40, 42, 38, 55, 60, 45, 50, 48, 52,
@@ -204,9 +229,12 @@ segment_rates  = [0.031, 0.033, 0.034, 0.035, 0.036, 0.036,
                   0.035, 0.034, 0.033, 0.032, 0.032]
 
 eiopa_curve = InterestRate(terms=term_lengths, rates=segment_rates)
-v_eiopa     = eiopa_curve.vn(t_grid)
+OFFSET_MAP = {"beginning": 0.0, "mid": 0.5, "end": 1.0}
+m_ins = 1
+offset = OFFSET_MAP[config.mortality_placement] / m_ins
+v_eiopa = eiopa_curve.vn(t_grid + offset)
 
-bel_curve   = expected_cf.dot(v_eiopa)
+bel_curve = expected_cf.dot(v_eiopa)
 print(f"BEL (EIOPA term structure): {bel_curve:,.2f}")
 ```
 
@@ -235,7 +263,7 @@ reg_grid = payment_times(n=20, m=12)
 
 flows_monthly = lt.Ax(ages, n=20, ir=eiopa_rate, t_output=reg_grid, return_flows=True)
 
-# total_pv is always exact (payment times are not bucketed for PV computation)
+# total_pv is always exact — each payment is discounted at its actuarial time before bucketing
 bel_monthly = flows_monthly["total_pv"] * sum_insured
 
 # expected_cf gives the bucketed flows for period-by-period reporting / roll-forward
@@ -243,14 +271,18 @@ monthly_ecf = flows_monthly["expected_cf"] * sum_insured
 ```
 
 :::{warning}
-**Timing approximation**
+**Bucketing vs. present value**
 
-When `t_output` is provided, each payment is assigned to the nearest earlier grid
-point via a bucket-accumulation algorithm.  This introduces a small timing error
-(typically sub-basis-point for monthly grids) that grows with coarser grids.
-Use the **exact union grid** (`t_output=None`, the default) for auditable BEL
-reconciliations; use `t_output` only when a fixed reporting grid is explicitly
-required by the model specification.
+When `t_output` is provided, each payment's already-discounted contribution is
+accumulated into the reporting bucket whose label is the last grid point
+≤ the exact payment time (`searchsorted` left clip).  **`flows["total_pv"]`
+and `np.sum(flows["pv_cf"])` remain exact** — present value is computed at
+each payment's actuarial discount time before bucketing.
+
+The approximation applies only if you **re-discount bucketed `expected_cf`**
+at the bucket labels with an external curve (intra-year timing is lost).  For
+auditable BEL reconciliations, use `total_pv` / `pv_cf`, or `t_output=None`
+(exact union grid) when re-discounting undiscounted `expected_cf`.
 :::
 
 :::{seealso}
@@ -262,8 +294,10 @@ re-discounting guidance, and the guarantee that `total_pv` is always exact.
 :::{tip}
 When a portfolio contains multiple product types (e.g. term insurance + pension
 annuity), applying the same `t_output=` grid to each batch call produces
-`expected_cf` arrays on a common time axis.  They can then be added element-wise
-and discounted once — one discount pass for the whole portfolio.
+`expected_cf` arrays on a common time axis.  Sum each product's `pv_cf` (exact), or
+re-discount each product's `expected_cf` at its actuarial discount time — insurance:
+`time_grid + offset/m` from `config.mortality_placement`; annuity: `time_grid` —
+then add the present values.
 
 Requires `return_flows=True` in `'discrete_precision'` or `'continuous_precision'`.
 :::
@@ -332,7 +366,7 @@ ages = [35, 40, 42, 38, 55, 60, 45, 50, 48, 52,
         36, 41, 43, 39, 56, 61, 46, 51, 49, 53]
 eiopa_rate = InterestRate(0.0342)
 
-lt_long_base   = LifeTable("PER2020_Ind_1o", "m")
+lt_long_base   = LifeTable("PER2020_Ind_1o", "m", cohort=1965)
 lt_long_stress = lt_long_base.copy()
 lt_long_stress.modify_qx({"decrement_multiplier": 0.80})  # -20% qx (Solvency II longevity stress)
 
@@ -440,7 +474,7 @@ Because `expected_cf` is independent of the discount rate, computing the bumped 
 requires only re-evaluating the discount factors — not re-running the mortality model:
 
 ```python
-from lactuca import LifeTable, InterestRate
+from lactuca import LifeTable, InterestRate, config
 
 ages = [35, 40, 42, 38, 55, 60, 45, 50, 48, 52,
         36, 41, 43, 39, 56, 61, 46, 51, 49, 53,
@@ -455,12 +489,17 @@ flows = lt.Ax(ages, n=20, return_flows=True)
 ecf    = flows["expected_cf"] * sum_insured   # scaled expected cash flows
 t_grid = flows["time_grid"]
 
+OFFSET_MAP = {"beginning": 0.0, "mid": 0.5, "end": 1.0}
+m_ins = 1
+offset = OFFSET_MAP[config.mortality_placement] / m_ins
+disc_t = t_grid + offset
+
 r0 = 0.0342
 dr = 0.0001   # 1 basis point
 
-bel_mid  = ecf.dot(InterestRate(r0       ).vn(t_grid))
-bel_up   = ecf.dot(InterestRate(r0 + dr  ).vn(t_grid))
-bel_down = ecf.dot(InterestRate(r0 - dr  ).vn(t_grid))
+bel_mid  = ecf.dot(InterestRate(r0       ).vn(disc_t))
+bel_up   = ecf.dot(InterestRate(r0 + dr  ).vn(disc_t))
+bel_down = ecf.dot(InterestRate(r0 - dr  ).vn(disc_t))
 
 dv01     = bel_down - bel_up       # DV01: change in BEL per +1bp move in rates
 dur_mod  = (bel_down - bel_up) / (2.0 * dr * bel_mid)
@@ -472,7 +511,8 @@ print(f"Modified duration: {dur_mod:.4f} years")
 
 The key efficiency: `expected_cf` is computed once from the mortality model;
 the full rate sensitivity grid is obtained by looping only over cheap
-`InterestRate(r).vn(t_grid)` evaluations.
+`InterestRate(r).vn(disc_t)` evaluations (with `disc_t = time_grid + offset` for
+insurance, as above).
 
 ### Full rate curve: multi-scenario BEL
 
@@ -480,10 +520,12 @@ The variables `ecf` and `t_grid` are defined in the interest-rate sensitivity bl
 immediately above.
 
 ```python
+import numpy as np
+
 scenarios = np.linspace(0.01, 0.06, 51)   # 1% to 6% in 10bp steps
 
 bel_by_rate = np.array([
-    ecf.dot(InterestRate(r).vn(t_grid))
+    ecf.dot(InterestRate(r).vn(disc_t))
     for r in scenarios
 ])
 # bel_by_rate[i] is the BEL at scenarios[i]
@@ -524,7 +566,7 @@ print(f"BEL sensitivity to +1% qx: {delta_bel:+,.2f}")
 |---|---|---|
 | Standard batch call `Ax` / `ax` with `ir=` | $O(K \cdot mn)$ | Mortality accumulation + discounting in one pass |
 | Multi-rate batch call `ir=[r1, r2, …]` | $O(K \cdot mn \cdot S)$ | $S$ = number of rate scenarios |
-| `return_flows=True` + re-discount `ecf.dot(vn(tg))` | $O(K \cdot mn) + S \cdot O(T)$ | Mortality run once; each extra scenario costs only $O(T)$ |
+| `return_flows=True` + re-discount `ecf.dot(vn(disc_t))` (`disc_t = tg` for annuities; `tg + offset/m` for insurance) | $O(K \cdot mn) + S \cdot O(T)$ | Mortality run once; each extra scenario costs only $O(T)$ |
 | Solvency II stress (2 tables) | $2 \times O(K \cdot mn)$ | Two independent batch calls |
 
 For a monthly portfolio of 100 000 policies with 20-year terms ($T \approx 240$,
@@ -534,6 +576,6 @@ only $O(240)$ — roughly $10^5$ times cheaper.
 
 The `return_flows=True` pattern therefore pays off when the **same portfolio** must
 be priced at many discount rates (e.g. 50-point rate curve, IAS 19 vs technical
-rate, IFRS 17 CSM unlock scenarios): compute mortality once, then loop over
-`ecf.dot(InterestRate(r).vn(tg))` at negligible marginal cost.  For one or two
+rate, external IFRS 17 CSM unlock scenarios): compute mortality once, then loop over
+`ecf.dot(InterestRate(r).vn(disc_t))` at negligible marginal cost (set `disc_t` per product type as above).  For one or two
 rates, two independent batch calls with `ir=` are simpler and equally fast.

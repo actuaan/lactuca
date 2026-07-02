@@ -18,8 +18,8 @@ For bulk portfolio work, see {ref}`bulk-portfolios` in {doc}`user_guide/using_ta
 | 3 | Monthly pension liability | `äx(x, m=12)` + benefit scaling |
 | 4 | Joint-life / last-survivor pension | vectorized `LifeTable` + inclusion–exclusion |
 | 5 | Interest-rate sensitivity | multi-scenario `InterestRate` |
-| 6 | Period vs generational mortality | `cohort=` setter |
-| 7 | Tiered benefit schedule | `payment_times` + `tiered_amounts` |
+| 6 | Period vs generational mortality | `cohort=` on generational tables |
+| 7 | Tiered benefit schedule | `payment_times` + `tiered_amounts` → `ax` + `cashflow_*` |
 | 8 | Complete expectation of life | `ex` / `ex_continuous` |
 | 9 | Portfolio liability (plain Python) | loop + cohort setter |
 | 10 | Portfolio liability (Polars) | `iter_rows` + cohort setter |
@@ -35,9 +35,15 @@ For bulk portfolio work, see {ref}`bulk-portfolios` in {doc}`user_guide/using_ta
 ## 1. Price a term life insurance
 
 Net single premium for a 20-year term life insurance on a male aged 45,
-using the PASEM2020 individual non-reinsurance table (first order) and a 3 % flat rate.
+using the PASEM2020 sector aggregate general life-risk table `NoRel` (first order) and a 3 % flat rate.
 
 $$A^1_{x:\overline{n}|} = \sum_{k=0}^{n-1} v^{k+1} \cdot {}_k p_x \cdot q_{x+k}$$
+
+:::{note}
+The classical summation above uses end-of-year discounting ($v^{k+1}$).  Lactuca's default
+`config.mortality_placement` is `"mid"` ($f=0.5$), so `lt.Ax(...)` values the benefit at
+$k+f$ unless you set `config.mortality_placement = "end"`.  See {doc}`user_guide/commutation_functions`.
+:::
 
 Pass `n=20` to {meth}`~lactuca.tables.LifeTable.Ax` for a temporary insurance; omit `n`
 for whole-life.
@@ -54,7 +60,7 @@ print(f"Term insurance APV (A^1_45:20) = {term_pv:.6f}")
 ## 2. Whole-life annuity-due
 
 Present value of a unit whole-life annuity-due for a female aged 60,
-using the PASEM2020 individual table with reinsurance (first order):
+using the PASEM2020 sector aggregate related-risk table `Rel` (first order):
 
 $$\ddot{a}_x^{(m)} = \frac{1}{m} \sum_{k=0}^{\infty} v^{k/m} \cdot {}_{k/m}p_x$$
 
@@ -113,7 +119,8 @@ print(f"Joint-life (both alive): {a_joint:.4f}")
 print(f"Last-survivor:           {a_ls:.4f}")
 ```
 
-See {doc}`user_guide/joint_life_calculations` for first-death insurances (`Axy`, `Afirst`)
+See {doc}`user_guide/joint_life_calculations` for first-death insurances
+({meth}`~lactuca.tables.LifeTable.Axy`, {meth}`~lactuca.tables.LifeTable.Afirst`)
 and other derivable joint-life formulas.
 
 ## 5. Interest rate sensitivity
@@ -206,6 +213,13 @@ amounts = tiered_amounts(times, breakpoints=[10], values=[12_000.0, 8_000.0])
 pv = lt.ax(x=65, cashflow_times=times, cashflow_amounts=amounts)
 print(f"Custom benefit PV = EUR {pv:,.2f}")
 ```
+
+:::{note}
+`cashflow_times` is supported only on **immediate (postpayable)** methods such as
+{meth}`~lactuca.tables.LifeTable.ax` and requires
+``calculation_mode='discrete_precision'`` (the default).  Omit ``n`` and keep ``m=1``
+when supplying a custom schedule.  See {doc}`user_guide/irregular_cashflows`.
+:::
 
 ## 8. Complete expectation of life
 
@@ -449,7 +463,6 @@ without a Python loop over policies. Build one `LifeTable` per unique `(sex, coh
 then pass a per-policy table list to {func}`~lactuca.functional.äx` with `benefits=`.
 
 ```python
-import numpy as np
 from lactuca import LifeTable, TableKey, GrowthRate, alb, äx
 
 VALUATION_DATE = '2026-04-09'
@@ -497,6 +510,10 @@ print(f"Total liability (batch):  {total_liability:>14,.2f}")
 ```
 
 :::{note}
+**`benefits=`.**  In batch mode, `benefits=` scales each policy's unit annuity factor by the
+annual pension (replacing the manual `pension * lt.äx(...)` from recipes 9–12).  Unit PVs are
+rounded per ``decimals.annuities`` before scaling.
+
 **Row vs column layout.**  `portfolio` is a list of row dicts (as in recipe 9) because it matches
 typical JSON/CSV records and keeps per-policy enrichment (`age`, `cohort`, `pv`) simple.
 The list comprehensions above extract parallel columns for the batch call.
@@ -615,7 +632,7 @@ for fractional `ts`, interaction with `d=`, and joint-life products.
 - {doc}`user_guide/batch_calculations` — vectorized alternative to recipes 9–12: pass an age array to a single call for 50–250× speedup
 - {doc}`user_guide/building_tables` — create custom `.ltk` files with `TableBuilder`
 - {doc}`user_guide/interest_rates_guide` — `InterestRate` construction and scenarios
-- {doc}`user_guide/joint_life_calculations` — joint-life annuities, insurances, and derivable formulas
+- {doc}`user_guide/joint_life_calculations` — joint-life annuities, first-death insurances, and derivable formulas
 - {doc}`user_guide/deferment` — deferred benefits (`d=`) and distinction from `ts`
 - {doc}`user_guide/prospective_reserve` — fractional `ts`, growth with reserves, joint-life
 - {doc}`user_guide/irregular_cashflows` — arbitrary cashflow timing

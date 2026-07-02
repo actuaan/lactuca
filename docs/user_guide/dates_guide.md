@@ -222,7 +222,7 @@ print(years_between("2020-01-01", "2024-01-01", method="exact"))    # 4.0
 
 # 3 non-leap years — methods diverge (1095 days / 365.25 < 3.0)
 print(years_between("2021-01-01", "2024-01-01", method="act_act"))  # 3.0
-print(years_between("2021-01-01", "2024-01-01", method="exact"))    # 2.9979466119096503
+print(years_between("2021-01-01", "2024-01-01", method="exact"))    # 2.9979466119096507
 ```
 
 ### `time_diff(date1, date2, *, unit='years', method=None)`

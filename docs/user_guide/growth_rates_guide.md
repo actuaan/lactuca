@@ -3,9 +3,9 @@
 This guide covers the `GrowthRate` class — how to create, configure, and use growth
 rate objects in actuarial annuity and insurance calculations.
 
-`GrowthRate` models a per-period revaluation factor applied to benefit amounts.
-Applications are not limited to escalating benefits: common uses include pension CPI
-indexation, salary-scale projections, guaranteed annual increases, and stress testing
+`GrowthRate` models benefit escalation at **policy-year anniversaries** (not each
+sub-annual payment). Applications include pension CPI indexation, salary-scale
+projections, guaranteed annual increases, and stress testing
 with alternative growth assumptions. Growth can be **geometric** (compound, default)
 or **arithmetic** (linear additive), with constant or piecewise schedules and
 multi-scenario containers — analogous to `InterestRate`.
@@ -138,7 +138,7 @@ lt.Ax(65, ir=0.03, gr=gr)
 
 The `gr=` parameter is accepted by the annuity methods `äx`, `ax` and their
 joint-life variants (`äxy`, `axy`, `äxyz`, `axyz`), and by the insurance methods
-`Ax`, `Axy`, `Axyz`. Pure endowments (`nEx`, `nExy`, `nExyz`) do not support `gr=`.
+`Ax`, `Axy`, `Axyz`, `Afirst`. Pure endowments (`nEx`, `nExy`, `nExyz`, `nEjoint`) do not support `gr=`.
 
 (growth-rate-scenarios-lifetable)=
 ### Multi-scenario `gr=` with LifeTable
@@ -194,14 +194,20 @@ For the mathematical derivation of the schedule-shifting formula, see {doc}`grow
 ## Combining growth and interest
 
 When both `gr=` and `ir=` are specified, the annuity engine compounds the growth
-factor with the discount factor for each payment. For constant geometric growth, the
-effective growth-adjusted discount factor per complete year simplifies to:
+factor with the discount factor for each payment. **For annual payments only ($m=1$)**,
+constant geometric growth gives the effective year-on-year factor:
 
 $$v_g = \frac{1 + g}{1 + i}$$
 
-For piecewise or arithmetic schedules, and for sub-annual frequency $m > 1$, the
-engine evaluates each payment individually. `GrowthRate` and `InterestRate` are
-independent objects: neither modifies the other.
+For $m > 1$, growth steps at policy anniversaries ($\lfloor j/m \rfloor$); do **not**
+substitute an equivalent flat rate $i'$ — pass `gr=` on the engine call. For piecewise
+or arithmetic schedules the engine evaluates each payment individually. `GrowthRate` and
+`InterestRate` are independent objects: neither modifies the other.
+
+:::{note}
+When $i = g$ (geometric growth), present values reduce to expected payment counts
+weighted by survival; verify numerically for your table and parameters.
+:::
 
 ## Inspecting a GrowthRate
 
@@ -443,20 +449,25 @@ For a piecewise schedule — for example, CPI-linked for 10 years, then a fixed 
 
 ```python
 gr_pw = GrowthRate(rates=[0.03, 0.02], terms=[10])   # 3% for 10 yr, 2% thereafter
-times_pw = gpt(n=15, m=1)
+times_pw = payment_times(n=15, m=1)
 amounts_pw = gr_pw.amounts(times_pw, start=500.0, m=1)
 print(round(amounts_pw[0], 2))    # 500.0  — year 1
-print(round(amounts_pw[9], 2))    # 671.96 — year 10 (500 × 1.03^9)
-print(round(amounts_pw[10], 2))   # 692.12 — year 11 (500 × 1.03^10)
-print(round(amounts_pw[11], 2))   # 705.96 — year 12 (500 × 1.03^10 × 1.02)
+print(round(amounts_pw[9], 2))    # 652.39 — year 10 (500 × 1.03^9)
+print(round(amounts_pw[10], 2))   # 671.96 — year 11 (500 × 1.03^10)
+print(round(amounts_pw[11], 2))   # 685.40 — year 12 (500 × 1.03^10 × 1.02)
 ```
 
 :::{note}
-`gr.amounts(times, start, m)` and `lt.äx(x, gr=gr)` use the **same** anniversary
-index $\lfloor k/m \rfloor$.  Passing the `amounts` vector as `cashflow_amounts=`
-to {meth}`~lactuca.LifeTable.ax` always produces the same present value as using
-`gr=` in the formula — modulo rounding, because `cashflow_amounts` bypasses the
-engine's internal growth loop and rounds at the input boundary.
+`gr.amounts(times, start, m)` and `lt.äx(x, gr=gr)` / `lt.ax(x, gr=gr)` use the **same**
+anniversary index $\lfloor k/m \rfloor$.  On a **regular annual** schedule (`m=1`),
+passing the `amounts` vector as `cashflow_amounts=` (with `gr` omitted) reproduces
+the same present value as `gr=` — modulo rounding.  For `m>1`, prefer `gr=` on the call.
+Custom amounts on the regular due grid use `cashflow_amounts=` on `äx` (not `cashflow_times`).
+Explicit `cashflow_times` requires `m=1` and immediate methods (`ax`, `axy`, …) — see
+{doc}`irregular_cashflows`.  Irregular schedules (`cashflow_times` / `cashflow_amounts`)
+require `config.calculation_mode = "discrete_precision"`. `cashflow_amounts` raises
+`ValueError` in `discrete_simplified`, `continuous_precision`, and
+`continuous_simplified` (see {doc}`life_annuities_guide` § Irregular schedules).
 :::
 
 **Batch / DataFrame usage:** `gr=` accepts a Pandas or Polars `Series` directly.

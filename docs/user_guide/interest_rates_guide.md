@@ -8,7 +8,9 @@ objects in all actuarial calculations.
 ### Constant rate
 
 A constant `InterestRate` represents a flat term structure — the same effective annual rate
-applies to all durations.
+applies to all durations.  A flat rate suits illustrations and internal models; for
+**Solvencia II / IFRS 17 BEL** work use a published risk-free **term structure** when
+required (see § EIOPA below), not a single scalar unless deliberately simplified.
 
 ```python
 from lactuca import InterestRate
@@ -93,7 +95,7 @@ ir_a.active_scenario = "base"
 ir_b.active_scenario = "stress"
 
 print(round(ir_a.vn(10), 4))   # 0.7441  (base)
-print(round(ir_b.vn(10), 4))   # 0.7014  (stress)
+print(round(ir_b.vn(10), 4))   # 0.7813  (stress)
 # ir_base is untouched
 ```
 
@@ -229,7 +231,13 @@ premiums = 1.0 / ir.ä(n=[10.0, 20.0, 30.0])
 
 **One curve per instance:** batch `ir.a()` / `ir.ä()` always discount with the
 term structure stored on that single `InterestRate` object.  You can vary `n`, `d`, `ts`,
-`m`, or `gr` per policy, but not attach a different curve per row in the same call.
+`m`, or `gr` per row when `return_flows=False`.  With `return_flows=True` in batch mode,
+heterogeneous per-policy `m` (distinct payment frequencies in one call) raises
+`ValueError`.  Scalar `m` (broadcast to all rows, e.g. `m=12`) or a uniform `m` array
+(e.g. `[12, 12]`) is accepted; both forms are equivalent.  Per-policy `gr` lists are supported: policies are
+grouped by growth rate and portfolio flows are aggregated, matching `LifeTable` batch
+behaviour.  You cannot attach a different curve per row in the same call — use per-policy
+`InterestRate` instances on `LifeTable` batch methods instead (see {doc}`batch_calculations`).
 For mortality-inclusive BEL with heterogeneous discount curves per policy, pass a
 per-policy `ir` list (or object-dtype `Series` of `InterestRate` instances) to
 `LifeTable` batch methods — see {doc}`batch_calculations` (*Broadcasting rules*).
@@ -252,7 +260,7 @@ for all four** calculation modes (`discrete_precision`, `discrete_simplified`,
 | API | Batch `return_flows=True` in simplified modes |
 |-----|-----------------------------------------------|
 | `InterestRate.a()` / `InterestRate.ä()` | Supported (all four modes) |
-| `LifeTable.ax()` / `äx()` / `Ax()` / `nEx()` (and joint-life equivalents) | `ValueError` — use a precision mode |
+| `LifeTable.ax()` / `äx()` / `Ax()` / `nEx()` (and joint-life equivalents) | **Batch:** `ValueError` in simplified modes — use a precision mode. **Scalar:** `return_flows=True` is supported (decomposition dict: Woolhouse `due`/`immediate`/`interpolated` in `discrete_simplified`, trapezoidal breakdown in `continuous_simplified`; not the portfolio aggregate `{time_grid, expected_cf, pv_cf, total_pv}`) |
 
 See {doc}`batch_calculations` — *`return_flows` requires a precision calculation mode*
 for the `LifeTable` contract and {ref}`pure-financial-annuities` for pure-financial
@@ -396,7 +404,7 @@ from lactuca import InterestRate
 ir = InterestRate(terms=[5, 5], rates=[0.02, 0.03, 0.04])
 
 # 5 yr at 2% then 2.5 yr at 3%
-print(round(ir.sn(7.5), 6))    # 1.188760
+print(round(ir.sn(7.5), 6))    # 1.188759
 # Duality: sn(n) * vn(n) == 1
 print(round(ir.sn(7.5) * ir.vn(7.5), 12))   # 1.0
 ```
@@ -592,6 +600,11 @@ ir_eiopa = InterestRate(
     rates=[0.0320, 0.0340, 0.0355, 0.0345, 0.0330, 0.0320],          # 6 rates (last applies indefinitely past yr 30)
 )
 ```
+
+:::{important}
+Validate discount factors against the official EIOPA workbook before production
+use; the segment rates above illustrate structure only.
+:::
 
 > **Tip:** If you have spot (zero-coupon) rates $s_t$ at maturities $t_1 < t_2 < \ldots$,
 > the implied forward rate for segment $[t_{k-1}, t_k]$ is:

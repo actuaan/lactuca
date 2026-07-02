@@ -1,4 +1,299 @@
-## [Unreleased]
+## [0.1.0] - 2026-07-02
+
+### Bump
+
+- Version 0.0.37 → 0.1.0
+
+
+### 📚 Documentation
+
+- Align LICENSE with CC BY carve-out and EULA reference
+
+- **ci**: Update implementation plan to rev 2.139
+
+
+## [0.0.37-test] - 2026-07-02
+
+### ✅ Testing
+
+- **tests**: Relax test_56 golden ULP tolerance for wheel_test
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.37 [test release]
+
+
+## [0.0.36-test] - 2026-07-02
+
+### ✨ Features
+
+- **utils,docs,tests**: Align cashflow utilities across code and AI docs
+
+
+### 📚 Documentation
+
+- **ai**: Add dates API to AI context pack and agent rules
+
+- **api**: Align first-death and pure-endowment terminology
+
+- **ci**: Update implementation plan to rev 2.136
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.36 [test release]
+
+
+## [0.0.35-test] - 2026-07-01
+
+### 📚 Documentation
+
+- **legal**: Set EULA and privacy headers to v1.0 for production release
+
+- **ci**: Document PyPI accounts and pre-v0.1.0 release docs
+
+- **legal**: Correct EULA and privacy effective dates to 2026-07-02
+
+- **implementation**: Update CI/CD implementation plan with latest progress and next steps
+
+
+### 🔧 CI/CD
+
+- **tests**: Fail pytest when runtime deps lag behind CI floors
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.35 [test release]
+
+
+## [0.0.34-test] - 2026-07-01
+
+### 🐛 Bug Fixes
+
+- **tables**: Replace horizontal pl.concat with insert_column
+
+
+### 🔧 CI/CD
+
+- **ci**: Avoid duplicate pytest on release push
+
+- **ci**: Disable pre-push pytest by default
+
+
+### 🧹 Miscellaneous
+
+- Bump version to 0.0.34 [test release]
+
+
+## [0.0.33-test] - 2026-07-01
+
+### ♻️ Refactoring
+
+- **notebooks**: Update pycactus_legacy notebook to use new LifeTable and config imports
+
+- **_activation,api**: Remove redundant gate from functional.ax
+
+
+### ⚡ Performance
+
+- **helpers**: Use Series.to_numpy fast path in _as_f64_safe
+
+
+### ✅ Testing
+
+- **tests**: Fix wheel CI failures for dates and Swiss tables
+
+- **tests**: Numerical unisex blend vectorial coverage
+
+- **tests**: Add section 75 piecewise IR+GR scalar-batch identity
+
+- **tests**: Consolidate test_45 batch scalar identity with shared helpers
+
+- **tests**: Suite hygiene, renumber duplicates, batch boundaries
+
+- **tests**: Drop batch identity duplicates in test_41 and test_42
+
+- **tests**: Drop n-life identity duplicates in test_38
+
+- **tests**: Drop identity duplicates in test_41 and test_42
+
+- **tests**: Migrate test_46 fractional n to test_45 §76–77
+
+- **tests**: Extend functional multitable identity and trim test_46 §30
+
+- **tests**: Extend OOP N-life identity in test_45 §17 and §51
+
+- **tests**: Slow tier, batch helpers, and megafile splits (P1-P4)
+
+- **tests**: Resolve wheel_test blockers for dates and SOA policy
+
+- **tests**: Split pytest plugin modules to silence assert rewrite warnings
+
+- **tests**: Complete ex_curtate select and stub coverage
+
+- **tests**: Fix test_07 imports and add ex_curtate stub
+
+- **tests**: Extend 9.D audit coverage for config, functional, and growth
+
+- **tests**: Drop invalid ax immediate adjusted-rate equivalence
+
+
+### ✨ Features
+
+- **scripts**: Add one-shot script to append re-auditoría docstrings to IMPL journals
+
+- **tables**: Unisex_blend zip broadcast and cartesian fifth axis
+
+- **ir,tests**: Allow het gr with return_flows in batch a()/ä()
+
+- **life,api**: Add ex_curtate for curtate life expectancy e_x
+
+
+### 🐛 Bug Fixes
+
+- **config**: Clarify discrete_simplified insurance docstring
+
+- **config**: Correct decimals comments and Cx docstring
+
+- **helpers**: Accept polars int Series in _as_f64_safe
+
+- **engine,config**: Correct continuous_simplified insurance docstrings
+
+- **engine,helpers,tables**: Repair docstring doctests
+
+- **scripts**: Use tomllib.load for binary pyproject.toml
+
+
+### 📚 Documentation
+
+- **tables**: Align table class docstrings with vectorial constructor
+
+- **api**: Scrub private symbols from docstrings post-eec58d6
+
+- **docs**: Vectorial tables guide and errors reference
+
+- **docs**: Close full source fidelity audit (59/59)
+
+- **docs**: Apply full re-audit fidelity fixes (12 pages)
+
+- **docs**: Apply 2026-06-27 full audit fixes (9 pages)
+
+- **docs**: Close 2026-06-27 focus audit run log
+
+- **docs**: Apply 2026-06-27 repeat full audit (20 fixes)
+
+- **config,engine**: Clarify mortality_placement and lx interpolation scope
+
+- **docs**: Clarify batch m/gr return_flows rules in interest_rates_guide
+
+- **docs**: Apply audit run r3 fixes (13 pages)
+
+- **citing**: Specify version source in citation guidance
+
+- **docs**: Apply audit run r4 fixes (5 pages)
+
+- **docs**: Apply audit run r5 fixes (8 pages)
+
+- **tests**: Refresh pytest paths after megafile splits
+
+- **docs**: Align guides and errors ref after full audit run
+
+- **docs**: Full audit repeat #2 and UDD endowment docstrings
+
+- **docs**: Add AI assistant guide and core context pack
+
+- **docs**: Add AI context templates and doc cross-links
+
+- **docs**: Add AI batch context module
+
+- **docs**: Add llms.txt agent index
+
+- **docs**: Add validate_ai_context script and CI hooks
+
+- **docs**: Record AI context implantation in audit plans
+
+- **docs**: Wire AI context into audit skill and sphinx rule
+
+- **docs**: Force download of AI context pack links
+
+- **docs**: Full audit run #3 and life.py docstring fixes
+
+- **docs,life**: Audit run r4 and cashflow docstring fixes
+
+- **docs**: Full documentation audit run r5 — 0 fixes
+
+- **audit**: Close actuarial IMPORTANT gaps #1-2-4-9-11
+
+- **my_docs**: Link audit #10 to BACKLOG IR-* and add ex_curtate plan
+
+- **docs**: Document decimals.ex for ex, ex_curtate, ex_continuous
+
+- **my_docs**: Update IMPL_ex_curtate closure registry to be840d4
+
+- **audit**: Close 9.D skill checklists and batch contract reference
+
+- **engine,tables,config**: Clarify precision and ex_curtate signatures
+
+- **my_docs**: Record 9.D-18 closure in CI/CD plan rev. 2.129
+
+- **docs**: Apply actuarial coherence fixes from audit run r6
+
+- **docs**: Apply audit r6 suggestion clarifications
+
+- **docs**: Fix generational table examples in AI context pack
+
+- **my_docs**: Record ec36075 in audit run r6 log
+
+- **docs**: Align AI context pack with cashflow and joint-life API
+
+- **docs**: Apply audit run r7 documentation fixes
+
+- **docs**: Align AI context pack with audit findings
+
+- **docs**: Apply audit run r8 documentation fixes
+
+- **docs**: Tighten end-user AI context pack after audit
+
+- **docs**: Apply full audit run #9 documentation fixes
+
+- **docs**: Clarify ir.copy and decimals in AI context pack
+
+- **docs**: Apply full audit run #10 documentation fixes
+
+- **docs**: Apply full audit run #11 documentation fixes
+
+- **docs**: Apply full audit run #12 documentation fixes
+
+- **docs**: Apply full audit run #13 documentation fixes
+
+- **docs**: Apply audit r14 follow-up documentation fixes
+
+- **docs**: Record full audit run #14 trail
+
+- **docs**: Fix user guide snippets found by execution audit
+
+- **docs**: Update implementation plan with latest audit results and CI/CD status
+
+- **docs**: Update implementation plan with latest CI/CD progress and audit results
+
+
+### 🔧 CI/CD
+
+- Remove sync-public push trigger
+
+- **docs**: Build Sphinx from source tree without license key
+
+
+### 🧹 Miscellaneous
+
+- **scripts**: Auto-sync compatible_with_docs on version bump
+
+- Bump version to 0.0.33 [test release]
+
+
+## [0.0.32-test] - 2026-06-24
 
 ### ♻️ Refactoring
 
@@ -50,6 +345,8 @@
 ### 🧹 Miscellaneous
 
 - **scripts**: Note test_56 and test_57 in pre-push hook comment
+
+- Bump version to 0.0.32 [test release]
 
 
 ## [dry-batch-baseline-v1] - 2026-06-23

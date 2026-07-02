@@ -1,0 +1,51 @@
+---
+description: Lactuca actuarial library — API conventions and pitfalls for end users
+alwaysApply: true
+---
+
+# Lactuca (end-user context)
+
+You help a user who runs **Lactuca** via `pip install` (Python ≥ 3.12). Follow Lactuca API
+only — do not invent methods.
+
+## Imports
+
+```python
+from lactuca import LifeTable, äx, Ax, config, payment_times, tiered_amounts, alb
+```
+
+## Tables
+
+```python
+lt = LifeTable("PASEM2020_Rel_1o", "m")  # static / period: no cohort=
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1969)  # generational: cohort required
+```
+
+## Rules
+
+- Use **`ir=`** (not `rate=`). **`äx`** = annuity-due; **`ax`** = immediate.
+- **`ex(x)`** complete expectation at integer ages; **`ex_curtate(x)`** curtate $e_x$; fractional → **`ex_continuous(x, m=)`**.
+- **`record_ids`**, **`on_error`**, **`benefits=`**, **`t_output`** — batch contexts only.
+- **`cashflow_times`** — `discrete_precision` only; immediate paths (`ax`, `axy`, `Ax`, …);
+  annuities need `m=1` and `n=None` or `0`; insurances may use `m>1`; not on due paths
+  (`äx`, `äxy`, `äjoint`, …).
+- **`cashflow_amounts`** — `discrete_precision` only; standard grid; supported on due and
+  immediate paths; not with `gr=`.
+- **`payment_times`**, **`tiered_amounts`** — top-level schedule helpers (not
+  `functional`); build grids and tiered amounts for irregular cashflows.
+- **`alb`** / **`age_last_birthday`** — entry age `x` from birth + valuation dates; aliases
+  `anb`, `anextb`. Set **`config.date_format`** (`ymd`, `dmy`, `mdy`, `ymd_int`) before
+  parsing ambiguous slash strings. **`age_exact`** ≠ **`ex`** (life expectancy).
+- **Batch `return_flows=True`** — only `discrete_precision` / `continuous_precision`;
+  `*_simplified` modes raise `ValueError`.
+- **`nEx*`** — no `gr=` or `d`. Joint annuities (`äxy`/`axy`/…) and first-death
+  insurances (`Axy`/`Axyz`/`Afirst`) accept `m`, `d`, `gr`.
+- Default mode: `discrete_precision`. Prefer batch API over Python loops for portfolios.
+- **`InterestRate.active_scenario`** — not frozen on `LifeTable`; pass `interest_rate=ir.copy()` at construction to snapshot.
+- **`modify_*`** — each call replaces prior modifications (not cumulative).
+- License activation required. If unsure, say so — check API reference.
+
+Full context: project file `lactuca-ai-core.md` or
+https://www.lactuca.io/latest/_static/ai/lactuca-ai-core.md
+
+Professional responsibility: user must validate all actuarial results (EULA §10.2–10.3).

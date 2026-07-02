@@ -1,8 +1,11 @@
 # Functional API
 
-Lactuca provides a functional API that mirrors the object-oriented interface. Every actuarial
-calculation method available on `LifeTable`, `DisabilityTable`, and `ExitTable` has an
-equivalent module-level function. All functional symbols are re-exported from the top-level
+Lactuca provides a functional API that mirrors the object-oriented interface. Shared
+probability functions (`lx`, `px`, `tpx`, `tqx`, `dx`, plus `qx` / `ix` / `ox` where
+applicable) delegate to `LifeTable`, `DisabilityTable`, or `ExitTable`. Life-contingency
+products (annuities, insurances, endowments, commutation functions, and multi-life
+methods — joint-life annuities and first-death insurances)
+are implemented on `LifeTable` only. All functional symbols are re-exported from the top-level
 `lactuca` package —
 `from lactuca import ax` is the canonical form; `from lactuca.functional import ax` is
 equally valid. Both styles delegate to the same underlying implementation.
@@ -26,6 +29,10 @@ print(value)   # 8.0767
 
 The functional form takes the table as its first positional argument. All remaining
 parameters are identical to the corresponding method signature.
+
+Timing, reserve, batch, and flow inspection kwargs (`ts`, `d`, `benefits`, `return_flows`,
+`t_output`, `on_error`, `record_ids`) follow the same rules as the OOP methods — see
+{doc}`batch_calculations` and {doc}`inspecting_cashflows`.
 
 ## Common parameters
 
@@ -69,8 +76,8 @@ all subsequent calls to that function family:
 from lactuca import config
 
 config.decimals.annuities  = 4   # ax, äx, axy, ajoint, äjoint, …
-config.decimals.insurances = 4   # Ax, Axy, Afirst, nEx, nExy, nEjoint, …
-config.decimals.ex         = 4   # ex, ex_continuous
+config.decimals.insurances = 4   # Ax, Axy, Afirst, nEx, nExy, nExyz, nEjoint, …
+config.decimals.ex         = 4   # ex, ex_curtate, ex_continuous
 config.decimals.Lx         = 4   # Lx, Lx_continuous
 config.decimals.Tx         = 2   # Tx, Tx_continuous
 config.decimals.Dx         = 4   # Dx  (each commutation function has its own field:
@@ -161,12 +168,13 @@ UDD approximation). `ex_continuous` uses trapezoidal numerical integration and r
 **fractional** (non-integer) starting age — see {doc}`numerical_precision` for details:
 
 ```python
-from lactuca import LifeTable, ex, ex_continuous, config
+from lactuca import LifeTable, ex, ex_curtate, ex_continuous, config
 
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 config.decimals.ex = 4
 
-print(ex(lt, 65))                        # 22.1308
+print(ex(lt, 65))                        # 22.1308  (complete)
+print(ex_curtate(lt, 65))                # curtate e_65 (rounded with decimals.ex)
 print(ex_continuous(lt, 65.5))           # 21.7186
 print(ex_continuous(lt, 65.5, m=52))     # 21.7186  (finer grid, same result)
 ```
@@ -229,7 +237,7 @@ config.decimals.Mx = 4
 print(Dx(lt, 65))     # 134142.8681
 print(Nx(lt, 65))     # 2158347.9610
 print(Cx(lt, 65))     # 1056.526809
-print(Mx(lt, 65))     # 72339.6391
+print(Mx(lt, 65))     # 72339.639094  (rounded with max(decimals.Cx, decimals.Mx))
 ```
 
 ## Multi-life functions (`LifeTable` only)
@@ -358,16 +366,22 @@ print(nEjoint([ltx, lty], ages=[65, 62], n=10))   # 0.6308
 
 ## Inspecting payment flows (`return_flows`)
 
-All annuity and insurance functions accept `return_flows=True` to return a per-period
-breakdown instead of a scalar present value.
-See {doc}`inspecting_cashflows` for the full key reference and worked examples.
+Annuity and insurance functions accept `return_flows=True`.  With **scalar** inputs the
+result is the per-payment engine dict documented in {doc}`inspecting_cashflows`.  With
+**batch** inputs (array `x` or array `ages`) the result is the compact portfolio dict
+(`time_grid`, `expected_cf`, `pv_cf`, `total_pv`) documented in {doc}`batch_calculations`.
 
-In batch mode (array `x`), `return_flows=True` aggregates expected cash flows across all
-policies.  Pass `benefits=sums_insured` (shape `(N,)`) to weight each policy's contribution
-by its sum insured or pension amount — the returned `total_pv` is then the portfolio BEL or
-PVDBO directly when `return_flows=True` is used in a precision mode.  With
-`return_flows=False`, `benefits=` remains available in all modes as a per-policy scaling
-factor.
+Multi-life methods — joint-life annuities (`axy`, `äxy`, `ajoint`, `äjoint`, `axyz`,
+`äxyz`), first-death insurances (`Axy`, `Axyz`, `Afirst`), and joint pure endowments
+(`nExy`, `nExyz`, `nEjoint`) — follow the same scalar-vs-batch rule.  Batch
+`return_flows=True` requires
+`calculation_mode='discrete_precision'` or `'continuous_precision'`; simplified modes
+raise `ValueError` in batch.
+
+Pass `benefits=sums_insured` (shape `(N,)`) in **batch mode** to weight each policy's
+contribution by its sum insured or pension amount — the returned `total_pv` is then the
+portfolio BEL or PVDBO directly.  With `return_flows=False`, `benefits=` scales per-policy
+unit PVs in batch (all four calculation modes); **scalar calls raise `ValueError`**.
 
 ---
 
@@ -423,6 +437,7 @@ batch, `return_flows=True` for BEL calculations, and performance notes.
 | `ix` | `table.ix(x, m)` | `DisabilityTable` only |
 | `ox` | `table.ox(x, m)` | `ExitTable` only |
 | `ex` | `table.ex(x)` | `LifeTable` |
+| `ex_curtate` | `table.ex_curtate(x)` | `LifeTable` |
 | `ex_continuous` | `table.ex_continuous(x, m=)` | `LifeTable` |
 | `Lx`, `Tx` | `table.Lx(x)`, `table.Tx(x)` | `LifeTable` |
 | `Lx_continuous`, `Tx_continuous` | `table.Lx_continuous(x, m=)`, `table.Tx_continuous(x, m=)` | `LifeTable` |
@@ -441,6 +456,10 @@ batch, `return_flows=True` for BEL calculations, and performance notes.
 | `nExy` | `table.nExy(…)` | `LifeTable` |
 | `nExyz` | `table.nExyz(…)` | `LifeTable` |
 | `nEjoint` | `table.nEjoint(…)` | `LifeTable` |
+
+`payment_times` and `tiered_amounts` are exported from the top-level `lactuca` package
+({func}`lactuca.payment_times`, {func}`lactuca.tiered_amounts`) — schedule helpers, not
+functional wrappers of table methods.
 
 **DataFrame workflow:** all per-policy parameters (`x`/`ages`, `n`, `ir`, `d`, `ts`, `m`, `gr`,
 `benefits`) accept Pandas and Polars `Series` directly.  A numeric `ir`/`gr` Series is

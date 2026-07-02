@@ -27,7 +27,22 @@ the first element of `cashflow_times`; see [below](#due-via-explicit-times).
 | `cashflow_times` | sequence of `float` | Payment times in years from valuation date |
 | `cashflow_amounts` | sequence of `float` | Payment amounts at each time |
 
-Both arrays must have the same length.  **Times must be non-negative and strictly
+When **both** `cashflow_times` and `cashflow_amounts` are supplied, the two sequences
+must have the same length.  When only `cashflow_amounts` is used (standard grid from `m`
+and `n`), its length must equal the scheduled payment count for that grid — see
+{doc}`last_payment_adjustment`.
+
+:::{note}
+**Batch mode — shared schedules**
+
+`cashflow_times` and `cashflow_amounts` are **shared** across all policies in a batch
+call: one payment grid and one amount vector apply to every policy simultaneously.
+They are **not** per-policy arrays. To apply different benefit amounts per policy,
+pass `benefits=` (unit schedule × per-policy weight) or scale the returned unit APV.
+See {doc}`batch_calculations`.
+:::
+
+**Times must be non-negative and strictly
 ascending (no duplicates).**  **Amounts must be strictly positive (> 0).**
 
 ## How it works
@@ -45,17 +60,20 @@ where $c_k$ is `cashflow_amounts[k]`, $v^{t_k}$ is the discount factor from the
 | Condition | Behaviour |
 |-----------|-----------|
 | `calculation_mode != "discrete_precision"` | `ValueError` — `cashflow_times` requires `discrete_precision` |
-| `m != 1` | `ValueError` — payment frequency must be 1 when explicit times are provided |
-| `n > 0` | `ValueError` — `n` must be `None` (or 0) when explicit times are provided |
+| `m != 1` (immediate **annuity** methods: `ax`, `axy`, `axyz`, `ajoint`) | `ValueError` — payment frequency must be 1 when explicit times are provided |
+| `m != 1` (**insurance** methods: `Ax`, `Axy`, `Axyz`, `Afirst` with `cashflow_times`) | Allowed — `m` sets sub-annual mortality granularity; misaligned times emit `UserWarning`, not `ValueError` |
+| `n > 0` (positive finite term) | `ValueError` — `n` must be `None` or `0` when explicit times are provided |
 | `cashflow_amounts` in continuous modes | `ValueError` — not supported |
+| `calculation_mode != 'discrete_precision'` (when `cashflow_amounts` is provided) | `ValueError` — custom `cashflow_amounts` requires `discrete_precision` |
 | Unsorted or duplicate times | `ValueError` |
 | Any amount ≤ 0 | `ValueError` — amounts must be strictly positive |
 
 :::{note}
 `cashflow_amounts` can also be provided **without** `cashflow_times` to apply custom
-per-payment amounts to a *regular* schedule (defined by `m` and `n`).  In that case
-`m` can be any supported payment frequency (1, 2, 3, 4, 6, 12, 14, 24, 26, 52, or 365) and the array length must match the number of scheduled payments
-$\lfloor n \cdot m \rfloor$.  Passing `cashflow_amounts` together with `gr=` raises a
+per-payment amounts to a *regular* schedule (defined by `m` and `n`).  Only
+`calculation_mode='discrete_precision'` supports `cashflow_amounts`; `discrete_simplified`,
+`continuous_precision`, and `continuous_simplified` raise `ValueError`.  In that case
+`m` can be any supported payment frequency (1, 2, 3, 4, 6, 12, 14, 24, 26, 52, or 365) and the array length must match the number of scheduled payments on the standard grid — $\lfloor n \cdot m \rfloor$ when $n \cdot m$ is an integer, otherwise $\lfloor n \cdot m \rfloor + 1$ (see {doc}`last_payment_adjustment`).  Passing `cashflow_amounts` together with `gr=` raises a
 `ValueError` — they are mutually exclusive; pass `gr=None` when using `cashflow_amounts`.
 :::
 
@@ -186,9 +204,11 @@ To keep the public API consistent with standard actuarial terminology:
 
 ## Interaction with `m` and `n`
 
-When `cashflow_times` is supplied, passing `m != 1` or `n > 0` raises a `ValueError`
-immediately — these parameters are not silently ignored.  The payment schedule is
-entirely determined by `cashflow_times`, so no frequency or duration hint is needed.
+When `cashflow_times` is supplied, passing `n > 0` raises a `ValueError` immediately
+(the schedule replaces the term). For **immediate annuity** methods (`ax`, `axy`, …),
+`m != 1` also raises `ValueError`. **Insurance** methods (`Ax`, `Axy`, …) allow `m > 1`
+for sub-annual mortality granularity; see [Interaction with `m` and mortality placement](#interaction-with-m-and-mortality-placement) below.
+The payment schedule is entirely determined by `cashflow_times`, so no duration hint is needed.
 
 Use `cashflow_times=None` (the default) together with `m` and `n` for all standard
 uniform-payment scenarios.
@@ -207,8 +227,9 @@ applies to **single-life** batch (`ax`, `Ax`, …) as well as scalar calls whene
 `calculation_mode='discrete_precision'`.
 
 In **multi-life** batch with `calculation_mode='discrete_precision'`, the same
-vectorisation applies to products that accept `cashflow_times` (`axy`, `axyz`,
-`ajoint`, `Axy`, `Axyz`, `Afirst`): one shared schedule is priced for *N* policies
+vectorisation applies to products that accept `cashflow_times` — joint-life annuities
+(`axy`, `axyz`, `ajoint`) and first-death insurances (`Axy`, `Axyz`, `Afirst`): one
+shared schedule is priced for *N* policies
 in a single vectorised kernel, not *N* serial scalar calls.  Other calculation modes
 still loop policy-by-policy.  Per-policy **different** schedules are not supported in
 one call — group by product type as in {doc}`batch_calculations`.
@@ -217,7 +238,7 @@ one call — group by product type as in {doc}`batch_calculations`.
 
 When `cashflow_times` is *not* supplied, you can still pass `cashflow_amounts` to
 override per-payment amounts on a **standard uniform grid** (defined by `m` and `n`).
-The array length must equal $\lfloor n \cdot m \rfloor$.  All standard values of `m`
+The array length must match the scheduled payment count for the given `n` and `m` — same rule as above ($\lfloor n \cdot m \rfloor$, or $+1$ when $n \cdot m$ is not an integer).  All standard values of `m`
 are allowed, and `n` must be positive.  Passing `cashflow_amounts` together with `gr=`
 raises a `ValueError` — they are mutually exclusive; pass `gr=None` when using
 `cashflow_amounts`.
@@ -246,8 +267,9 @@ print(round(pv, 4))   # 22.6638
 ```
 
 The same interface works for due (prepayable) annuities.  The array must cover the
-prepayable grid: $k = 0, 1, \ldots, \lfloor n \cdot m \rfloor - 1$,
-so the length is still $\lfloor n \cdot m \rfloor$:
+prepayable grid ($k = 0, 1, \ldots$ through the last scheduled payment); the length
+matches the immediate case above — not $\lfloor n \cdot m \rfloor$ alone when $n \cdot m$
+is fractional:
 
 ```python
 from lactuca import LifeTable
@@ -262,7 +284,7 @@ amounts = [1.0, 1.0, 1.1, 1.1,   # year 1 (payments at t = 0, 0.25, 0.5, 0.75)
            1.4, 1.4, 1.5, 1.5]   # year 5
 
 pv = lt.äx(60, n=5, m=4, cashflow_amounts=amounts)
-print(round(pv, 4))
+print(round(pv, 4))   # 22.8686
 ```
 
 ## Generating payment schedules with `payment_times`
@@ -341,18 +363,20 @@ parameters require ``calculation_mode='discrete_precision'``.
 When benefits escalate or vary by policy year — for example, a decreasing-term
 insurance or a mortgage-linked policy — pass `cashflow_amounts` as a per-period array.
 
-The present value formula with a variable sum assured $b_k$ is:
+The present value formula with a variable sum assured $b_k$ on the uniform $m$-thly grid is:
 
-$$A = \sum_{k=1}^{n m} b_k \cdot v^{k/m} \cdot {}_{(k-1)/m}p_x \cdot q^{(k)}_x$$
+$$A = \sum_k b_k \cdot v^{t_k + \delta_m} \cdot {}_{t_k}p_x \cdot {}_{\Delta_k}q_{x+t_k}$$
 
-where $q^{(k)}_x$ is the probability of dying in period $k$ and $b_k$ is the
-corresponding benefit amount.
+where $t_k = (k-1)/m + d$ is the interval start (deferment $d$), $\delta_m \in \{0,\,1/(2m),\,1/m\}$
+from `config.mortality_placement`, and ${}_{\Delta_k}q$ is the death probability in
+$(t_k,\, t_k + 1/m]$.  With explicit `cashflow_times`, the engine discounts at each
+supplied time plus $d$ and $\delta_m$ (see {doc}`inspecting_cashflows`).
 
 Restrictions mirror those for annuities:
 
 | Condition | Behaviour |
 |-----------|-----------|
-| Length of `cashflow_amounts` ≠ $n \cdot m$ | `ValueError` |
+| Length of `cashflow_amounts` ≠ scheduled payment count | `ValueError` |
 | Any amount ≤ 0 | `ValueError` |
 | `cashflow_amounts` with `gr` | `ValueError` — mutually exclusive |
 | `calculation_mode != 'discrete_precision'` | `ValueError` |
@@ -388,15 +412,15 @@ print(flows["present_value"].sum())   # equals the scalar PV above
 For non-standard benefit structures — where the payment moment is not uniformly
 spaced (e.g., a lump sum payable only at specific anniversaries) — pass
 `cashflow_times` as an explicit array of payment moments.  The engine computes the
-probability of death during each interval and discounts the benefit to the supplied
-payment time.
+probability of death during each interval and discounts the benefit at
+`cashflow_times + d + δ_m` (deferment $d$ and `mortality_placement` offset).
 
 Restrictions:
 
 | Condition | Behaviour |
 |-----------|-----------|
-| `m != 1` when `cashflow_times` is provided | `ValueError` |
-| `n > 0` when `cashflow_times` is provided | `ValueError` — use `n=None` |
+| `m != 1` when `cashflow_times` is provided | Allowed — controls mortality sub-period width; emits `UserWarning` if times are not aligned with `1/m` |
+| `n > 0` when `cashflow_times` is provided | `ValueError` — use `n=None` or `n=0` |
 | `cashflow_times` unsorted or with duplicates | `ValueError` |
 | Any amount ≤ 0 | `ValueError` |
 | `calculation_mode != 'discrete_precision'` | `ValueError` |
@@ -416,6 +440,7 @@ pv = lt.Ax(40, cashflow_times=times, cashflow_amounts=amounts)
 print(round(pv, 2))
 ```
 
+(interaction-with-m-and-mortality-placement)=
 ### Interaction with `m` and mortality placement
 
 When `cashflow_times` is provided to an insurance function, `m` controls the
@@ -428,6 +453,7 @@ Pass `m=1` (the default) unless you need sub-annual mortality granularity.
 ## See also
 
 - {func}`lactuca.payment_times` — helper for building payment schedules
+- {func}`lactuca.tiered_amounts` — step-up / step-down amounts per payment time
 - {doc}`last_payment_adjustment` — alignment of regular grids when $n$ is not a multiple of $1/m$
 - {doc}`inspecting_cashflows` — `return_flows=True` key reference
 - {doc}`notation_glossary` — $a$, $v$, ${}_{t}p_x$ definitions

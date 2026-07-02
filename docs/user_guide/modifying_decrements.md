@@ -4,27 +4,6 @@ Lactuca lets you apply actuarial adjustments to any decrement table without relo
 underlying `.ltk` file. The adjustment system is uniform across all table types: one method call,
 one dict, six possible keys.
 
-
-### `table_combination` — competing risks
-
-Combines decrement arrays with the **product formula** $q = 1 - \prod_i (1 - q_i)$
-for **independent competing risks** (default). Optional `combination_mode="udd"`
-declares the UDD multiple-decrement assumption; v1 stores the same collapsed total
-$q_x^{\mathrm{comb}}$ for two or three causes (associated singles $q'^{(j)}$ are not
-returned). Pairwise sums $q_1 + q_2$ may exceed 1 while the combined probability
-remains valid (e.g. $0.6$ and $0.6$ → $0.84$). Validation rejects only the
-**combined** probability above 1 (numerical tolerance).
-
-Array index $i$ is **integer age** $x = i$ (see {ref}`table-combination-age-alignment` below).
-The same combined $q_x$ feeds all four calculation modes (`discrete_precision`,
-`discrete_simplified`, `continuous_precision`, `continuous_simplified`). Modes differ in
-how present values are computed, not in the underlying decrement table. All four modes remain
-**actuarially coherent** (same product and conventions) but are **not** required to yield
-numerically identical results — see {ref}`actuarial-coherence-of-modes` in
-{doc}`calculation_modes`.
-
-Optional sibling key **`combination_mode`** (`"independent"` default, or `"udd"`) declares the actuarial assumption when combining tables; see {ref}`combination-mode` below.
-
 ## Method names per table type
 
 Each table class exposes a method named after its own rate symbol:
@@ -206,7 +185,9 @@ lt.modify_qx({"decrement_multiplier": factors})
 
 - **Scalar**: any positive `int`, `float`, or NumPy scalar.
 - **Array**: list, tuple, or `ndarray` of positive finite values, length equal to the
-  current rate array (`lt.w + 1`, which decreases after an `age_shift`).
+  working rate array at that step. On an unmodified table that is `lt.w + 1`; when an
+  earlier key in the **same** dict already applied `age_shift` of `n`, use length
+  `lt.omega - n + 1` (pre-call `lt.w + 1` is too long).
 - Values are clipped to 1 at the final safety step; intermediate maxima above $10^6$
   are rejected as likely input errors.
 
@@ -257,7 +238,7 @@ lt.modify_qx({"aggravated_risk": 1.2})   # lightly impaired
 ```
 
 `aggravated_risk` accepts any positive numeric scalar (`int`, `float`, or NumPy numeric), up to
-$100$. Values above 100 are rejected as likely input errors.
+$100$. Values above 100 raise `ValueError`: `"aggravated_risk factor is unrealistically large"`.
 
 ---
 
@@ -329,7 +310,7 @@ This is the exact result for independent decrements and avoids any intermediate 
 **Argument forms** — all three are equivalent for a single extra table:
 
 ```python
-# Single DecrementTable
+# Single other table (e.g. ExitTable)
 lt.modify_qx({"table_combination": et})
 
 # List (use this when combining with more than one table)
@@ -475,7 +456,7 @@ table that forces exit before the host’s natural $\omega$.
 | Different `sex` | |
 | Both cohorts set and differ | Period (`cohort=None`) combines freely |
 | Both numeric `duration` and differ | `"ult"` / `None` combines freely |
-| `len(other._decrement) ≠ len(other._decrement_base)` | *Other* table shortened (often by `age_shift` on that table) — apply `age_shift` on the table you are modifying instead |
+| Other table's active decrement vector shorter than its file-loaded length | *Other* table shortened (often by `age_shift` on that table) — apply `age_shift` on the table you are modifying instead |
 | Positive rates in *other* padding below `start_age` | Cannot align by age index |
 | Positive rates in *host* padding below `start_age` | Cannot align by age index (includes partial `age_shift`: calendar ages `[n, start_age)` must be zero when `age_shift=n`) |
 | Host or other rate outside $[0, 1]$ before combine | Invalid input — raised instead of silent clip |
@@ -494,10 +475,10 @@ modifying, use `{"age_shift": x, "table_combination": other}` on **that** table
 **Beyond-$\omega$ API vs combination.** For an *other* table shorter than the
 table you are modifying, the public accessor `other.ix(age)` / `other.ox(age)` may
 return `1.0` when `age` exceeds that table’s $\omega$ (standard beyond-$\omega$
-convention). **Combination does not use that value:** it reads `other._decrement`
-and treats ages above the *other* $\omega$ as **implicit** $q_{\text{other}} = 0$.
-When validating by hand, use aligned base-array values, not beyond-$\omega$ API
-returns. Example: `DummySD2015` has $\omega = 65$; at age 75, `dt.ix(75)` is `1.0`
+convention). **Combination does not use that value:** it uses the other table's **internal aligned decrement array**,
+treating ages above the *other* $\omega$ as **implicit** $q_{\text{other}} = 0$.
+When validating by hand, compare full decrement arrays (`qx(None)` / `ix(None)` / `ox(None)`)
+at aligned indices — not beyond-$\omega$ single-age API returns. Example: `DummySD2015` has $\omega = 65$; at age 75, `dt.ix(75)` is `1.0`
 but combination uses $i_{75} = 0$, so `lt.qx(75)` equals life mortality only.
 
 **Partial MDDT support (v1).** `table_combination` with
@@ -520,12 +501,13 @@ decrements in the same policy year** (competing risks on the active population).
 This is standard for simplified active-member tables; it is **not** a multi-state
 Markov model (no disabled-state recovery, no separate disabled-life mortality path).
 
-**Data source.** Combination reads each `other._decrement` (the **active** float64
-vector on that table instance), not `other._decrement_base`. If the other table was
-previously modified (e.g. `et.modify_ox({"decrement_multiplier": 1.1})`), those
-adjusted rates are combined. For file/base rates, call `other.reset_modifications()`
-or pass a fresh instance. Combination does **not** use the public `qx()` / `ix()` /
-`ox()` accessors (rounded; beyond-$\omega$ returns may differ from alignment).
+**Data source.** Combination merges each other table's **current** decrement array —
+including any prior `modify_*` on that instance — not the rates loaded from the `.ltk` file
+before modification. If the other table was previously modified (e.g.
+`et.modify_ox({"decrement_multiplier": 1.1})`), those adjusted rates are combined.
+For file/base rates, call `other.reset_modifications()` or pass a fresh instance.
+Alignment reads internal arrays directly, not the rounded public `qx()` / `ix()` / `ox()`
+accessors (beyond-$\omega$ API returns may differ from alignment).
 
 #### Single-table combination example
 
@@ -576,7 +558,6 @@ combined $q_x = 1$ and truncate the result there.
 
 ```python
 from lactuca import LifeTable, DisabilityTable, ExitTable
-import pytest
 
 lt = LifeTable("PASEM2020_Rel_1o", "m")
 et = ExitTable("DummyEXIT", "m")
@@ -619,7 +600,6 @@ et = ExitTable("DummyEXIT", "m")
 
 lt.modify_qx({
     "age_shift": 2,
-    "decrement_multiplier": 1.05,
     "table_combination": et,
 })
 ```

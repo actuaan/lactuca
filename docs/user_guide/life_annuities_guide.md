@@ -68,7 +68,7 @@ $$
 | `n` | `float \| None` | `None` | Term in years; `None` = whole life |
 | `m` | `int` | `1` | Payment frequency per year (1, 2, 3, 4, 6, 12, 14, 24, 26, 52, 365) |
 | `d` | `float` | `0.0` | Deferment period in years |
-| `ts` | `float` | `0.0` | Elapsed time for reserve calculations |
+| `ts` | `float` | `0.0` | Years elapsed since contract start (reference age `x`); valuation at attained age `x + ts` |
 | `ir` | `float \| InterestRate \| None` | table default | Interest rate |
 | `gr` | `float \| GrowthRate \| None` | `None` | Benefit growth rate (escalation) |
 
@@ -81,6 +81,39 @@ and a separate `ax` call with `cashflow_times` / `cashflow_amounts` for the extr
 instalments.  Note also that `anniversary_dates` raises `ValueError` for `m=14`; use
 `m=12` for date-grid generation.
 :::
+
+
+### Irregular schedules (`cashflow_times` / `cashflow_amounts`)
+
+**Annuity-immediate** methods (`ax`, `axy`, `axyz`, `ajoint`) accept both
+`cashflow_times` and `cashflow_amounts` for fully custom schedules. **Annuity-due**
+methods (`äx`, `äxy`, `äxyz`, `äjoint`) accept `cashflow_amounts` for custom benefit
+scaling on the standard due grid ($t_k = k/m$) but do **not** accept `cashflow_times`.
+When `cashflow_times` is supplied (immediate methods only), `n` must be `None` and
+`m` must be `1`; `gr` and `cashflow_amounts` are mutually exclusive — passing both
+raises `ValueError` (pass `gr=None` when using explicit amounts).
+
+Explicit `cashflow_times` and/or `cashflow_amounts` require
+`config.calculation_mode = "discrete_precision"`. `cashflow_amounts` raises
+`ValueError` in `discrete_simplified`, `continuous_precision`, and
+`continuous_simplified`.
+
+In **batch mode**, `cashflow_times` and `cashflow_amounts` are **shared** across all
+policies in the call (one schedule per batch invocation, not per-policy vectors).
+Use `benefits=` for per-policy face amounts. See {doc}`irregular_cashflows`.
+
+### Inspecting flows (`return_flows=True`)
+
+| Call mode | Returned dict |
+|-----------|---------------|
+| **Scalar** `x`, `discrete_precision` | Per-payment engine dict — see {doc}`inspecting_cashflows` § Annuity cash-flow keys |
+| **Scalar** `x`, `discrete_simplified` / `continuous_simplified` | Decomposition dict (`due` / `immediate` / `interpolated` [+ `fractional` for continuous simplified]); not the batch portfolio schema |
+| **Scalar** `x`, `continuous_precision` | Per-payment dict including `time_grid`, `expected_cf`, `pv_cf`, `integrand`, `total_pv`, and component arrays — see {doc}`inspecting_cashflows` § Continuous mode keys |
+| **Batch** (`x` as list/array), precision modes only | Portfolio dict: `time_grid`, `expected_cf`, `pv_cf`, `total_pv` |
+
+A one-element list such as `x=[65]` triggers batch mode and returns the four-key
+portfolio schema. Batch `return_flows=True` raises `ValueError` in simplified
+calculation modes. Full key reference: {doc}`inspecting_cashflows`.
 
 `äx` and `ax` are importable as functional-style wrappers:
 
@@ -106,13 +139,16 @@ $$
 
 where $d = 1 - v = i/(1+i)$ is the annual effective discount rate.
 
-For a temporary annuity and matching endowment insurance of the same term $n$:
+For a temporary annuity and matching **endowment** insurance of the same term $n$:
 
 $$
 A_{x:\overline{n}|} + d\,\ddot{a}_{x:\overline{n}|} = 1
 \qquad \Longleftrightarrow \qquad
 \ddot{a}_{x:\overline{n}|} = \frac{1 - A_{x:\overline{n}|}}{d}
 $$
+
+where $A_{x:\overline{n}|} = A^1_{x:\overline{n}|} + {}_nE_x$ (term insurance plus pure
+endowment).  Equivalently: $A^1_{x:\overline{n}|} + d\,\ddot{a}_{x:\overline{n}|} + {}_nE_x = 1$.
 
 :::{note}
 In Lactuca, `lt.Ax(x, n=n)` returns only the **term (death) insurance**
@@ -147,12 +183,18 @@ and piecewise interest rate curves.
 
 | Actuarial use case | Method call | Key parameters |
 |--------------------|-------------|----------------|
-| Annual retirement pension (life) | `lt.äx(x)` | `m=12` for monthly payments |
+| Monthly retirement pension (life) | `lt.äx(x, m=12)` | `m=12` for monthly payments |
 | Pension deferred until age 65 | `lt.äx(x, d=65-x)` | `d = 65 − current age` |
 | Premium-paying temporary annuity | `lt.äx(x, n=n_premium)` | — |
 | Widow's reversionary pension | `lt.äx(y) - lt.äxy([x, y], ...)` | see {doc}`joint_life_calculations` |
 | Escalating pension (CPI-linked) | `lt.äx(x, gr=GrowthRate(0.02))` | see {doc}`growth_rates_guide` |
 | Prospective reserve at time $t$ | `lt.äx(x, n=n, ts=t)` | see {doc}`prospective_reserve` |
+
+:::{note}
+For $m > 1$, benefit escalation applies at **policy-year anniversaries**; the
+adjusted-rate equivalence $i'=(1+i)/(1+g)-1$ holds for $m=1$ only.  See
+{doc}`growth_rates_guide` § Combining growth and interest.
+:::
 
 ---
 
@@ -182,7 +224,7 @@ print(a_m12)          # lower than a_temp: each sub-annual payment is weighted b
 a_imm = lt.ax(65, n=20)
 print(a_imm)          # < a_temp by approximately 1/m × (1 - nEx)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Due-to-immediate conversion
@@ -203,7 +245,7 @@ a_imm = lt.ax(x, n=n)
 print(round(a_due - a_imm, 6))           # ≈ 1 - nEx  (for m=1; smaller when nEx is large)
 print(round(a_due - (a_imm + 1 - nEx), 6))  # ≈ 0.0
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Annuity-insurance duality
@@ -224,7 +266,7 @@ Ax_val = lt.Ax(65)      # annual whole-life insurance
 # Check: Ax + d * äx ≈ 1  (exact under m=1, mortality_placement="end")
 print(round(Ax_val + d_rate * ax_val, 4))   # ≈ 1.0 (small gap from default "mid" placement)
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Prospective reserve at elapsed time `ts`
@@ -248,7 +290,7 @@ a_direct = lt.äx(65, n=20)         # calling directly at attained age
 
 print(round(a_ts - a_direct, 8))   # → 0.0
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ---
@@ -266,3 +308,4 @@ config.reset()
 - {doc}`interest_rates_guide` — `InterestRate` class and term structures
 - {doc}`lx_interpolation` — fractional-age survival under UDD and constant force
 - {doc}`batch_calculations` — portfolio pricing: array ages, per-policy params, BEL flows
+- {doc}`inspecting_cashflows` — `return_flows=True` per-payment dict keys (scalar vs batch)

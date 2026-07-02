@@ -69,11 +69,40 @@ quantities each pair produces:
 ## `ex` — complete expectation (not curtate)
 
 `LifeTable.ex(x)` returns the **complete** expectation of future lifetime
-$\mathring{e}_x = T_x / l_x$ under the configured `lx_interpolation` (UDD gives the
-trapezoidal person-years formula; CFM uses integration over exponential within-year
-survival). Classical **curtate** $e_x = \sum_{k=1}^{\omega-x} {}_kp_x$ is not exposed
-as a separate public method — use commutation ratios or build the sum explicitly if
-curtate notation is required.
+$\mathring{e}_x = T_x / l_x$ using the UDD person-years formula
+($L_x = l_x(1 - q_x/2)$, hence $T_x = \sum_k L_k$).  At integer ages this path is
+**independent of `config.lx_interpolation`** (same closed form as `Lx` and `Tx`).
+For fractional ages, use `ex_continuous`, which integrates $l_t$ at sub-annual nodes
+and therefore respects `lx_interpolation`.
+
+(ex-curtate-workaround)=
+### Curtate $e_x$ — `ex_curtate`
+
+Classical **curtate** expectation $e_x = \sum_{k=1}^{\omega-x} {}_kp_x$ is returned
+by `LifeTable.ex_curtate(x)` (and `ex_curtate(lt, x)` in the functional API).  Each
+term uses the public `tpx` chain, so results respect `decimals.tpx` per duration.
+
+`ex()` remains the **complete** expectation $\mathring{e}_x = T_x/l_x$.  Under UDD,
+$\mathring{e}_x \approx e_x + \tfrac{1}{2}$ (approximation after rounding — see
+{ref}`life-expectancy` in {doc}`../formulas`).
+
+```python
+from lactuca import LifeTable
+
+lt = LifeTable("PASEM2010", "m")
+e_curtate = lt.ex_curtate(65)   # curtate e_65
+e_complete = lt.ex(65)          # complete e_ring_65
+```
+
+Manual sum (educational — equivalent to `ex_curtate` when `decimals.tpx` is unchanged):
+
+```python
+import numpy as np
+
+x = 65
+k = np.arange(1, lt.w - x + 1, dtype=np.int64)
+curtate_manual = float(np.sum(lt.tpx(x, t=k)))
+```
 
 ## Why $\ddot{a}_x = N_x/D_x$
 
@@ -92,7 +121,12 @@ $$
 $$
 
 An analogous argument gives $A_x = M_x/D_x$: replace $v^k\,{}_kp_x$ with
-$v^{k+1}\,{}_kp_x\,q_{x+k} = C_{x+k}/l_x$ in each summand.
+$v^{k+\alpha}\,{}_kp_x\,q_{x+k} = C_{x+k}/l_x$ in each summand, where $\alpha$
+follows `config.mortality_placement` (`beginning` → 0, `mid` → 0.5, `end` → 1;
+default `mid`).  The textbook end-of-year form $v^{k+1}$ corresponds to
+`mortality_placement = "end"`.  This $\alpha$ applies to **annual** commutation $C_x$
+only; $m$-thly insurance in the engine uses $\delta_m = \alpha/m$ within each sub-period
+(see {doc}`calculation_modes`).
 
 ## Definitions
 
@@ -116,11 +150,13 @@ Used for increasing annuities.
 
 ### Cx — Discounted deaths
 
-$$C_x = v^{x+1} \cdot d_x = v^{x+1} \cdot (l_x - l_{x+1})$$
+$$C_x = v^{x+\alpha} \cdot d_x = v^{x+\alpha} \cdot (l_x - l_{x+1})$$
 
 The present value of expected deaths in $[x, x+1)$ discounted to the origin.
-The factor $v^{x+1}$ reflects the convention that deaths occur at the
-**end** of the year of death (annual discrete insurance).
+The mortality placement offset $\alpha$ is set by `config.mortality_placement`
+(`beginning` → $\alpha = 0$, `mid` → $\alpha = 0.5$, `end` → $\alpha = 1$;
+default `mid`).  The classical end-of-year form $C_x = v^{x+1} d_x$ is recovered
+when `mortality_placement = "end"`.
 
 ### Mx — Sum of Cx
 
@@ -160,7 +196,7 @@ The total number of person-years lived by the cohort from age $x$ to $\omega$.
 $$\mathring{e}_x = \frac{T_x}{l_x}$$
 
 Returns the **complete** life expectancy under the UDD approximation, not the
-curtate expectation $e_x = \sum_{k=1}^{\infty} {}_kp_x$ based on annual survival steps.
+curtate expectation $e_x = \sum_{k=1}^{\omega-x} {}_kp_x$ (use `ex_curtate`).
 
 (ex-fractional)=
 ## Continuous variants for fractional ages
@@ -215,7 +251,7 @@ Sx = lt.Sx(65)   # S_65
 Rx = lt.Rx(65)   # R_65
 Lx = lt.Lx(65)   # L_65  (no discounting)
 Tx = lt.Tx(65)   # T_65  (no discounting)
-ex = lt.ex(65)   # e_65  (no discounting)
+ex = lt.ex(65)   # complete ê_65 (not curtate; use ex_curtate for e_65)
 ```
 
 ### `x0` parameter for term-structured interest rates
@@ -284,7 +320,7 @@ No commutation cache is accessed.  Every term is kept at full float64 precision;
 
 For integer $x$ and $m=1$, the formula above is mathematically identical to
 $N_x / D_x$ — both equal $\frac{\sum_t v^t l_{x+t}}{l_x}$.  A small numerical
-difference (typically of order $10^{-6}$ to $10^{-8}$ at the default 10-decimal
+difference (typically of order $10^{-5}$ to $10^{-8}$ at the default 10-decimal
 commutation precision) arises because each $D_k = v^k \cdot l_k$ is individually
 rounded before being accumulated into $N_x$, and $N_x$ itself is stored rounded.
 The engine accumulates unrounded float64 terms and rounds only the final result.
@@ -298,7 +334,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 
 a_comm   = lt.Nx(65) / lt.Dx(65)   # commutation path
 a_direct = lt.äx(65)               # direct engine (discrete_precision)
-print(abs(a_comm - a_direct) < 1e-6)  # True
+print(abs(a_comm - a_direct) < 2e-5)  # True (PASEM2020 at age 65, i=3 %)
 ```
 
 ### Divergence for m > 1
@@ -311,7 +347,7 @@ are not precomputed in Lactuca):
 | Approach | How $\ddot{a}^{(12)}_{65}$ is computed |
 |---|---|
 | `discrete_precision`, `m=12` | Exact summation at $t = 0, \tfrac{1}{12}, \tfrac{2}{12}, \ldots\,$; evaluates $l_{65+t}$ at each sub-annual point using the configured interpolation (respects `config.lx_interpolation`) |
-| `discrete_simplified`, `m=12` | Woolhouse 2-term on integer years: $\ddot{a}^{(12)}_{x:\overline{n}|} \approx \ddot{a}_{x:\overline{k}|} - \tfrac{m-1}{2m}$ with $k=\lfloor n\rfloor$; when $n$ is fractional and $m>1$, an exact $m$-thly tail on $(k,n]$ is added (hybrid $k+s$ — see {doc}`calculation_modes`) |
+| `discrete_simplified`, `m=12` | Woolhouse 2-term on integer years: $\ddot{a}^{(m)}_{x:\overline{n}|} \approx \tfrac{m+1}{2m}\,\ddot{a}_{x:\overline{k}|} + \tfrac{m-1}{2m}\,a_{x:\overline{k}|}$ with $k=\lfloor n\rfloor$; when $n$ is fractional and $m>1$, an exact $m$-thly tail on $(k,n]$ is added (hybrid $k+s$ — see {doc}`calculation_modes`) |
 | Classical commutation, $m>1$ | Requires separate $m$-thly commutation tables — not provided in Lactuca; approximated by the Woolhouse formula |
 
 For $m > 1$, use the engine methods (`äx`, `ax`, etc.) with the appropriate `m` and
@@ -362,7 +398,7 @@ $$IA_x = \frac{R_x}{D_x}$$
 
 ## Notes
 
-- All results are rounded to the corresponding precision setting — `Config.decimals.Dx`,
+- All results are rounded to the corresponding precision setting — `config.decimals.Dx`,
   `.Nx`, `.Cx`, `.Mx`, etc. (default: 10 decimal places).
 - When a method is called without an age argument (e.g. `lt.Nx()`), the full array
   from age 0 to $\omega$ is returned.
@@ -377,12 +413,4 @@ integration point and therefore do respect `config.lx_interpolation`.
 - {doc}`lx_interpolation` — UDD vs. CFM, and when `config.lx_interpolation` applies
 - {doc}`interest_rates_guide` — setting the interest rate
 - {doc}`tables_taxonomy` — table types, column structure and decrement classes
-
-## `Lx`, `Tx`, and `lx_interpolation`
-
-Integer-age `Lx` and `Tx` use the UDD fast path ($L_x = l_x - d_x/2$) only when
-`config.lx_interpolation = "linear"`. With `"exponential"` (constant force of mortality
-within each year), the same methods integrate over within-year survival and may differ
-from the UDD shortcut. Engine methods honour `lx_interpolation` at fractional ages in
-all calculation modes.
 

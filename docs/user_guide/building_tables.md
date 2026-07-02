@@ -49,7 +49,7 @@ defined in {doc}`tables_taxonomy`; the column prefix indicates which:
 | `ix_m` / `ix_f` / `ix_u` | Disability | Disability incidence rate, male / female / unisex |
 | `ox_m` / `ox_f` / `ox_u` | Exit | Exit (withdrawal) rate, male / female / unisex |
 | `mi_m` / `mi_f` / `mi_u` | Any generational | Flat age-indexed improvement factor (gen-a) |
-| `mi_m_YYYY` / `mi_f_YYYY` / `mi_u_YYYY` | Any generational | Year-indexed improvement factor (gen-c) |
+| `mi_m_YYYY` / `mi_f_YYYY` / `mi_u_YYYY` | Any generational | Year-indexed improvement grid (gen-b with `exponential_improvement` / `linear_improvement` / `discrete_improvement`; gen-c with `projected_improvement`) |
 | `qx_m_sN` / `qx_m_ult` / `qx_f_sN` / `qx_f_ult` /`qx_u_sN` / `qx_u_ult` | Select-Ultimate | Select duration N / ultimate rates |
 | `mi_m_sN` / `mi_m_ult` / `mi_f_sN` / `mi_f_ult` /`mi_u_sN` / `mi_u_ult` | Select-Generational | Per-duration improvement factors (sel-gen-d) |
 
@@ -161,21 +161,27 @@ If you need a mortality rate below $1.0$ at what would otherwise be the last age
 interest, extend the table by one year: set $\omega$ to the next age index and store
 your intended rate at $\omega - 1$, with $q_\omega = 1.0$ on the new terminal row.
 
-Exit and disability tables may have rates below $1$ at $\omega$.  For ages
-$x > \omega$, the query API returns $q_x = 1.0$ (no survivors beyond the table limit).
+Exit and disability tables may have rates below $1$ at $\omega$ when stored in the
+file.  For ages $x \ge \omega$, the query API (`qx` / `ix` / `ox`) returns $1.0$
+regardless of the stored terminal value (no survivors at or beyond the table limit).
+For **life** tables, $q_\omega = 1.0$ is enforced at build and load time on the
+terminal decrement column for each sex: the base column (`qx_m` / `qx_f` / `qx_u`) for
+aggregate tables, or the `_ult` column for select-ultimate tables.  Select-duration
+columns (`_sN`) may hold rates below $1.0$ at $\omega$.
 
 ### Scaled rates: `decrement_scale_factor` and `mi_scale_factor`
 
 Many published tables express rates in per-mille (×1 000) or per-ten-thousand (×10 000)
-to avoid small decimals in print.  Pass the factor; the engine divides by it when
-loading the file:
+to avoid small decimals in print.  Pass the factor; `TableBuilder` divides decrement
+(and, when set, `mi_*`) columns by it **at construction time** (before validation and
+save).  The `.ltk` file stores the resulting probabilities.
 
 ```python
 # qx expressed as e.g. 2.5 meaning 0.0025
 tb = TableBuilder(
     pl.DataFrame({
-        "qx_m": [2.5, 3.1, 4.0],   # × 1 000 rates
-        "qx_f": [1.8, 2.3, 3.2],
+        "qx_m": [2.5, 3.1, 1000.0],   # × 1 000 rates; terminal row = 1.0 after scaling
+        "qx_f": [1.8, 2.3, 1000.0],
     }),
     table_name="TablePerMille",
     table_type="life",
@@ -192,7 +198,7 @@ Valid values for both factors: any power of 10 (1, 10, 100, 1000, …).
 ```python
 tb.save(
     file_name="MyMortality2024.ltk",  # defaults to table_name + ".ltk" when None
-    path="actuarial_tables",           # directory; None uses Config.tables_path
+    path="actuarial_tables",           # directory; None uses config.tables_path
     overwrite=False,                   # True to replace an existing file
 )
 ```
@@ -200,9 +206,8 @@ tb.save(
 :::{note}
 **`save()` — paths, overwrites, and atomicity**
 
-- **Path boundary**: when `path` is `None`, the target is restricted to
-  `Config().tables_path`; writes outside it raise `ValueError`. An explicit `path`
-  bypasses this check and writes directly to the given directory.
+- **Path boundary**: both `path=None` and an explicit `path` must resolve to a
+  directory inside `config.tables_path`; writes outside it raise `ValueError`.
 - **Idempotent overwrite**: when `overwrite=False` and an existing file has **identical
   content**, `save()` emits a `UserWarning` and returns without raising — re-running
   the same build script is safe.
@@ -396,7 +401,7 @@ Three parameters are always required in addition to the base columns:
 |-------|---------|-------------|
 | `"exponential_improvement"` | $q_x(t) = q_x^0 \cdot e^{-\lambda_x(t-t_0)}$ | PER 2020, DAV 2004 R |
 | `"linear_improvement"` | $q_x(t) = q_x^0 - mi_x \cdot (t-t_0)$ | Research / custom |
-| `"discrete_improvement"` | $q_x(c) = q_x^0 \cdot (1 - AA_x)^{c+x-t_0}$ | GAM 94 / SOA Scale AA |
+| `"discrete_improvement"` | $q_{x,t} = q_{x,t_0} \cdot (1 - AA_x)^{\,t - t_0}$ with $t = \text{cohort} + x$ | GAM 94 / SOA Scale AA |
 | `"projected_improvement"` | $q_{x,c} = q_{x,t_0} \cdot \prod_{t=t_0+1}^{c+x}(1-AA_{x,t})$ | Chilean CMF 2020 |
 
 ### Flat improvement factors per age (agg–gen-a)
@@ -434,7 +439,7 @@ print(round(lt.äx(65), 4))
 
 For a unisex generational table, pass `mi_u` in place of `mi_m` / `mi_f`.
 
-### Discrete annual scale factor (agg–gen-b)
+### Discrete annual scale factor (agg–gen-a)
 
 When improvement rates are published as discrete annual scale factors — as in the
 SOA *Scale AA* used with GAM 94 — pass
@@ -480,6 +485,36 @@ print(round(lt.äx(65), 4))
 ```
 
 For a unisex generational table, pass `mi_u` in place of `mi_m` / `mi_f`.
+
+### Year-indexed MI grid (agg–gen-b)
+
+When improvement factors are published as one value per age **per calendar year**
+(`mi_m_YYYY` / `mi_f_YYYY`), but projection uses a scalar-formula family
+(`exponential_improvement`, `linear_improvement`, or `discrete_improvement` — not the
+cumulative product), set the matching `generational_formula_type`.  `grid_years` is
+inferred from column names.  Bundled example: `DAV2004R_Agg_2o`.
+
+```python
+import polars as pl
+from lactuca import TableBuilder, LifeTable
+
+years = list(range(2010, 2036))
+qx_m = [0.004 + i * 0.0003 for i in range(110)] + [1.0]
+mi_m_cols = {f"mi_m_{y}": [0.015 - 0.0001 * (y - 2010)] * 111 for y in years}
+
+tb = TableBuilder(
+    pl.DataFrame({"qx_m": qx_m, **mi_m_cols}),
+    table_name="GenB_Exponential",
+    table_type="life",
+    generational=True,
+    base_year=2009,
+    generational_formula_type="exponential_improvement",
+    description="Year-indexed MI, exponential cohort projection (agg–gen-b).",
+)
+tb.save(path="actuarial_tables")
+
+lt = LifeTable("GenB_Exponential", "m", cohort=1960)
+```
 
 ### Year-indexed MI grid (agg–gen-c)
 
@@ -581,12 +616,12 @@ from lactuca import TableBuilder
 
 tb = TableBuilder(
     pl.DataFrame({
-        "qx_m_s1":  [0.0003, 0.0004, 0.0006],  # duration 1 (first year after selection)
+        "qx_m_s1":  [0.0003, 0.0004, 0.0006],  # duration 1
         "qx_m_s2":  [0.0005, 0.0007, 0.0009],  # duration 2
-        "qx_m_ult": [0.0008, 0.0010, 0.0013],  # ultimate (duration ≥ 3)
+        "qx_m_ult": [0.0008, 0.0010, 1.0],     # ultimate; q_omega = 1.0 required here
         "qx_f_s1":  [0.0002, 0.0003, 0.0004],
         "qx_f_s2":  [0.0003, 0.0005, 0.0007],
-        "qx_f_ult": [0.0006, 0.0008, 0.0011],
+        "qx_f_ult": [0.0006, 0.0008, 1.0],
     }),
     table_name="MySelectTable",
     table_type="life",
@@ -607,12 +642,12 @@ tb = TableBuilder(
         "qx_m": {
             1:     [0.0003, 0.0004, 0.0006],
             2:     [0.0005, 0.0007, 0.0009],
-            "ult": [0.0008, 0.0010, 0.0013],
+            "ult": [0.0008, 0.0010, 1.0],
         },
         "qx_f": {
             1:     [0.0002, 0.0003, 0.0004],
             2:     [0.0003, 0.0005, 0.0007],
-            "ult": [0.0006, 0.0008, 0.0011],
+            "ult": [0.0006, 0.0008, 1.0],
         },
     },
     table_name="MySelectTable",
@@ -655,6 +690,7 @@ qx_m_ult = [0.0008 + i * 0.00022 for i in range(n)]
 qx_f_s1  = [0.0002 + i * 0.00010 for i in range(n)]
 qx_f_s2  = [0.0003 + i * 0.00013 for i in range(n)]
 qx_f_ult = [0.0006 + i * 0.00017 for i in range(n)]
+qx_m_ult[-1] = 1.0; qx_f_ult[-1] = 1.0  # select-ultimate: q_omega = 1.0 on _ult only
 mi_m     = [0.015] * n
 mi_f     = [0.012] * n
 
@@ -740,6 +776,7 @@ qx_m_ult = [0.0008 + i * 0.00022 for i in range(n)]
 qx_f_s1  = [0.0002 + i * 0.00010 for i in range(n)]
 qx_f_s2  = [0.0003 + i * 0.00013 for i in range(n)]
 qx_f_ult = [0.0006 + i * 0.00017 for i in range(n)]
+qx_m_ult[-1] = 1.0; qx_f_ult[-1] = 1.0
 
 mi_m_cols = {f"mi_m_{y}": [0.015 - 0.0001 * (y - 2000)] * n for y in years}
 mi_f_cols = {f"mi_f_{y}": [0.012 - 0.0001 * (y - 2000)] * n for y in years}
@@ -825,6 +862,7 @@ qx_m_s1  = [0.0003 + i * 0.00015 for i in range(n)]
 qx_m_ult = [0.0008 + i * 0.00022 for i in range(n)]
 qx_f_s1  = [0.0002 + i * 0.00010 for i in range(n)]
 qx_f_ult = [0.0006 + i * 0.00017 for i in range(n)]
+qx_m_ult[-1] = 1.0; qx_f_ult[-1] = 1.0
 
 mi_m_cols = {f"mi_m_{y}": [0.015 - 0.0001 * (y - 2010)] * n for y in years}
 mi_f_cols = {f"mi_f_{y}": [0.012 - 0.0001 * (y - 2010)] * n for y in years}
@@ -904,6 +942,7 @@ qx_m_ult = [0.0008 + i * 0.00022 for i in range(n)]
 qx_f_s1  = [0.0002 + i * 0.00010 for i in range(n)]
 qx_f_s2  = [0.0003 + i * 0.00013 for i in range(n)]
 qx_f_ult = [0.0006 + i * 0.00017 for i in range(n)]
+qx_m_ult[-1] = 1.0; qx_f_ult[-1] = 1.0
 
 # Each duration and ultimate has its own improvement rates
 mi_m_s1  = [0.020] * n    # higher improvement in select period 1 (healthier lives)
@@ -1122,8 +1161,8 @@ dict manually — it is silently ignored by `from_payload()`.
 | `grid_years` | `list[int]` or `None` | no | Calendar years present in the year-indexed MI grid; inferred automatically from column names when `None` |
 | `start_age` | `int` | no | First age represented in the data (default 0); ages below it are padded with zeros internally |
 | `omega` | `int` | no | Terminal (maximum) age; inferred from data length when omitted |
-| `decrement_scale_factor` | `int` — power of 10 (1, 10, 100, 1000, …) | no | The engine divides decrement columns by this factor after loading; use when values are stored as per-mille, per-ten-thousand, etc. |
-| `mi_scale_factor` | `int` — power of 10 (1, 10, 100, 1000, …) | no | Same as `decrement_scale_factor` but applied to `mi_*` improvement-factor columns |
+| `decrement_scale_factor` | `int` — power of 10 (1, 10, 100, 1000, …) | no | `TableBuilder` divides decrement columns by this factor at construction time; use when input values are per-mille, per-ten-thousand, etc. |
+| `mi_scale_factor` | `int` — power of 10 (1, 10, 100, 1000, …) | no | Same as `decrement_scale_factor` but applied to `mi_*` improvement-factor columns at construction time |
 | `sex_independent` | `bool` | no | `True` when the table has a single set of rates valid for both sexes; the engine mirrors the single-sex column to the other sex at load time; does **not** create a `qx_u` column — `valid_sexes` remains `['f', 'm']` and `sex='u'` still requires `unisex_blend` |
 | `select` | `bool` | no | `True` for select-ultimate tables |
 | `select_period` | `int` | if select | Count of numbered select-duration columns per sex; must be ≥ 1. Columns are named `_s{sd}` … `_s{sd+N−1}` plus `_ult`, where `sd` (start duration) is auto-detected: 0 for CMI/UK-style tables (e.g. AM92/AF92), 1 for most others. See *Select-ultimate tables* above. |

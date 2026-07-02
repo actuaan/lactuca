@@ -59,6 +59,8 @@ print(mode)  # 'discrete_precision'
 ```
 
 If the key does not exist and no fallback is provided, `get` raises `KeyError`.
+Passing `default=None` explicitly still raises `KeyError` when the key is missing — use a
+non-`None` sentinel if `None` is a valid fallback value.
 
 ```python
 from lactuca import Config
@@ -242,7 +244,8 @@ If the singleton already exists, use `config.load("...")` to switch to another f
 
 ### `reset_to_defaults()` (instance method)
 
-- Restores factory defaults in memory.
+- Restores library defaults in memory.
+- **Preserves `tables_path` and `config_path`** — only calculation, calendar, mortality, and decimal settings revert. Resetting the table directory would break notebooks and scripts that rely on a custom install path.
 - Keeps the same singleton object identity.
 - Does not write to disk automatically.
 
@@ -321,10 +324,18 @@ See {doc}`bundled_tables` for installation and usage of bundled tables.
 | Setting | Default | Allowed values | Purpose |
 |---------|---------|----------------|---------|
 | `calculation_mode` | `"discrete_precision"` | `"discrete_precision"`, `"discrete_simplified"`, `"continuous_precision"`, `"continuous_simplified"` | Selects valuation engine behavior for annuities, insurances, and pure endowments. All four modes are actuarially coherent (same product/conventions) but not numerically identical — see {ref}`actuarial-coherence-of-modes`. |
-| `lx_interpolation` | `"linear"` | `"linear"`, `"exponential"` | Fractional-age survival between integer ages (UDD / CFM); affects ${}_tp_x$, annuity grids, ${}_n E_x$ — not insurance $\delta_m$. |
-| `force_mortality_method` | `"finite_difference"` | `"finite_difference"`, `"spline"`, `"kernel"` | Method used by force-of-mortality routines (continuous modes only). |
+| `lx_interpolation` | `"linear"` | `"linear"`, `"exponential"` | Fractional-age survival (UDD / CFM). Table ``lx``/``px``/``qx``/``tpx`` always honor it at fractional ages. Engine: ``discrete_precision`` and continuous-mode grids; ``discrete_simplified`` hybrid $m$-thly tails — not ``discrete_simplified`` endowments (UDD on $q_x$), and not insurance $\delta_m$. |
+| `force_mortality_method` | `"finite_difference"` | `"finite_difference"`, `"spline"`, `"kernel"` | Force-of-mortality approximation in insurance and endowment `continuous_precision` (and insurance `continuous_simplified` via averaged `continuous_precision` legs). Not used for annuities or endowment `continuous_simplified`. |
 | `mortality_placement` | `"mid"` | `"beginning"`, `"mid"`, `"end"` | Death-benefit payment timing within each sub-period (`Ax` discount only); independent of `lx_interpolation`. |
 | `force_integer_ts` | `False` | `bool` | If `True`, rejects fractional `ts` shifts. |
+
+:::{note}
+**Default `mortality_placement = "mid"`:** Classical commutation algebra and the identity
+$1 = d \cdot \ddot{a}_x + A_x$ assume benefit payment at **end of year** (`"end"`) with
+$m = 1$. The library default places death benefits at mid-sub-period. For classical
+identity checks or textbook comparisons, set `config.mortality_placement = "end"`.
+See {doc}`calculation_modes` for $\delta_m$ values and implications.
+:::
 
 :::{note}
 **Two independent mortality settings:** `lx_interpolation` bridges fractional ages for
@@ -337,6 +348,18 @@ See:
 - {doc}`calculation_modes`
 - {doc}`lx_interpolation`
 - {doc}`force_mortality_methods`
+
+:::{note}
+**Config ↔ product matrix**
+
+| Setting | Annuities | Insurances | Pure endowments | Commutation / fractional APIs |
+|---------|-----------|------------|-----------------|----------------------|
+| `calculation_mode` | All four modes | All four modes | All four modes | — |
+| `lx_interpolation` | Fractional grids; hybrid tails | Survival in discrete grid | `discrete_precision` only; `discrete_simplified` uses UDD on $q_x$ | Fractional ages always |
+| `mortality_placement` | No | Yes ($\delta_m$) | No | $C_x$ exponent only |
+| `force_mortality_method` | No | Continuous modes only | `continuous_precision` only | Continuous $\mu$ helpers |
+| `decimals_lx` | Via rounded $l_x$ in discrete modes | Same | Same | Public `lx` column |
+:::
 
 ### Calendar and date parsing
 
@@ -353,6 +376,14 @@ See {doc}`dates_guide` for all accepted date input forms.
 ### Decimal precision
 
 All decimal settings accept non-negative integers.
+
+:::{note}
+`decimals_lx` (default 15) rounds the **published** survivor column used by **discrete**
+modes (`discrete_precision`, `discrete_simplified`). **Continuous** modes integrate from
+full float64-precision survival data (higher precision than the published table column).
+Identical inputs can therefore differ slightly between discrete and continuous modes.
+See {doc}`numerical_precision`.
+:::
 
 | Setting | Default |
 |---------|---------|

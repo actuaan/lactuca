@@ -51,6 +51,7 @@ the same value in a `discrete_improvement` column means $(1-0.02)^{t-t_0} = 0.98
 Other publishing conventions ($F(x)$ in UK CMI tables; *factores de mejora* in Spanish
 and Chilean regulations) map to one of these Lactuca formula types depending on the
 underlying mathematics used.
+
 ### `exponential_improvement`
 
 The most common formula in European and Latin-American regulation:
@@ -85,7 +86,7 @@ for all ages and intended cohorts before using this formula in production.
 
 :::{note}
 No bundled tables currently use this formula.  It is available for custom tables built
-with {class}`lactuca.tables.builder.TableBuilder`; see {doc}`building_tables`.
+with {class}`lactuca.TableBuilder`; see {doc}`building_tables`.
 :::
 
 ### `discrete_improvement`
@@ -147,7 +148,7 @@ The MI factor varies by calendar year: columns `mi_m_YYYY`, `mi_f_YYYY` form an
 annual grid.  For cohort $c$ and age $x$, the relevant year is $t = c + x$.
 
 - **Lookup**: the factor for year $t$ is read from the column whose year is the smallest
-  grid year $\geq t$ (ceiling lookup via `np.searchsorted`).
+  grid year $\geq t$ (ceiling lookup on the year grid).
 - **Before the first grid year**: when `cohort + x` is below the earliest grid year, the
   **first** available factor is used (clamped to the lower grid boundary).
 - **Beyond the last grid year**: the last available factor is used (clamped to the
@@ -168,7 +169,7 @@ cohort diagonal falls before $t_0$, behavior depends on the formula:
 |---------|---------------------------------------|
 | `exponential_improvement`, `linear_improvement`, `discrete_improvement` | **Base rate returned unchanged** — the exponent or difference is clamped to 0; no back-projection. |
 | `projected_improvement` | **Base rate returned unchanged** — the product range is empty (`cum_rf = 1`). |
-| Year-indexed (gen-c path) | **First grid year's factor used** — `cal_year` is clamped to `first_grid` before the lookup. |
+| Year-indexed (`exponential_improvement` with `mi_m_YYYY`) | **Base rate returned unchanged** — years since base are clamped to 0 (same effective result; MI column lookup still runs). |
 
 :::{note}
 All formulas return the base-year rate unchanged when `cohort + x < base_year`.
@@ -283,7 +284,8 @@ an in-force select duration $d$:
 | `exponential_improvement`, `linear_improvement`, … | $t = \text{cohort} + x$ |
 
 For contracts **still within** the select period, pass numeric `duration=d` — not `"ult"`.
-Using ultimate rates too early **understates** select-period reserves; see
+Using ultimate rates too early affects reserve direction by product type (annuities:
+understates; death benefits: overstates); see
 {doc}`tables_taxonomy` § *When to use duration vs "ult"*.
 
 ---

@@ -3,7 +3,9 @@
 {class}`~lactuca.Config` is the global configuration singleton that controls all
 precision, calculation, and table-loading settings for a Lactuca session.
 Changes take effect immediately for all subsequent calculations in the same
-Python process; call {meth}`~lactuca.Config.reset` to restore factory defaults.
+Python process; call {meth}`~lactuca.Config.reset_to_defaults` to restore factory
+defaults (preserving ``tables_path`` and ``config_path``).  Use
+{meth}`~lactuca.Config.reset` only to clear the cached singleton (testing/debug).
 
 Key setting groups:
 
@@ -18,7 +20,7 @@ Key setting groups:
 | **Date parsing** | `date_format` | {doc}`../user_guide/dates_guide` |
 | **Tables path** | `tables_path` | {doc}`../user_guide/using_tables` |
 | **Config file path** | `config_path` (alias: `path`) | {doc}`../user_guide/configuration` |
-| **Force integer ts** | `force_integer_ts` | {doc}`../user_guide/last_payment_adjustment` |
+| **Force integer ts** | `force_integer_ts` | {doc}`../user_guide/prospective_reserve` |
 
 ```{seealso}
 {doc}`../user_guide/configuration` — Narrative guide to all Config settings with worked examples.

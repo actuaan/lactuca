@@ -8,17 +8,28 @@ $$\mu_x = -\frac{\mathrm{d}}{\mathrm{d}x} \ln l_x = \frac{f_x}{S(x)}$$
 where $f_x$ is the age-at-death density and $S(x) = l_x / l_0$ is the survival function.
 
 Lactuca uses $\mu_x$ in **{doc}`continuous calculation modes <calculation_modes>`** (`continuous_precision`,
-`continuous_simplified`) to evaluate the integrand of life annuity and insurance formulas.
+`continuous_simplified`) to evaluate the integrand of **life insurance** formulas and the
+mortality leg of **continuous_precision** pure endowments.  Continuous **annuities** integrate
+${}_t p_x \cdot v^t$ directly from the full-precision survivor store — `config.force_mortality_method`
+does not apply to annuity present values.
 
 ## Available methods
 
-The method is set via `config.force_mortality_method`:
+The method is selected globally via `config.force_mortality_method` (there is no
+per-call `mu_method` keyword on public annuity or insurance methods):
+
+| Config key | Allowed values |
+|---|---|
+| `config.force_mortality_method` | `"finite_difference"` (default), `"spline"`, `"kernel"` |
 
 | Method | Approach | SciPy required | Best for |
 |--------|----------|----------------|----------|
-| `"finite_difference"` (default) | Central log-differences | No | Standard integer-age tables |
-| `"spline"` | Natural cubic spline on $\ln({}_{t}p_x)$ | Yes | Smooth graduated tables |
-| `"kernel"` | Gaussian kernel smoothing | Yes | Noisy or empirical data |
+| `"finite_difference"` (default) | Central log-differences | No (pure NumPy) | Standard integer-age tables |
+| `"spline"` | Natural cubic spline on $\ln({}_{t}p_x)$ | Yes (core dep; lazy import) | Smooth graduated tables |
+| `"kernel"` | Gaussian kernel smoothing | Yes (core dep; lazy import) | Noisy or empirical data |
+
+SciPy is a **core** dependency (`scipy>=1.16` in `pyproject.toml`); `spline` and `kernel`
+defer the import until first use to reduce cold-start latency — not because SciPy is optional.
 
 ```python
 from lactuca import config
@@ -26,7 +37,7 @@ from lactuca import config
 config.force_mortality_method = "finite_difference"  # default
 config.force_mortality_method = "spline"
 config.force_mortality_method = "kernel"
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### `finite_difference` (default)
@@ -96,9 +107,10 @@ numerical differences between discrete and continuous results may arise from the
 different smoothness assumptions.
 
 :::{note}
-`force_mortality_method` applies **only to continuous integration modes**.  For discrete
-modes, survival probabilities are computed directly from the $l_x$ array via interpolation
-and $\mu_x$ is not evaluated.
+`force_mortality_method` applies **only to continuous integration modes** (insurance and
+`continuous_precision` endowments).  It does **not** affect continuous **annuity** present
+values.  For discrete modes, survival probabilities are computed directly from the $l_x$
+array via interpolation and $\mu_x$ is not evaluated.
 :::
 
 ## See also

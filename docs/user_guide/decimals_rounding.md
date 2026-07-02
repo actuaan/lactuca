@@ -14,7 +14,7 @@ The defaults reflect a deliberate hierarchy:
 |-------|-----------------|-----------|
 | Base probabilities (`qx`, `px`, `lx`, `dx`, `tpx`, `tqx`, `ix`, `ox`) | **15** | Foundation of all calculations; maximum float64 precision preserved |
 | Commutation functions (`Dx`, `Nx`, `Sx`, `Cx`, `Mx`, `Rx`, `Lx`, `Tx`) | **10** | Large-magnitude accumulated sums; 10 decimals is sufficient |
-| Final outputs (`ex`, `annuities`, `insurances`) | **15** | Users can round as needed without losing information |
+| Final outputs (`ex`, `ex_curtate`, `ex_continuous`, `annuities`, `insurances`) | **15** | Users can round as needed without losing information |
 
 The 15-decimal default ensures that extreme ages ($l_{111} \approx 4.5 \times 10^{-5}$) and
 continuous integration paths do not silently round intermediate values to zero.
@@ -55,7 +55,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m")
 
 lt.decimals.annuities = 8
 # AttributeError: decimals.annuities is read-only on a table instance.
-# To change globally: config.decimals.annuities = 8
+# Use Config().decimals.annuities = 8 (or config.decimals.annuities = 8) to change globally.
 ```
 
 To change precision, write to the `Config` singleton.  Both import styles are
@@ -118,15 +118,15 @@ See {doc}`configuration` for the complete settings reference and TOML format.
 |-----------|-----------------|---------|
 | `decimals_lx` | `lx` | `lx(x)` |
 | `decimals_dx` | `dx` | `dx(x)` |
-| `decimals_qx` | `qx` | `qx(x)`, `tqx(x,t)` |
-| `decimals_px` | `px` | `px(x)`, `tpx(x,t)` |
-| `decimals_tpx` | `tpx` | `tpx(x,t)` |
-| `decimals_tqx` | `tqx` | `tqx(x,t)` |
+| `decimals_qx` | `qx` | `qx(x)` on `LifeTable` |
+| `decimals_px` | `px` | `px(x)` |
+| `decimals_tpx` | `tpx` | `tpx(x, t=…)` |
+| `decimals_tqx` | `tqx` | `tqx(x, t=…)` |
 | `decimals_ix` | `ix` | `ix(x)` on `DisabilityTable` |
 | `decimals_ox` | `ox` | `ox(x)` on `ExitTable` |
 | `decimals_Lx` | `Lx` | `Lx(x)` |
 | `decimals_Tx` | `Tx` | `Tx(x)` |
-| `decimals_ex` | `ex` | `ex(x)`, `ex_continuous(x)` |
+| `decimals_ex` | `ex` | `ex(x)`, `ex_curtate(x)`, `ex_continuous(x)` |
 | `decimals_Dx` | `Dx` | `Dx(x, ir)` |
 | `decimals_Nx` | `Nx` | `Nx(x, ir)` |
 | `decimals_Sx` | `Sx` | `Sx(x, ir)` |
@@ -155,9 +155,12 @@ set.  Accessing a blocked property raises `AttributeError` with a descriptive me
 | `qx` | ✅ | ❌ | ❌ |
 | `ix` | ❌ | ✅ | ❌ |
 | `ox` | ❌ | ❌ | ✅ |
-| `ex` | ✅ | ❌ | ❌ |
+| `ex`, `ex_curtate`, `ex_continuous` | ✅ | ❌ | ❌ |
 | `annuities`, `insurances` | ✅ | ❌ | ❌ |
 | `Dx`, `Nx`, `Sx`, `Cx`, `Mx`, `Rx` | ✅ | ❌ | ❌ |
+
+All three life-expectancy properties (`ex`, `ex_curtate`, `ex_continuous`) read
+`config.decimals.ex` (or `lt.decimals.ex`).
 
 Example — attempting to read a blocked property:
 
@@ -175,15 +178,16 @@ points in each calculation chain:
 
 1. **Table build time** — the `lx` column is rounded to `decimals.lx` decimal places when
    the table is first constructed.  In both continuous calculation modes
-   (`"continuous_precision"` and `"continuous_simplified"`), the full-precision survivor
-   values are kept in a separate internal store and used instead, so lx rounding does not
-   affect continuous annuity and insurance calculations.
+   (`"continuous_precision"` and `"continuous_simplified"`), survival lookups use full
+   float64 precision internally, so rounding of the public `lx` column does not affect
+   continuous annuity, insurance, or endowment results.
 2. **Public method output** — each public method rounds its return value once, using the
    setting that matches the quantity returned.
 
 No additional intermediate rounding occurs between these two points.  For example,
 `tpx(x, t)` computes ${}_{t}p_x = l_{x+t}/l_x$ from the rounded `lx` column and
-rounds only the final result to `decimals.tpx` decimal places.
+rounds only the final result to `decimals.tpx` decimal places.  `ex_curtate(x)` sums
+${}_kp_x$ term by term and therefore also respects `decimals.tpx` on each survival factor.
 
 ## See also
 

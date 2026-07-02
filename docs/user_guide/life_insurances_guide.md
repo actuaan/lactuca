@@ -37,8 +37,10 @@ A^1_{x:\overline{n}|}{}^{(m)}
 = \sum_{j=0}^{mn-1} v^{j/m + \delta_m} \cdot {}_{j/m}p_x \cdot {}_{1/m}q_{x+j/m}
 $$
 
-Each term is the present value of the benefit (1 unit) payable at time $j/m + \delta_m$
-if $(x)$ survives to the start of sub-period $j$ and then dies within it.  The offset
+Each term is the present value of a **unit benefit** (sum insured = 1) payable at time
+$j/m + \delta_m$ if $(x)$ survives to the start of sub-period $j$ and then dies within it.
+The sub-period death probability ${}_{1/m}q_{x+j/m}$ carries the mortality mass for that
+interval (not $1/m$ of the annual rate applied in isolation).  The offset
 $\delta_m$ is controlled by `config.mortality_placement` (see below).
 
 For a **whole-life** insurance (`n=None`) the sum extends to the limiting age $\omega$.
@@ -53,17 +55,47 @@ For a **whole-life** insurance (`n=None`) the sum extends to the limiting age $\
 | `n` | `float \| None` | `None` | Term in years; `None` = whole life |
 | `m` | `int` | `1` | Benefit payment frequency per year (1, 2, 3, 4, 6, 12, 14, 24, 26, 52, 365) |
 | `d` | `float` | `0.0` | Deferment — benefit payable only if death occurs after $x + d$ |
-| `ts` | `float` | `0.0` | Elapsed time for reserve calculations |
+| `ts` | `float` | `0.0` | Years elapsed since contract start (reference age `x`); valuation at attained age `x + ts` |
 | `ir` | `float \| InterestRate \| None` | table default | Interest rate |
 | `gr` | `float \| GrowthRate \| None` | `None` | Benefit growth rate (escalating sum assured) |
 
 :::{note}
 **`m=14` (Spanish "14 pagas" scheme)** is accepted by the calculation engine but is an
 approximation: a year does not divide evenly into 14 equal periods under any standard calendar
-convention.  For actuarially precise results, model the two extraordinary payments explicitly
-using `m=12` for the regular monthly payments and a separate `ax` call with
-`cashflow_times` / `cashflow_amounts` for the extraordinary instalments.
+convention.  For actuarially precise results, model the two extraordinary payments with
+`m=12` for the regular monthly grid and a separate `lt.Ax` call with
+`cashflow_times` / `cashflow_amounts` for the extraordinary instalments (see
+{doc}`irregular_cashflows`).
 :::
+
+### Irregular schedules (`cashflow_times` / `cashflow_amounts`)
+
+All life insurance methods — `Ax` (single-life), `Axy` and `Axyz` (first-death,
+two and three lives), and `Afirst` (first-death, *n* lives) — accept explicit benefit
+schedules via
+`cashflow_times` / `cashflow_amounts`. With `cashflow_times`, `n` must be `None`
+(or `0`); any valid `m` is accepted (misaligned times raise a `UserWarning`, not
+`ValueError`). With `cashflow_amounts` on the regular grid, any valid `m` applies.
+`gr` and `cashflow_amounts` are mutually exclusive — passing both raises
+`ValueError` (pass `gr=None` when using explicit amounts). Explicit schedules require
+`config.calculation_mode = "discrete_precision"`; `cashflow_amounts` raises
+`ValueError` in `discrete_simplified`, `continuous_precision`, and
+`continuous_simplified`. The `m=1` requirement applies only to
+annuity methods (`ax`, …) when `cashflow_times` is used — see {doc}`irregular_cashflows`.
+
+In **batch mode**, both arrays are **shared** across all policies (one schedule
+per call). See {doc}`irregular_cashflows`.
+
+### Inspecting flows (`return_flows=True`)
+
+| Call mode | Returned dict |
+|-----------|---------------|
+| **Scalar** `x`, `discrete_precision` | Per-interval engine dict: `time_grid`, `death_probability`, `discount_time`, `present_value`, … |
+| **Scalar** `x`, `discrete_simplified` / `continuous_simplified` | Decomposition dict (`due` / `immediate` / `interpolated` [+ `fractional` for continuous simplified]); not the batch portfolio schema |
+| **Scalar** `x`, `continuous_precision` | Per-interval dict including `time_grid`, `expected_cf`, `pv_cf`, `integrand`, `total_pv`, and component arrays — see {doc}`inspecting_cashflows` § Continuous mode keys |
+| **Batch** (`x` as list/array), precision modes only | Portfolio dict: `time_grid`, `expected_cf`, `pv_cf`, `total_pv` |
+
+Batch simplified modes raise `ValueError`. Full key reference: {doc}`inspecting_cashflows`.
 
 `Ax` is also importable as a functional-style wrapper:
 
@@ -93,7 +125,7 @@ from lactuca import config
 config.mortality_placement = "mid"       # default
 config.mortality_placement = "end"       # traditional commutation convention
 config.mortality_placement = "beginning" # payment immediately on death
-config.reset()                           # restore default ("mid")
+config.reset_to_defaults()               # restore defaults (including "mid")
 ```
 
 For the full reference and interaction with calculation modes, see
@@ -115,7 +147,7 @@ $$
 
 where $d = 1 - v = i/(1+i)$ is the annual effective discount rate.
 
-For a finite-term endowment:
+For a finite-term **endowment** insurance of the same term $n$:
 
 $$
 A_{x:\overline{n}|} + d\,\ddot{a}_{x:\overline{n}|} = 1
@@ -123,7 +155,13 @@ A_{x:\overline{n}|} + d\,\ddot{a}_{x:\overline{n}|} = 1
 A_{x:\overline{n}|} = 1 - d\,\ddot{a}_{x:\overline{n}|}
 $$
 
+where $A_{x:\overline{n}|} = A^1_{x:\overline{n}|} + {}_nE_x$.  Equivalently:
+$A^1_{x:\overline{n}|} = 1 - d\,\ddot{a}_{x:\overline{n}|} - {}_nE_x$.
+
 :::{note}
+`lt.Ax(x, n=n)` returns only $A^1_{x:\overline{n}|}$ (term insurance), not the full
+endowment $A_{x:\overline{n}|}$.
+
 The identity is exact for $m = 1$ and `mortality_placement = "end"` (traditional
 commutation-function convention).  With the default `"mid"` placement, use the
 $m$-thly discount rate $d^{(m)} = m(1 - v^{1/m})$ for the corresponding $m$-thly
@@ -188,7 +226,7 @@ print(nEx_20)
 endowment = round(Ax_term + nEx_20, 6)
 print(endowment)                 # payment is certain; APV < 1 due to discounting
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Monthly benefit insurance (`m=12`)
@@ -208,7 +246,7 @@ Ax_monthly = lt.Ax(65, m=12)
 # Monthly benefit is slightly higher: benefit paid sooner (less discounting)
 print(Ax_annual < Ax_monthly)    # True
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Annuity-insurance duality
@@ -229,7 +267,7 @@ ax_val = lt.äx(65)      # whole-life annuity-due (m=1)
 # Check: Ax + d * äx ≈ 1  (near-exact under m=1, with small gap from "mid" placement)
 print(round(Ax_val + d_rate * ax_val, 4))   # ≈ 1.0
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Deferred insurance
@@ -251,7 +289,7 @@ Ax_def = lt.Ax(65, d=5)
 
 print(Ax > Ax_def)     # True — deaths in [0, 5) excluded
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ### Prospective reserve at elapsed time `ts`
@@ -274,7 +312,7 @@ Ax_direct = lt.Ax(65, n=20)
 # Both approaches give the same value
 print(round(Ax_ts - Ax_direct, 8))   # → 0.0
 
-config.reset()
+config.reset_to_defaults()
 ```
 
 ---
@@ -287,7 +325,8 @@ config.reset()
 - {doc}`deferment` — deferment parameter `d`: deferred insurances with factorisation proof
 - {doc}`prospective_reserve` — net level premium $P = A_x / \ddot{a}_x$, prospective reserve formula, and the `ts` parameter
 - {doc}`calculation_modes` — mortality placement, discrete vs. continuous modes
-- {doc}`joint_life_calculations` — joint-life insurances `Axy`, first-death insurance
+- {doc}`joint_life_calculations` — first-death insurances `Axy`, `Axyz`, `Afirst`
 - {doc}`interest_rates_guide` — `InterestRate` class and term structures
 - {doc}`batch_calculations` — portfolio pricing: array ages, per-policy params, BEL flows
+- {doc}`inspecting_cashflows` — `return_flows=True` dict keys (`death_probability` for scalar insurance; batch portfolio keys)
 - {doc}`irregular_cashflows` — variable sum assured and explicit payment schedules for insurances and annuities

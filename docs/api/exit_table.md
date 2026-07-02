@@ -1,9 +1,9 @@
 # ExitTable
 
 {class}`~lactuca.ExitTable` extends {class}`~lactuca.tables.DecrementTable`
-for **lapse / withdrawal** tables.  The governing decrement is the exit rate
+for **exit / turnover** tables.  The governing decrement is the exit rate
 $o_x$, which represents the probability that a contract or member aged $x$
-lapses, surrenders, or withdraws within one year.
+exits within one year (employment termination, withdrawal, lapse, or surrender).
 
 Exit tables are used in persistency analysis, lapse-risk pricing, and
 multi-decrement models for group pension and collective insurance products.
@@ -13,7 +13,7 @@ generational improvement factors for cohort-based exit rates.
 ```{seealso}
 {doc}`../user_guide/tables_taxonomy` — Overview of all table types and decrement conventions.\
 {doc}`../user_guide/using_tables` — Loading and inspecting tables.\
-{doc}`../user_guide/modifying_decrements` — Scaling and shocking decrement rates.\
+{doc}`../user_guide/modifying_decrements` — Scaling, aggravated risk, and `table_combination`.\
 {doc}`../user_guide/mortality_improvement` — Generational tables and improvement factors.
 ```
 
@@ -53,8 +53,8 @@ See the {doc}`DecrementTable reference <decrement_table>` for full documentation
 of each member.
 
 :::{note}
-`qx` is not available on `ExitTable` — the primary decrement is `ox`
-(exit / lapse rate). Calling `qx` raises `NotImplementedError`.
+`qx`, `ix`, `ex`, `ex_curtate`, and `modify_qx` are not available on `ExitTable` — the primary decrement is `ox`
+(exit / turnover rate). Calling any of the blocked methods raises `NotImplementedError`.
 :::
 
 ### Actuarial methods
@@ -125,6 +125,7 @@ of each member.
    ~lactuca.tables.DecrementTable.generational_formula_type
    ~lactuca.tables.DecrementTable.select
    ~lactuca.tables.DecrementTable.select_period
+   ~lactuca.tables.DecrementTable.select_improvement_diagonal
    ~lactuca.tables.DecrementTable.start_duration
    ~lactuca.tables.DecrementTable.mi_by_duration
    ~lactuca.tables.DecrementTable.mi_structure

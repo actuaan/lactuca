@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API documentation for all Lactuca modules.
+Complete API documentation for all public classes, functions, and parameters.
 
 ```{toctree}
 :maxdepth: 1

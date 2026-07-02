@@ -26,6 +26,7 @@ For narrative explanations and runnable code examples see
 | [Growth rates (escalating benefits)](#growth-rates-escalating-benefits) | $v_g = (1+g)/(1+i)$ |
 | [Multiple decrements](#multiple-decrements) | ${}_tq_x^{(j)}$, ${}_tp_x^{(\tau)}$ |
 | [Joint life and last survivor](#joint-life-and-last-survivor) | $\ddot{a}_{xy}$, $\ddot{a}_{\overline{xy}}$, $A_{xy}$ |
+| [Prospective reserves](#prospective-reserves) | ${}_{t}V$, net level premium $P$, policy shift `ts` |
 | [Formulas by calculation mode](#formulas-by-calculation-mode) | mode-specific formulas |
 | [References](#references) | — |
 
@@ -67,7 +68,7 @@ $$
 
 ### Survivors and deaths
 
-The number of survivors in a cohort at aged $x$ is the **life table function** $l_x$. Deaths
+The number of survivors in a cohort at age $x$ is the **life table function** $l_x$. Deaths
 between consecutive integer ages are:
 
 $$
@@ -90,9 +91,10 @@ select period".
 In Lactuca the minimum valid integer duration is given by `TableSource.start_duration`:
 
 - **`start_duration = 1`** — standard convention (e.g. DAV 2004 R, most international tables);
-  `duration=1` is the freshly-underwritten rate $q_{[x]}$.
+  `duration=1` selects column `s1`, notated $q_{[x]+1}^{\text{select}}$ (often written $q_{[x]}$
+  in textbook shorthand for the freshly-underwritten rate).
 - **`start_duration = 0`** — CMI/UK convention (e.g. AM92/AF92);
-  `duration=0` is the freshly-underwritten rate $q_{[x]+0}$.
+  `duration=0` selects column `s0`, notated $q_{[x]+0}^{\text{select}}$.
 
 Durations at or beyond `start_duration + select_period` fall back to the ultimate column
 $q_{x+d}^{\text{ult}}$ regardless of the value passed.
@@ -531,17 +533,22 @@ $$
 
 ### Curtate life expectancy
 
-Expected whole years of future life:
+Expected whole years of future life (integer ages):
 
 $$
 e_x = \sum_{k=1}^{\omega-x} {}_k p_x
 $$
 
-Under UDD the two expectations are related by:
+**`ex_curtate(x)`** evaluates this sum via the public `tpx` API (each term rounded per
+`decimals.tpx`). **`ex(x)`** returns the complete expectation $\mathring{e}_x = T_x/l_x$.
+
+Under UDD the two expectations are **approximately** related by:
 
 $$
-\mathring{e}_x = e_x + \tfrac{1}{2}
+\mathring{e}_x \approx e_x + \tfrac{1}{2}
 $$
+
+This is not an exact identity after `lx` / `tpx` rounding or near terminal age $\omega$.
 
 (interest-rate-conversions)=
 ## Interest rate conversions
@@ -674,8 +681,9 @@ $$
 ### Joint life status
 
 :::{note}
-`LifeTable` assumes **statistical independence** of lives in all joint calculations
-(`äxy`, `Axy`, `äxyz`, `Axyz`, etc.).
+`LifeTable` assumes **statistical independence** of lives in all multi-life calculations
+— joint-life annuities (`äxy`, `axy`, …), first-death insurances (`Axy`, `Axyz`,
+`Afirst`), and joint pure endowments (`nExy`, …).
 Correlated mortality is not supported.
 :::
 
@@ -707,9 +715,9 @@ $$
 \ddot{a}_{\overline{xy}} = \ddot{a}_x + \ddot{a}_y - \ddot{a}_{xy}
 $$
 
-### Joint life insurance and pure endowment
+### First-death insurance and joint pure endowment
 
-Joint life insurance — benefit on first death (uses `config.mortality_placement` offset $f$,
+First-death insurance — benefit on first death (uses `config.mortality_placement` offset $f$,
 same convention as single-life `Ax`):
 
 $$
@@ -730,7 +738,7 @@ $$
 {}_t p_{xyz} = {}_t p_x \cdot {}_t p_y \cdot {}_t p_z
 $$
 
-Three-life joint annuity-due, insurance, and pure endowment:
+Three-life joint annuity-due, first-death insurance, and pure endowment:
 
 $$
 \ddot{a}_{xyz} = \sum_{k=0}^{\infty} v^k \cdot {}_k p_{xyz}
@@ -744,6 +752,46 @@ $$
 $$
 {}_n E_{xyz} = v^n \cdot {}_n p_x \cdot {}_n p_y \cdot {}_n p_z
 $$
+
+(formulas-prospective-reserve)=
+(prospective-reserves)=
+## Prospective reserves
+
+The **prospective reserve** ${}_{t}V$ at elapsed duration $t$ is the excess of the
+actuarial present value of future benefits over the actuarial present value of future
+net premiums, both evaluated from the **attained age** $x + t$ with **remaining term**
+$n - t$:
+
+$${}_{t}V = \text{APV}(\text{future benefits} \mid x{+}t) - \text{APV}(\text{future premiums} \mid x{+}t)$$
+
+For an $n$-year term insurance with net level premium $P$ chosen at issue
+(${}_{0}V = 0$):
+
+$$P = \frac{A^1_{x:\overline{n}|}}{\ddot{a}_{x:\overline{n}|}}$$
+
+$${}_{t}V = A^1_{x+t:\overline{n-t}|} - P \cdot \ddot{a}_{x+t:\overline{n-t}|}$$
+
+Whole-life variant:
+
+$$P_x = \frac{A_x}{\ddot{a}_x} \qquad {}_{t}V_x = A_{x+t} - P_x \cdot \ddot{a}_{x+t}$$
+
+### Lactuca mapping (`ts` parameter)
+
+Pass `ts=t` (years elapsed since the policy reference anniversary; may be fractional)
+to shift the valuation date.  With deferment `d=0`, the engine resolves
+$n_\text{eff} = \max(n - \max(ts, 0), 0)$ and evaluates both benefit and premium
+components at attained age $x + t$:
+
+```python
+At = lt.Ax(x, n=n, ts=t)    # A^1_{x+t:\overline{n-t}|}
+at = lt.äx(x, n=n, ts=t)    # ddot{a}_{x+t:\overline{n-t}|}
+tV = At - P * at
+```
+
+`Probability`, commutation, and life-expectancy methods do **not** accept `ts`.
+Pure endowments (`nEx`, `nExy`, `nExyz`, `nEjoint`) accept `ts` like annuities and
+insurances.  For narrative examples, fractional `ts`, and growing premiums see
+{doc}`user_guide/prospective_reserve`.
 
 (formulas-by-calculation-mode)=
 ## Formulas by calculation mode
@@ -781,7 +829,7 @@ $${}_{n}E_x = \frac{D_{x+n}}{D_x}$$
 
 ### `discrete_precision` — $m > 1$ or fractional age
 
-Exact summation over the payment grid, using $\ell_x$ interpolation at each grid
+Exact summation over the payment grid, using $l_x$ interpolation at each grid
 point.
 
 Annuity-due:
@@ -799,7 +847,7 @@ $$A_x^{(m)} = \sum_{k=0}^{mn-1} v^{k/m\,+\,f/m} \cdot {}_{k/m}p_x \cdot {}_{1/m}
 where $f/m$ is the mortality placement micro-offset within each $1/m$-year sub-period
 ($f \in \{0,\,0.5,\,1\}$ from `config.mortality_placement`; see [C function](#c-function-deaths)).
 
-Survival and death probabilities are obtained by interpolating $\ell_x$ with the
+Survival and death probabilities are obtained by interpolating $l_x$ with the
 method set in `config.lx_interpolation` (see {doc}`user_guide/lx_interpolation`).
 
 ### `discrete_simplified`
@@ -817,15 +865,19 @@ terminal fraction $s=n_\text{eff}-k$ is summed on an exact m-thly grid:
 
 $$A_x^{(m)} \approx A_x + \frac{m-1}{2m}\left(A_{x+1} - A_x\right) \quad\text{(insurances; integer $n$ only)}$$
 
+For term $n$, $A_{x+1}$ means $A^1_{x+1:\overline{n-1}|}$ (shorter remaining term), not
+whole-life $A_{x+1}$. Fractional $n_\text{eff}$ adds an m-thly `fractional_tail` (see
+{doc}`user_guide/calculation_modes`).
+
 ### `continuous_precision`
 
-Numerical integration over the unrounded $\ell_x$ curve (raw values):
+Numerical integration over the unrounded $l_x$ curve (raw values):
 
 $$\bar{a}_{x:\overline{n}|} = \int_0^n v^t \cdot {}_t p_x \, dt$$
 
 $$\bar{A}^1_{x:\overline{n}|} = \int_0^n v^t \cdot {}_t p_x \cdot \mu_{x+t} \, dt$$
 
-The force of mortality $\mu_{x+t}$ is derived numerically from the raw $\ell_x$ grid.
+The force of mortality $\mu_{x+t}$ is derived numerically from the raw $l_x$ grid.
 The approximation method is controlled by `config.force_mortality_method`; allowed
 values: `"finite_difference"` (**default**), `"spline"`, `"kernel"`.
 Passing any other string raises `ValueError`.
@@ -833,13 +885,18 @@ Passing any other string raises `ValueError`.
 (continuous-simplified-formulas)=
 ### `continuous_simplified`
 
-Arithmetic interpolation using the rounded $\ell_x$ grid:
+Woolhouse blend of annual `discrete_precision` due/immediate legs, plus an optional
+trapezoidal `fractional` tail when $n$ is fractional (see {doc}`user_guide/calculation_modes`):
 
 $$\bar{a}_x \approx \ddot{a}_x - \frac{1}{2}$$
 
 $$\bar{a}_{x:\overline{n}|} \approx \ddot{a}_{x:\overline{n}|} - \frac{1}{2}\,(1 - {}_n E_x)$$
 
-$$\bar{A}_{x+s} \approx \frac{\bar{A}_x + \bar{A}_{x+1}}{2}, \quad 0 < s < 1$$
+**Insurances** — arithmetic mean of two `continuous_precision` legs (at the
+evaluated age and at age $+1$; the second leg uses term $\max(n-1,\,0)$; when
+$n \le 1$ only the first leg is used):
+
+$$\bar{A}^{(\text{simp})} \approx \tfrac{1}{2}\left(\bar{A}_x^{(\text{prec})} + \bar{A}_{x+1}^{(\text{prec})}\right)$$
 
 (select-and-ultimate-tables)=
 ## Select-and-ultimate tables
@@ -860,7 +917,7 @@ The fallback to ultimate mortality is applied automatically once duration reache
 from lactuca import LifeTable
 
 # Load select-ultimate table at duration 1 (freshly underwritten)
-dav = LifeTable("DAV2004R_SelUlt_1o", "m", duration=1)
+dav = LifeTable("DAV2004R_SelUlt_1o", "m", cohort=1960, duration=1)
 print(dav.select_period)      # 5
 
 # Select mortality at age [60], 2 years after selection: q_{[60]+2}

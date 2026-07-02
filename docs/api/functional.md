@@ -1,9 +1,11 @@
 # Functional API
 
-The functional API provides standalone functions that are **exactly equivalent**
-to the corresponding {class}`~lactuca.LifeTable`, {class}`~lactuca.DisabilityTable`,
-and {class}`~lactuca.ExitTable` OOP methods, with an explicit table argument replacing
-the implicit ``self`` of the method call.  Multi-life functions (`äxy`, `äjoint`, etc.)
+The functional API provides standalone functions that delegate to OOP methods on
+actuarial table instances.  **Decrement probability functions** (`px`, `qx`, `ix`,
+`ox`, `lx`, `dx`, `tpx`, `tqx`) accept {class}`~lactuca.LifeTable`,
+{class}`~lactuca.DisabilityTable`, or {class}`~lactuca.ExitTable` as appropriate.
+**Annuities, insurances, endowments, commutation functions, and multi-life products**
+require {class}`~lactuca.LifeTable`.  Multi-life functions (`äxy`, `äjoint`, etc.)
 take a sequence of {class}`~lactuca.LifeTable` instances as their first argument.
 
 Use the functional API when:
@@ -34,6 +36,7 @@ For all other workflows the OOP methods on {class}`~lactuca.LifeTable`,
 .. autofunction:: lactuca.lx
 .. autofunction:: lactuca.dx
 .. autofunction:: lactuca.ex
+.. autofunction:: lactuca.ex_curtate
 .. autofunction:: lactuca.ex_continuous
 .. autofunction:: lactuca.ix
 .. autofunction:: lactuca.ox
@@ -72,7 +75,8 @@ For all other workflows the OOP methods on {class}`~lactuca.LifeTable`,
 ```
 
 :::{seealso}
-{doc}`../user_guide/joint_life_calculations` — Full guide to joint-life and multi-life annuities and insurances.\
+{doc}`../user_guide/joint_life_calculations` — Multi-life annuities, first-death
+insurances, and derivable last-survivor formulas.\
 {doc}`utils` — {func}`~lactuca.payment_times` and other helpers for
 constructing custom payment grids (``cashflow_times`` parameter).
 :::

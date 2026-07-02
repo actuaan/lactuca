@@ -28,16 +28,15 @@ following order:
 1. **Expiry check** — `expires_at` must be in the future.
 2. **Device fingerprint check** — the fingerprint in the file must match the current
    machine.
-3. **MAC integrity check** — a device-bound HMAC-SHA256 code covers `expires_at`,
-   `tier`, `last_validated_at`, and `last_process_heartbeat`.  A missing `mac` field
-   raises `LicenseTamperedError` **[LAC-3003]** (auto-recoverable); a mismatch raises
-   **[LAC-3004]** (auto-recoverable).
-4. **Clock rollback check** — the system clock must not be more than 60 seconds behind
-   `last_validated_at`.  A larger rollback raises `LicenseTamperedError`
-   **[LAC-3005]** (requires restoring the system clock).
-5. **Ed25519 signature verification** — the server-issued cryptographic signature is
-   verified last.  A missing or invalid signature raises `LicenseTamperedError`
-   **[LAC-3001]** (auto-recoverable) or **[LAC-3002]** (auto-recoverable).
+3. **Integrity check** — the local license file is checked for unauthorized modification.
+   A failed check raises `LicenseTamperedError` **[LAC-3003]** (auto-recoverable) or
+   **[LAC-3004]** (auto-recoverable on the same device when online).
+4. **Clock rollback check** — the system clock must not be set earlier than the last
+   successful license validation recorded locally.  A larger rollback raises
+   `LicenseTamperedError` **[LAC-3005]** (requires restoring the system clock).
+5. **License validation** — when online, the stored key is revalidated against the
+   license server.  A failed validation raises `LicenseTamperedError` **[LAC-3001]**
+   (auto-recoverable) or **[LAC-3002]** (auto-recoverable).
 
 `license.json` is device-bound and cannot be shared between machines. Copying it to
 another device triggers **[LAC-3004]** or **[LAC-2002]** (fingerprint mismatch).

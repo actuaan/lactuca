@@ -2,7 +2,7 @@
 
 **Lactuca — Life Actuarial Calculation Library for Python**
 
-*Effective date: 2026-04-20. Last updated: 2026-06-22.*
+*EULA version 1.0. Effective date: 2026-07-02. Last updated: 2026-07-02.*
 
 ---
 

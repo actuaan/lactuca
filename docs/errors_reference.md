@@ -31,20 +31,24 @@ the full explanation, cause, and fix.
 | **Age & term** | `ValueError` | [Integer age required](#integer-age-required) | Fractional age passed to `Dx`, `Nx`, `Cx`, `Mx`, `Sx`, `Rx`, `Lx`, `Tx`, or `ex` |
 | **Age & term** | `ValueError` | [Fractional age required](#fractional-age-required) | Integer age passed to `ex_continuous`, `Lx_continuous`, or `Tx_continuous` |
 | **Age & term** | `ValueError` | [Age out of range](#age-out-of-range) | Age $< 0$ passed to any method, or age $> \omega$ passed to commutation/annuity/insurance methods (`lx` returns 0.0 for ages $> \omega$) |
-| **Age & term** | `ValueError` | [Duration, deferment, or time-shift out of range](#term-must-be-positive) | `n` or `ts` negative or non-finite; `d` negative only |
+| **Age & term** | `ValueError` | [Duration, deferment, or time-shift out of range](#term-must-be-positive) | `n` or `ts` negative; non-finite `n` (NaN, `-inf`) or `ts` (`n=+inf` is a whole-life sentinel) |
 | **Interest rate** | `ValueError` | [Rate ≤ −1](#rate--1) | Force of interest (`delta(t)`) or discount factor (`vn(n)`) computed with rate $\leq -1$ |
 | **Interest rate** | `ValueError` | [Piecewise rate inputs](#piecewise-rate-input-errors) | Wrong number of rates or non-positive terms |
-| **Interest rate** | `TypeError` | [Piecewise rate inputs](#piecewise-rate-input-errors) | Non-finite (NaN or Inf) value in the `rates=` array |
+| **Interest rate** | `ValueError` | [Piecewise rate inputs](#piecewise-rate-input-errors) | Non-finite (NaN or Inf) value in the `rates=` array |
 | **Table data** | `ValueError` | [Terminal age condition](#omega-condition) | $q_\omega \neq 1.0$ in a user-supplied `.ltk` file |
+| **Table data** | `ValueError` | [Vectorial constructor](#vectorial-constructor-errors) | Zip length mismatch; cartesian `unisex_blend` sequence with mixed sex; or incompatible table mix |
 | **Table data** | `ValueError` | [Generational table](#generational-table-errors) | Missing, unexpected, or out-of-range `cohort`; or missing `base_year` metadata |
+| **Table data** | `ValueError` | [Duration below start_duration](#duration-below-start-duration) | `duration=` integer `< LifeTable.start_duration` on a select-ultimate table |
 | **Table modification** | `ValueError` | [Orphan `combination_mode`](#table-modification-combination-mode) | `combination_mode` without `table_combination` in the same dict |
 | **Table modification** | `ValueError` | [Invalid `combination_mode`](#table-modification-combination-mode) | Value not exactly `"independent"` or `"udd"` |
 | **Table modification** | `ValueError` | [UDD with too many causes](#table-modification-combination-mode) | `combination_mode="udd"` with host + 3+ other tables |
 | **Table modification** | `ValueError` | [Host or duplicate in `others`](#host-or-duplicate-instance-in-others) | Same instance as host or twice in `others` |
 | **Table modification** | `ValueError` | [Combined decrement exceeds 1.0](#combined-decrement-exceeds-10) | Invalid rates before product formula |
-| **Table modification** | `ValueError` | [Decrement rate outside [0, 1] before combine](#decrement-rate-outside-01-before-combine) | Host or other `_decrement` out of range before merge |
+| **Table modification** | `ValueError` | [Decrement rate outside [0, 1] before combine](#decrement-rate-outside-01-before-combine) | Host or other table decrement rates out of range before merge |
 | **Configuration** | `ValueError` | [Invalid setting value](#invalid-setting-value) | Disallowed value for a config setting |
 | **Configuration** | `ValueError` | [Decimal places](#decimal-places) | Negative or non-integer value for `config.decimals.*` |
+| **Configuration** | `ValueError` | [Invalid `date_format`](#invalid-setting-value) | Disallowed value for `config.date_format` |
+| **Configuration** | `ValueError` | [Configuration file extension](#configuration-file-extension) | `Config.save` / `Config.save_as` target path has a non-`.toml` extension |
 | **Input arrays** | `ValueError` | [Cashflow arrays](#mismatched-cashflow-arrays) | `cashflow_times` and `cashflow_amounts` differ in length |
 | **Input arrays** | `ValueError` | [Broadcasting](#broadcasting-errors) | `x` and `x0` arrays passed to `InterestRate` have incompatible shapes |
 | **Interest rate** | `TypeError` | [Wrong type for `interest_rate`](#wrong-type-interest-rate) | `int` or other non-`float` passed to the `interest_rate` property setter or constructor |
@@ -52,7 +56,7 @@ the full explanation, cause, and fix.
 | **Cashflow utilities** | `ValueError` | [Invalid selected periods](#invalid-selected-periods) | Period value outside `[1, m]` in `payment_times` |
 | **Cashflow utilities** | `TypeError` | [Invalid selected periods](#invalid-selected-periods) | Non-integer value in `selected_periods` |
 | **Cashflow utilities** | `ValueError` | [Tier structure](#tier-structure-errors) | `len(values) ≠ len(breakpoints) + 1`, or breakpoints not strictly ascending |
-| **Cashflow utilities** | `ValueError` | [Non-finite cashflow inputs](#non-finite-cashflow-inputs) | NaN or Inf in `times`, `breakpoints`, `values`, or `start` |
+| **Cashflow utilities** | `ValueError` or `TypeError` | [Non-finite cashflow inputs](#non-finite-cashflow-inputs) | NaN or Inf in `times`, `breakpoints`, `values`, or `start` |
 | **Cashflow utilities** | `TypeError` | [times is None](#times-is-none) | `None` passed as `times` to `GrowthRate.amounts` |
 | **GrowthRate** | `ValueError` | [GrowthRate constructor errors](#growthrate-constructor-errors) | Invalid `growth_type`, `rate`, `rates`/`terms`, or scenario dict |
 | **GrowthRate** | `TypeError` | [GrowthRate constructor errors](#growthrate-constructor-errors) | `apply_from_first` not `bool`; `rate` is `bool` or non-numeric |
@@ -85,8 +89,9 @@ the full explanation, cause, and fix.
 
 :::{note}
 Most rows in the Quick reference table raise `ValueError`.  Rows that raise `TypeError`
-are: Non-finite `rates=` value (piecewise interest rate), Wrong type for `interest_rate`,
-Invalid selected periods (non-integer value), times is None, GrowthRate constructor type
+are: Wrong type for `interest_rate`,
+Invalid selected periods (non-integer value), non-finite `tiered_amounts` inputs,
+times is None, GrowthRate constructor type
 checks, GrowthRate.factor None, GrowthRate.add_scenario, InterestRate.add_scenario,
 InterestRate.i_m/d_m, InterestRate.get_average_force.
 The license rows raise subclasses of `LactucaLicenseError` (not `ValueError` or
@@ -186,22 +191,23 @@ lt.Lx_continuous(65)           # ✘ → ValueError: same rule (Lx_continuous)
 
 **Exception**: `ValueError`
 
-**Message pattern**: `"All ages x must be in [0, {omega}]"`
+**Message pattern**: `"All ages x must be in [0, {w}]"` (and optionally
+`"[{method}] All ages x must be in [0, {w}] for table '{table_name}'."`)
 
-**Cause**: The age provided is negative or exceeds the table's terminal age $\omega$.
-Most public methods that accept an age argument apply this check, including commutation
-functions, annuity and insurance methods, and continuous methods
-(`ex_continuous`, `Lx_continuous`, `Tx_continuous`).
+**Cause**: The age provided is negative or exceeds the table's effective upper bound `w`
+(may be less than file `omega` after modifications). Most public methods that accept an
+age argument apply this check, including commutation functions, annuity and insurance
+methods, and continuous methods (`ex_continuous`, `Lx_continuous`, `Tx_continuous`).
 
 :::{note}
 `lx` is an exception: by actuarial convention, ages beyond $\omega$ are valid and return
 `0.0` (all survivors have died).  Only **negative** ages raise `ValueError` for `lx`.
 :::
 
-**Fix**: Ensure the age satisfies $0 \leq x \leq \omega$.  Use `lt.omega` to read the
-terminal age of a loaded table before computing.  Vectorised calls apply the same bounds
-check element-wise: a single out-of-range value in an array triggers the error for the
-entire call.
+**Fix**: Ensure the age satisfies $0 \leq x \leq w$.  Use `lt.w` (effective upper bound;
+may differ from file `omega` after modifications) before computing.  Vectorised calls apply
+the same bounds check element-wise: a single out-of-range value in an array triggers the
+error for the entire call.
 
 ```python
 from lactuca import LifeTable
@@ -222,18 +228,23 @@ lt.lx(x=-1)              # ✘ → ValueError: negative age
 
 | Parameter | Meaning | Condition | Message pattern |
 |---|---|---|---|
-| `n` | term in years | `n < 0` or `n` is NaN or Inf | `"[{method}] Parameter n (duration) must be finite and >= 0"` |
+| `n` | term in years | `n < 0` or `n` is NaN; `n=-inf` non-finite | `"[{method}] Parameter n (duration) must be finite and >= 0"` |
 | `d` | deferment in years | `d < 0` | `"[{method}] Parameter d (deferment) must be >= 0"` |
 | `ts` | time-shift in years | `ts < 0` or `ts` is NaN or Inf | `"[{method}] Parameter ts (shift) must be finite and >= 0"` |
 
 :::{note}
+`n = +inf` is accepted as a whole-life sentinel and is normalised to `None` before
+validation (same result as omitting `n`).  Only NaN and negative infinity are rejected
+as non-finite.
+
 `n = 0` does **not** raise — an annuity or insurance with zero term returns `0.0` without
 an error.  `d = 0` and `ts = 0` are equally valid (no deferment, no time-shift).
 For whole-life products, omit `n` entirely (it defaults to `None`).
 :::
 
-**Fix**: Pass `n >= 0`, `d >= 0`, and `ts >= 0`.  `n` and `ts` must also be finite
-(NaN or Inf are rejected); `d` checks sign only.
+**Fix**: Pass `n >= 0`, `d >= 0`, and `ts >= 0`.  For `n`, NaN and negative infinity
+are rejected; `n = +inf` is accepted as a whole-life sentinel (see note above).
+`ts` must be finite (NaN or any infinity are rejected).  `d` checks sign only.
 
 ```python
 from lactuca import LifeTable
@@ -243,7 +254,8 @@ lt.äx(65, n=20, ir=0.03)     # ✔  20-year temporary annuity
 lt.äx(65, n=0, ir=0.03)      # ✔  zero-term returns 0.0, no error
 lt.äx(65, ir=0.03)           # ✔  whole-life (n=None, the default)
 lt.äx(65, n=-1, ir=0.03)              # ✘ → ValueError: n < 0
-lt.äx(65, n=float('inf'), ir=0.03)    # ✘ → ValueError: n is non-finite
+lt.äx(65, n=float('nan'), ir=0.03)    # ✘ → ValueError: n is non-finite
+lt.äx(65, n=float('inf'), ir=0.03)    # ✔  whole-life sentinel (normalised to n=None)
 lt.äx(65, d=-2, ir=0.03)              # ✘ → ValueError: d < 0
 lt.äx(65, ts=-0.5, ir=0.03)           # ✘ → ValueError: ts < 0
 ```
@@ -256,9 +268,9 @@ lt.äx(65, ts=-0.5, ir=0.03)           # ✘ → ValueError: ts < 0
 These errors are raised by `InterestRate` — at construction (invalid rate values,
 piecewise structure, or `term_unit`), through scenario management (`add_scenario`,
 `active_scenario`), on method calls (`vx`, `i_m`, `d_m`, `get_average_force`), or when
-an `ir=` argument to an annuity or insurance method carries an invalid rate — and by the
-`LifeTable.interest_rate` property setter (and constructor argument) when it receives a
-value of the wrong type.
+the `LifeTable.interest_rate` property setter (or constructor) receives the wrong type.
+Invalid `ir=` types on annuity/insurance methods raise `TypeError`; economically
+invalid rates (e.g. $i \leq -1$ at use time) raise `ValueError` from `delta`/`vn`.
 
 (rate--1)=
 ### Rate ≤ −1
@@ -267,10 +279,13 @@ value of the wrong type.
 
 **Message pattern**: depends on input type.
 
-| Input type | Message pattern |
+| Method / input | Message pattern |
 |---|---|
-| Scalar rate | `"Rate {value} ≤ -1"` |
-| Array of rates | `"Rates ≤ -1 at indices {indices}"` |
+| `InterestRate.delta(t)` (constant curve) | `"Cannot calculate force of interest: rate {rate} ≤ -1{context} would make ln(1 + i) undefined per actuarial standards"` |
+| `InterestRate.delta(t)` (piecewise curve, scalar `t`) | `"Rate {rate} ≤ -1"` |
+| `InterestRate.delta(t)` (piecewise curve, array `t`) | `"Rates ≤ -1 at indices {indices}"` |
+| `InterestRate.vn(n)` (scalar, constant curve) | `"Rate {rate} ≤ -1: (1+i) must be positive for discount factor computation per actuarial standards"` |
+| `InterestRate.vn(n)` (piecewise / array path) | `"Rates ≤ -1 at indices {indices}: (1+i) must be positive for discount factor computation per actuarial standards"` |
 
 **Cause**: An annual effective rate $i \leq -1$ was used to compute either the
 force of interest $\delta = \ln(1+i)$ or the discount factor $v^n = (1+i)^{-n}$.
@@ -294,6 +309,10 @@ InterestRate(-1.0).vn(5)       # ✘ → ValueError: rate ≤ −1 ((1+i) = 0)
 InterestRate(-2.0).vn(1)       # ✘ → ValueError: rate < −1
 ```
 
+Piecewise curves raise shorter messages at `delta(t)`: scalar `t` → `Rate {rate} ≤ -1`;
+array `t` → `Rates ≤ -1 at indices {indices}`. The examples above use a **constant**
+`InterestRate(-1.0)`.
+
 :::{note}
 The rate validation is **lazy**: `InterestRate(-1.0)` constructs without raising.
 The `ValueError` fires when computing the force of interest via `InterestRate.delta(t)`
@@ -306,16 +325,16 @@ and are accepted by both methods without raising.
 (piecewise-rate-input-errors)=
 ### Piecewise rate input errors
 
-**Exception**: `ValueError` (or `TypeError` for non-finite rate values — see table)
+**Exception**: `ValueError`
 
 **Message patterns**:
 
 | Condition | Exception | Message pattern |
 |---|---|---|
 | `terms` or `rates` is empty | `ValueError` | `"terms and rates must not be empty"` |
-| `len(rates) ≠ len(terms) + 1` | `ValueError` | `"rates must have length terms+1 (last rate applies indefinitely)"` |
+| `len(rates) ≠ len(terms) + 1` | `ValueError` | `"For piecewise rates, rates must have length terms+1 (last rate applies indefinitely)"` |
 | Any term is non-positive | `ValueError` | `"All terms must be positive"` |
-| A rate is non-finite (NaN or Inf) | `TypeError` | `"InterestRate only accepts finite numeric values for 'rates', got {values}."` |
+| A rate is non-finite (NaN or Inf) | `ValueError` | `"Interest rate must be finite at position {i}, got {value}. Infinite or NaN rates are not allowed in actuarial calculations."` |
 
 **Cause**: The piecewise `InterestRate` constructor validates `terms` and `rates` before
 accepting them.  Each condition is checked in order; the first failing condition raises.
@@ -324,7 +343,7 @@ accepting them.  Each condition is checked in order; the first failing condition
 - `rates` must have exactly `len(terms) + 1` elements: one rate per interval plus one
   "tail" rate that applies indefinitely beyond the last term breakpoint.
 - All `terms` must be strictly positive (no zero or negative durations).
-- All rates must be real finite numbers — `math.nan`, `math.inf`, and `-math.inf` are rejected.
+- All rates must be real finite numbers — `math.nan`, `math.inf`, and `-math.inf` raise `ValueError`.
 - All rates must also be economically valid ($> -1$); see [Rate ≤ −1](#rate--1).
 
 ```python
@@ -343,8 +362,8 @@ InterestRate(terms=[5, 10], rates=[0.03, 0.04])             # ✘ → ValueError
 # ✘ negative term duration:
 InterestRate(terms=[-5, 10], rates=[0.03, 0.04, 0.05])      # ✘ → ValueError
 
-# ✘ NaN rate — not finite (raises TypeError, not ValueError):
-InterestRate(terms=[10], rates=[0.03, math.nan])             # ✘ → TypeError
+# ✘ NaN rate — not finite:
+InterestRate(terms=[10], rates=[0.03, math.nan])             # ✘ → ValueError
 ```
 
 (interestrate-advanced-constructor)=
@@ -497,21 +516,23 @@ ir.get_average_force('5')    # ✘ → TypeError
 
 | Context | Message |
 |---|---|
-| `LifeTable.interest_rate` property | `"interest_rate must be a float, InterestRate, or None."` |
-| `ir=` keyword argument | `"interest_rate must be a float, InterestRate, or None."` |
+| `LifeTable.interest_rate` property or `interest_rate=` constructor | `"interest_rate must be a float, InterestRate, or None."` |
+| `ir=` on annuity/insurance methods (invalid type) | `"[{method}] Invalid type for interest rate: expected float, InterestRate, or None, got {type}."` |
+| `ir=` boolean on annuity/insurance methods | `"[{method}] Interest rate ('ir') must be numeric or an InterestRate instance, not boolean: {value!r}"` |
 
 :::{note}
-This `TypeError` applies to the **`interest_rate` property setter** and to
-**`LifeTable.__init__`** (the `interest_rate=` constructor argument).  The `ir=` keyword
-on annuity and insurance methods (`äx`, `ax`, `Ax`, etc.) is more permissive: it accepts
-integers and automatically coerces them via `InterestRate(ir)` — so `lt.äx(65, ir=3)`
-produces a 300 % discount rate without raising.  Always pass a `float` to avoid
-unintentionally enormous discount rates.
+The first message pattern applies to the **`interest_rate` property setter** and
+**`LifeTable.__init__`** (`interest_rate=` constructor argument): `int`, `str`, and
+other non-`float` types raise there.  The `ir=` keyword on annuity and insurance
+methods (`äx`, `ax`, `Ax`, etc.) is more permissive for **numeric** inputs: integers
+coerce via `InterestRate(ir)` — so `lt.äx(65, ir=3)` means 300 %, not 3 %.
+Non-numeric `ir=` (e.g. `str`, `bool`) raises the second or third pattern below.
 :::
 
-**Cause**: The `interest_rate` property setter (or the `interest_rate=` constructor
-argument) received a value that is not a `float`, an `InterestRate` object, or `None`.
-The most common mistake is passing an `int` such as `3` instead of the float `0.03`.
+**Cause**: Wrong-type inputs at the table default-rate boundary (`interest_rate`
+property or constructor) or at the per-call `ir=` boundary on product methods.
+The most common property-setter mistake is passing an `int` such as `3` instead of
+`0.03`.
 
 **Fix**: Use a `float` literal, an `InterestRate` object, or `None`.  Note that `3.0`
 is a float but means 300 % — use `0.03` for 3%: `0.03`, `3.0 / 100`, or
@@ -532,6 +553,7 @@ lt.interest_rate = "0.03"               # ✘ → TypeError  (str not accepted)
 lt.äx(65, ir=0.03)                      # ✔  float
 lt.äx(65, ir=InterestRate(0.03))        # ✔  InterestRate object
 lt.äx(65, ir=3)                         # ✔  int coerced — 3 means 300 %, use 0.03 for 3 %
+lt.äx(65, ir="0.03")                    # ✘ → TypeError: str on ir= (use float 0.03)
 ```
 
 ---
@@ -547,7 +569,15 @@ file contains invalid data or when a generational table call omits required meta
 
 **Exception**: `ValueError`
 
-**Message pattern**: `"Life table '{table}': qx_{sex}[omega={omega}] must be 1.0, got {value}."`
+**Message pattern** (loaded `.ltk` via `TableSource`):
+
+`"Life table '{table}': qx_{sex}[omega={omega}] must be 1.0, got {value}."`
+
+**Message pattern** (`TableBuilder.validate`):
+
+`"Life table '{table}': {column} at omega={omega} must be 1.0, got {value}."`
+
+where `{column}` is the terminal decrement column (e.g. `qx_m`, `qx_m_ult`).
 
 | `{sex}` value | Sex column |
 |---|---|
@@ -584,6 +614,7 @@ only occurs when loading a user-supplied `.ltk` file.  See
 |---|---|
 | `cohort` supplied to a static (non-generational) table | `"Cohort should not be specified for static tables."` |
 | `cohort` omitted from a generational table call | `"Cohort must be set for generational tables."` |
+| `cohort` omitted from projected-improvement select table | `"Cohort must be set for projected_improvement select tables."` |
 | `base_year` absent from `.ltk` metadata | `"base_year metadata missing in table '{table}'."` |
 | `cohort` value is not an integer | `"Cohort year must be an integer."` |
 | `cohort` year outside valid range | `"Cohort year must be between 1900 and {year}."` (`{year}` = current calendar year) |
@@ -618,6 +649,71 @@ Check {doc}`user_guide/bundled_tables` to confirm whether a specific bundled tab
 generational (requires `cohort=`) or static (no `cohort` needed).
 :::
 
+(duration-below-start-duration)=
+### Duration below `start_duration`
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+```
+duration {dur!r} is below start_duration={sd} for table '{table_name}'.
+```
+
+**Cause**: On a select-ultimate table, `duration=` must be an integer `≥ start_duration`
+(or `'ult'`).  Tables with CMI/UK convention use `start_duration=0`; most others use `1`.
+
+**Fix**: Pass `duration=start_duration` or higher, or `duration='ult'` for ultimate rates.
+See {doc}`user_guide/tables_taxonomy` and {doc}`user_guide/notation_glossary`.
+
+(vectorial-constructor-errors)=
+### Vectorial table constructor errors
+
+**Applies to**: `LifeTable`, `DisabilityTable`, `ExitTable` (and the underlying
+vectorial table constructor).
+
+**Exception**: `ValueError`
+
+**Causes and message patterns**:
+
+| Cause | Message pattern |
+|---|---|
+| Zip-mode sequence length mismatch | `"{axis} sequence length ({n}) must match {anchor} sequence length ({m}) when both have length > 1"` (axes include `cohort`, `sex`, `duration`, `table_name`, `unisex_blend`) |
+| `unisex_blend` sequence with mixed sex in cartesian mode | `"unisex_blend as a sequence with cartesian=True requires all sex values to be 'u' (blend is a cartesian axis and is not valid for 'm' or 'f'). Use zip mode (cartesian=False) for mixed sex with per-instance blends, or pass a scalar unisex_blend."` |
+| `unisex_blend` provided for non-`u` sex (zip mode) | `"unisex_blend element {i}={value} provided for sex='{sex}'; unisex_blend is only valid when sex='u'"` |
+| Cartesian mix of generational and period tables | `"cartesian=True requires all table_names to have the same generational structure. Mixed generational/period tables produce invalid combinations. Use zip mode (cartesian=False) with cohort=[int, None, ...] instead."` |
+| Cartesian mix of select and non-select tables | `"cartesian=True requires all table_names to have the same select structure. Mixed select/non-select tables produce invalid combinations. Use zip mode (cartesian=False) with duration=[int, None, ...] instead."` |
+| `unisex_blend` out of range | `"unisex_blend element {i} must be in [0.0, 1.0], got {value}"` |
+| Empty `unisex_blend` sequence | `"unisex_blend sequence must contain at least one blend weight"` |
+| `sex='u'` without blend on a table lacking native unisex column | `"unisex_blend parameter is required when sex='u' because table '{table}' lacks native unisex column '{col_u}'. Example: {Class}('{table}', sex='u', unisex_blend=0.5)"` |
+
+**Fix**:
+- **Zip mode** (default): align sequence lengths, or pass a scalar so it broadcasts
+  (1-N rule).  Scalar `sex='u'` broadcasts to a `unisex_blend` list length.  Mixed
+  period/generational or select/non-select tables are valid in zip mode when `cohort` and
+  `duration` are aligned per index — see {ref}`heterogeneous-tables-zip`.
+- **Cartesian mode**: every axis is independent — use `cartesian=True` only when you
+  need the full grid and all `table_name` values share the same structure.  A
+  `unisex_blend` **list** is a fifth axis **only when every** `sex` value is `'u'`; for
+  mixed `'m'`/`'f'`/`'u'` with per-instance blends, use zip mode (`cartesian=False`).
+- **Mixed sex + blend list + cartesian**: switch to zip mode, or restrict `sex` to
+  `'u'` only.
+
+```python
+from lactuca import LifeTable
+
+# Zip: scalar sex='u' broadcasts to two blend weights — ✔
+LifeTable("PASEM2010", "u", unisex_blend=[0.3, 0.7])
+
+# Cartesian: blend list as fifth axis when all sex are 'u' — ✔
+LifeTable("PASEM2010", "u", unisex_blend=[0.3, 0.7], cartesian=True)
+
+# Cartesian: blend list with mixed sex — ✘
+LifeTable("PASEM2010", ["m", "u"], unisex_blend=[0.3, 0.7], cartesian=True)
+# → ValueError: unisex_blend as a sequence with cartesian=True requires all sex ...
+```
+
+See {doc}`user_guide/using_tables` for zip vs cartesian broadcasting rules.
+
 ---
 
 (configuration-errors)=
@@ -632,7 +728,10 @@ immediate and traceable to the offending line.
 
 **Exception**: `ValueError`
 
-**Message pattern**: `"{setting} must be one of {allowed_values}"`
+**Message pattern**: `"{setting} must be one of {allowed_values}"` for enum-like
+settings (`calculation_mode`, `lx_interpolation`, etc.).  Calendar constants use
+dedicated messages: `"date_format must be one of {allowed}"`, `"days_per_year must be one of {allowed}"`, and
+`"weeks_per_year must be one of {allowed}"`.
 
 **Cause**: A direct property assignment (e.g. `config.lx_interpolation = "..."`) or a
 `config.set(key, value)` call received a value outside the allowed set for that setting.
@@ -649,6 +748,8 @@ settings such as `days_per_year` also reject string arguments (e.g. `"365.25"`).
 | `force_mortality_method` | `"finite_difference"`, `"spline"`, `"kernel"` | `"finite_difference"` | {doc}`user_guide/force_mortality_methods` |
 | `mortality_placement` | `"beginning"`, `"mid"`, `"end"` | `"mid"` | {doc}`user_guide/commutation_functions` |
 | `days_per_year` | `360`, `365`, `365.25`, `365.2425`, `366` | `365.25` | {doc}`user_guide/interest_rates_guide` |
+| `date_format` | `"ymd"`, `"dmy"`, `"mdy"`, `"ymd_int"` | `"ymd"` | {doc}`user_guide/dates_guide` |
+| `weeks_per_year` | `52`, `52.1429`, `52.1775` | `52.1775` | {doc}`user_guide/interest_rates_guide` |
 
 **Example — wrong vs. correct assignment:**
 
@@ -663,9 +764,10 @@ config.days_per_year = 365.25                   # ✔  valid
 config.reset_to_defaults()                      # restore all settings to defaults
 
 # Invalid — each raises ValueError independently:
-config.lx_interpolation = "udd"                 # ✘ → ValueError: not an allowed value
-config.calculation_mode = "exact"               # ✘ → ValueError: not an allowed value
-config.days_per_year = 364                      # ✘ → ValueError: 364 not in allowed set
+config.lx_interpolation = "udd"                 # ✘ → ValueError: lx_interpolation must be one of ('linear', 'exponential')
+config.calculation_mode = "exact"               # ✘ → ValueError: calculation_mode must be one of ('discrete_precision', 'discrete_simplified', 'continuous_precision', 'continuous_simplified')
+config.date_format = "iso"                      # ✘ → ValueError: date_format must be one of ('ymd', 'dmy', 'mdy', 'ymd_int')
+config.days_per_year = 364                      # ✘ → ValueError: days_per_year must be one of (360, 365, 365.25, 365.2425, 366)
 ```
 
 (decimal-places)=
@@ -691,6 +793,25 @@ config.decimals.annuities = 0    # ✔  round to integer (0 decimal places)
 config.decimals.annuities = -1   # ✘ → ValueError: negative integer
 config.decimals.annuities = 4.5  # ✘ → ValueError: non-integer float
 config.reset_to_defaults()       # restore all decimals to defaults
+```
+
+(configuration-file-extension)=
+### Configuration file extension
+
+**Exception**: `ValueError`
+
+**Message pattern**: `"Configuration file extension must be '.toml'; got '{ext}'"`
+
+**Cause**: :meth:`~lactuca.Config.save` or :meth:`~lactuca.Config.save_as` was called with a path whose extension is neither empty (`.toml` appended automatically) nor `.toml`.
+
+**Fix**: Use a `.toml` path, or omit the extension so the normalizer appends `.toml`.
+
+```python
+from lactuca import Config
+cfg = Config()
+cfg.save_as("my_settings.json")  # ✘ → ValueError: Configuration file extension must be '.toml'; got '.json'
+cfg.save_as("my_settings.toml") # ✔  valid
+cfg.save_as("my_settings")      # ✔  valid (.toml appended)
 ```
 
 ---
@@ -812,7 +933,7 @@ gr.amounts(times, start=1000.0, m=7)          # ✘ → ValueError
 | Condition | Exception | Message pattern |
 |---|---|---|
 | Period value outside `[1, m]` | `ValueError` | `"[payment_times] selected_periods must be integers in [1, {m}] for m={m}."` |
-| Non-integer value (e.g. float) | `TypeError` | (raised by the input validator) |
+| Non-integer value (e.g. float) | `TypeError` | `"payment_times only accepts integer-valued sequences for 'selected_periods', got {value!r}"` |
 
 **Cause**: Each element of `selected_periods` must be an integer between 1 and `m`
 inclusive.  Periods are 1-based: period 1 is the first payment of the year, period `m`
@@ -864,20 +985,21 @@ tiered_amounts(times, breakpoints=[8, 5], values=[1.0, 1.1, 1.2])   # ✘ → Va
 (non-finite-cashflow-inputs)=
 ### Non-finite cashflow inputs
 
-**Exception**: `ValueError`
+**Exception**: `ValueError` or `TypeError` (`tiered_amounts` array inputs raise `TypeError`)
 
 **Message patterns**:
 
 | Input | Function | Message pattern |
 |---|---|---|
-| `times` | `tiered_amounts` | `"[tiered_amounts] times contains non-finite value at index {i}."` |
+| `times` | `tiered_amounts` | `"tiered_amounts only accepts finite numeric values for 'times', got {value}"` (`TypeError`) |
 | `times` | `GrowthRate.amounts` | `"[GrowthRate.amounts] times contains non-finite value at index {i}."` |
-| `breakpoints` | `tiered_amounts` | `"[tiered_amounts] breakpoints contains non-finite value at index {i}."` |
-| `values` | `tiered_amounts` | `"[tiered_amounts] values contains non-finite value at index {i}."` |
-| `start` | `GrowthRate.amounts` | `"[GrowthRate.amounts] start must be finite, got {value}."` |
+| `breakpoints` | `tiered_amounts` | `"tiered_amounts only accepts finite numeric values for 'breakpoints', got {value}"` (`TypeError`) |
+| `values` | `tiered_amounts` | `"tiered_amounts only accepts finite numeric values for 'values', got {value}"` (`TypeError`) |
+| `start` | `GrowthRate.amounts` | `"[GrowthRate.amounts] Parameter 'start' must be finite, got {value!r}"` |
 
 **Cause**: A NaN or infinite value was found in an input array or in the scalar `start`
-argument.  Checks are vectorized and report the index of the first offending element.
+argument.  `GrowthRate.amounts` reports the index of the first non-finite element in
+`times`; `tiered_amounts` raises on the whole array via the shared numeric validator.
 
 **Fix**: Replace or filter non-finite values before calling.  Use `np.isfinite(arr)` to
 locate them.
@@ -891,7 +1013,7 @@ tiered_amounts(times, [5], [1.0, 1.1])                    # ✔
 
 bad_times = times.copy()
 bad_times[3] = np.nan
-tiered_amounts(bad_times, [5], [1.0, 1.1])                # ✘ → ValueError: index 3
+tiered_amounts(bad_times, [5], [1.0, 1.1])                # ✘ → TypeError: non-finite times
 
 gr = GrowthRate(0.02)
 gr.amounts(times, start=float('inf'), m=1)                # ✘ → ValueError: start not finite
@@ -946,12 +1068,12 @@ public methods.
 | Geometric `rate ≤ -1` | `ValueError` | `"[GrowthRate] Geometric growth requires rate > -1.0, got {value}."` |
 | Arithmetic `rate ≤ -1` | `ValueError` | `"[GrowthRate] Arithmetic growth rate must be > -1.0, got {value}. Factor at period 1 would be non-positive."` |
 | Piecewise geom rates ≤ -1 | `ValueError` | `"[GrowthRate] Geometric growth requires all rates > -1.0. Got {value!r} at index {i}."` |
-| Arithmetic cumulative factor ≤ 0 | `ValueError` | `"[GrowthRate] Arithmetic growth: cumulative factor at period {k} is non-positive (1 + sum = {v:.6g}). Rates may be too negative."` |
+| Arithmetic cumulative factor ≤ 0 | `ValueError` | `"[GrowthRate] Arithmetic growth: cumulative factor at end of segment {k} is non-positive (1 + weighted sum = {v:.6g}). Rates or term lengths may be too negative."` |
 | `rates` without `terms` | `ValueError` | `"[GrowthRate] 'terms' must be provided together with 'rates' for piecewise construction."` |
 | `rates` empty | `ValueError` | `"[GrowthRate] 'rates' must not be empty."` |
 | `terms` empty | `ValueError` | `"[GrowthRate] 'terms' must not be empty."` |
 | `len(rates) ≠ len(terms)+1` | `ValueError` | `"[GrowthRate] len(rates)={n} must equal len(terms)+1={m}."` |
-| Term ≤ 0 | `ValueError` | `"[GrowthRate] All terms must be strictly positive integers. Got {value!r} at index {i}."` |
+| Term ≤ 0 or fractional | `ValueError` | `"[GrowthRate] All terms must be strictly positive integers. Got {value!r} at index {i}."` or `"[GrowthRate] All terms must be strictly positive integers; fractional values are not allowed."` |
 | Scenario dict empty | `ValueError` | `"[GrowthRate] Scenarios dict must not be empty."` |
 | Scenario name not string | `ValueError` | `"[GrowthRate] Scenario names must be strings, got {type}."` |
 | Scenario value is `bool` | `TypeError` | `"[GrowthRate] Scenario value for {name!r} must be float or GrowthRate, not bool."` |
@@ -1176,11 +1298,26 @@ contacting support; you do not need to interpret the status code yourself.
 **Message pattern** (representative):
 ```
 [LAC-1011] Your license has expired.
+Server-status: EXPIRED | fingerprint: {fingerprint}
 Action: Purchase a new license at: {pricing_url}
 ```
 
-Local expiry (without a fresh online check) uses code **LAC-2001**; online revalidation
-uses **LAC-2003**.
+**Other expiry codes** (same exception class, different messages):
+
+```
+[LAC-2001] Your Lactuca license has expired (local verification).
+expires-at: {expires_at}
+Action: Renew or purchase a new license at: {pricing_url}
+```
+
+```
+[LAC-2003] Your Lactuca license has expired (confirmed by license server).
+Server-status: EXPIRED | fingerprint: {fingerprint}
+Action: Renew or purchase a new license at: {pricing_url}
+```
+
+Local expiry (without a fresh online check) uses **LAC-2001**; interactive activation
+with an expired key uses **LAC-1011**; online revalidation uses **LAC-2003**.
 
 **Cause**: The stored expiry date or an online validation confirms the license period
 has ended.
@@ -1484,6 +1621,7 @@ single Lactuca process across workers.
 **Message pattern**:
 ```
 [LAC-4003] Offline grace period has expired: cannot verify seat availability.
+grace-anchor: {anchor} | grace-period: {days} days
 Action: Connect to the internet and try again.
 ```
 
@@ -1505,6 +1643,7 @@ is required — the local license file is kept so recovery is retried on the nex
 [LAC-3001] license.json is missing required signature fields (signed_data or signature).
 Cause: The file was modified manually, corrupted, or is from an incompatible version.
 Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+        If recovery fails, delete license.json manually and re-import.
 ```
 
 **Cause**: The local license file is missing required signature fields.
@@ -1528,6 +1667,7 @@ environments, set ``LACTUCA_LICENSE_KEY`` so re-activation can proceed without a
 [LAC-3002] license.json Ed25519 signature verification failed.
 Cause: The file was modified after being written, or the signing key has changed.
 Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+        If recovery fails, delete license.json manually and re-import.
 ```
 
 **Cause**: The cryptographic signature stored in the local license file does not verify.
@@ -1558,10 +1698,8 @@ import lactuca   # auto-recovers when online and a stored key is present
 ```
 [LAC-3003] license.json integrity check failed: mac field is missing.
 Cause: The file was written by an older Lactuca version, modified manually, or copied from another device.
-Action: Re-run python -m lactuca or import lactuca. If recovery does not complete, run
-  'python -m lactuca license doctor' and
-  'python -m lactuca license refresh'. Delete license.json manually
-  only if recovery still fails.
+Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+        If recovery fails, delete license.json manually and re-import.
 ```
 
 **Cause**: The local license file does not contain the device-bound integrity field.
@@ -1592,10 +1730,8 @@ import lactuca   # auto-recovers when online and a stored key is present
 ```
 [LAC-3004] license.json integrity check failed: mac mismatch.
 Cause: The file was modified after being written, or was copied from a different device.
-Action: Re-run python -m lactuca or import lactuca. If recovery does not complete, run
-  'python -m lactuca license doctor' and
-  'python -m lactuca license refresh'. Delete license.json manually
-  only if recovery still fails.
+Action: Re-run python -m lactuca or import lactuca. Recovery is automatic if you are online.
+        If recovery fails, delete license.json manually and re-import.
 ```
 
 **Cause**: The device-bound integrity check failed — protected fields in the local
@@ -1754,7 +1890,7 @@ table_combination: cannot combine a table with itself.
 table_combination: duplicate table instance in the others list.
 ```
 
-**Cause**: The same `DecrementTable` instance was passed as both host and other
+**Cause**: The same table instance was passed as both host and other
 (e.g. `et.modify_ox({"table_combination": et})`), or listed twice in
 `others` (e.g. `[et, et]`). Competing-risk formulas would treat the same rates
 as multiple independent causes.
@@ -1770,8 +1906,8 @@ use separate objects or `reset_modifications()` before combining.
 **Message pattern**:
 
 ```
-table_combination: combined decrement probability exceeds 1.0 at age {x} (q_combined=...)
-table_combination: combined decrement probability exceeds 1.0 at index {i} (calendar age {x} after age_shift={n}) (q_combined=...)
+table_combination: combined decrement probability exceeds 1.0 at age {x} (q_combined=...). Check that competing risks are valid at each age.
+table_combination: combined decrement probability exceeds 1.0 at index {i} (calendar age {x} after age_shift={n}) (q_combined=...). Check that competing risks are valid at each age.
 ```
 
 **Cause**: Prior keys in the same dict (often `decrement_multiplier`) pushed host
@@ -1788,14 +1924,15 @@ does not create invalid intermediates before combine.
 **Message pattern**:
 
 ```
-table_combination: host decrement rate outside [0, 1] at index {i} (age {x}) (q=...)
-table_combination: host decrement rate outside [0, 1] at index {i} (calendar age {x} after age_shift={n}) (q=...)
-table_combination: ExitTable decrement rate outside [0, 1] at index {i} (age {x}) (q=...)
+table_combination: {label} decrement rate outside [0, 1] at index {i} (age {x}) (q=...)
+table_combination: {label} decrement rate outside [0, 1] at index {i} (calendar age {x} after age_shift={n}) (q=...)
 ```
 
-**Cause**: The host or an *other* table’s active `_decrement` vector contained a
-rate below 0 or above 1 before the competing-risk formula ran (often from direct
-`_decrement` manipulation or corrupt data). Negative combined rates would
+(`{label}` is `host` or the other table class name, e.g. `ExitTable`.)
+
+**Cause**: The host or an *other* table’s active decrement rates contained a
+rate below 0 or above 1 before the competing-risk formula ran (often from prior
+modifications or corrupt data). Negative combined rates would
 otherwise be clipped silently to 0 at the final safety step.
 
 **Fix**: Restore valid rates in $[0, 1]$ on every table (`reset_modifications()`
@@ -1808,11 +1945,11 @@ or a fresh instance), then combine again.
 **Message pattern**:
 
 ```
-table_combination: ExitTable was shortened by a prior age_shift modification. Apply age_shift on the table you are modifying (e.g. LifeTable.modify_qx), not on the other table.
+table_combination: {Class} was shortened by a prior age_shift modification. Apply age_shift on the table you are modifying (e.g. LifeTable.modify_qx), not on the other table. To align by calendar age, use {'age_shift': n, 'table_combination': other} on the table you are modifying.
 ```
 
 **Cause**: The table passed to `table_combination` was previously modified with
-`age_shift`, so its `_decrement` array is shorter than `_decrement_base`.
+`age_shift`, so its decrement array is shorter than its unmodified base array.
 
 **Fix**: Apply `age_shift` on the table you are modifying together with
 `table_combination`:

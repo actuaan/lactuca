@@ -2,7 +2,7 @@
 
 **Lactuca — Biblioteca de Cálculo Actuarial de Vida para Python**
 
-*Fecha de entrada en vigor: 2026-04-20. Última actualización: 2026-06-22.*
+*Versión 1.0 del CLUF. Fecha de entrada en vigor: 02-07-2026. Última actualización: 02-07-2026.*
 
 ---
 
@@ -202,7 +202,7 @@ Prueba sin un acto afirmativo de compra por parte del Licenciatario.
 
 ### 2.3 Limitaciones de la prueba
 
-La Prueba está limitada a 2 activaciones de dispositivo y 1 sesión simultánea. Se
+La Prueba está limitada a 1 activación de dispositivo y 1 sesión simultánea. Se
 aplican todas las restricciones del §3 durante la Prueba. Las licencias de Prueba no
 incluyen derechos de actualización más allá del período de prueba.
 

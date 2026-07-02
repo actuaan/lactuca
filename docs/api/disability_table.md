@@ -3,8 +3,16 @@
 {class}`~lactuca.DisabilityTable` extends {class}`~lactuca.tables.DecrementTable`
 for **disability incidence** tables.  The governing decrement is the inception rate
 $i_x$, which represents the probability that an active life aged $x$ becomes disabled
-within one year.  Disability tables are used in multi-state insurance models (active,
-disabled, dead) and in group benefit valuations.
+within one year.
+
+:::{important}
+**Scope — incidence only.** `DisabilityTable` exposes inception rates $i_x$ and the
+standard decrement machinery (`lx`, `tpx`, `modify_ix`, …).  It does **not** implement
+a full three-state Markov model: there are no recovery rates $r_x$, no disabled-life
+mortality $q_x^d$, and no enforcement of $i_x + q_x \le 1$ when combined with a
+separate mortality table.  For active-life decrements merged with mortality, use
+`LifeTable.modify_qx` with `table_combination` (see {doc}`../user_guide/modifying_decrements`).
+:::
 
 Table files for `DisabilityTable` are expected to carry $i_x$ columns
 (prefixed `ix_m`, `ix_f`, or `ix_u`) and may include generational improvement
@@ -13,7 +21,7 @@ factors following the same conventions as life tables.
 ```{seealso}
 {doc}`../user_guide/tables_taxonomy` — Overview of all table types and decrement conventions.\
 {doc}`../user_guide/using_tables` — Loading and inspecting tables.\
-{doc}`../user_guide/modifying_decrements` — Scaling and shocking decrement rates.\
+{doc}`../user_guide/modifying_decrements` — Scaling, aggravated risk, and `table_combination`.\
 {doc}`../user_guide/mortality_improvement` — Generational tables and improvement factors.
 ```
 
@@ -53,8 +61,9 @@ See the {doc}`DecrementTable reference <decrement_table>` for full documentation
 of each member.
 
 :::{note}
-`qx` is not available on `DisabilityTable` — the primary decrement is `ix`
-(disability incidence rate). Calling `qx` raises `NotImplementedError`.
+`qx`, `ox`, `ex`, `ex_curtate`, and `modify_qx` are not available on `DisabilityTable` — the primary
+decrement is `ix` (disability incidence rate). Calling any of the blocked methods raises
+`NotImplementedError`.
 :::
 
 ### Actuarial methods
@@ -125,6 +134,7 @@ of each member.
    ~lactuca.tables.DecrementTable.generational_formula_type
    ~lactuca.tables.DecrementTable.select
    ~lactuca.tables.DecrementTable.select_period
+   ~lactuca.tables.DecrementTable.select_improvement_diagonal
    ~lactuca.tables.DecrementTable.start_duration
    ~lactuca.tables.DecrementTable.mi_by_duration
    ~lactuca.tables.DecrementTable.mi_structure

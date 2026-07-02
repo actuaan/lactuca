@@ -55,7 +55,7 @@ lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=ir)
 # Option B — assign after construction (equivalent)
 lt2 = LifeTable("PASEM2020_Rel_1o", "m")
 lt2.interest_rate = ir
-print(round(lt.ax(65, n=20), 4))   # same result from either option
+print(lt.ax(65, n=20))   # rounded to config.decimals.annuities (default 15)
 ```
 
 Multi-scenario `InterestRate` containers can be passed as `interest_rate=` or assigned
@@ -64,11 +64,17 @@ object — calculations without an explicit `ir=` use whichever scenario is acti
 **at each call**.  To freeze the scenario, pass `ir.copy()` or a simple sub-curve
 from `ir.scenarios["base"]`.  See {ref}`interest-rate-scenarios-lifetable`.
 
+The `interest_rate` property returns `InterestRate | None` — `None` until set at
+construction or by assignment.
+
 ## Vectorial creation
 
-For small families or scenario analysis, pass a sequence for `sex`,
-`cohort` (generational tables), or `duration` (select-ultimate tables).  Lactuca returns
-a `tuple` of independent instances:
+For small families or scenario analysis, pass a sequence for `table_name`, `sex`,
+`cohort` (generational tables), `duration` (select-ultimate tables), or `unisex_blend`.
+When any structural parameter is a `list` or `tuple` (including length 1), when
+`cartesian=True`, or when `unisex_blend` is a list, Lactuca returns a `tuple` of
+independent instances (see {ref}`vectorial-return-type` below).  With every parameter
+scalar, a **single** `LifeTable` is returned — no tuple.
 
 ```python
 from lactuca import LifeTable
@@ -85,12 +91,13 @@ d0, d1, d_ult = LifeTable("AM92_AF92", "m", duration=(0, 1, "ult"))
 
 # Select-ultimate generational: two sexes at the same cohort and duration
 lt_m, lt_f = LifeTable("DAV2004R_SelUlt_1o", ("m", "f"), cohort=1990, duration=1)
-print(round(born60.tpx(40, 25), 6), round(born70.tpx(40, 25), 6))  # gen-cohort difference
+print(born60.tpx(40, t=25), born70.tpx(40, t=25))  # rounded to config.decimals.tpx
 ```
 
-Parameters are aligned **element-wise across all four** (`table_name`, `sex`, `cohort`,
-`duration`), not as a Cartesian product.  Two table names and two sexes in zip mode produce
-**2** instances — `table_name[0]` paired with `sex[0]`, and so on.  All four can vary
+Parameters are aligned **element-wise across all five structural parameters**
+(`table_name`, `sex`, `cohort`, `duration`, and `unisex_blend` when passed as a
+sequence), not as a Cartesian product.  Two table names and two sexes in zip mode produce
+**2** instances — `table_name[0]` paired with `sex[0]`, and so on.  All five can vary
 together:
 
 ```python
@@ -107,6 +114,45 @@ lt_ind, lt_col = LifeTable(["PER2020_Ind_1o", "PER2020_Col_2o"], "m", cohort=196
 
 To create every combination (e.g. 2 tables × 2 sexes = 4 instances), pass
 `cartesian=True` — see [Cartesian-product creation](#cartesian-product-creation) below.
+All `table_name` values in a cartesian call must share the same generational and select
+structure; mixed structures are rejected up front (use zip mode instead — see
+{ref}`heterogeneous-tables-zip`).
+
+(heterogeneous-tables-zip)=
+#### Heterogeneous base tables (zip mode)
+
+Zip mode supports **different table types in one call** when each index is paired with
+the `cohort` and `duration` that table requires:
+
+```python
+from lactuca import LifeTable
+
+# Position 0: period table → cohort must be None
+# Position 1: generational table → cohort required
+lt_static, lt_gen = LifeTable(
+    ["PASEM2020_Dec_1o", "PER2020_Ind_1o"],
+    "m",
+    cohort=[None, 1970],
+)
+
+# Select + non-select: duration aligned per position
+lt_sel, lt_agg = LifeTable(
+    ["DummyLIFE_Select", "PASEM2020_Dec_1o"],
+    "m",
+    duration=[1, None],
+)
+```
+
+An invalid pairing (`cohort=None` on a generational table, `cohort=1970` on a period
+table, wrong `duration` for a select table) raises `ValueError` when **that** instance
+is constructed — align each index deliberately.  See {ref}`vectorial-constructor-errors`.
+
+:::{important}
+**Cartesian mode does not allow mixed table structures.**  If `table_name` lists
+generational and period tables (or select and non-select), `cartesian=True` raises
+before creating instances.  Use zip mode with aligned `cohort`/`duration` sequences
+instead.
+:::
 
 (vectorial-interest-rate)=
 ### Default interest rate in vectorial creation
@@ -120,13 +166,13 @@ from lactuca import LifeTable, InterestRate
 
 # Scalar broadcast — both instances get interest_rate=0.03
 lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ("m", "f"), interest_rate=0.03)
-print(lt_m.interest_rate)  # 3.00 %
-print(lt_f.interest_rate)  # 3.00 %
+print(lt_m.interest_rate)  # InterestRate: constant rate = 0.030000
+print(lt_f.interest_rate)  # InterestRate: constant rate = 0.030000
 
 # Per-instance sequence — different rates for each instance
 lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ("m", "f"), interest_rate=[0.03, 0.035])
-print(lt_m.interest_rate)  # 3.00 %
-print(lt_f.interest_rate)  # 3.50 %
+print(lt_m.interest_rate)  # InterestRate: constant rate = 0.030000
+print(lt_f.interest_rate)  # InterestRate: constant rate = 0.035000
 
 # InterestRate objects are also accepted (scalar or sequence)
 ir = InterestRate(terms=[10], rates=[0.025, 0.04])
@@ -136,20 +182,77 @@ lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ("m", "f"), interest_rate=ir)
 Passing `interest_rate=None` (the default) leaves all instances with no default rate,
 which is identical to constructing them individually without the argument.
 
+(broadcast-rules)=
 ### Broadcast rules
 
-| `table_name` length | `sex` length | `cohort` length | `duration` length | Instances created |
-|---|---|---|---|---|
-| 1 | 1 | 1 | 1 | 1 (plain scalar case) |
-| N | 1 | 1 | 1 | N (other params replicated) |
-| 1 | N | 1 | 1 | N (other params replicated) |
-| 1 | 1 | N | 1 | N (other params replicated) |
-| 1 | 1 | 1 | N | N (other params replicated) |
-| N | N | N | N | N (one-to-one alignment) |
+In zip mode (`cartesian=False`, the default), the instance count **N** is determined by
+1-N broadcast alignment across all five structural axes (`table_name`, `sex`, `cohort`,
+`duration`, `unisex_blend`).  Any parameter passed as a `list` or `tuple` — **even with
+a single element** — activates the vectorial **return type** (`tuple` or `dict`); it
+does not by itself increase **N** unless other axes are longer.  Scalars and length-1
+sequences broadcast to match the longest aligned axis.  When two or more parameters have
+length greater than 1, they must all equal **N** after alignment; any other combination
+raises `ValueError`.
 
-Any length other than 1 or N raises `ValueError`.  Each parameter can be passed as
-a `tuple` or a `list` — both are accepted interchangeably.  Pass `return_dict=True` to
-receive a `dict[`{class}`lactuca.TableKey`, `LifeTable`]` instead of a `tuple`.
+| Dominant sequence (length N) | Example | Instances | Return type |
+|---|---|---|---|
+| `table_name` | `LifeTable(["T1", "T2"], "m")` | 2 | `tuple` |
+| `table_name` (length 1) | `LifeTable(["T"], "m")` | 1 | 1-`tuple` (not bare instance) |
+| `sex` | `LifeTable("T", ("m", "f"))` | 2 | `tuple` |
+| `cohort` | `LifeTable("T", "m", cohort=[1960, 1970])` | 2 | `tuple` |
+| `duration` | `LifeTable("T", "m", duration=(1, 2))` | 2 | `tuple` |
+| `unisex_blend` | `LifeTable("T", "u", unisex_blend=[0.4, 0.5])` | 2 | `tuple` |
+| All matched at N | `LifeTable("T", ("m", "f"), cohort=(1960, 1963))` | 2 (zip pairs) | `tuple` |
+| All scalar | `LifeTable("T", "m", cohort=1960)` | 1 | bare `LifeTable` |
+
+`unisex_blend` as a **scalar** applies the same weight to every instance with `sex='u'`.
+A **sequence** assigns one blend per instance; scalar `sex='u'` broadcasts to the list
+length (you do not need `("u", "u", …)`).
+
+`interest_rate` follows the same length rule but is applied **after** the instances are
+created: a scalar (or `None`) is copied to all **N** instances; a sequence must have
+length **N** to assign a distinct rate per instance (see
+[Default interest rate in vectorial creation](#vectorial-interest-rate) above).
+
+Each structural parameter can be passed as a `tuple` or a `list` — both are accepted
+interchangeably.
+
+(vectorial-return-type)=
+#### Return type: instance, `tuple`, or `dict`
+
+| Condition | `return_dict=False` (default) | `return_dict=True` |
+|---|---|---|
+| All parameters scalar; `cartesian=False` | Single `LifeTable` | `dict` with one `TableKey` |
+| Any `list`/`tuple` on a structural axis, `cartesian=True`, or `unisex_blend` list | `tuple` of **N** instances | `dict` of **N** entries |
+
+**Vectorial** construction activates the multi-instance path whenever `table_name`,
+`sex`, `cohort`, `duration`, or `unisex_blend` is passed as a `list` or `tuple`
+(including length 1), when `cartesian=True`, or when `unisex_blend` is a list.
+With `return_dict=False` (default) the result is always a **`tuple`** in that path —
+including when **N = 1** (e.g. `LifeTable(["PASEM2010"], "m")` returns a 1-tuple, not a
+bare instance).  This is intentional: a `list`/`tuple` signals vectorial intent even
+when only one table name is supplied.  Unpack with `(lt,) = ...` or `lt_m, lt_f = ...`,
+index `result[0]`, or iterate.
+
+Pass `return_dict=True` to receive
+`dict[`{class}`lactuca.TableKey`, `LifeTable`]` instead: structured lookup without
+positional guessing (see {ref}`tablekey-structured-keys` below).
+
+```python
+from lactuca import LifeTable, TableKey
+
+lt = LifeTable("PASEM2010", "m")                    # scalar → bare LifeTable
+lt_m, lt_f = LifeTable("PASEM2010", ("m", "f"))     # vectorial → tuple
+(lt,) = LifeTable(["PASEM2010"], "m")               # 1-element list → 1-tuple
+
+tables = LifeTable("PASEM2010", ("m", "f"), return_dict=True)
+lt_m = tables[TableKey("PASEM2010", "m")]           # dict lookup
+```
+
+In **cartesian** mode (`cartesian=True`), sequences form independent axes of a full
+product — there is no 1-N broadcast.  When every `sex` is `'u'`, a `unisex_blend`
+sequence adds a fifth axis (`table × sex × cohort × duration × blend`).  See
+{ref}`cartesian-product-creation`.
 
 :::{note}
 For portfolios with **many distinct cohorts** (dozens to hundreds), it is more memory-efficient
@@ -163,9 +266,15 @@ a single vectorial call (~300 KB of projected *qx* data cached per generational 
 ### Cartesian-product creation
 
 Pass `cartesian=True` to generate every combination of (`table_name`, `sex`, `cohort`,
-`duration`) in a single constructor call.  This is appropriate for **assumption sensitivity
-grids**, **pricing studies**, and **regulatory stress scenarios** where every combination is
-needed regardless of whether any policy occupies it.
+`duration`) — and, when every `sex` is `'u'`, (`unisex_blend` as a sequence) — in a
+single constructor call.  All `table_name` values must share the same generational
+structure (all period or all generational) and the same select structure; otherwise
+`ValueError` is raised before any instance is created — see {ref}`heterogeneous-tables-zip`
+for the zip-mode alternative.  A **scalar** `unisex_blend` is replicated uniformly to every
+combo where `sex='u'`.  A **sequence** of blends adds a fifth cartesian axis (only valid
+when all sex values are `'u'`).  This is appropriate for **assumption sensitivity
+grids**, **pricing studies**, and **regulatory stress scenarios** where every combination
+is needed regardless of whether any policy occupies it.
 
 ```python
 from lactuca import LifeTable, TableKey
@@ -181,7 +290,19 @@ tables = LifeTable(
 
 # Access by structured key — no positional guessing
 lt = tables[TableKey("PER2020_Ind_1o", "m", 1960)]
-print(round(lt.äx(65, ir=0.03), 4))
+print(lt.äx(65, ir=0.03))  # rounded to config.decimals.annuities
+
+# Unisex grid: 2 tables × 2 cohorts × 3 blend weights = 12 instances
+blend_grid = LifeTable(
+    ["PER2020_Ind_1o", "PER2020_Col_2o"],
+    "u",
+    cohort=[1960, 1970],
+    unisex_blend=[0.4, 0.5, 0.6],
+    cartesian=True,
+    return_dict=True,
+)
+print(len(blend_grid))   # 12
+lt_mid = blend_grid[TableKey("PER2020_Ind_1o", "u", 1960, None, 0.5)]
 
 # Pricing grid: 2 tables × 2 sexes × 71 cohorts = 284 instances
 grid = LifeTable(
@@ -204,6 +325,7 @@ regardless of whether any policy occupies it — wasted instances for sparse por
 
 #### `TableKey`: structured lookup keys
 
+(tablekey-structured-keys)=
 {class}`lactuca.TableKey` is a `NamedTuple` with five fields:
 
 ```python
@@ -212,6 +334,7 @@ from lactuca import TableKey
 TableKey("PER2020_Ind_1o", "m")              # cohort=None, duration=None, unisex_blend=None
 TableKey("PER2020_Ind_1o", "m", 1960)        # explicit cohort; duration=None
 TableKey("PER2020_Ind_1o", "m", 1960, None)  # explicit duration
+TableKey("DummyLIFE_Select", "m", 1980, "ult")  # select ultimate segment
 TableKey("PASEM2010", "u", unisex_blend=0.55) # cohort=None, duration=None
 ```
 
@@ -230,27 +353,43 @@ Always use the **same literal float** that was passed at construction time.
 (which may differ by one ULP due to IEEE 754 rounding).
 :::
 
+:::{note}
+**Lookup tips**
+- Use the same `table_name` string passed to the constructor — not `instance.table_name`
+  (which may differ from the repository key internally).
+- `interest_rate` is **not** part of `TableKey`; it is applied per instance after
+  construction.
+- `TableKey("T", "m", 1960)` and `TableKey("T", "m", 1960, None, None)` are equivalent.
+- To discover keys from a `return_dict=True` call: `for key in tables: print(key)`.
+:::
+
 ### Unisex blend sensitivity
 
 For **EU anti-discrimination pricing** and **Solvency II** compliance studies, pass a list
-of blend weights in zip mode to evaluate multiple gender-mix hypotheses in one call:
+of blend weights in zip mode to evaluate multiple gender-mix hypotheses in one call.
+Broadcasting rules: {ref}`broadcast-rules`.
 
 ```python
 from lactuca import LifeTable, TableKey
 
-# Three blend scenarios in one call
+# Three blend scenarios in one call (scalar sex="u" broadcasts to match unisex_blend)
 lt40, lt50, lt60 = LifeTable("PASEM2010", "u", unisex_blend=[0.4, 0.5, 0.6])
 # lt40: qx = 0.4 * qx_m + 0.6 * qx_f
 # lt50: qx = 0.5 * qx_m + 0.5 * qx_f
 # lt60: qx = 0.6 * qx_m + 0.4 * qx_f
+
+# Cohort and blend zip-paired on a generational table
+lt60, lt70 = LifeTable("PER2020_Col_2o", "u", cohort=[1960, 1970], unisex_blend=[0.4, 0.6])
 
 # With return_dict=True: unisex_blend becomes the TableKey discriminator
 tables = LifeTable("PASEM2010", "u", unisex_blend=[0.4, 0.5, 0.6], return_dict=True)
 lt_mid = tables[TableKey("PASEM2010", "u", unisex_blend=0.5)]
 ```
 
-In `cartesian=True` mode, `unisex_blend` must be a scalar (applied uniformly to all
-combinations where `sex='u'`).  Pass a Sequence only in the default zip mode.
+In `cartesian=True` mode, pass `unisex_blend` as a **scalar** (uniform weight on every
+`sex='u'` combo) or as a **sequence** when **all** sex values are `'u'` — the list
+becomes a fifth cartesian axis.  Mixed `('m', 'u', …)` sex with a blend sequence raises
+`ValueError`; use zip mode for that case.  See {ref}`cartesian-product-creation`.
 
 (bulk-portfolios)=
 ## Bulk portfolio calculations
@@ -326,7 +465,7 @@ while i < len(portfolio):
     group_ax = äx(lt, group_ages, n=t_k)   # vectorised batch for this group
 
     for k, row in enumerate(group):
-        row["ax"] = round(float(group_ax[k]), 4)
+        row["ax"] = float(group_ax[k])  # already rounded via config.decimals.annuities
     i = j
 
 print([row["ax"] for row in portfolio])
@@ -335,18 +474,6 @@ print([row["ax"] for row in portfolio])
 Sorting by `(sex, duration, cohort)` before the loop ensures each setter is called at
 most once per distinct value — all policies with the same cohort are processed
 consecutively, so the `lt.cohort` rebuild happens exactly K times for K distinct cohorts.
-
-
-
-```python
-from lactuca import LifeTable
-
-ages = [35, 42, 50, 61]
-
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
-results = [round(lt.ax(age, n=20, m=12), 4) for age in ages]
-print(results)
-```
 
 **Generational tables** — create one instance per sex, iterate over cohorts with a guard:
 
@@ -369,7 +496,7 @@ for row in sorted(portfolio, key=lambda p: (p["sex"], p["cohort"])):
     lt = tables[row["sex"]]
     if lt.cohort != row["cohort"]:       # skip if cohort unchanged
         lt.cohort = row["cohort"]
-    row["ax"] = round(lt.ax(row["age"], n=row["term"], m=12), 4)
+    row["ax"] = lt.ax(row["age"], n=row["term"], m=12)
 
 print([row["ax"] for row in portfolio])
 ```
@@ -402,7 +529,7 @@ for row in sorted(
     lt = tables[(row["sex"], row["duration"])]
     if lt.cohort != row["cohort"]:
         lt.cohort = row["cohort"]
-    row["ax"] = round(lt.ax(row["age"], n=row["term"], m=12), 4)
+    row["ax"] = lt.ax(row["age"], n=row["term"], m=12)
 
 print([row["ax"] for row in portfolio])
 ```
@@ -419,10 +546,10 @@ checks inside the loop.
 
 `lt.decimals` is a **read-only proxy** that exposes the current precision settings from
 the global `Config` singleton.  Writing to `lt.decimals.xxx` raises `AttributeError`;
-use `Config().decimals` to change settings:
+use `config.decimals` to change settings:
 
 ```python
-from lactuca import LifeTable, Config
+from lactuca import LifeTable, config
 
 lt = LifeTable("PASEM2020_Rel_1o", "m")
 
@@ -431,23 +558,23 @@ print(lt.decimals.qx)  # 15
 print(lt.decimals.lx)  # 15
 print(lt.decimals.annuities)  # 15
 
-# Change precision via the global Config singleton
-Config().decimals.annuities = 4
-Config().decimals.qx = 8
+# Change precision via the global config singleton
+config.decimals.annuities = 4
+config.decimals.qx = 8
 
 # Changes are immediately reflected through all table instances
 print(lt.decimals.annuities)  # 4
 print(lt.decimals.qx)  # 8
 
 # Restore factory defaults
-Config().reset()
+config.reset_to_defaults()
 print(lt.decimals.annuities)  # 15
 print(lt.decimals.qx)  # 15
 ```
 
 :::{note}
-Precision settings are **global**: a change via `Config().decimals` affects all table
-instances in the process.  Call `Config().reset()` to restore factory defaults.
+Precision settings are **global**: a change via `config.decimals` affects all table
+instances in the process.  Call `config.reset_to_defaults()` to restore factory defaults.
 :::
 
 The available per-quantity precision attributes:
@@ -462,7 +589,8 @@ The available per-quantity precision attributes:
 | `dx` | Deaths $d_x$ |
 | `Lx` | $L_x$ (continuous building block) |
 | `Tx` | $T_x$ |
-| `ex` | Life expectancy $e_x$ |
+| `ex` | Complete life expectancy $\mathring{e}_x = T_x/l_x$; integer ages only; `decimals.ex` |
+| `ex_curtate` | Curtate life expectancy $e_x = \sum_{k=1}^{\omega-x} {}_k p_x$; integer ages only; `decimals.ex` (terms via `decimals.tpx`) |
 | `Dx` | Commutation function $D_x$ |
 | `Nx` | Commutation function $N_x$ |
 | `Sx` | Commutation function $S_x$ |
@@ -478,14 +606,14 @@ See {doc}`decimals_rounding` for the full precision reference.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `table_name` | `str` | Name of the loaded `.ltk` file |
+| `table_name` | `str` | Human-readable name from file metadata (may differ from the repository variable name passed to the constructor) |
 | `sex` | `str` | Active sex: `'m'`, `'f'`, or `'u'`; settable |
 | `cohort` | `int` or `None` | Active cohort year; settable (generational tables) |
 | `duration` | `int`, `str`, or `None` | Active select duration; settable (select-ultimate tables) |
 | `omega` | `int` | Limiting age |
 | `table_type` | `str` | `"life"`, `"disability"`, or `"exit"` |
-| `interest_rate` | `float` or `InterestRate` or `None` | Default interest rate; settable |
-| `decimals` | `_DecimalsConfig` | Decimal precision proxy (global via `Config`) |
+| `interest_rate` | `InterestRate` or `None` | Default interest rate; settable (scalar `float` inputs are normalized at construction) |
+| `decimals` | read-only proxy | Exposes `config.decimals` fields (global `Config` singleton); not writable on the table instance |
 
 ---
 

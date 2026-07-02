@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "lactuca"
-version = "0.0.32"
+version = "0.1.0"
 description = "Professional life actuarial library for Python with compiled performance and international tables"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
@@ -230,8 +230,8 @@ filterwarnings = [
     "ignore:Creating .* table instances in a single vectorial call:ResourceWarning",
 ]
 markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
+    "slow: catalog sweeps, Excel, large-N stress, test_45 matrix (deselect with '-m \"not slow\"')",
+    "integration: webhook, activation network mocks (deselect with '-m \"not integration\"')",
     "benchmark: marks tests as benchmarks (run with pytest-benchmark)",
 ]
 

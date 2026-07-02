@@ -114,7 +114,7 @@ subject "Device transfer request".
 
 ### Can I copy `license.json` to another machine?
 
-No. `license.json` is device-bound: it contains a device-specific integrity code (MAC)
+No. `license.json` is device-bound: it contains a device-specific integrity code
 computed from the hardware fingerprint of the machine that activated it. Copying the
 file to a different machine fails integrity checks (**[LAC-3004]** or fingerprint
 mismatch **[LAC-2002]**). Online recovery using the stored key runs only on the
@@ -129,16 +129,17 @@ slot from your license's device pool.
 ### I see `LicenseTamperedError`. What does it mean?
 
 `LicenseTamperedError` is raised when the local `license.json` file fails one of the
-built-in integrity checks.  There are four variants:
+built-in integrity checks.  There are five error-code variants:
 
 | Error code | Meaning | Auto-recoverable? |
 |---|---|---|
-| **LAC-3001** | Missing `signed_data` or `signature` fields (schema version mismatch or manual edit) | Yes — online recovery using stored key |
-| **LAC-3003** | Missing `mac` integrity field (old file or manual edit) | Yes — online recovery using stored key |
-| **LAC-3004** | MAC mismatch — fields modified after writing, or file copied from another device | Same device only — online recovery using stored key; cross-host copy → **[LAC-2002]** |
+| **LAC-3001** | Local license file missing required validation fields (schema mismatch or manual edit) | Yes — online recovery using stored key |
+| **LAC-3002** | License file validation failed (protected fields modified or corrupted) | Yes — online recovery using stored key |
+| **LAC-3003** | Missing device-bound integrity field (old file or manual edit) | Yes — online recovery using stored key |
+| **LAC-3004** | Integrity check failed — fields modified after writing, or file copied from another device | Same device only — online recovery using stored key; cross-host copy → **[LAC-2002]** |
 | **LAC-3005** | System clock moved back past the last validated date | No — restore the system clock |
 
-For **LAC-3001, LAC-3003, and LAC-3004** on the **same** device: Lactuca attempts
+For **LAC-3001, LAC-3002, LAC-3003, and LAC-3004** on the **same** device: Lactuca attempts
 online recovery and rewrites `license.json` when recovery succeeds. Cross-host copies
 raise **[LAC-2002]** instead. In non-interactive environments (servers, CI/CD), ensure
 `LACTUCA_LICENSE_KEY` is set so same-device recovery can proceed without a prompt.
@@ -155,8 +156,7 @@ If it still fails, delete `license.json` manually and re-activate.
 For **LAC-3005**: the library cannot fix the system clock on your behalf.  Sync your
 system clock (e.g. `w32tm /resync` on Windows, or enable NTP on Linux/macOS) and retry.
 
-See {ref}`lac-3003-mac-missing`, {ref}`lac-3004-mac-mismatch`,
-and {ref}`lac-3005-clock-rollback` in the Error Reference for full details.
+See the `LicenseTamperedError` entries in {doc}`errors_reference` for full details.
 
 ### I see `LicenseInvalidError: Your license has reached the maximum number of activations.` What now?
 
@@ -385,14 +385,14 @@ Store your key as a repository secret and inject it as an environment variable:
   run: pytest
 ```
 
-See the [Activation Guide](server-mode-and-cicd) for more details.
+See the {ref}`Server mode and CI/CD <server-mode-and-cicd>` section for more details.
 
 ### Can multiple users on a JupyterHub share one license?
 
 Yes — this is "server mode". The administrator activates the license once with a shared
 `LACTUCA_CONFIG_DIR`, and all users on the server read the same `license.json`. This
 consumes one device slot on the license (the server host). See the
-[Activation Guide](server-mode-and-cicd).
+{ref}`Server mode and CI/CD <server-mode-and-cicd>` section.
 
 Note that **concurrent session limits apply per license**, regardless of how many users
 access the server. Each active JupyterHub kernel that has imported Lactuca occupies one
@@ -426,7 +426,7 @@ Internal users accessing Lactuca through the server do not need their own key. U
 
 Individuals using Lactuca for non-commercial, academic, research, or open-source
 community purposes — including students, educators, independent academic researchers,
-and open-source contributors. See [§4 of the EULA](4-academic-community-license-restrictions)
+and open-source contributors. See {ref}`§4 of the EULA <4-academic-community-license-restrictions>`
 for the full eligibility criteria and restrictions.
 
 ### Is commercial use allowed with an Academic license?

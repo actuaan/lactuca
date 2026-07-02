@@ -1,7 +1,8 @@
 # Citing Lactuca
 
 If you use Lactuca in academic research, professional publications, or actuarial reports,
-please cite it using the information below.
+please cite it using the information below. In every template, replace `x.y.z` with the
+version string from `lactuca.__version__` (see [Version information](#version-information)).
 
 ## Recommended citation
 
@@ -13,7 +14,7 @@ please cite it using the information below.
 **BibTeX**
 
 ```bibtex
-@software{aragoneses_lactuca_2025,
+@software{aragoneses_lactuca_2026,
   author       = {Aragoneses Nebreda, Alberto},
   title        = {{Lactuca}: {Life Actuarial Calculations for Python}},
   year         = {2026},
@@ -28,6 +29,7 @@ please cite it using the information below.
 > ARAGONESES NEBREDA, Alberto. *Lactuca: Life Actuarial Calculations for Python*. Version x.y.z.
 > Actuaan, 2026. Available at: https://github.com/actuaan/lactuca
 
+(version-information)=
 ## Version information
 
 To obtain the exact version installed, run:
@@ -37,7 +39,7 @@ import lactuca
 print(lactuca.__version__)
 ```
 
-Include the full version string (e.g., `0.2.1`) in any citation to ensure
+Include the full version string from `lactuca.__version__` (see above) in any citation to ensure
 reproducibility.
 
 ## License

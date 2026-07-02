@@ -9,7 +9,7 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | Symbol | Lactuca name | Description |
 |--------|-------------|-------------|
 | $x$ | `x` | Exact age (years) |
-| $\omega$ | `omega` | Limiting age (first age where $l_\omega = 0$) |
+| $\omega$ | `omega` | Terminal age: last age index stored in the table (effective upper bound may decrease as `w` after modifications) |
 | $l_x$ | `lx` | Number of lives at age $x$ (from radix $l_0$) |
 | $q_x$ | `qx` | Probability of death in $[x, x+1)$ |
 | $p_x$ | `px` | Probability of survival in $[x, x+1)$; $p_x = 1 - q_x$ |
@@ -18,6 +18,7 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | $T_x$ | `Tx` | Total person-years lived from age $x$ (integer ages) |
 | $T_{x+s}$ | `Tx_continuous(x, m=)` | Total person-years lived from fractional age $x+s$, $0 < s < 1$; numerical integration with $m$ sub-intervals/year |
 | $\mathring{e}_x$ | `ex` | Complete life expectancy at integer age $x$; $\mathring{e}_x = T_x / l_x$ |
+| $e_x$ | `ex_curtate` | Curtate life expectancy at integer age $x$; $e_x = \sum_{k=1}^{\omega-x} {}_k p_x$ |
 | $\mathring{e}_{x+s}$ | `ex_continuous(x, m=)` | Complete life expectancy at fractional age $x+s$, $0 < s < 1$ (numerical integration) |
 | ${}_t p_x$ | `tpx` | Probability of surviving $t$ years from age $x$ |
 | ${}_t q_x$ | `tqx` | Probability of dying within $t$ years from age $x$ |
@@ -27,8 +28,8 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | Symbol | Lactuca column | Table class | Meaning |
 |--------|---------------|-------------|---------|
 | $q_x$ | `qx_m`, `qx_f`, `qx_u` | `LifeTable` | Annual mortality rate |
-| $i_x$ | `ix_m`, `ix_f` | `DisabilityTable` | Annual disability incidence rate |
-| $o_x$ | `ox_m`, `ox_f` | `ExitTable` | Annual exit/withdrawal rate |
+| $i_x$ | `ix_m`, `ix_f`, `ix_u` | `DisabilityTable` | Annual disability incidence rate |
+| $o_x$ | `ox_m`, `ox_f`, `ox_u` | `ExitTable` | Annual exit/withdrawal rate |
 
 ## Interest rate symbols
 
@@ -37,8 +38,8 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | $i$ | `InterestRate(i)` or `table.interest_rate = i` | Annual effective interest rate |
 | $v$ | `ir.vn(n)` computes $v^n = (1+i)^{-n}$ | Discount factor; $v = 1/(1+i)$ |
 | $\delta$ | `ir.delta(t=)` | Force of interest; $\delta = \ln(1+i)$ for constant rates (`ir.delta()`). For piecewise term structures, provide `t` (`ir.delta(t)`) |
-| $i^{(m)}$ | — (no direct method; used implicitly via parameter `m`) | Nominal rate convertible $m$ times per year |
-| $d^{(m)}$ | — (no direct method; used implicitly via parameter `m`) | Nominal discount rate convertible $m$ times per year; $d^{(m)} = m\left(1 - v^{1/m}\right)$ |
+| $i^{(m)}$ | `ir.i_m(m, t=)` | Nominal rate convertible $m$ times per year; $i^{(m)} = m\left[(1+i)^{1/m} - 1\right]$ |
+| $d^{(m)}$ | `ir.d_m(m, t=)` | Nominal discount rate convertible $m$ times per year; $d^{(m)} = m\left[1 - v^{1/m}\right]$ |
 
 ## Multi-scenario rate containers
 
@@ -55,7 +56,7 @@ For derivations and worked formulas consult {doc}`../formulas`; for configuratio
 | $D_x$ | `Dx` | $v^x \cdot l_x$ |
 | $N_x$ | `Nx` | $\sum_{k=x}^{\omega} D_k$ |
 | $S_x$ | `Sx` | $\sum_{k=x}^{\omega} N_k$ |
-| $C_x$ | `Cx` | $v^{x+1} \cdot d_x$ |
+| $C_x$ | `Cx` | $v^{x+f} \cdot d_x$ where $f$ follows `config.mortality_placement` (`0`, `0.5`, or `1`; default `mid` → $f=0.5$) |
 | $M_x$ | `Mx` | $\sum_{k=x}^{\omega} C_k$ |
 | $R_x$ | `Rx` | $\sum_{k=x}^{\omega} M_k$ |
 | $L_x$ | `Lx` | $\int_0^1 l_{x+t}\,dt \approx (l_x + l_{x+1})/2$ (integer ages) |
@@ -80,6 +81,8 @@ via numerical integration.
 | $\ddot{a}_{x:\overline{n}\vert}^{(m)}$ | `äx(m=m)` | Annuity-due with frequency $m$ |
 | $a_{xy}$ | `axy` | Joint-life immediate annuity (two lives; pays while both survive) |
 | $\ddot{a}_{xy}$ | `äxy` | Joint-life annuity-due (two lives; pays while both survive) |
+| $a_{xyz}$ | `axyz` | Three-life joint immediate annuity (all three survive) |
+| $\ddot{a}_{xyz}$ | `äxyz` | Three-life joint annuity-due (all three survive) |
 | $a_{x_1 x_2 \cdots x_n}$ | `ajoint` | Joint-life immediate annuity ($n$ lives; pays while all survive) |
 | $\ddot{a}_{x_1 x_2 \cdots x_n}$ | `äjoint` | Joint-life annuity-due ($n$ lives; pays while all survive) |
 
@@ -94,6 +97,7 @@ via numerical integration.
 | ${}_n E_{xy}$ | `nExy` | Joint pure endowment (two lives; both must survive $n$ years) |
 | $A_{xyz}$ | `Axyz` | First-death insurance (three lives) |
 | ${}_n E_{xyz}$ | `nExyz` | Joint pure endowment (three lives; all must survive $n$ years) |
+| ${}_n E_{x_1 \cdots x_n}$ | `nEjoint` | Joint pure endowment ($n$ lives; all must survive $n$ years; N-life, scalar or batch) |
 | $A_{x_1 \cdots x_n}$ | `Afirst` | First-death insurance ($n$ lives) |
 
 ## Calculation parameters
@@ -110,8 +114,8 @@ Most parameters are shared by annuity (`ax`, `äx`, `axy`, `ajoint`, …) and in
 | `ts` | `float` | Temporal shift from policy origin (years already elapsed) |
 | `ir` | `float`, `InterestRate`, or `None` | Interest rate for discounting; if `None`, uses the table's `interest_rate` attribute |
 | `gr` | `float`, `GrowthRate`, or `None` | Benefit growth rate per year |
-| `cashflow_times` | `Sequence[float]` or `None` | Custom payment times in years since origin; overrides `m`. |
-| `cashflow_amounts` | `Sequence[float]` or `None` | Custom benefit amount per payment; disables `gr`. |
+| `cashflow_times` | `Sequence[float]` or `None` | Custom payment times in years since origin; only on `ax`, `axy`, `axyz`, `ajoint`, and insurance methods (`Ax`, `Axy`, …). Requires `calculation_mode='discrete_precision'`; `n` must be `None` or `0`. For **annuity-immediate** methods (`ax`, `axy`, `axyz`, `ajoint`), `m` must be `1` when `cashflow_times` is provided. **Insurance** methods (`Ax`, `Axy`, …) may use `m > 1` if payment times align with the `1/m` grid (misalignment emits a warning, not an error). |
+| `cashflow_amounts` | `Sequence[float]` or `None` | Custom per-payment amounts on the standard schedule (`m`, `n`); disables `gr`. Supported on due paths (`äx`, `äxy`, `äjoint`, …) and immediate paths (`ax`, `axy`, `ajoint`, …). Mutually exclusive with using `cashflow_times` for timing overrides. Requires `calculation_mode='discrete_precision'`. |
 | `return_flows` | `bool` | If `True`, return detailed cash-flow breakdown |
 
 Payment timing is determined by the method name: `äx`/`äjoint` = annuity-due (prepayable); `ax`/`ajoint` = annuity-immediate (postpayable).
@@ -152,7 +156,10 @@ $({}_t p_x)$ values.  It is active only under `"continuous_precision"` and
   proportional to $l_0$.  Lactuca default: $l_0 = 1\,000\,000$.
 
 **Limiting age** ($\omega$)
-: The highest age in the table for which $l_\omega = 0$ (or $q_{\omega-1} = 1$).
+: The highest age index stored in the table. Survivors at exact age $\omega$ are
+  $l_\omega > 0$ with $q_\omega = 1$ during $[\omega, \omega+1)$; $l_x = 0$ for
+  $x > \omega$. Accessible as `LifeTable.omega` (file metadata) or `LifeTable.w`
+  (effective bound after modifications).
 
 **Force of mortality** ($\mu_x$)
 : The instantaneous hazard rate of death; $\mu_x = -\frac{\mathrm{d}}{\mathrm{d}x} \ln l_x$.
@@ -176,16 +183,16 @@ $({}_t p_x)$ values.  It is active only under `"continuous_precision"` and
 **Mortality Improvement (MI)**
 : The systematic reduction of mortality rates over time.  In Lactuca, MI parameters are stored
   in `mi_*` columns of `.ltk` files alongside the base rates.  The projection formula is
-  specified by the table's `improvement_formula` metadata field:
+  specified by the table's `generational_formula_type` metadata field:
 
   | Formula | MI identifier | Expression |
   |---------|--------------|------------|
   | `exponential_improvement` | $\lambda_x$ | $q_{x,t} = q_x^{(b)} \cdot e^{-\lambda_x(t-t_0)}$ |
-  | `linear_improvement` | $\lambda_x$ | $q_{x,t} = q_x^{(b)} - \lambda_x(t-t_0)$ |
+  | `linear_improvement` | $mi_x$ | $q_{x,t} = q_x^{(b)} - mi_x(t-t_0)$ |
   | `discrete_improvement` | $AA_x$ | $q_{x,t} = q_x^{(b)} \cdot (1-AA_x)^{t-t_0}$ |
   | `projected_improvement` | $AA_{x,t}$ | $q_{x,t} = q_x^{(b)} \cdot \prod_{t'=t_0+1}^{c+x}(1-AA_{x,t'})$ |
 
-  `mi_m`/`mi_f` columns hold constant-per-age factors ($\lambda_x$ or $AA_x$); `mi_m_YYYY`/`mi_f_YYYY`
+  `mi_m`/`mi_f` columns hold constant-per-age factors ($\lambda_x$, $mi_x$, or $AA_x$ per `generational_formula_type`); `mi_m_YYYY`/`mi_f_YYYY`
   columns hold year-indexed factors ($AA_{x,t}$).  The only public input required is `cohort=` (birth
   year); Lactuca resolves the diagonal automatically.
   See {doc}`mortality_improvement` for the full reference.
@@ -207,13 +214,14 @@ $({}_t p_x)$ values.  It is active only under `"continuous_precision"` and
 
 **Select-ultimate table**
 : A mortality table in which mortality rates depend on both attained age $x$ and duration $d$ since
-  underwriting for $d < $ select period, written $q_{[x]+d}$.  Once $d \ge$ select period, rates
-  revert to the **ultimate** column $q_x^u$, which depends only on attained age.
+  underwriting while `start_duration \le d < start_duration + select_period`, written $q_{[x]+d}$.
+  Once $d \ge \text{start\_duration} + \text{select\_period}$, rates revert to the **ultimate**
+  column $q_x^u$, which depends only on attained age.
 
 **Select period**
-: The number of years after underwriting during which mortality depends on both attained age and
-  duration since selection.  After this period expires, the **ultimate** rates apply.
-  Accessible via `LifeTable.select_period`.
+: Count of select columns in the table metadata (`LifeTable.select_period`).  Together with
+  `start_duration`, it defines the ultimate cutoff: durations at or above
+  `start_duration + select_period` use ultimate rates.  Accessible via `LifeTable.select_period`.
 
 **Duration** (select offset)
 : Years elapsed since the underwriting date (integer $\ge 0$).  Determines which select column is
@@ -239,6 +247,39 @@ $({}_t p_x)$ values.  It is active only under `"continuous_precision"` and
 **CFM (Constant Force of Mortality)**
 : Fractional-age assumption that $\mu_x$ is constant within $[x, x+1)$:
   $l_{x+s} = l_x \cdot p_x^s$.  Set via `config.lx_interpolation = "exponential"`.
+
+### Joint-life and last-survivor symbols
+
+**Last-survivor annuity** ($\ddot{a}_{\overline{xy}}$)
+: Annuity-due while at least one of two lives survives:
+  $\ddot{a}_{\overline{xy}} = \ddot{a}_x + \ddot{a}_y - \ddot{a}_{xy}$.
+
+**Last-survivor insurance** ($A_{\overline{xy}}$)
+: Benefit on the last death; derivable from single-life and first-death insurances
+  ($A_x$, $A_y$, $A_{xy}$, …).
+
+**Reversionary annuity** ($\ddot{a}_{x|y}$)
+: Payable on $y$'s death if $x$ is still alive; no dedicated method — compose from
+  $\ddot{a}_x$, $\ddot{a}_y$, $\ddot{a}_{xy}$.
+
+### Continuous products
+
+**$\bar{a}_x$, $\bar{a}_{x:\overline{n}|}$**
+: Continuous annuity (integral of $v^t {}_t p_x$); computed in `continuous_precision`
+  or `continuous_simplified` modes.
+
+**$\bar{A}_x$, $\bar{A}^1_{x:\overline{n}|}$**
+: Continuous insurance (integrand $v^t {}_t p_x \mu_{x+t}$); same modes.
+
+### Reserves and premiums
+
+**${}_{t}V$ (prospective reserve)**
+: APV of future benefits minus APV of future net premiums, both from attained age
+  $x+t$ with remaining term $n-t$.  See {doc}`prospective_reserve` and {doc}`../formulas`.
+
+**$P$ (net level premium)**
+: Constant premium per unit benefit such that ${}_{0}V = 0$ at issue, e.g.
+  $P = A^1_{x:\overline{n}|} / \ddot{a}_{x:\overline{n}|}$ for term insurance.
 
 ### Actuarial building blocks
 
