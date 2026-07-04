@@ -1,0 +1,1873 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Config &#8212; Lactuca 0.1.5</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=002b0aa2"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/config';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.5';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Date Utilities" href="dates.html" />
+    <link rel="prev" title="Utilities" href="utils.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.5" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.1.0] - 2026-07-02
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.1.0] - 2026-07-02
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Table classes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="decrement_table.html">DecrementTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_table.html">LifeTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disability_table.html">DisabilityTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exit_table.html">ExitTable</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Base types</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="base.html">Base types</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Financial models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rate.html">InterestRate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rate.html">GrowthRate</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Table I/O</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="table_source.html">TableSource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_builder.html">TableBuilder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Functional API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Config</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Date utilities</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Date Utilities</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Config</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="config">
+<h1>Config<a class="headerlink" href="#config" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="#lactuca.Config" title="lactuca.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> is the global configuration singleton that controls all
+precision, calculation, and table-loading settings for a Lactuca session.
+Changes take effect immediately for all subsequent calculations in the same
+Python process; call <a class="reference internal" href="#lactuca.Config.reset_to_defaults" title="lactuca.Config.reset_to_defaults"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_to_defaults()</span></code></a> to restore factory
+defaults (preserving <code class="docutils literal notranslate"><span class="pre">tables_path</span></code> and <code class="docutils literal notranslate"><span class="pre">config_path</span></code>).  Use
+<a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> only to clear the cached singleton (testing/debug).</p>
+<p>Key setting groups:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>Settings</p></th>
+<th class="head"><p>Guide</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Calculation mode</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">calculation_mode</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Decimal precision</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">decimals.*</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/decimals_rounding.html"><span class="doc">Decimal Precision and Rounding</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong><span class="math notranslate nohighlight">\(l_x\)</span> interpolation</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lx_interpolation</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code>)</p></td>
+<td><p><a class="reference internal" href="../user_guide/lx_interpolation.html"><span class="doc">lx Interpolation</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Mortality placement</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mortality_placement</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;beginning&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;end&quot;</span></code>)</p></td>
+<td><p><a class="reference internal" href="../user_guide/life_insurances_guide.html"><span class="doc">Life Insurances</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Force of mortality</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">force_mortality_method</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/force_mortality_methods.html"><span class="doc">Force of Mortality Methods</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Calendar constants</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">days_per_year</span></code>, <code class="docutils literal notranslate"><span class="pre">weeks_per_year</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/numerical_precision.html"><span class="doc">Numerical Precision</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Date parsing</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">date_format</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/dates_guide.html"><span class="doc">Date Utilities Guide</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Tables path</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tables_path</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/using_tables.html"><span class="doc">Using Actuarial Tables</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Config file path</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config_path</span></code> (alias: <code class="docutils literal notranslate"><span class="pre">path</span></code>)</p></td>
+<td><p><a class="reference internal" href="../user_guide/configuration.html"><span class="doc">Configuration</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Force integer ts</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">force_integer_ts</span></code></p></td>
+<td><p><a class="reference internal" href="../user_guide/prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../user_guide/configuration.html"><span class="doc">Configuration</span></a> — Narrative guide to all Config settings with worked examples.</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="lactuca.Config">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.Config" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Singleton configuration manager for Lactuca.</p>
+<p>Provides a process-global configuration instance with validation and
+persistence to a TOML file.  The first call to <code class="docutils literal notranslate"><span class="pre">Config()</span></code> constructs
+and caches the instance; all subsequent calls return the same object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_path</strong> (<em>str</em><em>, </em><em>path-like</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Path to the configuration TOML file.  Only respected on the first
+instantiation; later calls ignore this argument and return the
+cached singleton.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Thread-safe: all public methods — <a class="reference internal" href="#lactuca.Config.get" title="lactuca.Config.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a>, <a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code></a>,
+<a class="reference internal" href="#lactuca.Config.set_many" title="lactuca.Config.set_many"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_many()</span></code></a>, <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>, <a class="reference internal" href="#lactuca.Config.load" title="lactuca.Config.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a>,
+<a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_if_changed()</span></code></a>, and <a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> — may be called from
+multiple threads concurrently without external synchronisation.</p></li>
+<li><p>The pre-constructed singleton is also exposed as the module attribute
+<code class="docutils literal notranslate"><span class="pre">lactuca.config</span></code>, so <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span> <span class="pre">as</span> <span class="pre">lc;</span> <span class="pre">lc.config.set(...)</span></code>
+works without explicitly calling <code class="docutils literal notranslate"><span class="pre">Config()</span></code>.</p></li>
+<li><p>The default configuration file name is <code class="docutils literal notranslate"><span class="pre">lactuca_config.toml</span></code>,
+placed in the current working directory when no path is provided.</p></li>
+<li><p>This class focuses on configuration I/O and validation. Heavy numeric
+algorithms and array handling belong in computational modules that use
+NumPy float64 for precision and performance.</p></li>
+</ul>
+<p><strong>TOML file structure</strong> — produced by <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> and accepted by
+<a class="reference internal" href="#lactuca.Config.load" title="lactuca.Config.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a> (default values shown):</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[paths]</span>
+<span class="n">actuarial_tables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/abs/path/to/actuarial_tables&quot;</span>
+
+<span class="k">[decimals]</span>
+<span class="n">lx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span>
+<span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span>
+<span class="c1"># ... one entry per actuarial column (19 total; see Config.decimals)</span>
+
+<span class="k">[calculation]</span>
+<span class="n">lx_interpolation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;linear&quot;</span><span class="w">        </span><span class="c1"># &quot;linear&quot; | &quot;exponential&quot;</span>
+<span class="n">calculation_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;discrete_precision&quot;</span><span class="w">  </span><span class="c1"># discrete_precision | discrete_simplified | continuous_precision | continuous_simplified</span>
+<span class="n">force_integer_ts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+
+<span class="k">[calendar]</span>
+<span class="n">date_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ymd&quot;</span><span class="w">                </span><span class="c1"># &quot;ymd&quot; | &quot;dmy&quot; | &quot;mdy&quot; | &quot;ymd_int&quot;</span>
+<span class="n">days_per_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">365.25</span>
+<span class="n">weeks_per_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">52.1775</span>
+
+<span class="k">[mortality]</span>
+<span class="n">mortality_placement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mid&quot;</span><span class="w">        </span><span class="c1"># &quot;beginning&quot; | &quot;mid&quot; | &quot;end&quot;</span>
+<span class="n">force_mortality_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;finite_difference&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">calculation_mode</span>
+<span class="go">&#39;discrete_precision&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">lx</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">save_if_changed</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.reset</span></code></a></dt><dd><p>Clear the cached singleton (testing / debugging).</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.reset_to_defaults" title="lactuca.Config.reset_to_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.reset_to_defaults</span></code></a></dt><dd><p>Restore default values in the current instance.</p>
+</dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.reset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.reset" title="Link to this definition">#</a></dt>
+<dd><p>Reset the singleton instance of the Config class.</p>
+<p>Clears the cached singleton instance, allowing the next call to
+<code class="docutils literal notranslate"><span class="pre">Config()</span></code> to create a fresh instance.  Primarily intended for
+test harnesses and debugging scenarios where a clean configuration
+state is required.</p>
+<p>After calling this method any existing references to the old
+<code class="docutils literal notranslate"><span class="pre">Config</span></code> instance become stale and will not reflect the new
+singleton state.  Call <code class="docutils literal notranslate"><span class="pre">Config()</span></code> again to obtain a reference to
+the new singleton instance.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Does not persist any changes to disk or modify the configuration file.</p></li>
+<li><p>Clearing the singleton also notifies dependent modules to clear
+their derived state, so no stale cached values persist after the
+next <code class="docutils literal notranslate"><span class="pre">Config()</span></code> call.</p></li>
+<li><p>Use <a class="reference internal" href="#lactuca.Config.reset_to_defaults" title="lactuca.Config.reset_to_defaults"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_to_defaults()</span></code></a> to restore default values while keeping
+the same singleton instance.</p></li>
+<li><p>Prefer calling as <code class="docutils literal notranslate"><span class="pre">Config.reset()</span></code> (class method) rather than
+<code class="docutils literal notranslate"><span class="pre">cfg.reset()</span></code> (instance method) to avoid confusion.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.reset_to_defaults" title="lactuca.Config.reset_to_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.reset_to_defaults</span></code></a></dt><dd><p>Restore default values in the current instance.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>Reset and obtain a fresh singleton:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">lx</span> <span class="o">=</span> <span class="mi">20</span>
+</pre></div>
+</div>
+<p>Pass a custom configuration path on first creation after reset:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Config</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s2">&quot;/project/my_config.toml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.Config.as_dict" title="Link to this definition">#</a></dt>
+<dd><p>Return a flat <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> snapshot of the current configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A new dictionary with flat keys and Python primitives
+suitable for serialization.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Keys are the flat (un-nested) field names, identical to those
+accepted by <a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code></a> and <a class="reference internal" href="#lactuca.Config.set_many" title="lactuca.Config.set_many"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_many()</span></code></a> (e.g.,
+<code class="docutils literal notranslate"><span class="pre">'tables_path'</span></code>, <code class="docutils literal notranslate"><span class="pre">'decimals_lx'</span></code>, <code class="docutils literal notranslate"><span class="pre">'calculation_mode'</span></code>).
+The structure does not mirror the TOML hierarchy — use
+<a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> to produce nested TOML output.</p></li>
+<li><p>The returned mapping is a shallow copy: modifying it does not
+affect the <code class="docutils literal notranslate"><span class="pre">Config</span></code> state.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set</span></code></a></dt><dd><p>Validate and set a single configuration value.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.set_many" title="lactuca.Config.set_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set_many</span></code></a></dt><dd><p>Atomically apply multiple configuration updates.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save</span></code></a></dt><dd><p>Persist the current configuration to a TOML file.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;decimals_lx&quot;</span> <span class="ow">in</span> <span class="n">d</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#lactuca.Config.get" title="Link to this definition">#</a></dt>
+<dd><p>Return a single configuration value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Name of the configuration attribute to retrieve.</p></li>
+<li><p><strong>default</strong> (<em>Any</em><em>, </em><em>optional</em>) – Value returned for unrecognized keys.  When <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default),
+a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> is raised instead.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The current validated value for <code class="docutils literal notranslate"><span class="pre">key</span></code> or <code class="docutils literal notranslate"><span class="pre">default</span></code> when provided.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not recognized and <code class="docutils literal notranslate"><span class="pre">default</span></code> was not supplied
+    or was supplied as <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Read-only access to the current configuration state.</p></li>
+<li><p>Pass an explicit non-<code class="docutils literal notranslate"><span class="pre">None</span></code> sentinel (e.g., <code class="docutils literal notranslate"><span class="pre">default=0</span></code>) when
+<code class="docutils literal notranslate"><span class="pre">None</span></code> is a meaningful fallback value.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set</span></code></a></dt><dd><p>Validate and set a single configuration value.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.set_many" title="lactuca.Config.set_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set_many</span></code></a></dt><dd><p>Atomically apply multiple configuration updates.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.as_dict" title="lactuca.Config.as_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.as_dict</span></code></a></dt><dd><p>Return all configuration values as a flat dict.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">)</span>
+<span class="go">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;unknown_key&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;fallback&quot;</span><span class="p">)</span>
+<span class="go">&#39;fallback&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.load" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from a TOML file and merge it into the current model.</p>
+<p>The TOML file is merged into the current configuration: keys present
+in the file override the corresponding in-memory values; keys absent
+from the file are left unchanged (loading is additive, not a full
+replacement).  See the class docstring for the accepted TOML
+structure and section names.
+If validation fails the current configuration is preserved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em><em>, </em><em>path-like</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Path to a file or a directory.  When <code class="docutils literal notranslate"><span class="pre">None</span></code> the instance’s
+current <code class="docutils literal notranslate"><span class="pre">config_path</span></code> is used (default:
+<code class="docutils literal notranslate"><span class="pre">lactuca_config.toml</span></code> in the current working directory).
+Accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> and other <code class="xref py py-class docutils literal notranslate"><span class="pre">os.PathLike</span></code> objects.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the resolved file does not exist.</p></li>
+<li><p><strong>RuntimeError</strong> – If no TOML reader is installed (requires Python 3.11+ or
+    <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tomli</span></code>).</p></li>
+<li><p><strong>ValueError</strong> – If the merged configuration fails validation — the original
+    instance state is preserved in this case.</p></li>
+<li><p><strong>TypeError</strong> – If a field has an incorrect type (e.g. <code class="docutils literal notranslate"><span class="pre">force_integer_ts</span></code> is not
+    a <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) — the original instance state is preserved.</p></li>
+<li><p><strong>OSError</strong> – If the file cannot be opened or read due to a filesystem error.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The in-memory configuration and <code class="docutils literal notranslate"><span class="pre">config_path</span></code> are updated on all
+non-exceptional returns.</p></li>
+<li><p>The method is thread-safe.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save</span></code></a></dt><dd><p>Persist the current configuration to a TOML file.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save_if_changed</span></code></a></dt><dd><p>Write only when the on-disk file differs from the current state.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;/path/to/lactuca_config.toml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.reset_to_defaults">
+<span class="sig-name descname"><span class="pre">reset_to_defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.reset_to_defaults" title="Link to this definition">#</a></dt>
+<dd><p>Restore the configuration to library default values.</p>
+<p>All configuration settings are reset to their library default values,
+<strong>except</strong> <code class="docutils literal notranslate"><span class="pre">tables_path</span></code>, which is preserved.  <code class="docutils literal notranslate"><span class="pre">tables_path</span></code> is an
+environment-specific path (where the actuarial table files are installed)
+and is not considered a “default” calculation parameter; resetting it
+would cause <code class="docutils literal notranslate"><span class="pre">FileNotFoundError</span></code> in notebooks or scripts that run from
+a working directory different from the project root.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Config</span></code> object’s identity and the current <code class="docutils literal notranslate"><span class="pre">config_path</span></code> are
+also preserved.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This method does not write the default values to the configuration file.
+To persist the changes, call <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> or <a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_if_changed()</span></code></a>.</p></li>
+<li><p>Invokes the same cache invalidation hooks as <a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a>, so
+derived caches (tables, builders) do not retain stale configuration
+state. Unlike <a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a>, the singleton instance itself is
+preserved.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.reset" title="lactuca.Config.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.reset</span></code></a></dt><dd><p>Clear the cached singleton (testing / debugging).</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>Reset the configuration to default values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">reset_to_defaults</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">)</span>
+<span class="go">15</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.save" title="Link to this definition">#</a></dt>
+<dd><p>Persist the current configuration to a TOML file.</p>
+<p>Serialize the current configuration into a nested TOML layout and write it
+atomically to <code class="docutils literal notranslate"><span class="pre">file_path</span></code> (or the instance’s configured path when
+<code class="docutils literal notranslate"><span class="pre">file_path</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>).  The write is skipped when the on-disk
+contents already match the serialized text to reduce unnecessary I/O.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em><em>, </em><em>path-like</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Target file path or directory. Accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> and other
+<code class="xref py py-class docutils literal notranslate"><span class="pre">os.PathLike</span></code> objects via <code class="xref py py-func docutils literal notranslate"><span class="pre">os.fspath()</span></code>. When <code class="docutils literal notranslate"><span class="pre">None</span></code>, the
+instance’s configured path is used (default: <code class="docutils literal notranslate"><span class="pre">lactuca_config.toml</span></code> in the
+current working directory). A directory receives
+<code class="docutils literal notranslate"><span class="pre">lactuca_config.toml</span></code> automatically; extensionless paths have
+<code class="docutils literal notranslate"><span class="pre">.toml</span></code> appended.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – When <code class="docutils literal notranslate"><span class="pre">False</span></code> (default) a <code class="xref py py-exc docutils literal notranslate"><span class="pre">FileExistsError</span></code> is raised if
+the target file exists with different contents.  When <code class="docutils literal notranslate"><span class="pre">True</span></code>
+the file is overwritten.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If an explicit file extension other than <code class="docutils literal notranslate"><span class="pre">.toml</span></code> is used.</p></li>
+<li><p><strong>RuntimeError</strong> – If no TOML writer is installed.  Run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tomli-w</span></code>
+    to resolve.</p></li>
+<li><p><strong>FileExistsError</strong> – If the target exists with different contents and <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>OSError</strong> – For filesystem-related errors when creating directories or writing the file.
+    Includes <code class="docutils literal notranslate"><span class="pre">PermissionError</span></code> (a subclass of <code class="docutils literal notranslate"><span class="pre">OSError</span></code>) for access-denied scenarios.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The file is written in the nested TOML structure described in the
+class docstring.</p></li>
+<li><p>Two files are considered equal only when their full contents match
+exactly; files with identical settings but differing whitespace are
+treated as different.</p></li>
+<li><p>Writes are atomic; readers never observe a partial file.</p></li>
+<li><p>The instance’s <code class="docutils literal notranslate"><span class="pre">config_path</span></code> is updated on all non-exceptional returns.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.save_as" title="lactuca.Config.save_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save_as</span></code></a></dt><dd><p>Save to an explicit new path.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save_if_changed</span></code></a></dt><dd><p>Write only when the on-disk file differs from the current state.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.save_as">
+<span class="sig-name descname"><span class="pre">save_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.save_as" title="Link to this definition">#</a></dt>
+<dd><p>Save the configuration to a new file path.</p>
+<p>Convenience wrapper around <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> that targets an explicit path.
+Path normalization, <code class="docutils literal notranslate"><span class="pre">.toml</span></code> extension check, and atomic write
+semantics are identical to <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em><em> or </em><em>path-like</em>) – Target path for the configuration file.  Must have a <code class="docutils literal notranslate"><span class="pre">.toml</span></code>
+extension or no extension (in which case <code class="docutils literal notranslate"><span class="pre">.toml</span></code> is appended
+automatically).  The parent directory is created if it does not
+exist.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – When <code class="docutils literal notranslate"><span class="pre">True</span></code>, overwrite an existing file at <code class="docutils literal notranslate"><span class="pre">file_path</span></code>
+without error.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">file_path</span></code> has an explicit extension other than <code class="docutils literal notranslate"><span class="pre">.toml</span></code>.</p></li>
+<li><p><strong>FileExistsError</strong> – If <code class="docutils literal notranslate"><span class="pre">file_path</span></code> already exists with different contents and
+    <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>RuntimeError</strong> – If no TOML writer is installed.  Run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tomli-w</span></code>
+    to resolve.</p></li>
+<li><p><strong>OSError</strong> – If the file cannot be written due to a filesystem error.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The instance’s <code class="docutils literal notranslate"><span class="pre">config_path</span></code> is updated to the normalized
+<code class="docutils literal notranslate"><span class="pre">file_path</span></code> on all non-exceptional returns.</p></li>
+<li><p>The previous configuration file at the original <code class="docutils literal notranslate"><span class="pre">config_path</span></code>
+is not deleted or modified.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save</span></code></a></dt><dd><p>Full documentation of atomic write semantics and path normalization.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save_if_changed</span></code></a></dt><dd><p>Write only when the on-disk file differs from the current state.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="s2">&quot;/tmp/backup.toml&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.save_if_changed">
+<span class="sig-name descname"><span class="pre">save_if_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#lactuca.Config.save_if_changed" title="Link to this definition">#</a></dt>
+<dd><p>Write the configuration only when the on-disk file differs.</p>
+<p>Determines whether the current configuration differs from the on-disk
+file (when present) and performs an atomic write only when the contents
+differ.  Uses the same atomic write strategy as <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em><em>, </em><em>path-like</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Target path; when <code class="docutils literal notranslate"><span class="pre">None</span></code> the instance’s configured path is used.
+Accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> and other <code class="xref py py-class docutils literal notranslate"><span class="pre">os.PathLike</span></code> objects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if a write took place (file did not exist or contents
+differed), <code class="docutils literal notranslate"><span class="pre">False</span></code> if the on-disk contents already matched the
+current configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If no TOML writer is installed.  Run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tomli-w</span></code>
+    to resolve.</p></li>
+<li><p><strong>OSError</strong> – If the file cannot be written due to a filesystem error.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The instance’s <code class="docutils literal notranslate"><span class="pre">config_path</span></code> is updated to the resolved path on
+all non-exceptional returns.</p></li>
+<li><p>Two files are considered different when their exact contents do not
+match; identical settings with differing whitespace are treated as
+different.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save</span></code></a></dt><dd><p>Write unconditionally.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save_as" title="lactuca.Config.save_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save_as</span></code></a></dt><dd><p>Save to an explicit new path.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">save_if_changed</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.set" title="Link to this definition">#</a></dt>
+<dd><p>Validate and set a single configuration value.</p>
+<p>Validates <code class="docutils literal notranslate"><span class="pre">value</span></code> for <code class="docutils literal notranslate"><span class="pre">key</span></code> and updates the configuration in a
+thread-safe manner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Configuration attribute name to update (must be a model field).</p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – New value to assign to <code class="docutils literal notranslate"><span class="pre">key</span></code>. Must satisfy the validation rules for the given <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a known configuration attribute.</p></li>
+<li><p><strong>ValueError</strong> – If the provided <code class="docutils literal notranslate"><span class="pre">value</span></code> fails domain validation.</p></li>
+<li><p><strong>TypeError</strong> – If the provided <code class="docutils literal notranslate"><span class="pre">value</span></code> has an incorrect type.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Thread-safe: callers do not need to synchronize externally.</p></li>
+<li><p>Call <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> or <a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_if_changed()</span></code></a> to persist changes.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.get" title="lactuca.Config.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.get</span></code></a></dt><dd><p>Return a single configuration value.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.set_many" title="lactuca.Config.set_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set_many</span></code></a></dt><dd><p>Atomically apply multiple configuration updates.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">)</span>
+<span class="go">10</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.Config.set_many">
+<span class="sig-name descname"><span class="pre">set_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lactuca.Config.set_many" title="Link to this definition">#</a></dt>
+<dd><p>Atomically apply multiple configuration updates.</p>
+<p>All updates are validated atomically: either all changes are applied
+or a validation exception is raised and no state is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Mapping of configuration keys to new values.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">mapping</span></code> is not a dict, or if a value fails type validation.</p></li>
+<li><p><strong>KeyError</strong> – If any key in <code class="docutils literal notranslate"><span class="pre">mapping</span></code> is unknown.</p></li>
+<li><p><strong>ValueError</strong> – If any value in <code class="docutils literal notranslate"><span class="pre">mapping</span></code> fails domain validation.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Thread-safe: callers do not need to synchronize externally.</p></li>
+<li><p>Call <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a> or <a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_if_changed()</span></code></a> to persist changes.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set</span></code></a></dt><dd><p>Validate and set a single configuration value.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set_many</span><span class="p">({</span><span class="s2">&quot;decimals_lx&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;decimals_qx&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.calculation_mode">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculation_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'discrete_precision'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'discrete_simplified'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'continuous_precision'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'continuous_simplified'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.Config.calculation_mode" title="Link to this definition">#</a></dt>
+<dd><p>Calculation strategy for actuarial computations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Current calculation mode.  Allowed values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'discrete_precision'</span></code> — exact discrete calculations using
+rounded life-table <code class="docutils literal notranslate"><span class="pre">lx</span></code> values per <a class="reference internal" href="#lactuca.Config.decimals" title="lactuca.Config.decimals"><code class="xref py py-attr docutils literal notranslate"><span class="pre">decimals</span></code></a>
+(default; standard production mode).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'discrete_simplified'</span></code> — fast discrete approximations:
+Woolhouse (2-term UDD) for annuities when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>; linear age
+interpolation between annual insurance values when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>
+(Lactuca-specific — not Woolhouse); UDD (Uniform Distribution of
+Deaths) for endowments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'continuous_precision'</span></code> — continuous-time valuation via
+numerical integration; force-of-mortality approximation
+configurable via <a class="reference internal" href="#lactuca.Config.force_mortality_method" title="lactuca.Config.force_mortality_method"><code class="xref py py-attr docutils literal notranslate"><span class="pre">force_mortality_method</span></code></a> for
+insurance and endowment engines.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'continuous_simplified'</span></code> — product-specific continuous
+shortcuts (terminal-period interpolation for annuities;
+arithmetic mean of two <code class="docutils literal notranslate"><span class="pre">continuous_precision</span></code> insurance legs;
+average-force survival for endowments).</p></li>
+</ul>
+<p>All four modes value the same actuarial present value under shared
+global conventions; they are actuarially coherent but not required
+to return numerically identical results. See
+<a class="reference internal" href="../user_guide/calculation_modes.html"><span class="doc">Calculation Modes</span></a> (<em>Actuarial coherence across modes</em>).</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CalculationModeLiteral</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not one of the four allowed modes.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.lx_interpolation" title="lactuca.Config.lx_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.lx_interpolation</span></code></a></dt><dd><p>Interpolation method for the survival function.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.force_mortality_method" title="lactuca.Config.force_mortality_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.force_mortality_method</span></code></a></dt><dd><p>Force-of-mortality approximation for continuous modes.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">lactuca.engine.base.CalculationModeLiteral</span></code></dt><dd><p>Canonical mode definitions.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">calculation_mode</span>
+<span class="go">&#39;discrete_precision&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.config_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.Config.config_path" title="Link to this definition">#</a></dt>
+<dd><p>Absolute path of the configuration file used by this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Absolute path to the current TOML configuration file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Updated automatically by <a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>, <a class="reference internal" href="#lactuca.Config.save_as" title="lactuca.Config.save_as"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_as()</span></code></a>,
+<a class="reference internal" href="#lactuca.Config.save_if_changed" title="lactuca.Config.save_if_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_if_changed()</span></code></a>, and <a class="reference internal" href="#lactuca.Config.load" title="lactuca.Config.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a> on all non-exceptional
+returns.</p></li>
+<li><p>The initial value is determined by the working directory at the
+time of the first <code class="docutils literal notranslate"><span class="pre">Config()</span></code> call, not at import time.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.path" title="lactuca.Config.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.path</span></code></a></dt><dd><p>Unqualified alias for this property.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.save" title="lactuca.Config.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.save</span></code></a></dt><dd><p>Persists configuration and updates this path.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">config_path</span>
+<span class="go">&#39;/path/to/lactuca_config.toml&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.date_format">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">date_format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.Config.date_format" title="Link to this definition">#</a></dt>
+<dd><p>Current parsing order for ambiguous string dates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Current date parsing order.  Allowed values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'ymd'</span></code> — year–month–day order (ISO 8601 style, default).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'dmy'</span></code> — day–month–year order (European convention).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'mdy'</span></code> — month–day–year order (North American convention).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'ymd_int'</span></code> — compact integer format (<code class="docutils literal notranslate"><span class="pre">YYYYMMDD</span></code>).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not in the allowed set.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.days_per_year" title="lactuca.Config.days_per_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.days_per_year</span></code></a></dt><dd><p>Companion calendar conversion constant.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.weeks_per_year" title="lactuca.Config.weeks_per_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.weeks_per_year</span></code></a></dt><dd><p>Companion calendar conversion constant.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">date_format</span>
+<span class="go">&#39;ymd&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.days_per_year">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">days_per_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#lactuca.Config.days_per_year" title="Link to this definition">#</a></dt>
+<dd><p>Calendar basis used to convert days to actuarial year fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current days-per-year constant.  Allowed values: <code class="docutils literal notranslate"><span class="pre">360</span></code>
+(30/360 convention), <code class="docutils literal notranslate"><span class="pre">365</span></code> (Actual/365), <code class="docutils literal notranslate"><span class="pre">365.25</span></code>
+(default, mean Gregorian year), <code class="docutils literal notranslate"><span class="pre">365.2425</span></code> (exact Gregorian
+mean), <code class="docutils literal notranslate"><span class="pre">366</span></code> (leap year).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not in the allowed set.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.weeks_per_year" title="lactuca.Config.weeks_per_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.weeks_per_year</span></code></a></dt><dd><p>Companion calendar constant for weekly period conversion.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">days_per_year</span>
+<span class="go">365.25</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.decimals">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decimals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">_DecimalsConfig</span></em><a class="headerlink" href="#lactuca.Config.decimals" title="Link to this definition">#</a></dt>
+<dd><p>Grouped access to decimal precision settings with editor autocompletion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Decimal-precision proxy with one integer read/write attribute per
+actuarial column (19 total).  Key attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lx</span></code> : int — <span class="math notranslate nohighlight">\(\ell_x\)</span> survivors at age <span class="math notranslate nohighlight">\(x\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dx</span></code> : int — <span class="math notranslate nohighlight">\(d_x\)</span> deaths between age <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x+1\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qx</span></code> : int — <span class="math notranslate nohighlight">\(q_x\)</span> mortality probability</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">px</span></code> : int — <span class="math notranslate nohighlight">\(p_x\)</span> survival probability</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tpx</span></code> : int — <span class="math notranslate nohighlight">\({}_t p_x\)</span> multi-year survival probability</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tqx</span></code> : int — <span class="math notranslate nohighlight">\({}_t q_x\)</span> multi-year mortality probability</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ix</span></code> : int — <span class="math notranslate nohighlight">\(i_x\)</span> disability inception rate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ox</span></code> : int — <span class="math notranslate nohighlight">\(o_x\)</span> exit rate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lx</span></code> : int — <span class="math notranslate nohighlight">\(L_x\)</span> person-years lived</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tx</span></code> : int — <span class="math notranslate nohighlight">\(T_x\)</span> total future person-years</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex</span></code> : int — <span class="math notranslate nohighlight">\(e_x\)</span> life expectancy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dx</span></code>, <code class="docutils literal notranslate"><span class="pre">Nx</span></code>, <code class="docutils literal notranslate"><span class="pre">Sx</span></code> : int — <span class="math notranslate nohighlight">\(D_x\)</span>, <span class="math notranslate nohighlight">\(N_x\)</span>, <span class="math notranslate nohighlight">\(S_x\)</span> annuity commutation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cx</span></code>, <code class="docutils literal notranslate"><span class="pre">Mx</span></code>, <code class="docutils literal notranslate"><span class="pre">Rx</span></code> : int — <span class="math notranslate nohighlight">\(C_x\)</span>, <span class="math notranslate nohighlight">\(M_x\)</span>, <span class="math notranslate nohighlight">\(R_x\)</span> insurance commutation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">annuities</span></code> : int — life annuity present values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insurances</span></code> : int — life insurance present values</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>object</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Each attribute name corresponds to the flat configuration key with
+its <code class="docutils literal notranslate"><span class="pre">decimals_</span></code> prefix removed (e.g., <code class="docutils literal notranslate"><span class="pre">cfg.decimals.lx</span></code> reads
+the same value as <code class="docutils literal notranslate"><span class="pre">cfg.get('decimals_lx')</span></code>).  Assigning a value
+(e.g., <code class="docutils literal notranslate"><span class="pre">cfg.decimals.lx</span> <span class="pre">=</span> <span class="pre">10</span></code>) is equivalent to calling
+<code class="docutils literal notranslate"><span class="pre">cfg.set('decimals_lx',</span> <span class="pre">10)</span></code> and triggers the same validation;
+invalid values raise <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>.  The proxy object is
+cached — repeated access to <code class="docutils literal notranslate"><span class="pre">cfg.decimals</span></code> returns the same
+instance.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.set" title="lactuca.Config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.set</span></code></a></dt><dd><p>Modify individual decimal precision settings by key name.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.get" title="lactuca.Config.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.get</span></code></a></dt><dd><p>Read individual decimal precision settings by key name.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">lx</span>
+<span class="go">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">lx</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.force_integer_ts">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">force_integer_ts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.Config.force_integer_ts" title="Link to this definition">#</a></dt>
+<dd><p>Whether to reject fractional <code class="docutils literal notranslate"><span class="pre">ts</span></code> (shift) values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if fractional <code class="docutils literal notranslate"><span class="pre">ts</span></code> values raise <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>;
+<code class="docutils literal notranslate"><span class="pre">False</span></code> to allow them (default).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the assigned value is not a <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ts</span></code> is the temporal shift (in years) applied to the timing of
+annuity and insurance payments.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), fractional values such as <code class="docutils literal notranslate"><span class="pre">0.5</span></code>
+(half-year shift) are permitted; when <code class="docutils literal notranslate"><span class="pre">True</span></code>, only integer values
+are accepted and non-integer inputs raise <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.calculation_mode" title="lactuca.Config.calculation_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.calculation_mode</span></code></a></dt><dd><p>Overall calculation strategy; <code class="docutils literal notranslate"><span class="pre">ts</span></code> is used in all modes.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">force_integer_ts</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.force_mortality_method">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">force_mortality_method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'finite_difference'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'spline'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'kernel'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.Config.force_mortality_method" title="Link to this definition">#</a></dt>
+<dd><p>Approximation method for the force of mortality <span class="math notranslate nohighlight">\(\mu_x\)</span> in continuous calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Current force of mortality approximation method.  Allowed values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'finite_difference'</span></code> — central finite differences on
+<span class="math notranslate nohighlight">\(\ell_x\)</span> (default; fast, sufficient for most tables).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'spline'</span></code> — cubic-spline fit to <span class="math notranslate nohighlight">\(\ell_x\)</span> (smoother
+curve, more accurate on coarse tables).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'kernel'</span></code> — kernel-smoothing estimate (non-parametric;
+use when the table has irregular spacing or noise).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ForceMortalityMethodLiteral</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not <code class="docutils literal notranslate"><span class="pre">'finite_difference'</span></code>,
+    <code class="docutils literal notranslate"><span class="pre">'spline'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'kernel'</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.calculation_mode" title="lactuca.Config.calculation_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.calculation_mode</span></code></a></dt><dd><p>Select continuous vs. discrete calculation strategy.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">force_mortality_method</span>
+<span class="go">&#39;finite_difference&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.lx_interpolation">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lx_interpolation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'exponential'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.Config.lx_interpolation" title="Link to this definition">#</a></dt>
+<dd><p>Interpolation method for fractional-age survival (<span class="math notranslate nohighlight">\(\ell_x\)</span> bridge).</p>
+<p>Selects how integer-age life-table values are extended to fractional ages
+when computing <span class="math notranslate nohighlight">\({}_s p_x\)</span>, <span class="math notranslate nohighlight">\({}_{1/m} q_x\)</span>, and survival factors
+on <code class="docutils literal notranslate"><span class="pre">m</span></code>-thly payment grids (via table interval helpers).  One of
+<code class="docutils literal notranslate"><span class="pre">'linear'</span></code> (UDD; default) or <code class="docutils literal notranslate"><span class="pre">'exponential'</span></code> (constant force of mortality).</p>
+<p>Does <strong>not</strong> control insurance benefit discount timing; that is
+<a class="reference internal" href="#lactuca.Config.mortality_placement" title="lactuca.Config.mortality_placement"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mortality_placement</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current interpolation method.  One of <code class="docutils literal notranslate"><span class="pre">'linear'</span></code> (default) or
+<code class="docutils literal notranslate"><span class="pre">'exponential'</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LxInterpolationLiteral</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not <code class="docutils literal notranslate"><span class="pre">'linear'</span></code> or <code class="docutils literal notranslate"><span class="pre">'exponential'</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.mortality_placement" title="lactuca.Config.mortality_placement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.mortality_placement</span></code></a></dt><dd><p>Death-benefit payment timing within sub-periods (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> / <code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code> insurances; independent of this setting).</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.calculation_mode" title="lactuca.Config.calculation_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.calculation_mode</span></code></a></dt><dd><p>Overall calculation strategy (discrete vs. continuous).</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">lx_interpolation</span>
+<span class="go">&#39;linear&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.mortality_placement">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mortality_placement</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'beginning'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mid'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'end'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.Config.mortality_placement" title="Link to this definition">#</a></dt>
+<dd><p>Timing of death-benefit payment within each sub-annual period.</p>
+<p>Controls the discount offset <span class="math notranslate nohighlight">\(\delta_m\)</span> applied to death benefits in
+<strong>discrete</strong> insurance present values (<code class="docutils literal notranslate"><span class="pre">discrete_precision</span></code> and
+<code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code>).  Continuous insurance modes ignore this setting
+(benefit timing is implicit in the <span class="math notranslate nohighlight">\(\mu\)</span> integrand).  Corresponds to
+the offset <span class="math notranslate nohighlight">\(f\)</span> in <span class="math notranslate nohighlight">\(C_x = d_x \cdot v^{x+f}\)</span> and to
+<code class="xref py py-data docutils literal notranslate"><span class="pre">MORTALITY_OFFSET</span></code> in discrete insurance engines
+(for <code class="docutils literal notranslate"><span class="pre">m</span></code>-thly payments, discount times use <code class="docutils literal notranslate"><span class="pre">j/m</span> <span class="pre">+</span> <span class="pre">f/m</span></code>).</p>
+<p>Annuities and pure endowments do <strong>not</strong> read this setting.  It is
+<strong>independent</strong> of <a class="reference internal" href="#lactuca.Config.lx_interpolation" title="lactuca.Config.lx_interpolation"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lx_interpolation</span></code></a>, which governs
+fractional-age survival probabilities (UDD vs constant force), not
+benefit payment timing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Current mortality placement.  Allowed values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'beginning'</span></code> — benefit at the start of the sub-period
+(<span class="math notranslate nohighlight">\(\delta_m = 0\)</span> when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">1</span></code>; <span class="math notranslate nohighlight">\(f = 0\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'mid'</span></code> — benefit at mid-sub-period (default;
+<span class="math notranslate nohighlight">\(\delta_m = 1/(2m)\)</span>; <span class="math notranslate nohighlight">\(f = 0.5\)</span>).  Not the same
+setting as UDD <code class="docutils literal notranslate"><span class="pre">lx_interpolation</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'end'</span></code> — benefit at end of sub-period / year of death
+(<span class="math notranslate nohighlight">\(\delta_m = 1/m\)</span> when <code class="docutils literal notranslate"><span class="pre">m</span></code>-thly; <span class="math notranslate nohighlight">\(f = 1\)</span>).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>MortalityPlacementLiteral</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not <code class="docutils literal notranslate"><span class="pre">'beginning'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mid'</span></code>,
+    or <code class="docutils literal notranslate"><span class="pre">'end'</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.lx_interpolation" title="lactuca.Config.lx_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.lx_interpolation</span></code></a></dt><dd><p>Fractional-age survival bridge (independent knob).</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">lactuca.engine.base.MORTALITY_OFFSET</span></code></dt><dd><p>Fractional offsets used by discrete insurance engines.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.Config.decimals" title="lactuca.Config.decimals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.decimals</span></code></a></dt><dd><p>Decimal-place settings; <code class="docutils literal notranslate"><span class="pre">Cx</span></code> rounding uses this placement.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">mortality_placement</span>
+<span class="go">&#39;mid&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.Config.path" title="Link to this definition">#</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#lactuca.Config.config_path" title="lactuca.Config.config_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">config_path</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Absolute path to the current TOML configuration file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.config_path" title="lactuca.Config.config_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.config_path</span></code></a></dt><dd><p>Canonical property with full documentation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/path/to/lactuca_config.toml&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.tables_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tables_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.Config.tables_path" title="Link to this definition">#</a></dt>
+<dd><p>Path to the directory containing actuarial table files (<code class="docutils literal notranslate"><span class="pre">.ltk</span></code>).</p>
+<p>This path is searched when loading actuarial tables.  Changing it
+takes effect immediately for all subsequent table-load operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current actuarial tables directory path.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the assigned value is not a path-like object or string.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default value is resolved from the working directory at the
+time of the first <code class="docutils literal notranslate"><span class="pre">Config()</span></code> call, not at import time.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.config_path" title="lactuca.Config.config_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.config_path</span></code></a></dt><dd><p>Path to the TOML configuration file.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">tables_path</span>
+<span class="go">&#39;/path/to/actuarial_tables&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.weeks_per_year">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weeks_per_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#lactuca.Config.weeks_per_year" title="Link to this definition">#</a></dt>
+<dd><p>Calendar basis used to convert weeks to actuarial year fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current weeks-per-year constant.  Allowed values: <code class="docutils literal notranslate"><span class="pre">52</span></code>,
+<code class="docutils literal notranslate"><span class="pre">52.1429</span></code> (≈ 365/7), <code class="docutils literal notranslate"><span class="pre">52.1775</span></code> (default, ≈ 365.2425/7).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the assigned value is not in the allowed set.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.Config.days_per_year" title="lactuca.Config.days_per_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.days_per_year</span></code></a></dt><dd><p>Companion calendar constant for daily period conversion.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">weeks_per_year</span>
+<span class="go">52.1775</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="utils.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Utilities</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dates.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Date Utilities</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.reset"><code class="docutils literal notranslate"><span class="pre">Config.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.as_dict"><code class="docutils literal notranslate"><span class="pre">Config.as_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.get"><code class="docutils literal notranslate"><span class="pre">Config.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.load"><code class="docutils literal notranslate"><span class="pre">Config.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.reset_to_defaults"><code class="docutils literal notranslate"><span class="pre">Config.reset_to_defaults()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.save"><code class="docutils literal notranslate"><span class="pre">Config.save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.save_as"><code class="docutils literal notranslate"><span class="pre">Config.save_as()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.save_if_changed"><code class="docutils literal notranslate"><span class="pre">Config.save_if_changed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.set"><code class="docutils literal notranslate"><span class="pre">Config.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.set_many"><code class="docutils literal notranslate"><span class="pre">Config.set_many()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.calculation_mode"><code class="docutils literal notranslate"><span class="pre">Config.calculation_mode</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.config_path"><code class="docutils literal notranslate"><span class="pre">Config.config_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.date_format"><code class="docutils literal notranslate"><span class="pre">Config.date_format</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.days_per_year"><code class="docutils literal notranslate"><span class="pre">Config.days_per_year</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.decimals"><code class="docutils literal notranslate"><span class="pre">Config.decimals</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.force_integer_ts"><code class="docutils literal notranslate"><span class="pre">Config.force_integer_ts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.force_mortality_method"><code class="docutils literal notranslate"><span class="pre">Config.force_mortality_method</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.lx_interpolation"><code class="docutils literal notranslate"><span class="pre">Config.lx_interpolation</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.mortality_placement"><code class="docutils literal notranslate"><span class="pre">Config.mortality_placement</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.path"><code class="docutils literal notranslate"><span class="pre">Config.path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.tables_path"><code class="docutils literal notranslate"><span class="pre">Config.tables_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.weeks_per_year"><code class="docutils literal notranslate"><span class="pre">Config.weeks_per_year</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

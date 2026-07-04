@@ -1,0 +1,1628 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TableSource &#8212; Lactuca 0.1.5</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=002b0aa2"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "packages": {"[]": ["base", "ams", "newcommand", "configmacros"], "[+]": ["physics"]}, "macros": {"px": ["{}_{#1}p_{#2}", 2], "qx": ["{}_{#1}q_{#2}", 2], "tpx": ["{}_{#1}p_{#2}^{\\tau}", 2], "tqx": ["{}_{#1}q_{#2}^{\\tau}", 2], "ax": ["\\ddot{a}_{\\overline{#1}|}", 1], "axi": ["\\ddot{a}_{#1}^{(#2)}", 2], "nax": ["\\ddot{a}_{#1:\\overline{#2}|}", 2], "naxi": ["\\ddot{a}_{#1:\\overline{#2}|}^{(#3)}", 3], "abarc": ["\\bar{a}_{#1}", 1], "nabarc": ["\\bar{a}_{#1:\\overline{#2}|}", 2], "sx": ["\\ddot{s}_{\\overline{#1}|}", 1], "sxi": ["\\ddot{s}_{#1}^{(#2)}", 2], "Ax": ["A_{#1}", 1], "Axc": ["\\bar{A}_{#1}", 1], "nAx": ["A_{#1:\\overline{#2}|}", 2], "nEx": ["{}_{#1}E_{#2}", 2], "Dx": ["D_{#1}", 1], "Nx": ["N_{#1}", 1], "Sx": ["S_{#1}", 1], "Cx": ["C_{#1}", 1], "Mx": ["M_{#1}", 1], "Rx": ["R_{#1}", 1], "ex": ["\\mathring{e}_{#1}", 1], "edotx": ["\\ddot{e}_{#1}", 1], "vx": ["v^{#1}", 1], "vn": ["v^{#1}", 1], "dx": ["d^{(#1)}", 1], "ix": ["i^{(#1)}", 1], "pxy": ["p_{#1#2}", 2], "qxy": ["q_{#1#2}", 2], "axy": ["\\ddot{a}_{#1#2}", 2], "axybar": ["\\ddot{a}_{\\overline{#1#2}}", 2]}}, "options": {"skipHtmlTags": ["script", "noscript", "style", "textarea", "pre", "code"], "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}, "loader": {"load": ["[tex]/physics", "[tex]/ams"]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/table_source';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.5';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/lactuca_logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TableBuilder" href="table_builder.html" />
+    <link rel="prev" title="GrowthRate" href="growth_rate.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.5" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/lactuca_logo.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Lactuca</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    [0.1.0] - 2026-07-02
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formulas.html">
+    Actuarial Formulas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cookbook.html">
+    Cookbook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../errors_reference.html">
+    Error Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pricing.html">
+    Pricing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activation.html">
+    Activation Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../faq_licensing.html">
+    Licensing FAQ
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula.html">
+    End User License Agreement
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../eula_es.html">
+    Contrato de Licencia de Usuario Final
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy.html">
+    Privacy Policy
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../privacy_es.html">
+    Política de Privacidad
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing Lactuca
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../support.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    [0.1.0] - 2026-07-02
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/actuaan/lactuca" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Table classes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="decrement_table.html">DecrementTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="life_table.html">LifeTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disability_table.html">DisabilityTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exit_table.html">ExitTable</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Base types</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="base.html">Base types</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Financial models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="interest_rate.html">InterestRate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rate.html">GrowthRate</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Table I/O</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">TableSource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_builder.html">TableBuilder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Functional API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Functional API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Date utilities</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Date Utilities</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">TableSource</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tablesource">
+<h1>TableSource<a class="headerlink" href="#tablesource" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="#lactuca.TableSource" title="lactuca.TableSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSource</span></code></a> loads an <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> actuarial table file from disk and
+exposes the raw decrement arrays and metadata for use by <a class="reference internal" href="life_table.html#lactuca.LifeTable" title="lactuca.LifeTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">LifeTable</span></code></a>,
+<a class="reference internal" href="disability_table.html#lactuca.DisabilityTable" title="lactuca.DisabilityTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisabilityTable</span></code></a>, and <a class="reference internal" href="exit_table.html#lactuca.ExitTable" title="lactuca.ExitTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExitTable</span></code></a> constructors
+(each constructor delegates to <code class="docutils literal notranslate"><span class="pre">TableSource</span></code> internally).</p>
+<p>Table files are located in the directory configured by
+<a class="reference internal" href="config.html#lactuca.Config.tables_path" title="lactuca.Config.tables_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tables_path</span></code></a> (default: absolute path to <code class="docutils literal notranslate"><span class="pre">actuarial_tables/</span></code>
+in the working directory at the time of the first <code class="docutils literal notranslate"><span class="pre">Config()</span></code> call).  A disk-read
+cache keyed on file path and modification time avoids redundant I/O for repeated
+access to the same table within a session.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">TableSource</span></code> is primarily an internal component.  Users normally access table
+data through <a class="reference internal" href="life_table.html#lactuca.LifeTable" title="lactuca.LifeTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">LifeTable</span></code></a> and its siblings rather than constructing
+a <code class="docutils literal notranslate"><span class="pre">TableSource</span></code> directly.</p>
+<p>Bundled catalogue tables are shipped in-repo as Python payloads; install them to
+<code class="docutils literal notranslate"><span class="pre">tables_path</span></code> as <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> files with <code class="docutils literal notranslate"><span class="pre">Tables.install()</span></code> (import
+<code class="docutils literal notranslate"><span class="pre">Tables</span></code> from <code class="docutils literal notranslate"><span class="pre">lactuca.tables.data</span></code>) before first use — see
+<a class="reference internal" href="../user_guide/bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../user_guide/using_tables.html"><span class="doc">Using Actuarial Tables</span></a> — Loading and inspecting tables.<br />
+<a class="reference internal" href="../user_guide/bundled_tables.html"><span class="doc">Bundled Actuarial Tables</span></a> — Tables bundled with Lactuca.</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="lactuca.TableSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">TableSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.TableSource" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Loads an actuarial table (<code class="docutils literal notranslate"><span class="pre">.ltk</span></code>) and exposes its data and metadata as properties.</p>
+<p>All metadata fields (except <code class="docutils literal notranslate"><span class="pre">&quot;decrement_scale_factor&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;mi_scale_factor&quot;</span></code>) are exposed as read-only properties.
+All attributes are set at initialisation time.
+If any required metadata field is missing, a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> is raised.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.DecrementTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecrementTable</span></code></a></dt><dd><p>Higher-level actuarial table API built on top of TableSource.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">table_name</span>
+<span class="go">&#39;PER2020_Ind_1o&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">omega</span>
+<span class="go">110</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.TableSource.head">
+<span class="sig-name descname"><span class="pre">head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#lactuca.TableSource.head" title="Link to this definition">#</a></dt>
+<dd><p>Return the first n rows of the table data, optionally excluding normalized padding.</p>
+<p>By default, shows first n rows from meaningful data (starting at <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a>).
+Use <code class="docutils literal notranslate"><span class="pre">show_normalized=True</span></code> to include padding rows from age 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>default 10</em>) – Number of rows to return from the start.</p></li>
+<li><p><strong>include_age</strong> (<em>bool</em><em>, </em><em>default True</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, include <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, exclude <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column from output.</p></li>
+<li><p><strong>show_normalized</strong> (<em>bool</em><em>, </em><em>default False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, start from age 0 (show padding if present).
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, start from <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a> (exclude padding).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The first n rows with or without age column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.tail" title="lactuca.TableSource.tail"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.tail</span></code></a></dt><dd><p>View last n rows.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.view_data" title="lactuca.TableSource.view_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.view_data</span></code></a></dt><dd><p>View full table data.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;GAM71.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># Shows ages 5, 6, 7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">show_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>  <span class="c1"># Shows ages 0, 1, 2 (padding)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.TableSource.tail">
+<span class="sig-name descname"><span class="pre">tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#lactuca.TableSource.tail" title="Link to this definition">#</a></dt>
+<dd><p>Return the last n rows of the table data, always ending at <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>.</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">show_normalized</span></code> parameter to control which range is considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>default 10</em>) – Number of rows to return from the end.</p></li>
+<li><p><strong>include_age</strong> (<em>bool</em><em>, </em><em>default True</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, include <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, exclude <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column from output.</p></li>
+<li><p><strong>show_normalized</strong> (<em>bool</em><em>, </em><em>default False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, consider full normalized range (0 to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>).
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, consider only meaningful range (<a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a> to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The last n rows with or without age column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.head" title="lactuca.TableSource.head"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.head</span></code></a></dt><dd><p>View first n rows.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.view_data" title="lactuca.TableSource.view_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.view_data</span></code></a></dt><dd><p>View full table data.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;GAM71.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># Shows ages 108, 109, 110</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.TableSource.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.TableSource.to_dict" title="Link to this definition">#</a></dt>
+<dd><p>Return a dictionary containing the main attributes and metadata of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary with the following top-level keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'file_name'</span></code> (<em>str</em>): base name of the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'file_path'</span></code> (<em>str</em>): absolute POSIX path of the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'w'</span></code> (<em>int</em>): current terminal age (effective <span class="math notranslate nohighlight">\(\omega\)</span>
+after any modifications).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'columns'</span></code> (<em>list[str]</em>): DataFrame column names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'start_duration'</span></code> (<em>int or None</em>): minimum valid integer
+duration for select-ultimate tables (<code class="docutils literal notranslate"><span class="pre">0</span></code> for CMI/UK convention,
+<code class="docutils literal notranslate"><span class="pre">1</span></code> for the standard convention); <code class="docutils literal notranslate"><span class="pre">None</span></code> for non-select tables.
+Auto-detected from the minimum <code class="docutils literal notranslate"><span class="pre">_s{k}</span></code> column suffix at load
+time — not stored in the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'metadata'</span></code> (<em>dict</em>): raw file metadata with parsed
+Python-typed values: <code class="docutils literal notranslate"><span class="pre">'valid_sexes'</span></code> as <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'sex_independent'</span></code> / <code class="docutils literal notranslate"><span class="pre">'generational'</span></code> as <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>,
+scale factors as <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'data'</span></code> (<em>polars.DataFrame</em>): full table data.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;file_name&quot;</span><span class="p">]</span>
+<span class="go">&#39;PER2020_Ind_1o.ltk&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;file_name&#39;, &#39;file_path&#39;, &#39;w&#39;, &#39;columns&#39;, &#39;start_duration&#39;, &#39;metadata&#39;, &#39;data&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.to_payload" title="lactuca.TableSource.to_payload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.to_payload</span></code></a></dt><dd><p>Minimal serializable payload for table reconstruction.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.TableSource.to_payload">
+<span class="sig-name descname"><span class="pre">to_payload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.TableSource.to_payload" title="Link to this definition">#</a></dt>
+<dd><p>Return a minimal serializable payload sufficient to recreate the table via
+<code class="docutils literal notranslate"><span class="pre">TableBuilder(payload.pop(&quot;data&quot;),</span> <span class="pre">**payload)</span></code>.</p>
+<p>Data arrays start at <code class="docutils literal notranslate"><span class="pre">start_age</span></code> (no zero-padding rows).</p>
+<p>Scale factors reflect the <em>applied</em> values (e.g. 1000 if data was scaled
+by 1000 before storage), so that a round-trip <code class="docutils literal notranslate"><span class="pre">TableBuilder</span></code> receives the
+correct scale and reconstructs identical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Serializable dict with keys <code class="docutils literal notranslate"><span class="pre">'table_name'</span></code>, <code class="docutils literal notranslate"><span class="pre">'table_type'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'generational'</span></code>, <code class="docutils literal notranslate"><span class="pre">'omega'</span></code>, <code class="docutils literal notranslate"><span class="pre">'start_age'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'sex_independent'</span></code>, <code class="docutils literal notranslate"><span class="pre">'description'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'decrement_scale_factor'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'data'</span></code> (a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>
+of column lists starting at <code class="docutils literal notranslate"><span class="pre">start_age</span></code>).  Optionally includes
+<code class="docutils literal notranslate"><span class="pre">'select'</span></code>, <code class="docutils literal notranslate"><span class="pre">'select_period'</span></code>, <code class="docutils literal notranslate"><span class="pre">'base_year'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'generational_formula_type'</span></code>, <code class="docutils literal notranslate"><span class="pre">'grid_years'</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">'mi_scale_factor'</span></code> when applicable.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">to_payload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">]</span>
+<span class="go">&#39;PER2020_Ind_1o&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">payload</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.to_dict" title="lactuca.TableSource.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.to_dict</span></code></a></dt><dd><p>Full dictionary including the Polars DataFrame.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lactuca.TableSource.view_data">
+<span class="sig-name descname"><span class="pre">view_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#lactuca.TableSource.view_data" title="Link to this definition">#</a></dt>
+<dd><p>Return the full table data, optionally excluding normalized padding rows.</p>
+<p>By default, shows only meaningful data (excludes ages below <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a>).
+Use <code class="docutils literal notranslate"><span class="pre">show_normalized=True</span></code> to see all rows including internal padding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include_age</strong> (<em>bool</em><em>, </em><em>default True</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, include <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column (already present in <a class="reference internal" href="#lactuca.TableSource.data" title="lactuca.TableSource.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code></a>).
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, exclude <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column from output.</p></li>
+<li><p><strong>show_normalized</strong> (<em>bool</em><em>, </em><em>default False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show full normalized range (0 to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>).
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, show only meaningful range (<a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a> to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table data with or without age column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.head" title="lactuca.TableSource.head"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.head</span></code></a></dt><dd><p>View first n rows.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.tail" title="lactuca.TableSource.tail"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.tail</span></code></a></dt><dd><p>View last n rows.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.start_age</span></code></a></dt><dd><p>Starting age from original table definition.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>View GAM71 data (start_age=5):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;GAM71.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">view_data</span><span class="p">()</span>  <span class="c1"># Shows ages 5-110 (106 rows)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_full</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">view_data</span><span class="p">(</span><span class="n">show_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Shows ages 0-110 (111 rows)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.base_year">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.base_year" title="Link to this definition">#</a></dt>
+<dd><p>Base year for generational improvement calculations.</p>
+<p>The base year is the reference period at which the decrement rates
+stored in the table apply without any improvement adjustment.  Cohort
+calculations project rates forward or backward from this year using
+the improvement factors in the <code class="docutils literal notranslate"><span class="pre">mi_</span></code> columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Base year as defined in the table metadata, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for
+static period tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.generational" title="lactuca.TableSource.generational"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational</span></code></a></dt><dd><p>Whether the table applies cohort improvement.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.generational_formula_type" title="lactuca.TableSource.generational_formula_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational_formula_type</span></code></a></dt><dd><p>Formula type for improvement calculations.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.grid_years" title="lactuca.TableSource.grid_years"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.grid_years</span></code></a></dt><dd><p>Projection grid years (for <code class="docutils literal notranslate"><span class="pre">'projected_improvement'</span></code> tables).</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#lactuca.TableSource.data" title="Link to this definition">#</a></dt>
+<dd><p>Table data as a Polars DataFrame, covering all ages from 0 to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column (integers <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\omega\)</span>) is generated
+at load time and is always the first column; it is not stored in the
+<code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.  Rows below <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a> are zero-padded.
+All remaining columns depend on the table type and structure:</p>
+<ul class="simple">
+<li><p><strong>Aggregate tables</strong>: <code class="docutils literal notranslate"><span class="pre">qx_m</span></code>, <code class="docutils literal notranslate"><span class="pre">qx_f</span></code> (life); <code class="docutils literal notranslate"><span class="pre">ix_m</span></code>, <code class="docutils literal notranslate"><span class="pre">ix_f</span></code>
+(disability); <code class="docutils literal notranslate"><span class="pre">ox_m</span></code>, <code class="docutils literal notranslate"><span class="pre">ox_f</span></code> (exit).</p></li>
+<li><p><strong>Select-ultimate tables</strong>: <code class="docutils literal notranslate"><span class="pre">qx_m_s1</span></code>, …, <code class="docutils literal notranslate"><span class="pre">qx_m_s{n}</span></code>,
+<code class="docutils literal notranslate"><span class="pre">qx_m_ult</span></code>, and the corresponding <code class="docutils literal notranslate"><span class="pre">_f</span></code> variants.</p></li>
+<li><p><strong>Generational tables</strong> add <code class="docutils literal notranslate"><span class="pre">mi_</span></code> improvement columns:
+<code class="docutils literal notranslate"><span class="pre">mi_m</span></code>, <code class="docutils literal notranslate"><span class="pre">mi_f</span></code> (flat structure); <code class="docutils literal notranslate"><span class="pre">mi_m_YYYY</span></code>, <code class="docutils literal notranslate"><span class="pre">mi_f_YYYY</span></code>
+(year-indexed / projected); <code class="docutils literal notranslate"><span class="pre">mi_m_s1</span></code>, <code class="docutils literal notranslate"><span class="pre">mi_m_ult</span></code>, …
+(select-period structure).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Full table data including the <code class="docutils literal notranslate"><span class="pre">'age'</span></code> column and all
+decrement/improvement columns.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.metadata" title="lactuca.TableSource.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.metadata</span></code></a></dt><dd><p>Raw metadata dictionary.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.view_data" title="lactuca.TableSource.view_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.view_data</span></code></a></dt><dd><p>Filtered view excluding zero-padding rows below <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a>.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.description">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.TableSource.description" title="Link to this definition">#</a></dt>
+<dd><p>Description of the table from metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Human-readable description string, or an empty string if
+not provided in the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.table_name" title="lactuca.TableSource.table_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.table_name</span></code></a></dt><dd><p>Name of the table as defined in the file metadata.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.metadata" title="lactuca.TableSource.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.metadata</span></code></a></dt><dd><p>Raw metadata dictionary including the description field.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.file_name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.TableSource.file_name" title="Link to this definition">#</a></dt>
+<dd><p>Basename of the loaded table file (e.g. <code class="docutils literal notranslate"><span class="pre">'PER2020.ltk'</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Base filename including the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> extension.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.file_path" title="lactuca.TableSource.file_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.file_path</span></code></a></dt><dd><p>Full resolved path to the loaded table file.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.file_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#lactuca.TableSource.file_path" title="Link to this definition">#</a></dt>
+<dd><p>Full resolved path to the loaded table file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Absolute path to the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pathlib.Path</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.file_name" title="lactuca.TableSource.file_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.file_name</span></code></a></dt><dd><p>Basename of the loaded table file.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.generational">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generational</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.TableSource.generational" title="Link to this definition">#</a></dt>
+<dd><p>Whether the table applies generational (cohort) improvement factors.</p>
+<p>Determined by the <code class="docutils literal notranslate"><span class="pre">generational</span></code> field in the table metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> for generational (cohort) tables; <code class="docutils literal notranslate"><span class="pre">False</span></code> for
+static period tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.generational_formula_type" title="lactuca.TableSource.generational_formula_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational_formula_type</span></code></a></dt><dd><p>Formula type for cohort-improvement calculations.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.generational_formula_type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generational_formula_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'exponential_improvement'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'linear_improvement'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'discrete_improvement'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'projected_improvement'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.generational_formula_type" title="Link to this definition">#</a></dt>
+<dd><p>Formula type used for generational (cohort) improvement calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of <code class="docutils literal notranslate"><span class="pre">'exponential_improvement'</span></code>, <code class="docutils literal notranslate"><span class="pre">'linear_improvement'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'discrete_improvement'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'projected_improvement'</span></code>;
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> for non-generational tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>GenerationalFormulaTypeLiteral or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.generational" title="lactuca.TableSource.generational"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational</span></code></a></dt><dd><p>Whether the table applies generational improvement factors.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.grid_years">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_years</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.grid_years" title="Link to this definition">#</a></dt>
+<dd><p>Sorted list of projection grid years for <code class="docutils literal notranslate"><span class="pre">projected_improvement</span></code> tables.</p>
+<p>These are the years for which year-indexed mi columns (<code class="docutils literal notranslate"><span class="pre">mi_{sex}_YYYY</span></code>) are
+stored in the table. For other formula types, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sorted list of grid years (e.g. <code class="docutils literal notranslate"><span class="pre">[2021,</span> <span class="pre">2022,</span> <span class="pre">...,</span> <span class="pre">2036]</span></code>),
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the table is not a period-projection table.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[int] or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.generational_formula_type" title="lactuca.TableSource.generational_formula_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational_formula_type</span></code></a></dt><dd><p>Formula type for cohort improvement calculations.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.base_year" title="lactuca.TableSource.base_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.base_year</span></code></a></dt><dd><p>Reference year for improvement calculations.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.metadata">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.TableSource.metadata" title="Link to this definition">#</a></dt>
+<dd><p>Raw metadata dictionary loaded from the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file.</p>
+<p>All values are normalized string metadata as loaded from the table file.
+For type-safe access to individual fields, prefer the corresponding
+typed properties (e.g. <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>, <a class="reference internal" href="#lactuca.TableSource.table_type" title="lactuca.TableSource.table_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">table_type</span></code></a>,
+<a class="reference internal" href="#lactuca.TableSource.generational" title="lactuca.TableSource.generational"><code class="xref py py-attr docutils literal notranslate"><span class="pre">generational</span></code></a>, <a class="reference internal" href="#lactuca.TableSource.valid_sexes" title="lactuca.TableSource.valid_sexes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">valid_sexes</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shallow copy of metadata key-value pairs as loaded from the table file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.omega</span></code></a></dt><dd><p>Parsed terminal age (integer).</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.table_type" title="lactuca.TableSource.table_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.table_type</span></code></a></dt><dd><p>Parsed table type string.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.generational" title="lactuca.TableSource.generational"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational</span></code></a></dt><dd><p>Parsed generational flag (bool).</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.to_dict" title="lactuca.TableSource.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.to_dict</span></code></a></dt><dd><p>Returns parsed metadata together with the table data.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.mi_by_duration">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mi_by_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.TableSource.mi_by_duration" title="Link to this definition">#</a></dt>
+<dd><p>Whether improvement factors vary by select duration.</p>
+<p><code class="docutils literal notranslate"><span class="pre">True</span></code> only when <code class="docutils literal notranslate"><span class="pre">mi_structure</span></code> is <code class="docutils literal notranslate"><span class="pre">'select_period'</span></code>, i.e. the
+table stores separate improvement columns per select duration
+(e.g. <code class="docutils literal notranslate"><span class="pre">mi_m_s1</span></code>, <code class="docutils literal notranslate"><span class="pre">mi_m_ult</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if per-duration MI columns are present; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.mi_structure" title="lactuca.TableSource.mi_structure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.mi_structure</span></code></a></dt><dd><p>Layout tag for mortality-improvement columns.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.mi_structure">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mi_structure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.mi_structure" title="Link to this definition">#</a></dt>
+<dd><p>Layout tag for mortality-improvement columns.</p>
+<p>Identifies the column layout used to store improvement factors:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'flat'</span></code>: a single improvement column per sex (<code class="docutils literal notranslate"><span class="pre">mi_m</span></code>, <code class="docutils literal notranslate"><span class="pre">mi_f</span></code>),
+shared across all ages and durations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'year_indexed'</span></code>: per-year columns per sex (<code class="docutils literal notranslate"><span class="pre">mi_m_YYYY</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mi_f_YYYY</span></code>), one column per projection year in <a class="reference internal" href="#lactuca.TableSource.grid_years" title="lactuca.TableSource.grid_years"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grid_years</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'select_period'</span></code>: per-duration columns per sex
+(<code class="docutils literal notranslate"><span class="pre">mi_m_s1</span></code>, …, <code class="docutils literal notranslate"><span class="pre">mi_m_ult</span></code>), one column per select duration.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of <code class="docutils literal notranslate"><span class="pre">'flat'</span></code>, <code class="docutils literal notranslate"><span class="pre">'year_indexed'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'select_period'</span></code>
+for generational tables; <code class="docutils literal notranslate"><span class="pre">None</span></code> for non-generational tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.mi_by_duration" title="lactuca.TableSource.mi_by_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.mi_by_duration</span></code></a></dt><dd><p>Whether improvement factors vary by select duration.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.omega">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">omega</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lactuca.TableSource.omega" title="Link to this definition">#</a></dt>
+<dd><p>Terminal age from table metadata (immutable).</p>
+<p><span class="math notranslate nohighlight">\(\omega\)</span> is the terminal age defined in the original table.
+For a table covering ages <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(118\)</span>, <span class="math notranslate nohighlight">\(\omega = 118\)</span>.
+All decrement arrays in the original table have length <span class="math notranslate nohighlight">\(\omega + 1\)</span>.</p>
+<p>This value never changes, even if the table is modified.
+Use the <a class="reference internal" href="#lactuca.TableSource.w" title="lactuca.TableSource.w"><code class="xref py py-attr docutils literal notranslate"><span class="pre">w</span></code></a> property for the current effective terminal age
+(may change after modifications in
+<a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.DecrementTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecrementTable</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Terminal age <span class="math notranslate nohighlight">\(\omega\)</span> as defined in the table metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.w" title="lactuca.TableSource.w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.w</span></code></a></dt><dd><p>Current effective terminal age (always equal to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> in <a class="reference internal" href="#lactuca.TableSource" title="lactuca.TableSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSource</span></code></a>).</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">omega</span>  <span class="c1"># Terminal age defined in the .ltk metadata</span>
+<span class="go">110</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">omega</span> <span class="o">==</span> <span class="n">ts</span><span class="o">.</span><span class="n">w</span>  <span class="c1"># Always True in TableSource</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.select">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.TableSource.select" title="Link to this definition">#</a></dt>
+<dd><p>Whether this is a select-ultimate table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the table contains select-duration columns
+(e.g. <code class="docutils literal notranslate"><span class="pre">qx_m_s1</span></code>, <code class="docutils literal notranslate"><span class="pre">qx_m_ult</span></code>); <code class="docutils literal notranslate"><span class="pre">False</span></code> for aggregate tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.select_period" title="lactuca.TableSource.select_period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.select_period</span></code></a></dt><dd><p>Number of select-duration years.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.select_improvement_diagonal">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_improvement_diagonal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.select_improvement_diagonal" title="Link to this definition">#</a></dt>
+<dd><p>Calendar-year index used for mortality improvement on select columns.</p>
+<p>For generational <strong>select-ultimate</strong> tables, improvement factors are looked up
+on a cohort diagonal. The index depends on <code class="docutils literal notranslate"><span class="pre">generational_formula_type</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'projected_improvement'</span></code> → <code class="docutils literal notranslate"><span class="pre">'cohort_plus_x_plus_d'</span></code>
+(calendar year $t = text{cohort} + x + d$, implemented as
+<code class="docutils literal notranslate"><span class="pre">effective_cohort</span> <span class="pre">=</span> <span class="pre">cohort</span> <span class="pre">+</span> <span class="pre">d</span></code>).</p></li>
+<li><p>All other generational formulas → <code class="docutils literal notranslate"><span class="pre">'cohort_plus_x'</span></code>
+(calendar year $t = text{cohort} + x$; select duration $d$ affects only
+the base $q$ column, not the improvement diagonal).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'cohort_plus_x_plus_d'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cohort_plus_x'</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when the
+table is not generational or not select-ultimate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.generational_formula_type" title="lactuca.TableSource.generational_formula_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.generational_formula_type</span></code></a></dt><dd><p>Dispatches the diagonal convention.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.select" title="lactuca.TableSource.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.select</span></code></a></dt><dd><p>Whether select-duration columns are present.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.select_period">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.select_period" title="Link to this definition">#</a></dt>
+<dd><p>Select period in years (<code class="docutils literal notranslate"><span class="pre">None</span></code> for non-select tables).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of select-duration years, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for non-select tables.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>As defined in the table metadata; represents the number of select-duration
+years (e.g. <code class="docutils literal notranslate"><span class="pre">s1</span></code>, <code class="docutils literal notranslate"><span class="pre">s2</span></code> for a 2-year select period), <strong>excluding</strong> the
+ultimate (<code class="docutils literal notranslate"><span class="pre">ult</span></code>) column.
+For a table with duration keys <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">'ult'}</span></code>, <code class="docutils literal notranslate"><span class="pre">select_period</span></code> is <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.select" title="lactuca.TableSource.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.select</span></code></a></dt><dd><p>Whether this is a select-ultimate table.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.sex_independent">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sex_independent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.TableSource.sex_independent" title="Link to this definition">#</a></dt>
+<dd><p>Whether this table has identical rates for both sexes.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, the table uses the same mortality/disability/exit
+rates for males and females (e.g., IASS-90, SS90-TOT, SS90-ABS).
+At load time, a single-sex column is automatically mirrored to the
+other sex so that both <code class="docutils literal notranslate"><span class="pre">_m</span></code> and <code class="docutils literal notranslate"><span class="pre">_f</span></code> columns are always present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if rates are sex-independent; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.valid_sexes" title="lactuca.TableSource.valid_sexes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.valid_sexes</span></code></a></dt><dd><p>Sex codes available in this table.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.start_age">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start_age</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lactuca.TableSource.start_age" title="Link to this definition">#</a></dt>
+<dd><p>Starting age of the table from original source data.</p>
+<p>Returns the age at which the table was originally defined to start.
+For example, GAM71 starts at age 5, GAM94 starts at age 1.</p>
+<p>Although tables are internally normalized to age 0 (with padding for ages
+below the original start), this property returns the meaningful starting age
+from the design of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Starting age from original table definition (0 if table started at age 0).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.omega</span></code></a></dt><dd><p>Terminal age of the table.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.view_data" title="lactuca.TableSource.view_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.view_data</span></code></a></dt><dd><p>By default excludes padding rows below <a class="reference internal" href="#lactuca.TableSource.start_age" title="lactuca.TableSource.start_age"><code class="xref py py-attr docutils literal notranslate"><span class="pre">start_age</span></code></a>.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;GAM71.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">start_age</span>  <span class="c1"># Original table starts at age 5</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts_gam83</span> <span class="o">=</span> <span class="n">TableSource</span><span class="p">(</span><span class="s2">&quot;GAM83.ltk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts_gam83</span><span class="o">.</span><span class="n">start_age</span>  <span class="c1"># Original table starts at age 0</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.start_duration">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lactuca.TableSource.start_duration" title="Link to this definition">#</a></dt>
+<dd><p>First (minimum) integer duration in the select columns, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for non-select tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code> for CMI/UK tables (AM92, AF92 — Duration-0 convention),
+<code class="docutils literal notranslate"><span class="pre">1</span></code> for most other select tables (Duration-1 convention),
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> if this is not a select table.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Auto-detected at load time by scanning DataFrame columns for the
+minimum <code class="docutils literal notranslate"><span class="pre">_s{k}</span></code> suffix index.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.select" title="lactuca.TableSource.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.select</span></code></a></dt><dd><p>Whether this is a select-ultimate table.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.TableSource.select_period" title="lactuca.TableSource.select_period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.select_period</span></code></a></dt><dd><p>Number of select-duration years.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.table_name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lactuca.TableSource.table_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the table as defined in the file metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Table name string as stored in the table metadata
+(e.g. <code class="docutils literal notranslate"><span class="pre">'PER2020_Ind_1o'</span></code>).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.table_type" title="lactuca.TableSource.table_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.table_type</span></code></a></dt><dd><p>Type of the table (life, disability, or exit).</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.table_type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'life'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'disability'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'exit'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.TableSource.table_type" title="Link to this definition">#</a></dt>
+<dd><p>Type of the table from metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of <code class="docutils literal notranslate"><span class="pre">'life'</span></code>, <code class="docutils literal notranslate"><span class="pre">'disability'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'exit'</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>TableTypeLiteral</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.table_name" title="lactuca.TableSource.table_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.table_name</span></code></a></dt><dd><p>Name of the table.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.valid_sexes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_sexes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lactuca.TableSource.valid_sexes" title="Link to this definition">#</a></dt>
+<dd><p>Sex codes for which this table provides decrement rates.</p>
+<p>Code <code class="docutils literal notranslate"><span class="pre">'m'</span></code> maps to <code class="docutils literal notranslate"><span class="pre">qx_m</span></code> / <code class="docutils literal notranslate"><span class="pre">ix_m</span></code> / <code class="docutils literal notranslate"><span class="pre">ox_m</span></code> columns;
+code <code class="docutils literal notranslate"><span class="pre">'f'</span></code> maps to <code class="docutils literal notranslate"><span class="pre">qx_f</span></code> / <code class="docutils literal notranslate"><span class="pre">ix_f</span></code> / <code class="docutils literal notranslate"><span class="pre">ox_f</span></code> columns.
+For sex-independent tables both codes are always present, even
+if the source file contained data for only one sex.  The unisex
+code <code class="docutils literal notranslate"><span class="pre">'u'</span></code> is handled by <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.DecrementTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecrementTable</span></code></a>
+and is not stored here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New list of sex codes (e.g. <code class="docutils literal notranslate"><span class="pre">['m',</span> <span class="pre">'f']</span></code>) on every call.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.sex_independent" title="lactuca.TableSource.sex_independent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableSource.sex_independent</span></code></a></dt><dd><p>Whether rates are identical for both sexes.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lactuca.TableSource.w">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">w</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lactuca.TableSource.w" title="Link to this definition">#</a></dt>
+<dd><p>Current effective terminal age (may differ from <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> after modifications).</p>
+<p><a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> is the immutable terminal age read from the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file and
+never changes.  <code class="docutils literal notranslate"><span class="pre">w</span></code> starts equal to <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> but is updated whenever
+the decrement array is replaced by calling <code class="docutils literal notranslate"><span class="pre">modify_qx</span></code>, <code class="docutils literal notranslate"><span class="pre">modify_ix</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">modify_ox</span></code> on a <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.DecrementTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecrementTable</span></code></a> instance.
+After such a call, <code class="docutils literal notranslate"><span class="pre">w</span></code> equals the last valid index of the new array, which
+may be larger or smaller than the original <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a>.</p>
+<p>All actuarial outputs — life tables, commutation functions, present values,
+and annuities — use <code class="docutils literal notranslate"><span class="pre">w</span></code> as their upper age bound.  Always prefer <a class="reference internal" href="#lactuca.TableSource.w" title="lactuca.TableSource.w"><code class="xref py py-attr docutils literal notranslate"><span class="pre">w</span></code></a>
+over <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> in internal calculations.</p>
+<p>In <a class="reference internal" href="#lactuca.TableSource" title="lactuca.TableSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSource</span></code></a> itself <code class="docutils literal notranslate"><span class="pre">w</span></code> always equals <a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-attr docutils literal notranslate"><span class="pre">omega</span></code></a> because no
+modifications have been applied yet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current effective terminal age.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#lactuca.TableSource.omega" title="lactuca.TableSource.omega"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TableSource.omega</span></code></a></dt><dd><p>Immutable terminal age from table metadata</p>
+</dd>
+<dt><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.modify_qx" title="lactuca.tables.DecrementTable.modify_qx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DecrementTable.modify_qx</span></code></a></dt><dd><p>Replace the mortality array and update <code class="docutils literal notranslate"><span class="pre">w</span></code>.</p>
+</dd>
+<dt><a class="reference internal" href="disability_table.html#lactuca.DisabilityTable.modify_ix" title="lactuca.DisabilityTable.modify_ix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DisabilityTable.modify_ix</span></code></a></dt><dd><p>Replace the disability array and update <code class="docutils literal notranslate"><span class="pre">w</span></code>.</p>
+</dd>
+<dt><a class="reference internal" href="exit_table.html#lactuca.ExitTable.modify_ox" title="lactuca.ExitTable.modify_ox"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ExitTable.modify_ox</span></code></a></dt><dd><p>Replace the exit array and update <code class="docutils literal notranslate"><span class="pre">w</span></code>.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="growth_rate.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GrowthRate</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="table_builder.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">TableBuilder</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource"><code class="docutils literal notranslate"><span class="pre">TableSource</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.head"><code class="docutils literal notranslate"><span class="pre">TableSource.head()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.tail"><code class="docutils literal notranslate"><span class="pre">TableSource.tail()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.to_dict"><code class="docutils literal notranslate"><span class="pre">TableSource.to_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.to_payload"><code class="docutils literal notranslate"><span class="pre">TableSource.to_payload()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.view_data"><code class="docutils literal notranslate"><span class="pre">TableSource.view_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.base_year"><code class="docutils literal notranslate"><span class="pre">TableSource.base_year</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.data"><code class="docutils literal notranslate"><span class="pre">TableSource.data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.description"><code class="docutils literal notranslate"><span class="pre">TableSource.description</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.file_name"><code class="docutils literal notranslate"><span class="pre">TableSource.file_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.file_path"><code class="docutils literal notranslate"><span class="pre">TableSource.file_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.generational"><code class="docutils literal notranslate"><span class="pre">TableSource.generational</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.generational_formula_type"><code class="docutils literal notranslate"><span class="pre">TableSource.generational_formula_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.grid_years"><code class="docutils literal notranslate"><span class="pre">TableSource.grid_years</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.metadata"><code class="docutils literal notranslate"><span class="pre">TableSource.metadata</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.mi_by_duration"><code class="docutils literal notranslate"><span class="pre">TableSource.mi_by_duration</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.mi_structure"><code class="docutils literal notranslate"><span class="pre">TableSource.mi_structure</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.omega"><code class="docutils literal notranslate"><span class="pre">TableSource.omega</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.select"><code class="docutils literal notranslate"><span class="pre">TableSource.select</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.select_improvement_diagonal"><code class="docutils literal notranslate"><span class="pre">TableSource.select_improvement_diagonal</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.select_period"><code class="docutils literal notranslate"><span class="pre">TableSource.select_period</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.sex_independent"><code class="docutils literal notranslate"><span class="pre">TableSource.sex_independent</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.start_age"><code class="docutils literal notranslate"><span class="pre">TableSource.start_age</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.start_duration"><code class="docutils literal notranslate"><span class="pre">TableSource.start_duration</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.table_name"><code class="docutils literal notranslate"><span class="pre">TableSource.table_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.table_type"><code class="docutils literal notranslate"><span class="pre">TableSource.table_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.valid_sexes"><code class="docutils literal notranslate"><span class="pre">TableSource.valid_sexes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.TableSource.w"><code class="docutils literal notranslate"><span class="pre">TableSource.w</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alberto Aragoneses.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
