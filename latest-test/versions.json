@@ -1,4 +1,7 @@
 [
-  {"name": "latest-test", "version": "0.1.5-test", "url": "/latest-test/"},
-  {"name": "latest", "version": "latest", "url": "/latest/"}
+  {
+    "name": "latest-test",
+    "version": "0.1.6-test",
+    "url": "/latest-test/"
+  }
 ]

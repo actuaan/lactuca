@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Licensing FAQ &#8212; Lactuca 0.1.5</title>
+    <title>Licensing FAQ &#8212; Lactuca 0.1.6</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=002b0aa2"></script>
+    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,7 +51,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.5';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Activation Guide" href="activation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.5" />
+  <meta name="docsearch:version" content="0.1.6" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -295,6 +295,26 @@
   </ul>
 </div></div>
       
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
@@ -480,6 +500,26 @@
     <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
     <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
 </div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
@@ -757,20 +797,41 @@ and provide the hostname(s) to deactivate.</p></li>
 significantly larger activation pools.</p></li>
 </ul>
 </section>
-<section id="i-see-licenseseatexhaustederror-what-now">
-<span id="seat-exhausted"></span><h3>I see <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code>. What now?<a class="headerlink" href="#i-see-licenseseatexhaustederror-what-now" title="Link to this heading">#</a></h3>
+<section id="i-see-licenseseatexhaustederror-but-nothing-seems-to-be-running-what-now">
+<span id="seat-exhausted"></span><h3>I see <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code> but nothing seems to be running. What now?<a class="headerlink" href="#i-see-licenseseatexhaustederror-but-nothing-seems-to-be-running-what-now" title="Link to this heading">#</a></h3>
 <p>All concurrent session slots allowed by your plan are currently in use. This is
 different from the device activation limit — it means too many Python processes are
 running Lactuca at the same time across your activated devices.</p>
-<p><strong>Short-term options:</strong></p>
-<ul class="simple">
-<li><p><strong>Wait for a seat to free up.</strong> Seats are released automatically when a running
-process exits cleanly. If a process crashed or was killed, the seat is released
-after the heartbeat lease expires (30 minutes for Individual/Trial/Academic; 60
-minutes for Team/Enterprise).</p></li>
-<li><p><strong>Check for stuck processes.</strong> Look for background scripts, Jupyter kernels, or
-scheduled jobs running Lactuca that you may have forgotten about.</p></li>
-</ul>
+<p>On <strong>this machine</strong>, a common cause is a Jupyter or IPython kernel that imported
+Lactuca and was killed without shutting down cleanly. The license server keeps the
+seat active until the heartbeat lease expires (approximately <strong>10 minutes</strong> on
+Individual, Trial, and Academic; <strong>60 minutes</strong> on Team and Enterprise).</p>
+<p><strong>Recovery steps (try in order):</strong></p>
+<ol class="arabic">
+<li><p><strong>Shut down the other session.</strong> Close the Jupyter kernel, notebook tab, or background
+script that imported Lactuca on this device.</p></li>
+<li><p><strong>Release orphan seats</strong> (requires internet access):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>release-stale
+</pre></div>
+</div>
+<p>This revokes leases on <strong>this machine</strong> only when the local process is demonstrably
+gone. It never kills a running process. If the network is unavailable, the command
+exits with code <strong>2</strong> — restore connectivity and retry.</p>
+</li>
+<li><p><strong>Wait for automatic expiry.</strong> If you cannot run the CLI, the seat is released after
+the heartbeat lease expires (approximately 10 minutes on single-user tiers).</p></li>
+<li><p><strong>Run diagnostics:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>doctor
+</pre></div>
+</div>
+<p>When a seat is detected on this device, the recommendation includes
+<code class="docutils literal notranslate"><span class="pre">release-stale</span></code>.</p>
+</li>
+</ol>
+<p><strong>Last resort on this device:</strong> if a session is stuck (PID still exists but the kernel
+is hung), see <a class="reference internal" href="activation.html#release-stale-seat"><span class="std std-ref">Release a stale session seat</span></a> for
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">lactuca</span> <span class="pre">license</span> <span class="pre">release</span> <span class="pre">--force</span></code> — use only when you are certain no valid
+calculation is running.</p>
 <p><strong>Long-term options:</strong></p>
 <ul class="simple">
 <li><p><strong>Upgrade to Team or Enterprise.</strong> These tiers allow 10 and 50 concurrent sessions
@@ -800,8 +861,8 @@ devices. Limits are: Individual/Trial/Academic: <strong>1 concurrent session</st
 concurrent sessions</strong>; Enterprise: <strong>50 concurrent sessions</strong>.</p>
 <p>When the concurrent session limit is reached, any additional process that tries to
 import Lactuca will raise <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code>. The seat is released
-automatically when the process exits or after the heartbeat lease expires (30 minutes
-for single-user tiers; 60 minutes for Team/Enterprise).</p>
+automatically when the process exits or after the heartbeat lease expires
+(approximately <strong>10 minutes</strong> for single-user tiers; <strong>60 minutes</strong> for Team/Enterprise).</p>
 </li>
 </ol>
 <p>For workstation deployments, each user typically activates on their own machines. For
@@ -1135,7 +1196,7 @@ details.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#can-i-copy-license-json-to-another-machine">Can I copy <code class="docutils literal notranslate"><span class="pre">license.json</span></code> to another machine?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-see-licensetamperederror-what-does-it-mean">I see <code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code>. What does it mean?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-see-licenseinvaliderror-your-license-has-reached-the-maximum-number-of-activations-what-now">I see <code class="docutils literal notranslate"><span class="pre">LicenseInvalidError:</span> <span class="pre">Your</span> <span class="pre">license</span> <span class="pre">has</span> <span class="pre">reached</span> <span class="pre">the</span> <span class="pre">maximum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">activations.</span></code> What now?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-see-licenseseatexhaustederror-what-now">I see <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code>. What now?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-see-licenseseatexhaustederror-but-nothing-seems-to-be-running-what-now">I see <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code> but nothing seems to be running. What now?</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plans-and-billing">Plans and billing</a><ul class="pst-show_toc_level nav section-nav flex-column">

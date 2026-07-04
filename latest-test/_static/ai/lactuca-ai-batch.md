@@ -4,7 +4,7 @@
 
 <!--
 lactuca_ai_context: batch
-compatible_with_docs: 0.1.5
+compatible_with_docs: 0.1.6
 docs_base_url: https://www.lactuca.io/latest/
 license: CC-BY-4.0
 language: en

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Error Reference &#8212; Lactuca 0.1.5</title>
+    <title>Error Reference &#8212; Lactuca 0.1.6</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=002b0aa2"></script>
+    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.5';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -65,7 +65,7 @@
     <link rel="prev" title="Cookbook" href="cookbook.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.5" />
+  <meta name="docsearch:version" content="0.1.6" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -297,6 +297,26 @@
   </ul>
 </div></div>
       
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
@@ -482,6 +502,26 @@
     <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
     <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
 </div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
@@ -2658,7 +2698,8 @@ duplicate message.</p>
 <p><strong>Exception</strong>: <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code></p>
 <p><strong>Message pattern</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">LAC</span><span class="o">-</span><span class="mi">4001</span><span class="p">]</span> <span class="n">All</span> <span class="n">concurrent</span> <span class="n">sessions</span> <span class="k">for</span> <span class="n">this</span> <span class="n">license</span> <span class="n">are</span> <span class="ow">in</span> <span class="n">use</span><span class="o">.</span>
-<span class="n">Action</span><span class="p">:</span> <span class="n">Close</span> <span class="n">another</span> <span class="n">active</span> <span class="n">Lactuca</span> <span class="n">session</span><span class="p">,</span> <span class="ow">or</span> <span class="n">upgrade</span> <span class="n">your</span> <span class="n">plan</span><span class="p">:</span> <span class="p">{</span><span class="n">pricing_url</span><span class="p">}</span>
+<span class="n">Action</span><span class="p">:</span> <span class="n">Close</span> <span class="n">the</span> <span class="n">other</span> <span class="n">Lactuca</span> <span class="n">session</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">shut</span> <span class="n">down</span> <span class="n">the</span> <span class="n">Jupyter</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">run</span>
+  <span class="s1">&#39;python -m lactuca license release-stale&#39;</span><span class="p">,</span> <span class="ow">or</span> <span class="n">wait</span> <span class="k">for</span> <span class="n">the</span> <span class="n">seat</span> <span class="n">to</span> <span class="n">expire</span> <span class="p">(</span><span class="o">~</span><span class="mi">10</span> <span class="nb">min</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
 <p><strong>Cause</strong>: The maximum number of simultaneous active Python processes allowed by the
@@ -2693,13 +2734,30 @@ license plan is already in use.  The license server refused to grant a new proce
 </table>
 </div>
 <p><strong>Fix</strong>:</p>
-<ol class="arabic simple">
-<li><p><strong>Wait for a seat to free up.</strong> Seats are released automatically when a running
-process exits cleanly. If a process was killed or crashed, the seat is released after
-the heartbeat lease expires (30 minutes for single-user tiers; 60 minutes for
-Team/Enterprise).</p></li>
-<li><p><strong>Check for stuck processes.</strong> Look for background scripts, Jupyter kernels, or
-scheduled jobs running Lactuca that you may have forgotten about.</p></li>
+<ol class="arabic">
+<li><p><strong>Close the other session on this device.</strong> Shut down the Jupyter kernel, notebook,
+or script that imported Lactuca.</p></li>
+<li><p><strong>Release orphan seats</strong> (requires internet access):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>release-stale
+</pre></div>
+</div>
+<p>Revokes leases on <strong>this machine</strong> when the local process is gone. Does not kill
+running processes. If the network is unavailable, exit code <strong>2</strong> — restore
+connectivity and retry. See <a class="reference internal" href="activation.html#release-stale-seat"><span class="std std-ref">Release a stale session seat</span></a>.</p>
+</li>
+<li><p><strong>Wait for automatic expiry.</strong> If you cannot run the CLI, the seat is released after
+the heartbeat lease expires (approximately <strong>10 minutes</strong> on Individual, Trial, and
+Academic; <strong>60 minutes</strong> on Team and Enterprise).</p></li>
+<li><p><strong>Run diagnostics:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>doctor
+</pre></div>
+</div>
+<p>When a seat is detected on this device, the recommendation includes <code class="docutils literal notranslate"><span class="pre">release-stale</span></code>.</p>
+</li>
+<li><p><strong>Last resort on this device:</strong> if a session is stuck (process ID still exists but
+the kernel is hung), use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">lactuca</span> <span class="pre">license</span> <span class="pre">release</span> <span class="pre">--force</span></code> with interactive
+confirmation or <code class="docutils literal notranslate"><span class="pre">--yes</span></code> in scripts — only when you are certain no valid calculation
+is running. See <a class="reference internal" href="activation.html#release-stale-seat"><span class="std std-ref">Release a stale session seat</span></a>.</p></li>
 <li><p><strong>Upgrade your plan.</strong> Team (10 sessions) and Enterprise (50 sessions) are suitable
 for server deployments and teams running parallel jobs.</p></li>
 <li><p><strong>Handle in pipeline scripts</strong> that may run concurrently (inspect <code class="docutils literal notranslate"><span class="pre">SystemExit</span></code> on
