@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "lactuca"
-version = "0.1.0"
+version = "0.1.6"
 description = "Professional life actuarial library for Python with compiled performance and international tables"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
@@ -24,7 +24,7 @@ license = "LicenseRef-Proprietary"
 license-files = ["LICENSE", "LICENSE_DOCS"]
 keywords = ["actuarial", "life-insurance", "mortality", "annuity", "tables", "spain", "pasem", "cython"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Financial and Insurance Industry",
   "Intended Audience :: Science/Research",
   "Topic :: Office/Business :: Financial",

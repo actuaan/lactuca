@@ -1,14 +1,12 @@
 [
   {
+    "name": "0.1.0",
+    "version": "0.1.0",
+    "url": "/v0.1.0/"
+  },
+  {
+    "name": "latest",
     "version": "latest",
-    "url": "https://www.lactuca.io/latest/"
-  },
-  {
-    "version": "stable",
-    "url": "https://www.lactuca.io/stable/"
-  },
-  {
-    "version": "0.0.1",
-    "url": "https://www.lactuca.io/0.0.1/"
+    "url": "/latest/"
   }
 ]

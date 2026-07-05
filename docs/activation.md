@@ -56,6 +56,8 @@ python -m lactuca activate
 python -m lactuca license refresh [--json]
 python -m lactuca license status [--json]
 python -m lactuca license doctor [--json]
+python -m lactuca license release-stale [--json]
+python -m lactuca license release --force [--yes] [--json]
 ```
 
 ### When to use each command
@@ -68,7 +70,15 @@ python -m lactuca license doctor [--json]
 - `license refresh`: force online synchronization now (recommended after support confirms
   a server-side adjustment).
 - `license status`: inspect local state only (no network call).
-- `license doctor`: run guided diagnostics (local checks + connectivity).
+- `license doctor`: run guided diagnostics (local checks + connectivity). When a
+  floating session seat is detected on this device, the recommendation includes
+  `release-stale` (diagnosis only — never auto-releases).
+- `license release-stale`: revoke orphan process seats on **this machine** whose
+  local OS process is gone (primary recovery after a crashed Jupyter kernel). Requires
+  network access.
+- `license release --force`: last-resort revocation of the active seat on this machine
+  even when the PID still appears alive; requires `--force` and interactive confirmation
+  or `--yes` in non-interactive environments.
 
 ### Import vs CLI — where messages appear
 
@@ -103,18 +113,22 @@ printing the activation confirmation to stdout.
 
 ### Exit codes — `python -m lactuca license …`
 
-Structured exit codes for `license refresh`, `license status`, and `license doctor`:
+Structured exit codes for `license refresh`, `license status`, `license doctor`,
+`license release-stale`, and `license release --force`:
 
 | Code | Meaning |
 |---|---|
 | `0` | Success |
+| `1` | User cancelled `--force` confirmation (TTY only; `release --force`) |
 | `2` | Network error (server unreachable) |
 | `3` | No key available |
 | `4` | License expired |
 | `5` | License revoked, suspended, or permanently deleted on the license server |
-| `6` | Invalid/unsupported server status |
+| `6` | Invalid/unsupported server status, or `machine_id` missing from local license file |
 | `7` | License command usage error |
-| `10` | Unexpected internal error |
+| `8` | `release-stale`: no orphan leases — all registered sessions still active |
+| `9` | `release --force`: more than one active session on this machine |
+| `10` | Unexpected internal error, or all DELETE attempts failed |
 
 ### Example outputs
 
@@ -153,6 +167,71 @@ JSON mode:
 ```json
 {"status": "network_error", "code": 2, "message": "Could not reach license server during diagnosis.", "expires_at": null, "tier": null, "recommendation": "Check network access and run 'python -m lactuca license doctor' again.", "checks": [{"check": "license_file", "result": "ok", "detail": "license.json found"}]}
 ```
+
+(release-stale-seat)=
+## Release a stale session seat
+
+When a Lactuca process exits without releasing its floating seat (for example a Jupyter
+kernel killed abruptly), the license server may still hold the seat as active until the
+heartbeat lease expires. Individual and Academic plans allow only **one concurrent
+session**, so the next `import lactuca` raises `LicenseSeatExhaustedError` **[LAC-4001]**.
+
+### Primary recovery: `release-stale`
+
+```bash
+python -m lactuca license release-stale [--json]
+```
+
+This command lists process leases registered for **this machine** and revokes only those
+that are demonstrably orphaned: Keygen marked the lease dead, the stored PID is missing
+or invalid, or the local operating system confirms the PID no longer exists. It **never**
+sends a kill signal to a local process.
+
+Use it when:
+
+- A Jupyter or IPython kernel that imported Lactuca was closed abruptly.
+- `license doctor` recommends `release-stale` in its output.
+- You see **[LAC-4001]** but believe nothing is still running on this device.
+
+**Requirements:** outbound HTTPS to the license server is required. If the network is
+unavailable, the command exits with code **2** and leaves local `license.json` unchanged.
+Run `license refresh` afterward if you need updated expiry metadata in JSON output.
+
+### Last resort: `release --force`
+
+If a seat is still registered as active but you are certain no Lactuca calculation is
+running (for example a hung kernel whose process ID still exists), escalate with:
+
+```bash
+python -m lactuca license release --force [--yes] [--json]
+```
+
+| Rule | Detail |
+|---|---|
+| `--force` required | `python -m lactuca license release` without `--force` exits **7** |
+| Interactive terminal | Prompt: `Release the active Lactuca session on this device? [y/N]` — answer `n` exits **1** |
+| Non-interactive / CI | Pass **`--yes`** in addition to **`--force`** |
+| Multiple active sessions | Exit **9** on this machine — use `release-stale` or close sessions manually |
+
+Use `--force` only when `release-stale` cannot help (for example a hung kernel whose
+process ID still exists). It revokes the Keygen lease without killing the local process.
+Neither command weakens Individual 1/1 concurrent session policy.
+
+**OEM tier:** both commands return `status=skipped`, code **0**, with an informational
+message (OEM deployments do not use floating process seats).
+
+### JSON fields (`release-stale` / `release --force`)
+
+In addition to `status`, `code`, `message`, `expires_at`, and `tier` (read from local
+`license.json`, not refreshed from the server):
+
+| Field | Meaning |
+|---|---|
+| `released_count` | Successful lease revocations |
+| `checked_count` | Leases inspected on this machine |
+| `released_ids` | Keygen process IDs revoked (may be empty) |
+| `still_active_count` | Leases left active |
+| `failed_delete_count` | DELETE attempts that failed |
 
 ---
 
@@ -403,8 +482,9 @@ All concurrent session slots for your license are in use. This can happen for tw
 reasons:
 
 - **Too many parallel processes**: another machine or process has consumed all available
-  session slots. Wait for a session to close, or see the
-  {ref}`FAQ <seat-exhausted>` for options.
+  session slots. On **this device**, try shutting down stray Jupyter kernels, then run
+  `python -m lactuca license release-stale` (see {ref}`Release a stale session seat
+  <release-stale-seat>`). See the {ref}`FAQ <seat-exhausted>` for full recovery steps.
 - **Offline too long**: no successful server contact in the last 3 days. Restore
   network connectivity and try again.
 

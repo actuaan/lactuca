@@ -103,9 +103,9 @@ html_theme_options = {
     "pygments_dark_style": "material",
     # ------------------------------------------
     "navbar_end": [
-        # "version-switcher",  # Comentado para desarrollo local (funciona en CI/CD)
         "search-button.html",
         "theme-switcher.html",
+        "version-switcher",
         "navbar-icon-links.html",
     ],
     "navbar_persistent": [],
@@ -182,7 +182,10 @@ mathjax3_config = {
             "Rx": ["R_{#1}", 1],
             # Life expectancy
             "ex": ["\\mathring{e}_{#1}", 1],  # Complete life expectancy
-            "edotx": ["\\ddot{e}_{#1}", 1],  # Misnamed — do not use for curtate e_x; use literal $e_x$
+            "edotx": [
+                "\\ddot{e}_{#1}",
+                1,
+            ],  # Misnamed — do not use for curtate e_x; use literal $e_x$
             # Interest and discount factors
             "vx": ["v^{#1}", 1],  # Discount factor
             "vn": ["v^{#1}", 1],  # n-year discount
@@ -210,18 +213,6 @@ mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # Add entries here only when Sphinx roles (:class:, :func:, etc.) referencing
 # external inventories are actually introduced.
 intersphinx_mapping: dict = {}
-
-# -- sphinx-multiversion Configuration ----------------------------------------
-# Similar to mike in MkDocs
-smv_tag_whitelist = r"^v\d+\.\d+\.\d+$"  # Only semantic version tags
-smv_branch_whitelist = r"^(main|stable)$"  # Branches to document
-smv_remote_whitelist = r"^(origin)$"  # Allowed remote
-smv_released_pattern = r"^tags/v.*$"  # Release pattern
-smv_outputdir_format = "{ref.name}"  # Directory structure
-
-# Version banner settings
-smv_latest_version = "latest"  # Alias for latest version
-smv_prefer_remote_refs = False  # Use local refs first
 
 
 def setup(app):

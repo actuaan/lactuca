@@ -168,20 +168,45 @@ Your license has no free device slots. Options:
   significantly larger activation pools.
 
 (seat-exhausted)=
-### I see `LicenseSeatExhaustedError`. What now?
+### I see `LicenseSeatExhaustedError` but nothing seems to be running. What now?
 
 All concurrent session slots allowed by your plan are currently in use. This is
 different from the device activation limit — it means too many Python processes are
 running Lactuca at the same time across your activated devices.
 
-**Short-term options:**
+On **this machine**, a common cause is a Jupyter or IPython kernel that imported
+Lactuca and was killed without shutting down cleanly. The license server keeps the
+seat active until the heartbeat lease expires (approximately **10 minutes** on
+Individual, Trial, and Academic; **60 minutes** on Team and Enterprise).
 
-- **Wait for a seat to free up.** Seats are released automatically when a running
-  process exits cleanly. If a process crashed or was killed, the seat is released
-  after the heartbeat lease expires (30 minutes for Individual/Trial/Academic; 60
-  minutes for Team/Enterprise).
-- **Check for stuck processes.** Look for background scripts, Jupyter kernels, or
-  scheduled jobs running Lactuca that you may have forgotten about.
+**Recovery steps (try in order):**
+
+1. **Shut down the other session.** Close the Jupyter kernel, notebook tab, or background
+   script that imported Lactuca on this device.
+2. **Release orphan seats** (requires internet access):
+
+   ```bash
+   python -m lactuca license release-stale
+   ```
+
+   This revokes leases on **this machine** only when the local process is demonstrably
+   gone. It never kills a running process. If the network is unavailable, the command
+   exits with code **2** — restore connectivity and retry.
+3. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
+   the heartbeat lease expires (approximately 10 minutes on single-user tiers).
+4. **Run diagnostics:**
+
+   ```bash
+   python -m lactuca license doctor
+   ```
+
+   When a seat is detected on this device, the recommendation includes
+   `release-stale`.
+
+**Last resort on this device:** if a session is stuck (PID still exists but the kernel
+is hung), see {ref}`Release a stale session seat <release-stale-seat>` for
+`python -m lactuca license release --force` — use only when you are certain no valid
+calculation is running.
 
 **Long-term options:**
 
@@ -214,8 +239,8 @@ Technical enforcement operates on two complementary axes:
 
    When the concurrent session limit is reached, any additional process that tries to
    import Lactuca will raise `LicenseSeatExhaustedError`. The seat is released
-   automatically when the process exits or after the heartbeat lease expires (30 minutes
-   for single-user tiers; 60 minutes for Team/Enterprise).
+   automatically when the process exits or after the heartbeat lease expires
+   (approximately **10 minutes** for single-user tiers; **60 minutes** for Team/Enterprise).
 
 For workstation deployments, each user typically activates on their own machines. For
 shared server deployments, the server consumes one activation slot and all internal

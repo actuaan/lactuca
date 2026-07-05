@@ -6,7 +6,7 @@
 
 <!--
 lactuca_ai_context: core
-compatible_with_docs: 0.1.0
+compatible_with_docs: 0.1.6
 docs_base_url: https://www.lactuca.io/latest/
 license: CC-BY-4.0
 language: en

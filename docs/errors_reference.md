@@ -1563,7 +1563,8 @@ duplicate message.
 **Message pattern**:
 ```
 [LAC-4001] All concurrent sessions for this license are in use.
-Action: Close another active Lactuca session, or upgrade your plan: {pricing_url}
+Action: Close the other Lactuca session (e.g. shut down the Jupyter kernel), run
+  'python -m lactuca license release-stale', or wait for the seat to expire (~10 min).
 ```
 
 **Cause**: The maximum number of simultaneous active Python processes allowed by the
@@ -1582,18 +1583,40 @@ Concurrent session limits per tier:
 
 **Fix**:
 
-1. **Wait for a seat to free up.** Seats are released automatically when a running
-   process exits cleanly. If a process was killed or crashed, the seat is released after
-   the heartbeat lease expires (30 minutes for single-user tiers; 60 minutes for
-   Team/Enterprise).
+1. **Close the other session on this device.** Shut down the Jupyter kernel, notebook,
+   or script that imported Lactuca.
 
-2. **Check for stuck processes.** Look for background scripts, Jupyter kernels, or
-   scheduled jobs running Lactuca that you may have forgotten about.
+2. **Release orphan seats** (requires internet access):
 
-3. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
+   ```bash
+   python -m lactuca license release-stale
+   ```
+
+   Revokes leases on **this machine** when the local process is gone. Does not kill
+   running processes. If the network is unavailable, exit code **2** — restore
+   connectivity and retry. See {ref}`Release a stale session seat <release-stale-seat>`.
+
+3. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
+   the heartbeat lease expires (approximately **10 minutes** on Individual, Trial, and
+   Academic; **60 minutes** on Team and Enterprise).
+
+4. **Run diagnostics:**
+
+   ```bash
+   python -m lactuca license doctor
+   ```
+
+   When a seat is detected on this device, the recommendation includes `release-stale`.
+
+5. **Last resort on this device:** if a session is stuck (process ID still exists but
+   the kernel is hung), use `python -m lactuca license release --force` with interactive
+   confirmation or `--yes` in scripts — only when you are certain no valid calculation
+   is running. See {ref}`Release a stale session seat <release-stale-seat>`.
+
+6. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
    for server deployments and teams running parallel jobs.
 
-4. **Handle in pipeline scripts** that may run concurrently (inspect ``SystemExit`` on
+7. **Handle in pipeline scripts** that may run concurrently (inspect ``SystemExit`` on
    import — see {ref}`license-errors`):
 
 ```python
