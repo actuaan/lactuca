@@ -258,7 +258,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -467,7 +467,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -806,11 +806,17 @@ running Lactuca at the same time across your activated devices.</p>
 Lactuca and was killed without shutting down cleanly. The license server keeps the
 seat active until the heartbeat lease expires (approximately <strong>10 minutes</strong> on
 Individual, Trial, and Academic; <strong>60 minutes</strong> on Team and Enterprise).</p>
+<p>Lactuca <strong>reclaims stale seats automatically</strong>: on import, if the seat pool is full, it
+first revokes any seat on this machine whose process is gone and retries once. You usually
+only reach the steps below when a session is genuinely still running, or when the automatic
+step could not reach the license server.</p>
 <p><strong>Recovery steps (try in order):</strong></p>
 <ol class="arabic">
 <li><p><strong>Shut down the other session.</strong> Close the Jupyter kernel, notebook tab, or background
 script that imported Lactuca on this device.</p></li>
-<li><p><strong>Release orphan seats</strong> (requires internet access):</p>
+<li><p><strong>Retry in a few seconds.</strong> If a freed seat had not yet propagated on the server, a
+second <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code> usually succeeds after the automatic reclamation.</p></li>
+<li><p><strong>Release orphan seats manually</strong> (requires internet access; normally unnecessary):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>release-stale
 </pre></div>
 </div>

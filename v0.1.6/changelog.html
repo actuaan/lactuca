@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>[0.1.0] - 2026-07-02 &#8212; Lactuca 0.1.6</title>
+    <title>Changelog &#8212; Lactuca 0.1.6</title>
   
   
   
@@ -257,7 +257,7 @@
 
 <li class=" current active">
   <a class="nav-link dropdown-item nav-internal" href="#">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -466,7 +466,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -591,7 +591,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">[0.1.0] - 2026-07-02</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Changelog</span></li>
   </ul>
 </nav>
 </div>
@@ -608,29 +608,102 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="id1">
-<h1>[0.1.0] - 2026-07-02<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<section id="testing">
-<h2>✅ Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<p>All notable changes to Lactuca will be documented in this file.</p>
+<p>The format is based on <a class="reference external" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a class="reference external" href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<section id="unreleased">
+<h2>[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this heading">#</a></h2>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>tests</strong>: Relax test_56 golden ULP tolerance for wheel_test</p></li>
+<li><p><strong>_activation</strong>: Auto-reclaim stale process seats before LAC-4001</p></li>
+<li><p><strong>_activation,docs</strong>: Align LAC-4001 message and user docs with auto-recovery</p></li>
+<li><p><strong>ci</strong>: Own gh-pages root landing page on prod docs deploy</p></li>
 </ul>
 </section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>_activation,exceptions</strong>: Complete LIC-01 LR-9/LR-12/LR-10b</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>[0.1.6] - 2026-07-05<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="features">
-<h2>✨ Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>_activation</strong>: Add license release-stale and release –force CLI</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Bug Fixes<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>scripts</strong>: Enrich wheel pyi stubs for IDE typing contract (IDE-01)</p></li>
+<li><p><strong>tests</strong>: Read wheel pyi in test_64 when scripts tree absent</p></li>
+<li><p><strong>scripts</strong>: Resolve re-exported Literal aliases in wheel pyi stubs</p></li>
+<li><p><strong>scripts,tests</strong>: Harden wheel stub IDE contract after import audit</p></li>
+<li><p><strong>scripts</strong>: Emit local Literal aliases without duplicate imports</p></li>
+<li><p><strong>scripts,tests</strong>: Expand Tier 1 stub overrides and union ordering contract</p></li>
+<li><p><strong>ci</strong>: Use wheel artifacts for Test PyPI stub validation</p></li>
+<li><p><strong>ci</strong>: Stage docs scripts for isolated wheel pytest</p></li>
+<li><p><strong>ci</strong>: Run wheel E2E steps with bash shell on Windows</p></li>
+</ul>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>scripts</strong>: Public-only pyi stubs and faster stub generator</p></li>
+</ul>
+</section>
+<section id="refactoring">
+<h3>Refactoring<a class="headerlink" href="#refactoring" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>api</strong>: Import PaymentFrequencyLiteral from lactuca.base</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Documentation<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>changelog</strong>: Exclude test PyPI tags from public history</p></li>
+<li><p><strong>engine,ci</strong>: Clarify engine base re-exports and scripts-utilities Track 2c</p></li>
+<li><p><strong>activation</strong>: Document license release-stale and release –force CLI</p></li>
+<li><p><strong>conf</strong>: Move version-switcher between theme and github icons</p></li>
+</ul>
+</section>
+<section id="ci-cd">
+<h3>CI/CD<a class="headerlink" href="#ci-cd" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>docs</strong>: Use committed changelog in doc workflows</p></li>
+<li><p><strong>docs,scripts,tests</strong>: Enable version switcher and accumulative gh-pages deploy (DOCS-01)</p></li>
+</ul>
+</section>
+<section id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>build</strong>: Set PyPI classifier to Production/Stable</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2>[0.1.0] - 2026-07-02<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h3>Features<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>utils,docs,tests</strong>: Align cashflow utilities across code and AI docs</p></li>
 </ul>
 </section>
-<section id="bug-fixes">
-<h2>🐛 Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>Bug Fixes<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>tables</strong>: Replace horizontal pl.concat with insert_column</p></li>
 <li><p><strong>ci</strong>: Select wheel ABI matching E2E Python interpreter</p></li>
 </ul>
 </section>
-<section id="documentation">
-<h2>📚 Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>Documentation<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>legal</strong>: Set EULA and privacy headers to v1.0 for production release</p></li>
 <li><p><strong>legal</strong>: Correct EULA and privacy effective dates to 2026-07-02</p></li>
@@ -639,8 +712,14 @@
 <li><p>Align LICENSE with CC BY carve-out and EULA reference</p></li>
 </ul>
 </section>
-<section id="ci-cd">
-<h2>🔧 CI/CD<a class="headerlink" href="#ci-cd" title="Link to this heading">#</a></h2>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>tests</strong>: Relax test_56 golden ULP tolerance for wheel_test</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>CI/CD<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>ci</strong>: Avoid duplicate pytest on release push</p></li>
 <li><p><strong>ci</strong>: Disable pre-push pytest by default</p></li>
@@ -652,6 +731,8 @@
 <li><p>Unify wheel E2E across release-test and production</p></li>
 <li><p>Copy swiss SOA fixture into isolated wheel pytest root</p></li>
 </ul>
+<!-- generated by git-cliff -->
+</section>
 </section>
 </section>
 
@@ -693,11 +774,29 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">✅ Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">✨ Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">🐛 Bug Fixes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">📚 Documentation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">🔧 CI/CD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unreleased">[Unreleased]</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.6] - 2026-07-05</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance">Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refactoring">Refactoring</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">CI/CD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">[0.1.0] - 2026-07-02</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">CI/CD</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
