@@ -928,26 +928,29 @@ combined.</p>
 </tbody>
 </table>
 </div>
-<p><strong>Default.</strong> Omitting the key is equivalent to <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> and matches pre-v1
-behaviour. Pass <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> explicitly when you need traceability in
-<code class="docutils literal notranslate"><span class="pre">summary()</span></code> / <code class="docutils literal notranslate"><span class="pre">modifications_applied</span></code>.</p>
+<p><strong>Default.</strong> Omitting the key is equivalent to <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> and matches behaviour
+before <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code> was introduced. Pass <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> explicitly when you
+need traceability in <code class="docutils literal notranslate"><span class="pre">summary()</span></code> / <code class="docutils literal notranslate"><span class="pre">modifications_applied</span></code>.</p>
 <p><strong>Mode <code class="docutils literal notranslate"><span class="pre">&quot;udd&quot;</span></code>.</strong> Host + <strong>one</strong> other table (two causes) uses the two-way UDD
 associated singles; host + <strong>two</strong> others (three causes, e.g. <em>Masa Activa</em> with
 <code class="docutils literal notranslate"><span class="pre">[dt,</span> <span class="pre">et]</span></code>) uses the three-way Bowers/Jordan formula. Host + <strong>three or more</strong>
-others raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> in v1.</p>
-<p><strong>v1 collapsed total.</strong> For two or three causes, <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;udd&quot;</span></code>
-produce the <strong>same</strong> stored vector <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> (algebraic identity). The
-difference is <strong>declarative</strong> — which assumption is recorded. Cause-specific
-associated rates <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are <strong>not</strong> returned in v1 (planned for a future release).</p>
+others raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p><strong>Collapsed total.</strong> <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> stores a single combined decrement vector
+<span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> per age — not separate per-cause rates <span class="math notranslate nohighlight">\(q'^{(j)}\)</span>. For two or
+three causes, <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;udd&quot;</span></code> produce the <strong>same</strong> stored vector
+(algebraic identity). The difference is <strong>declarative</strong> — which assumption is
+recorded in <code class="docutils literal notranslate"><span class="pre">modifications_applied</span></code>. Associated singles <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are computed
+internally under UDD but are <strong>not</strong> returned by the public API (planned for a
+future release).</p>
 <p><strong>Key order.</strong> <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code> may appear before or after <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> in
 the dict (same result). Other keys (<code class="docutils literal notranslate"><span class="pre">decrement_multiplier</span></code>, <code class="docutils literal notranslate"><span class="pre">age_shift</span></code>, …) still
 depend on insertion order — see <a class="reference internal" href="#combining-modifications-order"><span class="std std-ref">Combining modifications</span></a> below.</p>
-<p><strong>Order of <code class="docutils literal notranslate"><span class="pre">others</span></code>.</strong> For the collapsed total <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> in v1, permuting
+<p><strong>Order of <code class="docutils literal notranslate"><span class="pre">others</span></code>.</strong> For the collapsed total <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span>, permuting
 the list of other tables (e.g. <code class="docutils literal notranslate"><span class="pre">[dt,</span> <span class="pre">et]</span></code> vs <code class="docutils literal notranslate"><span class="pre">[et,</span> <span class="pre">dt]</span></code>) yields the <strong>same</strong> result
 up to float64 rounding noise — the product and UDD collapsed formulas are commutative
 in the other causes when the host is fixed. List order <strong>does not</strong> change stored
 <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span>; dict key order for other modifications still matters (see above).</p>
-<p><strong>UDD formulas (v1 collapsed total).</strong> For two causes with host <span class="math notranslate nohighlight">\(q^{(0)}\)</span> and one other
+<p><strong>UDD formulas (collapsed total).</strong> For two causes with host <span class="math notranslate nohighlight">\(q^{(0)}\)</span> and one other
 <span class="math notranslate nohighlight">\(q^{(1)}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[q'^{(1)} = q^{(0)}\left(1 - \frac{q^{(1)}}{2}\right), \quad
@@ -1152,7 +1155,7 @@ table that forces exit before the host’s natural <span class="math notranslate
 <td><p>Orphan key</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> with 4+ causes</p></td>
-<td><p>UDD limited to 2–3 causes in v1</p></td>
+<td><p>UDD limited to 2–3 causes (host plus 1–2 others)</p></td>
 </tr>
 <tr class="row-even"><td><p>Unknown <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;udd_2&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;UDD&quot;</span></code>, bool, etc.)</p></td>
 <td><p>Invalid literal</p></td>
@@ -1173,18 +1176,18 @@ treating ages above the <em>other</em> <span class="math notranslate nohighlight
 When validating by hand, compare full decrement arrays (<code class="docutils literal notranslate"><span class="pre">qx(None)</span></code> / <code class="docutils literal notranslate"><span class="pre">ix(None)</span></code> / <code class="docutils literal notranslate"><span class="pre">ox(None)</span></code>)
 at aligned indices — not beyond-<span class="math notranslate nohighlight">\(\omega\)</span> single-age API returns. Example: <code class="docutils literal notranslate"><span class="pre">DummySD2015</span></code> has <span class="math notranslate nohighlight">\(\omega = 65\)</span>; at age 75, <code class="docutils literal notranslate"><span class="pre">dt.ix(75)</span></code> is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>
 but combination uses <span class="math notranslate nohighlight">\(i_{75} = 0\)</span>, so <code class="docutils literal notranslate"><span class="pre">lt.qx(75)</span></code> equals life mortality only.</p>
-<p><strong>Partial MDDT support (v1).</strong> <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> with
+<p><strong>What the API returns.</strong> <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> with
 <code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> declares the UDD multiple-decrement assumption and stores
 the <strong>collapsed total</strong> decrement <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> for integer ages.
-Cause-specific associated rates <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned in the public API in v1.</p>
-<p><strong>Fractional-year survival.</strong> After combination (both <code class="docutils literal notranslate"><span class="pre">independent</span></code> and <code class="docutils literal notranslate"><span class="pre">udd</span></code> in v1),
+Cause-specific associated rates <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned by the public API.</p>
+<p><strong>Fractional-year survival.</strong> After combination (both <code class="docutils literal notranslate"><span class="pre">independent</span></code> and <code class="docutils literal notranslate"><span class="pre">udd</span></code>),
 fractional <code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">px(m&gt;1)</span></code>, and <code class="docutils literal notranslate"><span class="pre">tpx</span></code> use <code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span></code> on the collapsed
 total <span class="math notranslate nohighlight">\(q_x^{\mathrm{comb}}\)</span> stored in the host table. With default linear (UDD)
 interpolation this is <span class="math notranslate nohighlight">\({}_s p_x = 1 - s\,q_x^{\mathrm{comb}}\)</span> within each year,
 coherent with the annual recursion <span class="math notranslate nohighlight">\(l_{x+1} = l_x(1-q_x^{\mathrm{comb}})\)</span>.
 The <code class="docutils literal notranslate"><span class="pre">udd</span></code> mode records the UDD associated-single <strong>assumption</strong> used to build
 <span class="math notranslate nohighlight">\(q^{\mathrm{comb}}\)</span> at combine time; fractional survival matches <code class="docutils literal notranslate"><span class="pre">independent</span></code>
-while v1 stores only the collapsed vector.</p>
+while the library stores only the collapsed vector.</p>
 <p><strong>Masa Activa (aggregated, not Markov).</strong> Combining life + disability + exit treats
 mortality, disability incidence (<span class="math notranslate nohighlight">\(i_x\)</span>), and exit (<span class="math notranslate nohighlight">\(o_x\)</span>) as <strong>mutually exclusive
 decrements in the same policy year</strong> (competing risks on the active population).
@@ -1231,7 +1234,7 @@ mortality, disability onset, and voluntary exit. Pass them in one call:</p>
 <span class="c1"># Single call — q = 1 − (1−q_life)(1−q_disability)(1−q_exit)</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">modify_qx</span><span class="p">({</span><span class="s2">&quot;table_combination&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">dt</span><span class="p">,</span> <span class="n">et</span><span class="p">]})</span>
 
-<span class="c1"># Same total q in v1, UDD assumption recorded explicitly (Masa Activa)</span>
+<span class="c1"># Same total q, UDD assumption recorded explicitly (Masa Activa)</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">modify_qx</span><span class="p">({</span><span class="s2">&quot;table_combination&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">dt</span><span class="p">,</span> <span class="n">et</span><span class="p">],</span> <span class="s2">&quot;combination_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;udd&quot;</span><span class="p">})</span>
 </pre></div>
 </div>
@@ -1321,7 +1324,7 @@ order; order is significant:</p>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">others</span></code> list (<code class="docutils literal notranslate"><span class="pre">[dt,</span> <span class="pre">et]</span></code> vs <code class="docutils literal notranslate"><span class="pre">[et,</span> <span class="pre">dt]</span></code>)</p></td>
 <td><p>No</p></td>
-<td><p>Collapsed total <span class="math notranslate nohighlight">\(q\)</span> in v1 (float noise only)</p></td>
+<td><p>Collapsed total <span class="math notranslate nohighlight">\(q\)</span> (float noise only)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decrement_multiplier</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">table_combination</span></code></p></td>
 <td><p><strong>Yes</strong></p></td>

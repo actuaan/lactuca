@@ -1147,7 +1147,7 @@ durations, durations must match.</p>
 associated-single formula for two or three causes (host plus one
 or two others).  Requires <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> in the same dict.
 For two or three causes, <code class="docutils literal notranslate"><span class="pre">'independent'</span></code> and <code class="docutils literal notranslate"><span class="pre">'udd'</span></code> yield the
-same collapsed total <code class="docutils literal notranslate"><span class="pre">q</span></code> in v1.</p>
+same collapsed total <code class="docutils literal notranslate"><span class="pre">q</span></code>.</p>
 </dd>
 </dl>
 </li>
@@ -1184,8 +1184,8 @@ experiments.</p></li>
 <li><p>Default <code class="docutils literal notranslate"><span class="pre">combination_mode='independent'</span></code>: independent competing risks
 <span class="math notranslate nohighlight">\(q^{\mathrm{comb}}_x = 1 - (1-q^{\mathrm{host}}_x)\prod_j(1-q^{(j)}_x)\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">combination_mode='udd'</span></code>: UDD associated singles (two or three causes)
-collapsed to the same total <span class="math notranslate nohighlight">\(q^{\mathrm{comb}}_x\)</span> in v1; per-cause
-<span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned.</p></li>
+collapsed to the same total <span class="math notranslate nohighlight">\(q^{\mathrm{comb}}_x\)</span>; per-cause
+<span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned by the public API.</p></li>
 <li><p>Array index <code class="docutils literal notranslate"><span class="pre">i</span></code> is integer age <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">i</span></code> when no prior <code class="docutils literal notranslate"><span class="pre">age_shift</span></code> in
 the same dict; after <code class="docutils literal notranslate"><span class="pre">age_shift=n</span></code>, index <code class="docutils literal notranslate"><span class="pre">i</span></code> is calendar age <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">i</span></code>.
 Tables with <code class="docutils literal notranslate"><span class="pre">start_age</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> must have zero padding below <code class="docutils literal notranslate"><span class="pre">start_age</span></code>.</p></li>

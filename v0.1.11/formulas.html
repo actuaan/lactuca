@@ -1283,11 +1283,12 @@ payment density. The complete <span class="math notranslate nohighlight">\(m\)</
 <strong>independent competing risks</strong>; optional <code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> applies
 UDD associated singles (two or three causes) before collapsing.  For two or
 three causes the collapsed total equals the independent product exactly.
-Per-cause <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are not returned in v1.  See
-<a class="reference internal" href="user_guide/modifying_decrements.html"><span class="doc">Modifying Decrements</span></a> and <a class="reference internal" href="#table-combination-formulas"><span class="std std-ref">Table combination (v1 collapsed total)</span></a> below.</p>
+Per-cause associated singles <span class="math notranslate nohighlight">\(q'^{(j)}\)</span> are computed internally under UDD but are
+not exposed by the public API.  See
+<a class="reference internal" href="user_guide/modifying_decrements.html"><span class="doc">Modifying Decrements</span></a> and <a class="reference internal" href="#table-combination-formulas"><span class="std std-ref">Table combination (collapsed total)</span></a> below.</p>
 </div>
-<section id="table-combination-v1-collapsed-total">
-<span id="table-combination-formulas"></span><h3>Table combination (v1 collapsed total)<a class="headerlink" href="#table-combination-v1-collapsed-total" title="Link to this heading">#</a></h3>
+<section id="table-combination-collapsed-total">
+<span id="table-combination-formulas"></span><h3>Table combination (collapsed total)<a class="headerlink" href="#table-combination-collapsed-total" title="Link to this heading">#</a></h3>
 <p><strong>Independent</strong> (default):</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1707,7 +1708,7 @@ for the complete list and provenance of each table.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rates-escalating-benefits">Growth rates (escalating benefits)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-decrements">Multiple decrements</a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-combination-v1-collapsed-total">Table combination (v1 collapsed total)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-combination-collapsed-total">Table combination (collapsed total)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-and-last-survivor">Joint life and last survivor</a><ul class="pst-show_toc_level nav section-nav flex-column">

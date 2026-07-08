@@ -3053,7 +3053,7 @@ clock legitimately jumped back more than 60 seconds, re-syncing via NTP will res
 </pre></div>
 </div>
 <p><strong>Cause</strong>: <code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> with host plus three or more other tables (four+
-causes). v1 supports UDD for two or three causes only.</p>
+causes). UDD is limited to two or three causes (host plus one or two others).</p>
 <p><strong>Fix</strong>: Use <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> for four or more causes, or reduce the number of tables
 in <code class="docutils literal notranslate"><span class="pre">table_combination</span></code>.</p>
 </section>
