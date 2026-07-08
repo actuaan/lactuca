@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Config" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/api/config.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="Config is the global configuration singleton that controls all precision, calculation, and table-loading settings for a Lactuca session. Changes take effect immediately for all subsequent calculati..." />
+<meta name="description" content="Config is the global configuration singleton that controls all precision, calculation, and table-loading settings for a Lactuca session. Changes take effect immediately for all subsequent calculati..." />
 
-    <title>Config &#8212; Lactuca 0.1.6</title>
+    <title>Config &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/api/config.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Utilities" href="utils.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -561,6 +568,7 @@
 <li class="toctree-l1"><a class="reference internal" href="life_table.html">LifeTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="disability_table.html">DisabilityTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exit_table.html">ExitTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_registry.html">Table registry utilities</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base types</span></p>
 <ul class="nav bd-sidenav">
@@ -1743,6 +1751,18 @@ time of the first <code class="docutils literal notranslate"><span class="pre">C
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="lactuca.Config.warn_on_chained_table_rebuild">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">warn_on_chained_table_rebuild</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#lactuca.Config.warn_on_chained_table_rebuild" title="Link to this definition">#</a></dt>
+<dd><p>Opt-in warning for chained setter rebuilds.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, a <code class="xref py py-class docutils literal notranslate"><span class="pre">UserWarning</span></code> is emitted if two or more
+property setters (<code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">cohort</span></code>, <code class="docutils literal notranslate"><span class="pre">duration</span></code>, <code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code>)
+trigger independent rebuilds between calculations on the same table.
+The recommended alternative is <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.configure" title="lactuca.tables.DecrementTable.configure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configure()</span></code></a>
+or <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.batch_update" title="lactuca.tables.DecrementTable.batch_update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">batch_update()</span></code></a>.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code> (opt-in only).</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="lactuca.Config.weeks_per_year">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weeks_per_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#lactuca.Config.weeks_per_year" title="Link to this definition">#</a></dt>
 <dd><p>Calendar basis used to convert weeks to actuarial year fractions.</p>
@@ -1847,6 +1867,7 @@ time of the first <code class="docutils literal notranslate"><span class="pre">C
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.mortality_placement"><code class="docutils literal notranslate"><span class="pre">Config.mortality_placement</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.path"><code class="docutils literal notranslate"><span class="pre">Config.path</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.tables_path"><code class="docutils literal notranslate"><span class="pre">Config.tables_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.warn_on_chained_table_rebuild"><code class="docutils literal notranslate"><span class="pre">Config.warn_on_chained_table_rebuild</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.Config.weeks_per_year"><code class="docutils literal notranslate"><span class="pre">Config.weeks_per_year</span></code></a></li>
 </ul>
 </li>

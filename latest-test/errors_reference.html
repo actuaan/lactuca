@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Error Reference" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/errors_reference.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="This page is the definitive reference for ValueError and TypeError exceptions raised by Lactuca’s public API. For each condition you will find the exact message pattern, the cause, a concrete fix, ..." />
+<meta name="description" content="This page is the definitive reference for ValueError and TypeError exceptions raised by Lactuca’s public API. For each condition you will find the exact message pattern, the cause, a concrete fix, ..." />
 
-    <title>Error Reference &#8212; Lactuca 0.1.6</title>
+    <title>Error Reference &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/errors_reference.html" />
     <link rel="icon" href="_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Cookbook" href="cookbook.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -700,237 +707,242 @@ the full explanation, cause, and fix.</p>
 <td><p><a class="reference internal" href="#duration-below-start-duration">Duration below start_duration</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">duration=</span></code> integer <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">LifeTable.start_duration</span></code> on a select-ultimate table</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-odd"><td><p></p></td>
+<td><p><strong>Table data</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
+<td><p><a class="reference internal" href="#table-not-configured">Table not configured</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#table-modification-combination-mode">Orphan <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">combination_mode</span></code> without <code class="docutils literal notranslate"><span class="pre">table_combination</span></code> in the same dict</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#table-modification-combination-mode">Invalid <code class="docutils literal notranslate"><span class="pre">combination_mode</span></code></a></p></td>
 <td><p>Value not exactly <code class="docutils literal notranslate"><span class="pre">&quot;independent&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;udd&quot;</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#table-modification-combination-mode">UDD with too many causes</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">combination_mode=&quot;udd&quot;</span></code> with host + 3+ other tables</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#host-or-duplicate-instance-in-others">Host or duplicate in <code class="docutils literal notranslate"><span class="pre">others</span></code></a></p></td>
 <td><p>Same instance as host or twice in <code class="docutils literal notranslate"><span class="pre">others</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#combined-decrement-exceeds-10">Combined decrement exceeds 1.0</a></p></td>
 <td><p>Invalid rates before product formula</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Table modification</strong></p></td>
+<tr class="row-odd"><td><p><strong>Table modification</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#decrement-rate-outside-01-before-combine">Decrement rate outside [0, 1] before combine</a></p></td>
 <td><p>Host or other table decrement rates out of range before merge</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Configuration</strong></p></td>
+<tr class="row-even"><td><p><strong>Configuration</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#invalid-setting-value">Invalid setting value</a></p></td>
 <td><p>Disallowed value for a config setting</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Configuration</strong></p></td>
+<tr class="row-odd"><td><p><strong>Configuration</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#decimal-places">Decimal places</a></p></td>
 <td><p>Negative or non-integer value for <code class="docutils literal notranslate"><span class="pre">config.decimals.*</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Configuration</strong></p></td>
+<tr class="row-even"><td><p><strong>Configuration</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#invalid-setting-value">Invalid <code class="docutils literal notranslate"><span class="pre">date_format</span></code></a></p></td>
 <td><p>Disallowed value for <code class="docutils literal notranslate"><span class="pre">config.date_format</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Configuration</strong></p></td>
+<tr class="row-odd"><td><p><strong>Configuration</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#configuration-file-extension">Configuration file extension</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Config.save</span></code> / <code class="docutils literal notranslate"><span class="pre">Config.save_as</span></code> target path has a non-<code class="docutils literal notranslate"><span class="pre">.toml</span></code> extension</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Input arrays</strong></p></td>
+<tr class="row-even"><td><p><strong>Input arrays</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#mismatched-cashflow-arrays">Cashflow arrays</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">cashflow_times</span></code> and <code class="docutils literal notranslate"><span class="pre">cashflow_amounts</span></code> differ in length</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Input arrays</strong></p></td>
+<tr class="row-odd"><td><p><strong>Input arrays</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#broadcasting-errors">Broadcasting</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">x0</span></code> arrays passed to <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> have incompatible shapes</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#wrong-type-interest-rate">Wrong type for <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code> or other non-<code class="docutils literal notranslate"><span class="pre">float</span></code> passed to the <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> property setter or constructor</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#invalid-payment-frequency">Invalid payment frequency</a></p></td>
 <td><p>Invalid <code class="docutils literal notranslate"><span class="pre">m</span></code> passed to <code class="docutils literal notranslate"><span class="pre">payment_times</span></code> or <code class="docutils literal notranslate"><span class="pre">GrowthRate.amounts</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#invalid-selected-periods">Invalid selected periods</a></p></td>
 <td><p>Period value outside <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">m]</span></code> in <code class="docutils literal notranslate"><span class="pre">payment_times</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#invalid-selected-periods">Invalid selected periods</a></p></td>
 <td><p>Non-integer value in <code class="docutils literal notranslate"><span class="pre">selected_periods</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#tier-structure-errors">Tier structure</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">len(values)</span> <span class="pre">≠</span> <span class="pre">len(breakpoints)</span> <span class="pre">+</span> <span class="pre">1</span></code>, or breakpoints not strictly ascending</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code> or <code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#non-finite-cashflow-inputs">Non-finite cashflow inputs</a></p></td>
 <td><p>NaN or Inf in <code class="docutils literal notranslate"><span class="pre">times</span></code>, <code class="docutils literal notranslate"><span class="pre">breakpoints</span></code>, <code class="docutils literal notranslate"><span class="pre">values</span></code>, or <code class="docutils literal notranslate"><span class="pre">start</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Cashflow utilities</strong></p></td>
+<tr class="row-even"><td><p><strong>Cashflow utilities</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#times-is-none">times is None</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code> passed as <code class="docutils literal notranslate"><span class="pre">times</span></code> to <code class="docutils literal notranslate"><span class="pre">GrowthRate.amounts</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-constructor-errors">GrowthRate constructor errors</a></p></td>
 <td><p>Invalid <code class="docutils literal notranslate"><span class="pre">growth_type</span></code>, <code class="docutils literal notranslate"><span class="pre">rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rates</span></code>/<code class="docutils literal notranslate"><span class="pre">terms</span></code>, or scenario dict</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-constructor-errors">GrowthRate constructor errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">apply_from_first</span></code> not <code class="docutils literal notranslate"><span class="pre">bool</span></code>; <code class="docutils literal notranslate"><span class="pre">rate</span></code> is <code class="docutils literal notranslate"><span class="pre">bool</span></code> or non-numeric</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-property-setters">GrowthRate property setters</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">rates</span></code> or <code class="docutils literal notranslate"><span class="pre">terms</span></code> setter: multi-scenario, constant, wrong shape or length</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-add-scenario-errors">GrowthRate.add_scenario errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">scenario</span></code> not a <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code>; nested multi-scenario</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-add-scenario-errors">GrowthRate.add_scenario errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">scenario</span></code> is not a <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code> instance</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>GrowthRate</strong></p></td>
+<tr class="row-even"><td><p><strong>GrowthRate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#growthrate-factor-errors">GrowthRate.factor errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">t</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>, not <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>)</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LactucaLicenseError</span></code></p></td>
 <td><p><a class="reference internal" href="#license-errors">License errors — overview</a></p></td>
 <td><p>Any licensing failure (catch-all base class)</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseExpiredError</span></code></p></td>
 <td><p><a class="reference internal" href="#license-expired">License expired</a></p></td>
 <td><p>Stored or online validation confirms the license period has ended</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseRevokedError</span></code></p></td>
 <td><p><a class="reference internal" href="#license-revoked">License revoked or suspended</a></p></td>
 <td><p>License server reports revoked or suspended status</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseInvalidError</span></code></p></td>
 <td><p><a class="reference internal" href="#license-invalid">Invalid license or device binding</a></p></td>
 <td><p>Unrecognized key, unexpected server response, network failure during activation, or malformed license data</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseInvalidError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-1013-device-pool-full">Device pool full (LAC-1013)</a></p></td>
 <td><p>Maximum activated devices for the plan already registered on the license server</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseInvalidError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-2002-cross-device">Cross-device fingerprint mismatch (LAC-2002)</a></p></td>
 <td><p>Local license file was created on another machine, or JSON copied between hosts</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ActivationRequiredError</span></code></p></td>
 <td><p><a class="reference internal" href="#activation-required">Activation required</a></p></td>
 <td><p>No local license file in non-interactive environment, missing <code class="docutils literal notranslate"><span class="pre">LACTUCA_LICENSE_KEY</span></code> in CI, or cancelled/incomplete activation</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code></p></td>
 <td><p><a class="reference internal" href="#license-seat-exhausted">Concurrent session limit (LAC-4001)</a></p></td>
 <td><p>Maximum simultaneous Python processes for the plan already in use</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-4003-offline-grace">Offline seat grace expired (LAC-4003)</a></p></td>
 <td><p>Seat availability could not be verified within the offline grace period</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-3001-missing-signature">Missing signature fields (LAC-3001)</a></p></td>
 <td><p>Local license file missing required signature fields — auto-recoverable using stored key</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-3002-invalid-signature">Invalid signature (LAC-3002)</a></p></td>
 <td><p>Cryptographic signature verification failed — auto-recoverable using stored key</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-3003-mac-missing">Integrity field missing (LAC-3003)</a></p></td>
 <td><p>Local license file missing device-bound integrity field — auto-recoverable using stored key</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>License</strong></p></td>
+<tr class="row-odd"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-3004-mac-mismatch">Integrity check failed (LAC-3004)</a></p></td>
 <td><p>Protected fields modified after writing, or file copied from another device — auto-recoverable using stored key</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>License</strong></p></td>
+<tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">LicenseTamperedError</span></code></p></td>
 <td><p><a class="reference internal" href="#lac-3005-clock-rollback">Clock rollback (LAC-3005)</a></p></td>
 <td><p>System clock moved back past the last validated date</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-advanced-constructor">InterestRate advanced constructor</a></p></td>
 <td><p>Invalid <code class="docutils literal notranslate"><span class="pre">term_unit</span></code> passed to <code class="docutils literal notranslate"><span class="pre">InterestRate()</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-add-scenario-errors">InterestRate.add_scenario errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">scenario</span></code> not an <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code> instance</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-add-scenario-errors">InterestRate.add_scenario errors</a></p></td>
 <td><p>Nested multi-scenario <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-vx-validation">InterestRate.vx validation errors</a></p></td>
 <td><p>Negative <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">x0</span></code>, or <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">x0</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-im-dm-errors">InterestRate.i_m / d_m errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">m</span></code> not a plain <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">t</span></code> not numeric</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-im-dm-errors">InterestRate.i_m / d_m errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">≤</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">&lt;</span> <span class="pre">0</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-get-average-force-errors">InterestRate.get_average_force errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">n</span></code> not numeric</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Interest rate</strong></p></td>
+<tr class="row-even"><td><p><strong>Interest rate</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 <td><p><a class="reference internal" href="#interestrate-get-average-force-errors">InterestRate.get_average_force errors</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">≤</span> <span class="pre">0</span></code> or discount factor ≤ 0</p></td>
@@ -1604,6 +1616,45 @@ generational (requires <code class="docutils literal notranslate"><span class="p
 (or <code class="docutils literal notranslate"><span class="pre">'ult'</span></code>).  Tables with CMI/UK convention use <code class="docutils literal notranslate"><span class="pre">start_duration=0</span></code>; most others use <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 <p><strong>Fix</strong>: Pass <code class="docutils literal notranslate"><span class="pre">duration=start_duration</span></code> or higher, or <code class="docutils literal notranslate"><span class="pre">duration='ult'</span></code> for ultimate rates.
 See <a class="reference internal" href="user_guide/tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a> and <a class="reference internal" href="user_guide/notation_glossary.html"><span class="doc">Notation and Glossary</span></a>.</p>
+</section>
+<section id="table-not-configured-pending">
+<span id="table-not-configured"></span><h3>Table not configured (pending)<a class="headerlink" href="#table-not-configured-pending" title="Link to this heading">#</a></h3>
+<p><strong>Exception</strong>: <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p><strong>Message pattern</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Table</span> <span class="s1">&#39;</span><span class="si">{table_name}</span><span class="s1">&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">ready</span><span class="p">:</span> <span class="n">assign</span> <span class="s1">&#39;</span><span class="si">{missing}</span><span class="s1">&#39;</span> <span class="n">before</span> <span class="n">calculations</span>
+<span class="p">({</span><span class="n">fix_hint</span><span class="p">})</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Cause</strong>: A calculation method (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">qx</span></code>, <code class="docutils literal notranslate"><span class="pre">px</span></code>, <code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">Ax</span></code>, <code class="docutils literal notranslate"><span class="pre">view_data</span></code>,
+<code class="docutils literal notranslate"><span class="pre">modify_qx</span></code>, etc.) was called on a table created with <code class="docutils literal notranslate"><span class="pre">pending=True</span></code> before
+<code class="docutils literal notranslate"><span class="pre">configure()</span></code> — or individual setters — supplied all the required parameters.
+The message identifies the missing parameter: <code class="docutils literal notranslate"><span class="pre">cohort</span></code> for generational tables,
+<code class="docutils literal notranslate"><span class="pre">duration</span></code> for select-ultimate tables, or both.</p>
+<p>Passing a still-pending table to a batch function (e.g. <code class="docutils literal notranslate"><span class="pre">tables=</span></code> in <code class="docutils literal notranslate"><span class="pre">ajoint</span></code>,
+<code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, …) also raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> — the batch dispatcher rejects
+pending tables early and specifically.</p>
+<p><strong>Fix</strong>: Call <code class="docutils literal notranslate"><span class="pre">configure()</span></code> (or assign the missing property) before any calculation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># Generational table — correct usage</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>           <span class="c1"># assigns cohort and builds decrement</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>            <span class="c1"># now works</span>
+
+<span class="c1"># Incorrect — raises ValueError: table not configured</span>
+<span class="n">lt2</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lt2</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>                 <span class="c1"># ValueError before any calculation</span>
+
+<span class="c1"># Alternative: assign via setter (auto-rebuilds when metadata becomes complete)</span>
+<span class="n">lt3</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lt3</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="mi">1969</span>                   <span class="c1"># setter detects metadata complete and rebuilds</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">lt3</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>          <span class="c1"># works</span>
+</pre></div>
+</div>
+<p>Inspect <code class="docutils literal notranslate"><span class="pre">lt.metadata_pending</span></code> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) or call <code class="docutils literal notranslate"><span class="pre">lt.summary()</span></code> to see which parameters
+are still missing before computing.  Period (static) tables do not support <code class="docutils literal notranslate"><span class="pre">pending=True</span></code>
+and raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> at construction instead.</p>
+<p>See <a class="reference internal" href="user_guide/using_tables.html#deferred-construction"><span class="std std-ref">Deferred construction: pending, configure, and TableRegistry</span></a> in <a class="reference internal" href="user_guide/using_tables.html"><span class="doc">Using Actuarial Tables</span></a> for full usage.</p>
 </section>
 <section id="vectorial-table-constructor-errors">
 <span id="vectorial-constructor-errors"></span><h3>Vectorial table constructor errors<a class="headerlink" href="#vectorial-table-constructor-errors" title="Link to this heading">#</a></h3>
@@ -2697,13 +2748,20 @@ duplicate message.</p>
 <span id="license-seat-exhausted"></span><h3>Concurrent session limit — <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code> (LAC-4001)<a class="headerlink" href="#concurrent-session-limit-licenseseatexhaustederror-lac-4001" title="Link to this heading">#</a></h3>
 <p><strong>Exception</strong>: <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code></p>
 <p><strong>Message pattern</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">LAC</span><span class="o">-</span><span class="mi">4001</span><span class="p">]</span> <span class="n">All</span> <span class="n">concurrent</span> <span class="n">sessions</span> <span class="k">for</span> <span class="n">this</span> <span class="n">license</span> <span class="n">are</span> <span class="ow">in</span> <span class="n">use</span><span class="o">.</span>
-<span class="n">Action</span><span class="p">:</span> <span class="n">Close</span> <span class="n">the</span> <span class="n">other</span> <span class="n">Lactuca</span> <span class="n">session</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">shut</span> <span class="n">down</span> <span class="n">the</span> <span class="n">Jupyter</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">run</span>
-  <span class="s1">&#39;python -m lactuca license release-stale&#39;</span><span class="p">,</span> <span class="ow">or</span> <span class="n">wait</span> <span class="k">for</span> <span class="n">the</span> <span class="n">seat</span> <span class="n">to</span> <span class="n">expire</span> <span class="p">(</span><span class="o">~</span><span class="mi">10</span> <span class="nb">min</span><span class="p">)</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">LAC</span><span class="o">-</span><span class="mi">4001</span><span class="p">]</span> <span class="n">All</span> <span class="n">concurrent</span> <span class="n">sessions</span> <span class="k">for</span> <span class="n">this</span> <span class="n">license</span> <span class="n">are</span> <span class="ow">in</span> <span class="n">use</span> <span class="p">(</span><span class="n">a</span> <span class="n">live</span> <span class="n">session</span> <span class="ow">is</span>
+<span class="n">holding</span> <span class="n">the</span> <span class="n">seat</span><span class="p">,</span> <span class="ow">or</span> <span class="n">automatic</span> <span class="n">cleanup</span> <span class="n">of</span> <span class="n">stale</span> <span class="n">seats</span> <span class="n">on</span> <span class="n">this</span> <span class="n">machine</span> <span class="n">did</span> <span class="ow">not</span> <span class="n">free</span> <span class="n">one</span><span class="p">)</span><span class="o">.</span>
+<span class="n">Action</span><span class="p">:</span> <span class="n">Close</span> <span class="n">the</span> <span class="n">other</span> <span class="n">Lactuca</span> <span class="n">session</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">shut</span> <span class="n">down</span> <span class="n">the</span> <span class="n">Jupyter</span> <span class="n">kernel</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">nothing</span>
+<span class="k">else</span> <span class="ow">is</span> <span class="n">running</span><span class="p">,</span> <span class="n">retry</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">few</span> <span class="n">seconds</span><span class="p">,</span> <span class="n">run</span>
+  <span class="s1">&#39;python -m lactuca license release --force&#39;</span><span class="p">,</span> <span class="ow">or</span> <span class="n">wait</span> <span class="k">for</span> <span class="n">the</span> <span class="n">seat</span> <span class="n">to</span> <span class="n">expire</span> <span class="p">(</span><span class="o">~</span><span class="mi">10</span> <span class="nb">min</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
 <p><strong>Cause</strong>: The maximum number of simultaneous active Python processes allowed by the
 license plan is already in use.  The license server refused to grant a new process lease.</p>
+<p>Before raising this error, Lactuca <strong>automatically reclaims stale seats</strong> on this machine
+(leases left behind by a process that exited without releasing its seat — a killed Jupyter
+kernel, an IDE stop, or a crash) and retries once. Seeing LAC-4001 therefore means either a
+genuinely live session still holds a seat, or the reclaimed seat had not yet propagated on
+the license server (retry in a few seconds).</p>
 <p>Concurrent session limits per tier:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -2737,7 +2795,12 @@ license plan is already in use.  The license server refused to grant a new proce
 <ol class="arabic">
 <li><p><strong>Close the other session on this device.</strong> Shut down the Jupyter kernel, notebook,
 or script that imported Lactuca.</p></li>
-<li><p><strong>Release orphan seats</strong> (requires internet access):</p>
+<li><p><strong>Retry in a few seconds.</strong> Lactuca already tried to reclaim stale seats automatically.
+If the seat you just freed had not yet propagated on the license server, a second
+<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code> (or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">lactuca</span></code>) usually succeeds.</p></li>
+<li><p><strong>Release orphan seats manually</strong> (requires internet access) — normally unnecessary,
+since reclamation is automatic, but useful if the automatic step could not reach the
+server:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>release-stale
 </pre></div>
 </div>
@@ -3132,6 +3195,7 @@ or a fresh instance), then combine again.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terminal-age-condition-q-omega-neq-1">Terminal age condition — <span class="math notranslate nohighlight">\(q_\omega \neq 1\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generational-table-errors">Generational table errors</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duration-below-start-duration">Duration below <code class="docutils literal notranslate"><span class="pre">start_duration</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-not-configured-pending">Table not configured (pending)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorial-table-constructor-errors">Vectorial table constructor errors</a></li>
 </ul>
 </li>

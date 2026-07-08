@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Batch Calculations" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/user_guide/batch_calculations.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="Lactuca supports batch mode: passing a list or array of ages — and optionally per-policy values for n, ir, m, d, ts, gr, or benefits — to any calculation method instead of a single scalar. The same..." />
+<meta name="description" content="Lactuca supports batch mode: passing a list or array of ages — and optionally per-policy values for n, ir, m, d, ts, gr, or benefits — to any calculation method instead of a single scalar. The same..." />
 
-    <title>Batch Calculations &#8212; Lactuca 0.1.6</title>
+    <title>Batch Calculations &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/user_guide/batch_calculations.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Functional API" href="functional_api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -909,6 +916,32 @@ same rule applies to <code class="docutils literal notranslate"><span class="pre
 regardless of portfolio size.</p>
 </div>
 <hr class="docutils" />
+</section>
+<section id="pending-tables-in-batch-mode">
+<span id="pending-tables-in-batch"></span><h2>Pending tables in batch mode<a class="headerlink" href="#pending-tables-in-batch-mode" title="Link to this heading">#</a></h2>
+<p>A table created with <code class="docutils literal notranslate"><span class="pre">pending=True</span></code> that has <strong>not</strong> been finalized via <code class="docutils literal notranslate"><span class="pre">configure()</span></code>
+is rejected immediately by all batch entry points that accept a <code class="docutils literal notranslate"><span class="pre">tables=</span></code> argument
+(<code class="docutils literal notranslate"><span class="pre">ajoint</span></code>, <code class="docutils literal notranslate"><span class="pre">axy</span></code>, <code class="docutils literal notranslate"><span class="pre">Axy</span></code>, <code class="docutils literal notranslate"><span class="pre">axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">Axyz</span></code>, <code class="docutils literal notranslate"><span class="pre">Afirst</span></code>, <code class="docutils literal notranslate"><span class="pre">nExy</span></code>, <code class="docutils literal notranslate"><span class="pre">nExyz</span></code>, <code class="docutils literal notranslate"><span class="pre">nEjoint</span></code>, and the
+single-life functional variants with a list of per-policy tables).</p>
+<p><strong>Cause</strong>: a pending instance contains no decrement vector, so any calculation would
+produce undefined results.  The batch dispatcher rejects any table whose
+<code class="docutils literal notranslate"><span class="pre">metadata_pending</span></code> flag is still <code class="docutils literal notranslate"><span class="pre">True</span></code> before touching any data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="n">lt_pending</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># This raises ValueError — table not configured</span>
+<span class="n">ax</span><span class="p">([</span><span class="n">lt_pending</span><span class="p">],</span> <span class="p">[</span><span class="mi">65</span><span class="p">],</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>   <span class="c1"># ValueError: pending table</span>
+
+<span class="c1"># Configure first, then pass to batch</span>
+<span class="n">lt_pending</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ax</span><span class="p">([</span><span class="n">lt_pending</span><span class="p">],</span> <span class="p">[</span><span class="mi">65</span><span class="p">],</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>   <span class="c1"># OK</span>
+</pre></div>
+</div>
+<p>For portfolios where <strong>different policies require different cohorts or durations</strong>,
+use <a class="reference internal" href="../api/table_registry.html#lactuca.TableRegistry" title="lactuca.TableRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableRegistry</span></code></a> to build a stable per-policy table list without
+aliasing risk — see <a class="reference internal" href="using_tables.html#tableregistry"><span class="std std-ref">TableRegistry — stable instance cache for heterogeneous batch</span></a> and <a class="reference internal" href="using_tables.html#deferred-choice"><span class="std std-ref">When to use which tool</span></a> in
+<a class="reference internal" href="using_tables.html"><span class="doc">Using Actuarial Tables</span></a>, and <a class="reference internal" href="../api/table_registry.html"><span class="doc">Table registry utilities</span></a>.</p>
 </section>
 <section id="error-handling-in-batch-mode">
 <span id="id1"></span><h2>Error handling in batch mode<a class="headerlink" href="#error-handling-in-batch-mode" title="Link to this heading">#</a></h2>
@@ -1492,7 +1525,7 @@ requires one <code class="docutils literal notranslate"><span class="pre">LifeTa
 <a class="reference internal" href="#cohort-and-duration-instance-level-properties">Cohort and duration</a> for the recommended patterns.</p>
 </div>
 <section id="building-a-lookup-dict-with-return-dict-true">
-<h3>Building a lookup dict with <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code><a class="headerlink" href="#building-a-lookup-dict-with-return-dict-true" title="Link to this heading">#</a></h3>
+<span id="return-dict-lookup"></span><h3>Building a lookup dict with <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code><a class="headerlink" href="#building-a-lookup-dict-with-return-dict-true" title="Link to this heading">#</a></h3>
 <p>For <strong>study grids</strong> and <strong>parameterised valuation runs</strong>, pass <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> to the
 constructor to obtain a mapping from <a class="reference internal" href="../api/base.html#lactuca.TableKey" title="lactuca.TableKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">lactuca.TableKey</span></code></a> to <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> in a single call.
 Combine with <code class="docutils literal notranslate"><span class="pre">cartesian=True</span></code> to build the full cross-product at once:</p>
@@ -2219,6 +2252,8 @@ The two dimensions that <strong>cannot</strong> be passed per-policy are:</p>
 </tbody>
 </table>
 </div>
+<p>For a consolidated decision guide (<code class="docutils literal notranslate"><span class="pre">pending</span></code>, <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code>, <code class="docutils literal notranslate"><span class="pre">return_dict</span></code>, group loops),
+see <a class="reference internal" href="using_tables.html#deferred-choice"><span class="std std-ref">When to use which tool</span></a> in <a class="reference internal" href="using_tables.html"><span class="doc">Using Actuarial Tables</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Passing lists to the <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> constructor (e.g.
@@ -2233,7 +2268,7 @@ distinct cohort value and assemble a per-policy reference list — the lookup-di
 pattern shown below.</p>
 </div>
 <section id="few-distinct-cohorts-direct-construction">
-<h3>Few distinct cohorts (direct construction)<a class="headerlink" href="#few-distinct-cohorts-direct-construction" title="Link to this heading">#</a></h3>
+<span id="cohort-few-distinct"></span><h3>Few distinct cohorts (direct construction)<a class="headerlink" href="#few-distinct-cohorts-direct-construction" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="c1"># Zip mode (cartesian=False, default): single sex &quot;m&quot;, two cohorts → 2 instances</span>
@@ -2250,7 +2285,7 @@ pattern shown below.</p>
 </div>
 </section>
 <section id="large-portfolios-with-many-cohorts-lookup-dict-no-policy-limit">
-<h3>Large portfolios with many cohorts (lookup dict, no policy limit)<a class="headerlink" href="#large-portfolios-with-many-cohorts-lookup-dict-no-policy-limit" title="Link to this heading">#</a></h3>
+<span id="cohort-lookup-dict"></span><h3>Large portfolios with many cohorts (lookup dict, no policy limit)<a class="headerlink" href="#large-portfolios-with-many-cohorts-lookup-dict-no-policy-limit" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">TableKey</span><span class="p">,</span> <span class="n">ax</span>
 
 <span class="c1"># 300 000 contracts — cohorts spanning 1930–2000 (71 distinct values)</span>
@@ -2298,7 +2333,7 @@ directly — the result is the same <code class="docutils literal notranslate"><
 <p>Contracts sharing the same sex and cohort are calculated together — no per-member Python loop is needed.</p>
 </section>
 <section id="memory-optimal-one-table-group-then-update">
-<h3>Memory-optimal: one table, group-then-update<a class="headerlink" href="#memory-optimal-one-table-group-then-update" title="Link to this heading">#</a></h3>
+<span id="cohort-memory-optimal"></span><h3>Memory-optimal: one table, group-then-update<a class="headerlink" href="#memory-optimal-one-table-group-then-update" title="Link to this heading">#</a></h3>
 <p>When a portfolio spans many <code class="docutils literal notranslate"><span class="pre">(sex,</span> <span class="pre">cohort,</span> <span class="pre">duration)</span></code> combinations and memory is
 constrained, a single <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> instance can be reused across all groups.
 Assign the group’s parameters via setters, then call the batch function for that group.
@@ -2940,6 +2975,7 @@ per-policy floats; an object-dtype Series of <code class="docutils literal notra
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-batch-mode">When to use batch mode</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-compatibility-reference">Parameter compatibility reference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-type-rules">Return-type rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pending-tables-in-batch-mode">Pending tables in batch mode</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-in-batch-mode">Error handling in batch mode</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tracking-records-with-record-ids">Tracking records with <code class="docutils literal notranslate"><span class="pre">record_ids</span></code></a></li>

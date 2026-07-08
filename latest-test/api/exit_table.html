@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="ExitTable" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/api/exit_table.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="ExitTable extends DecrementTable for exit / turnover tables. The governing decrement is the exit rate o_x, which represents the probability that a contract or member aged x exits within one year (e..." />
+<meta name="description" content="ExitTable extends DecrementTable for exit / turnover tables. The governing decrement is the exit rate o_x, which represents the probability that a contract or member aged x exits within one year (e..." />
 
-    <title>ExitTable &#8212; Lactuca 0.1.6</title>
+    <title>ExitTable &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,19 +59,20 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/api/exit_table.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Base types" href="base.html" />
+    <link rel="next" title="Table registry utilities" href="table_registry.html" />
     <link rel="prev" title="DisabilityTable" href="disability_table.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -561,6 +568,7 @@
 <li class="toctree-l1"><a class="reference internal" href="life_table.html">LifeTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="disability_table.html">DisabilityTable</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">ExitTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_registry.html">Table registry utilities</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base types</span></p>
 <ul class="nav bd-sidenav">
@@ -667,7 +675,7 @@ generational improvement factors for cohort-based exit rates.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="lactuca.ExitTable">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">ExitTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unisex_blend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cartesian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.ExitTable" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">ExitTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unisex_blend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cartesian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.ExitTable" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.decrement.DecrementTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecrementTable</span></code></a></p>
 <p>Concrete implementation of DecrementTable for exit/turnover tables.</p>
 <p>ExitTable represents actuarial tables for exit/turnover probabilities
@@ -1377,9 +1385,28 @@ of each member.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.is_select" title="lactuca.tables.DecrementTable.is_select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_select</span></code></a></p></td>
 <td><p>Return True if the underlying table is a select-ultimate table.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.metadata_pending" title="lactuca.tables.DecrementTable.metadata_pending"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata_pending</span></code></a></p></td>
+<td><p>True when required metadata has not yet been supplied via configure() or setters.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="deferred-construction">
+<h3>Deferred construction<a class="headerlink" href="#deferred-construction" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.configure" title="lactuca.tables.DecrementTable.configure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configure</span></code></a></p></td>
+<td><p>Configure table metadata atomically with a single rebuild.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.batch_update" title="lactuca.tables.DecrementTable.batch_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_update</span></code></a></p></td>
+<td><p>Context manager to batch multiple setter assignments into one rebuild.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See also <a class="reference internal" href="table_registry.html#lactuca.TableRegistry" title="lactuca.TableRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableRegistry</span></code></a> and <a class="reference internal" href="table_registry.html#lactuca.configure_all" title="lactuca.configure_all"><code class="xref py py-func docutils literal notranslate"><span class="pre">configure_all()</span></code></a> in
+<a class="reference internal" href="table_registry.html"><span class="doc">Table registry utilities</span></a> and <a class="reference internal" href="../user_guide/using_tables.html#deferred-construction"><span class="std std-ref">Deferred construction: pending, configure, and TableRegistry</span></a> in <a class="reference internal" href="../user_guide/using_tables.html"><span class="doc">Using Actuarial Tables</span></a>.</p>
 </section>
 <section id="table-metadata">
 <h3>Table metadata<a class="headerlink" href="#table-metadata" title="Link to this heading">#</a></h3>
@@ -1475,11 +1502,11 @@ of each member.</p>
       </div>
     </a>
     <a class="right-next"
-       href="base.html"
+       href="table_registry.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Base types</p>
+        <p class="prev-next-title">Table registry utilities</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1525,6 +1552,7 @@ of each member.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Modification</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#display">Display</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state">State</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-construction">Deferred construction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-metadata">Table metadata</a></li>
 </ul>
 </li>

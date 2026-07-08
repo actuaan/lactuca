@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Using Actuarial Tables" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/user_guide/using_tables.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="This page covers instantiation patterns and runtime control that extend beyond the basics. For your first table, computing probabilities, and annuity examples, see Getting Started. Quick recap: the..." />
+<meta name="description" content="This page covers instantiation patterns and runtime control that extend beyond the basics. For your first table, computing probabilities, and annuity examples, see Getting Started. Quick recap: the..." />
 
-    <title>Using Actuarial Tables &#8212; Lactuca 0.1.6</title>
+    <title>Using Actuarial Tables &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/user_guide/using_tables.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Bundled Actuarial Tables" href="bundled_tables.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -1249,6 +1256,283 @@ segment — the up-front allocation is negligible and eliminates all conditional
 checks inside the loop.</p>
 </div>
 </section>
+<section id="deferred-construction-pending-configure-and-tableregistry">
+<span id="deferred-construction"></span><h2>Deferred construction: <code class="docutils literal notranslate"><span class="pre">pending</span></code>, <code class="docutils literal notranslate"><span class="pre">configure</span></code>, and <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code><a class="headerlink" href="#deferred-construction-pending-configure-and-tableregistry" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">pending=True</span></code> when you need to load a table’s base data — improvement factors,
+select segments — <strong>before</strong> you know the cohort, duration, or sex of the policies
+in scope.  This avoids constructing a throw-away instance with dummy values just to
+instantiate the class.</p>
+<section id="pending-true-construct-a-shell">
+<h3><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> — construct a shell<a class="headerlink" href="#pending-true-construct-a-shell" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> is valid only for <strong>generational</strong> or <strong>select-ultimate</strong> tables (period
+tables have nothing to defer and raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="c1"># Generational table — cohort not known yet</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">metadata_pending</span><span class="p">)</span>    <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>                   <span class="c1"># available — base data loaded</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">generational</span><span class="p">)</span>        <span class="c1"># True</span>
+</pre></div>
+</div>
+<p>A pending table <strong>cannot</strong> compute <code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">qx</span></code>, <code class="docutils literal notranslate"><span class="pre">ax</span></code>, or any actuarial quantity — these
+raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> with an actionable message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Table</span> <span class="s1">&#39;PER2020_Ind_1o&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">ready</span><span class="p">:</span> <span class="n">assign</span> <span class="s1">&#39;cohort&#39;</span> <span class="n">before</span> <span class="n">calculations</span>
+<span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="mi">1969</span><span class="p">,</span> <span class="ow">or</span> <span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">sex</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">))</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">summary()</span></code> and <code class="docutils literal notranslate"><span class="pre">repr()</span></code> are safe to call on a pending table — they display the pending
+state without computing sample values.  See <a class="reference internal" href="../errors_reference.html"><span class="doc">Error Reference</span></a>
+for the full error entry.</p>
+</section>
+<section id="configure-assign-parameters-and-rebuild-in-one-step">
+<h3><code class="docutils literal notranslate"><span class="pre">configure()</span></code> — assign parameters and rebuild in one step<a class="headerlink" href="#configure-assign-parameters-and-rebuild-in-one-step" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">configure()</span></code> is the recommended way to finalize a pending table (or to reassign
+multiple parameters with a <strong>single</strong> rebuild instead of N separate setter calls):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">sex</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>   <span class="c1"># assigns both, then rebuilds once</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">metadata_pending</span><span class="p">)</span>           <span class="c1"># False</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>             <span class="c1"># now available</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configure()</span></code> is <strong>transactional</strong>: if any argument fails validation the table stays in
+its previous state (rollback).  It returns <code class="docutils literal notranslate"><span class="pre">self</span></code> for chaining:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="mi">1970</span><span class="p">)</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">configure()</span></code> without arguments raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>, <code class="docutils literal notranslate"><span class="pre">configure()</span></code> also accepts <code class="docutils literal notranslate"><span class="pre">interest_rate=</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>    <span class="c1"># uses the assigned 3 % default</span>
+</pre></div>
+</div>
+<p><strong>Unisex on a pending shell</strong> — same rules as the constructor: if the table has no native
+<code class="docutils literal notranslate"><span class="pre">q_u</span></code> / <code class="docutils literal notranslate"><span class="pre">l_u</span></code> column, pass <code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code> in the same <code class="docutils literal notranslate"><span class="pre">configure()</span></code> call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Col_2o&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">sex</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">,</span> <span class="n">unisex_blend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Reconfiguring in a loop</strong> — call <code class="docutils literal notranslate"><span class="pre">configure()</span></code> once per group to iterate over cohorts
+with exactly one rebuild each time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cohort</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1960</span><span class="p">,</span> <span class="mi">1965</span><span class="p">,</span> <span class="mi">1970</span><span class="p">,</span> <span class="mi">1975</span><span class="p">]:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="n">cohort</span><span class="p">)</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cohort </span><span class="si">{</span><span class="n">cohort</span><span class="si">}</span><span class="s2">: ax = </span><span class="si">{</span><span class="n">result</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is equivalent to four separate <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> instances but reuses the table base data
+in memory (the <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> file is read once; only the cohort-diagonal projection is recomputed).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Sort the portfolio by <code class="docutils literal notranslate"><span class="pre">cohort</span></code> before the loop to cluster consecutive rebuilds.  Each
+<code class="docutils literal notranslate"><span class="pre">configure(cohort=c)</span></code> triggers one decrement rebuild; policies in the same cohort
+group can all be batched into a single functional-API call without any rebuild.</p>
+</div>
+</section>
+<section id="configure-all-apply-to-a-tuple-of-instances">
+<h3><code class="docutils literal notranslate"><span class="pre">configure_all()</span></code> — apply to a tuple of instances<a class="headerlink" href="#configure-all-apply-to-a-tuple-of-instances" title="Link to this heading">#</a></h3>
+<p>After creating instances with a zip vectorial call + <code class="docutils literal notranslate"><span class="pre">pending=True</span></code>, finalize them all
+with <code class="docutils literal notranslate"><span class="pre">configure_all()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">configure_all</span>
+
+<span class="c1"># Two pending shells — sex known, cohort deferred</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">configure_all</span><span class="p">((</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">),</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">)</span>   <span class="c1"># applies configure(cohort=1969) to each</span>
+
+<span class="c1"># Optional: set a shared default interest rate for LifeTable shells</span>
+<span class="n">configure_all</span><span class="p">((</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">),</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="n">ax_m</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">ax_f</span> <span class="o">=</span> <span class="n">lt_f</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configure_all()</span></code> is atomic per-instance: if one fails it propagates and stops; already-
+configured instances keep their new state (no global rollback).  Calling it with no
+keyword arguments raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p>For <strong>select</strong> tables created with vectorial zip + <code class="docutils literal notranslate"><span class="pre">pending=True</span></code>, finalize duration
+(and optionally sex if omitted at construction) in one pass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;DummyLIFE_Select&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">configure_all</span><span class="p">((</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">duration='ult'</span></code> is valid in <code class="docutils literal notranslate"><span class="pre">configure()</span></code> / <code class="docutils literal notranslate"><span class="pre">configure_all()</span></code>; metadata fields may
+be supplied in any order (for example <code class="docutils literal notranslate"><span class="pre">configure(duration=&quot;ult&quot;)</span></code> then
+<code class="docutils literal notranslate"><span class="pre">configure(sex=&quot;m&quot;)</span></code>).</p>
+</section>
+<section id="batch-update-single-rebuild-for-multiple-setters">
+<h3><code class="docutils literal notranslate"><span class="pre">batch_update()</span></code> — single rebuild for multiple setters<a class="headerlink" href="#batch-update-single-rebuild-for-multiple-setters" title="Link to this heading">#</a></h3>
+<p>If you prefer setter-style assignment but want only <strong>one</strong> rebuild, use the
+<code class="docutils literal notranslate"><span class="pre">batch_update()</span></code> context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">lt</span><span class="o">.</span><span class="n">batch_update</span><span class="p">():</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="s2">&quot;f&quot;</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="mi">1975</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># → exactly one decrement rebuild when the with block exits</span>
+</pre></div>
+</div>
+<p>An exception inside the block rolls back metadata and decrement arrays to the state before entering.
+Nesting <code class="docutils literal notranslate"><span class="pre">batch_update()</span></code> raises <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code>.</p>
+</section>
+<section id="what-combinations-raise-valueerror">
+<h3>What combinations raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code><a class="headerlink" href="#what-combinations-raise-valueerror" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Combination</p></th>
+<th class="head"><p>Reason</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> on a period (static) table</p></td>
+<td><p>Nothing to defer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> with partial scalar metadata (<code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">cohort</span></code>, and/or <code class="docutils literal notranslate"><span class="pre">duration</span></code>)</p></td>
+<td><p>Values stored on the shell; table stays pending until complete</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> with <strong>all</strong> required metadata at construction</p></td>
+<td><p>Fully configured immediately (<code class="docutils literal notranslate"><span class="pre">metadata_pending=False</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cohort=[...]</span></code> or <code class="docutils literal notranslate"><span class="pre">duration=[...]</span></code> + <code class="docutils literal notranslate"><span class="pre">pending=True</span></code></p></td>
+<td><p>Contradicts: enumerating and deferring the same axis</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cartesian=True</span></code> + <code class="docutils literal notranslate"><span class="pre">pending=True</span></code></p></td>
+<td><p>No clean semantics</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> + <code class="docutils literal notranslate"><span class="pre">pending=True</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TableKey</span></code> would be stale after <code class="docutils literal notranslate"><span class="pre">configure()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For <strong>dict-keyed lookup</strong> after configuring, use <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> (see below).</p>
+</section>
+<section id="when-to-use-which-tool">
+<span id="deferred-choice"></span><h3>When to use which tool<a class="headerlink" href="#when-to-use-which-tool" title="Link to this heading">#</a></h3>
+<p>None of these patterns is mandatory for batch — they are ways to build a <strong>list of
+configured</strong> <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> instances without aliasing or redundant construction.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Situation</p></th>
+<th class="head"><p>Recommended approach</p></th>
+<th class="head"><p>Code example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Same cohort (or duration) processed <strong>one group at a time</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> + <code class="docutils literal notranslate"><span class="pre">configure(cohort=…)</span></code> per group</p></td>
+<td><p><a class="reference internal" href="../cookbook.html#recipe-17"><span class="std std-ref">recipe 17</span></a> (<a class="reference internal" href="../cookbook.html"><span class="doc">Cookbook</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vectorial zip on sex with a <strong>shared deferred</strong> cohort</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> + <code class="docutils literal notranslate"><span class="pre">configure_all(...,</span> <span class="pre">cohort=…)</span></code></p></td>
+<td><p>§ <code class="docutils literal notranslate"><span class="pre">configure_all()</span></code> above (this page)</p></td>
+</tr>
+<tr class="row-even"><td><p>Mixed demographics in <strong>one batch</strong>, keys built incrementally</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> + <code class="docutils literal notranslate"><span class="pre">get_or_create()</span></code></p></td>
+<td><p><a class="reference internal" href="../cookbook.html#recipe-18"><span class="std std-ref">recipe 18</span></a> (<a class="reference internal" href="../cookbook.html"><span class="doc">Cookbook</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Large portfolio; all unique <code class="docutils literal notranslate"><span class="pre">(sex,</span> <span class="pre">cohort)</span></code> pairs <strong>known upfront</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> + <code class="docutils literal notranslate"><span class="pre">TableKey</span></code> lookup</p></td>
+<td><p><a class="reference internal" href="batch_calculations.html#cohort-lookup-dict"><span class="std std-ref">lookup dict</span></a> (<a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Study grid / cartesian parameter sweep</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> + <code class="docutils literal notranslate"><span class="pre">cartesian=True</span></code></p></td>
+<td><p><a class="reference internal" href="batch_calculations.html#return-dict-lookup"><span class="std std-ref">return_dict lookup</span></a> (<a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Few distinct cohorts; assemble list by hand</p></td>
+<td><p>Vectorial zip constructor</p></td>
+<td><p><a class="reference internal" href="batch_calculations.html#cohort-few-distinct"><span class="std std-ref">few distinct cohorts</span></a> (<a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Very large portfolio; <strong>memory</strong> constrained</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">groupby</span></code> + one instance + setters</p></td>
+<td><p><a class="reference internal" href="batch_calculations.html#cohort-memory-optimal"><span class="std std-ref">memory-optimal</span></a> (<a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Small portfolio; metadata known per row</p></td>
+<td><p>Direct constructor in a list comp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[LifeTable(...,</span> <span class="pre">cohort=p[&quot;cohort&quot;])</span> <span class="pre">for</span> <span class="pre">p</span> <span class="pre">in</span> <span class="pre">policies]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Select table; <strong>different duration</strong> per policy</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> (<code class="docutils literal notranslate"><span class="pre">duration</span></code> in cache key)</p></td>
+<td><p><a class="reference internal" href="#tableregistry"><span class="std std-ref">TableRegistry — stable instance cache for heterogeneous batch</span></a> below; <a class="reference internal" href="../cookbook.html#recipe-18"><span class="std std-ref">recipe 18</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Same demographic key; <strong>different</strong> interest rate</p></td>
+<td><p>Pass <code class="docutils literal notranslate"><span class="pre">ir=</span></code> to the batch call</p></td>
+<td><p><a class="reference internal" href="batch_calculations.html#multi-table-batch-functional-api"><span class="std std-ref">multi-table batch</span></a> (<a class="reference internal" href="batch_calculations.html"><span class="doc">Batch Calculations</span></a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> is a convenience wrapper around the same idea as the
+<a class="reference internal" href="batch_calculations.html#cohort-lookup-dict"><span class="std std-ref">lookup dict</span></a> pattern — lazy <code class="docutils literal notranslate"><span class="pre">get_or_create</span></code> with LRU
+instead of building every unique key in one constructor call.</p>
+</div>
+<p>API reference: <a class="reference internal" href="../api/table_registry.html"><span class="doc">Table registry utilities</span></a>.</p>
+</section>
+<section id="tableregistry-stable-instance-cache-for-heterogeneous-batch">
+<span id="tableregistry"></span><h3><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> — stable instance cache for heterogeneous batch<a class="headerlink" href="#tableregistry-stable-instance-cache-for-heterogeneous-batch" title="Link to this heading">#</a></h3>
+<p>A pending instance can represent only <strong>one</strong> cohort/duration at a time.  For a portfolio
+where different policies require <strong>different</strong> cohort or duration values simultaneously,
+use <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code>: it caches one configured instance per <code class="docutils literal notranslate"><span class="pre">TableKey</span></code> and never mutates
+cached instances.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">TableRegistry</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">TableRegistry</span><span class="p">(</span><span class="n">LifeTable</span><span class="p">)</span>
+
+<span class="c1"># Cache one instance per (sex, cohort) — same key always returns the same object</span>
+<span class="n">lt_m60</span>  <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">)</span>
+<span class="n">lt_f75</span>  <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1975</span><span class="p">)</span>
+<span class="n">lt_m60b</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">)</span>   <span class="c1"># same cached instance</span>
+<span class="k">assert</span> <span class="n">lt_m60</span> <span class="ow">is</span> <span class="n">lt_m60b</span>
+</pre></div>
+</div>
+<p>Build a per-policy table list for the functional batch API without aliasing risk:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">TableRegistry</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">TableRegistry</span><span class="p">(</span><span class="n">LifeTable</span><span class="p">)</span>
+
+<span class="n">policies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">62</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">tables</span>  <span class="o">=</span> <span class="p">[</span><span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">],</span> <span class="n">cohort</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">]</span>
+<span class="n">ages</span>    <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">ax</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> is <strong>not</strong> part of <code class="docutils literal notranslate"><span class="pre">TableKey</span></code>.  Pass <code class="docutils literal notranslate"><span class="pre">interest_rate=</span></code> (and other constructor
+kwargs) only on the <strong>first</strong> request for a demographic key — cache hits return the existing
+instance unchanged:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.035</span><span class="p">)</span>
+<span class="c1"># Same key later — same object; rate is NOT re-applied:</span>
+<span class="n">lt2</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1960</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">lt</span> <span class="ow">is</span> <span class="n">lt2</span> <span class="ow">and</span> <span class="n">lt</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">==</span> <span class="mf">0.035</span>
+</pre></div>
+</div>
+<p>When policies share a demographic key but need different rates, pass <code class="docutils literal notranslate"><span class="pre">ir=</span></code> to the batch
+method instead of expecting <code class="docutils literal notranslate"><span class="pre">get_or_create</span></code> to update the cached instance.</p>
+<p>The registry is <strong>instance-scoped</strong> and bounded (LRU, default <code class="docutils literal notranslate"><span class="pre">maxsize=256</span></code>).  Override
+<code class="docutils literal notranslate"><span class="pre">maxsize</span></code> at construction if needed.  Call <code class="docutils literal notranslate"><span class="pre">reg.clear()</span></code> to empty the cache;
+<code class="docutils literal notranslate"><span class="pre">config.reset()</span></code> does <strong>not</strong> clear user-owned registries.  Cached instances are
+<strong>stable</strong> — do not mutate them after retrieval — so the same object can be shared
+safely across a batch call.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> accepts any <strong>concrete</strong> decrement table class (<code class="docutils literal notranslate"><span class="pre">LifeTable</span></code>, <code class="docutils literal notranslate"><span class="pre">DisabilityTable</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ExitTable</span></code>) — pass the class to the constructor or to each <code class="docutils literal notranslate"><span class="pre">get_or_create()</span></code> call.
+Abstract :class:<code class="docutils literal notranslate"><span class="pre">~lactuca.tables.DecrementTable</span></code> raises :exc:<code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Aliasing with a mutated pending instance</strong> — if you pass the same instance to multiple
+entries of a <code class="docutils literal notranslate"><span class="pre">tables=</span></code> list and call <code class="docutils literal notranslate"><span class="pre">configure()</span></code> between uses, all list entries reflect
+the last configured state (they all point to the same object).  Use <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> for
+heterogeneous batches to guarantee that each <code class="docutils literal notranslate"><span class="pre">TableKey</span></code> maps to a distinct stable instance.</p>
+</div>
+</section>
+</section>
 <section id="decimal-precision">
 <h2>Decimal precision<a class="headerlink" href="#decimal-precision" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">lt.decimals</span></code> is a <strong>read-only proxy</strong> that exposes the current precision settings from
@@ -1478,6 +1762,16 @@ instances in the process.  Call <code class="docutils literal notranslate"><span
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bulk-portfolio-calculations">Bulk portfolio calculations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-construction-pending-configure-and-tableregistry">Deferred construction: <code class="docutils literal notranslate"><span class="pre">pending</span></code>, <code class="docutils literal notranslate"><span class="pre">configure</span></code>, and <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pending-true-construct-a-shell"><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> — construct a shell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-assign-parameters-and-rebuild-in-one-step"><code class="docutils literal notranslate"><span class="pre">configure()</span></code> — assign parameters and rebuild in one step</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-all-apply-to-a-tuple-of-instances"><code class="docutils literal notranslate"><span class="pre">configure_all()</span></code> — apply to a tuple of instances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-update-single-rebuild-for-multiple-setters"><code class="docutils literal notranslate"><span class="pre">batch_update()</span></code> — single rebuild for multiple setters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-combinations-raise-valueerror">What combinations raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-which-tool">When to use which tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tableregistry-stable-instance-cache-for-heterogeneous-batch"><code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> — stable instance cache for heterogeneous batch</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-precision">Decimal precision</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-properties">Table properties</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>

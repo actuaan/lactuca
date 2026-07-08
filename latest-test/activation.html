@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Activation Guide" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/activation.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="This page explains how to activate Lactuca after obtaining a license key or trial key. How activation works: On the first import lactuca, the library checks for a valid license in the following ord..." />
+<meta name="description" content="This page explains how to activate Lactuca after obtaining a license key or trial key. How activation works: On the first import lactuca, the library checks for a valid license in the following ord..." />
 
-    <title>Activation Guide &#8212; Lactuca 0.1.6</title>
+    <title>Activation Guide &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,11 +57,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/activation.html" />
     <link rel="icon" href="_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -63,7 +70,7 @@
     <link rel="prev" title="Pricing" href="pricing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -258,7 +265,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -467,7 +474,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -825,6 +832,11 @@ printing the activation confirmation to stdout.</p>
 kernel killed abruptly), the license server may still hold the seat as active until the
 heartbeat lease expires. Individual and Academic plans allow only <strong>one concurrent
 session</strong>, so the next <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code> raises <code class="docutils literal notranslate"><span class="pre">LicenseSeatExhaustedError</span></code> <strong>[LAC-4001]</strong>.</p>
+<p><strong>Automatic reclamation:</strong> on <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lactuca</span></code>, if the seat pool is exhausted, Lactuca first
+revokes any stale seat on this machine (a lease whose process is gone) and retries once —
+so an abruptly closed kernel usually does <strong>not</strong> require manual intervention. The commands
+below are only needed when the automatic step could not reach the license server, or when a
+seat is held by a process that is still running.</p>
 <section id="primary-recovery-release-stale">
 <h3>Primary recovery: <code class="docutils literal notranslate"><span class="pre">release-stale</span></code><a class="headerlink" href="#primary-recovery-release-stale" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>lactuca<span class="w"> </span>license<span class="w"> </span>release-stale<span class="w"> </span><span class="o">[</span>--json<span class="o">]</span>

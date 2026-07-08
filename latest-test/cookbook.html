@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Cookbook" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/cookbook.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="Practical, self-contained recipes for common actuarial tasks using Lactuca. Each snippet below is copy-paste ready: imports, table identifiers, and parameters match the bundled catalogue. Run them ..." />
+<meta name="description" content="Practical, self-contained recipes for common actuarial tasks using Lactuca. Each snippet below is copy-paste ready: imports, table identifiers, and parameters match the bundled catalogue. Run them ..." />
 
-    <title>Cookbook &#8212; Lactuca 0.1.6</title>
+    <title>Cookbook &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/cookbook.html" />
     <link rel="icon" href="_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Actuarial Formulas" href="formulas.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -692,6 +699,14 @@ For bulk portfolio work, see <a class="reference internal" href="user_guide/usin
 <tr class="row-odd"><td><p>16</p></td>
 <td><p>Prospective reserve</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ts=</span></code> + <code class="docutils literal notranslate"><span class="pre">Ax</span> <span class="pre">-</span> <span class="pre">P</span> <span class="pre">*</span> <span class="pre">äx</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>Group loop with deferred construction</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pending=True</span></code> + <code class="docutils literal notranslate"><span class="pre">configure()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>Heterogeneous batch with <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_or_create()</span></code> + functional <code class="docutils literal notranslate"><span class="pre">ax</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1258,6 +1273,85 @@ and elapsed years <code class="docutils literal notranslate"><span class="pre">t
 <p>At <code class="docutils literal notranslate"><span class="pre">ts=0</span></code> the reserve is zero by construction (equivalence principle). At <code class="docutils literal notranslate"><span class="pre">ts=n</span></code> both
 benefit and premium APVs are zero, so ${}_n V_x = 0<code class="docutils literal notranslate"><span class="pre">.</span> <span class="pre">See</span> <span class="pre">{doc}</span></code>user_guide/prospective_reserve<code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">fractional</span></code>ts<code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">interaction</span> <span class="pre">with</span> </code>d=`, and joint-life products.</p>
 </div>
+<hr class="docutils" />
+</section>
+<section id="group-loop-with-deferred-construction">
+<span id="recipe-17"></span><h2>17. Group loop with deferred construction<a class="headerlink" href="#group-loop-with-deferred-construction" title="Link to this heading">#</a></h2>
+<p>Process a portfolio grouped by cohort without creating a new <code class="docutils literal notranslate"><span class="pre">LifeTable</span></code> instance per
+group.  <code class="docutils literal notranslate"><span class="pre">pending=True</span></code> loads the base table once; <code class="docutils literal notranslate"><span class="pre">configure(cohort=c)</span></code> applies the
+cohort projection and rebuilds the decrement in one step.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="c1"># Portfolio: list of (cohort, age) pairs sorted by cohort</span>
+<span class="n">portfolio</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">62</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1970</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">48</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">portfolio</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">])</span>
+
+<span class="c1"># One shell — base data loaded once, cohort projection rebuilt per group</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">groupby</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">cohort</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">portfolio</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]):</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="n">cohort</span><span class="p">)</span>                        <span class="c1"># one rebuild per cohort</span>
+    <span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+    <span class="n">pvs</span>  <span class="o">=</span> <span class="n">ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>                       <span class="c1"># vectorised batch for this group</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">pv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">pvs</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">portfolio</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">configure()</span></code> returns <code class="docutils literal notranslate"><span class="pre">self</span></code>, so you can chain: <code class="docutils literal notranslate"><span class="pre">lt.configure(cohort=c).ax(65,</span> <span class="pre">ir=0.03)</span></code>.
+If you need both <code class="docutils literal notranslate"><span class="pre">LifeTable.ax</span></code> (scalar call) and the result immediately, the chain is
+the most compact form.  For batch calls on a group, store the <code class="docutils literal notranslate"><span class="pre">configure()</span></code> result in
+the loop and call the functional API separately.</p>
+</div>
+<hr class="docutils" />
+</section>
+<section id="heterogeneous-batch-with-tableregistry">
+<span id="recipe-18"></span><h2>18. Heterogeneous batch with <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code><a class="headerlink" href="#heterogeneous-batch-with-tableregistry" title="Link to this heading">#</a></h2>
+<p>When different policies require different cohorts <strong>at the same time</strong> (they cannot be
+grouped sequentially), <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code> caches one configured instance per <code class="docutils literal notranslate"><span class="pre">TableKey</span></code> and
+passes a stable per-policy list to the functional API.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">TableRegistry</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">TableRegistry</span><span class="p">(</span><span class="n">LifeTable</span><span class="p">)</span>
+
+<span class="c1"># Per-policy data: cohort and sex vary per row</span>
+<span class="n">policies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">62</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1982</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># Build per-policy table list — registry caches by (table_name, sex, cohort)</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">reg</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">],</span> <span class="n">cohort</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">]</span>
+<span class="n">ages</span>   <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>  <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">]</span>
+<span class="n">terms</span>  <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;term&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">]</span>
+
+<span class="n">pvs</span> <span class="o">=</span> <span class="n">ax</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">pv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">policies</span><span class="p">,</span> <span class="n">pvs</span><span class="p">):</span>
+    <span class="n">p</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distinct table instances cached: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The registry reuses the same instance whenever the same <code class="docutils literal notranslate"><span class="pre">(sex,</span> <span class="pre">cohort)</span></code> key appears —
+here the two male-1960 and the two female-1975 policies each share one instance.  No
+mutation happens between batch calls, so there is no aliasing.</p>
 </section>
 <section id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
@@ -1338,6 +1432,8 @@ benefit and premium APVs are zero, so ${}_n V_x = 0<code class="docutils literal
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#net-annual-premium-equivalence-principle">14. Net annual premium (equivalence principle)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-pension-to-retirement-age">15. Deferred pension to retirement age</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prospective-reserve-at-policy-anniversaries">16. Prospective reserve at policy anniversaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-loop-with-deferred-construction">17. Group loop with deferred construction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heterogeneous-batch-with-tableregistry">18. Heterogeneous batch with <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
 </ul>
   </nav></div>

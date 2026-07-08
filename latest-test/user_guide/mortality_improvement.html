@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Mortality Improvement (MI)" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/user_guide/mortality_improvement.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="What is mortality improvement?: Mortality Improvement (MI) is the systematic reduction of mortality rates over time caused by advances in medicine, nutrition, sanitation, and living standards. For ..." />
+<meta name="description" content="What is mortality improvement?: Mortality Improvement (MI) is the systematic reduction of mortality rates over time caused by advances in medicine, nutrition, sanitation, and living standards. For ..." />
 
-    <title>Mortality Improvement (MI) &#8212; Lactuca 0.1.6</title>
+    <title>Mortality Improvement (MI) &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/user_guide/mortality_improvement.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Building Custom Table Files (.ltk)" href="building_tables.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -995,9 +1002,48 @@ an in-force select duration <span class="math notranslate nohighlight">\(d\)</sp
 Using ultimate rates too early affects reserve direction by product type (annuities:
 understates; death benefits: overstates); see
 <a class="reference internal" href="tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a> § <em>When to use duration vs “ult”</em>.</p>
-</section>
-</section>
 <hr class="docutils" />
+</section>
+</section>
+<section id="processing-multiple-cohort-groups-with-configure">
+<span id="cohort-group-configure"></span><h2>Processing multiple cohort groups with <code class="docutils literal notranslate"><span class="pre">configure()</span></code><a class="headerlink" href="#processing-multiple-cohort-groups-with-configure" title="Link to this heading">#</a></h2>
+<p>When computing reserves or liabilities for a portfolio that spans multiple birth years,
+use <code class="docutils literal notranslate"><span class="pre">pending=True</span></code> + <code class="docutils literal notranslate"><span class="pre">configure(cohort=c)</span></code> to project improvement factors for each
+cohort with a single rebuild per group instead of creating separate instances:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">ax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">groupby</span>
+
+<span class="c1"># Portfolio sorted by cohort</span>
+<span class="n">policies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1955</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">62</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;cohort&quot;</span><span class="p">:</span> <span class="mi">1970</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">policies</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">])</span>
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cohort</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">policies</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]):</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cohort</span><span class="o">=</span><span class="n">cohort</span><span class="p">)</span>                   <span class="c1"># one projection rebuild per cohort</span>
+    <span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+    <span class="n">pvs</span>  <span class="o">=</span> <span class="n">ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">pv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">pvs</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cohort=</span><span class="si">{</span><span class="n">cohort</span><span class="si">}</span><span class="s2">, age=</span><span class="si">{</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: ax = </span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each <code class="docutils literal notranslate"><span class="pre">configure(cohort=cohort)</span></code> call evaluates the improvement diagonal
+<span class="math notranslate nohighlight">\(q_{x,\,\text{cohort}+x}\)</span> for that birth year, replacing the previous cohort’s projection.
+The <code class="docutils literal notranslate"><span class="pre">.ltk</span></code> base data (the raw <span class="math notranslate nohighlight">\(q_x\)</span> grid and MI factors) is read from the in-process
+cache — only the diagonal projection is recomputed.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="using_tables.html#deferred-construction"><span class="std std-ref">Deferred construction: pending, configure, and TableRegistry</span></a> in <a class="reference internal" href="using_tables.html"><span class="doc">Using Actuarial Tables</span></a> — full reference for <code class="docutils literal notranslate"><span class="pre">pending</span></code>,
+<code class="docutils literal notranslate"><span class="pre">configure</span></code>, <code class="docutils literal notranslate"><span class="pre">configure_all</span></code>, <code class="docutils literal notranslate"><span class="pre">batch_update</span></code>, and <code class="docutils literal notranslate"><span class="pre">TableRegistry</span></code>.</p>
+</div>
+</section>
 <section id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -1079,6 +1125,7 @@ understates; death benefits: overstates); see
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duration-ult-on-select-ultimate-generational-tables"><code class="docutils literal notranslate"><span class="pre">duration="ult"</span></code> on select-ultimate generational tables</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-multiple-cohort-groups-with-configure">Processing multiple cohort groups with <code class="docutils literal notranslate"><span class="pre">configure()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
 </ul>
   </nav></div>

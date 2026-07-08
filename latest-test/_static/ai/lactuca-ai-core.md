@@ -6,7 +6,7 @@
 
 <!--
 lactuca_ai_context: core
-compatible_with_docs: 0.1.6
+compatible_with_docs: 0.1.11
 docs_base_url: https://www.lactuca.io/latest/
 license: CC-BY-4.0
 language: en
@@ -41,6 +41,9 @@ from lactuca import (
     years_between,
     anniversary_dates,
     ax, äx, Ax, nEx,  # plus joint/batch symbols as needed
+    configure_all,
+    TableRegistry,
+    TableKey,
 )
 ```
 
@@ -98,6 +101,78 @@ https://www.lactuca.io/latest/user_guide/bundled_tables.html
 
 Preferred positional form: `LifeTable('TABLE_ID', 'm')` (name, sex). Generational
 tables (PER2020, GAM94, DAV 2004 R, …) also require `cohort=`.
+
+## Deferred construction (`pending`, `configure`, `TableRegistry`)
+
+Use `pending=True` when the cohort or duration is **not known at construction time**.
+
+```python
+from lactuca import LifeTable, configure_all, TableRegistry
+
+# ── Shell: loads base data, no decrement computed yet
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+lt.metadata_pending   # True
+
+# ── Finalize with configure() — transactional, one rebuild, chainable
+lt.configure(cohort=1969)
+ax_val = lt.ax(65, ir=0.03)
+
+# ── Group loop: one rebuild per cohort
+for cohort in [1960, 1965, 1970]:
+    result = lt.configure(cohort=cohort).ax(65, ir=0.03)
+
+# ── Vectorial zip + pending → configure_all()
+lt_m, lt_f = LifeTable("PER2020_Ind_1o", ["m", "f"], pending=True)
+configure_all((lt_m, lt_f), cohort=1969)
+
+# ── batch_update(): single rebuild for multiple setters
+with lt.batch_update():
+    lt.sex = "f"
+    lt.cohort = 1975
+```
+
+**Rejected combinations** (raise `ValueError`): `pending=True` on a static table;
+`cohort=[...]` + `pending`; `cartesian=True` + `pending`; `return_dict=True` + `pending`.
+
+Scalar `sex`, `cohort`, or `duration` together with `pending=True` stores partial
+metadata on the shell (table stays pending until complete).  When all required
+metadata is supplied at construction, the table is built immediately.
+
+### `TableRegistry` for heterogeneous batch
+
+Use when different policies need **different cohorts/durations in one batch** (not
+sequential group loops — those use `pending` + `configure()`).
+
+Full decision table with links to all patterns:
+{ref}`deferred-choice` ({doc}`../user_guide/using_tables`).
+
+| Situation | Tool | Example |
+|-----------|------|---------|
+| Sequential cohort groups | `pending` + `configure()` | {ref}`recipe 17 <recipe-17>` |
+| One batch, mixed demographics (lazy cache) | `TableRegistry` | {ref}`recipe 18 <recipe-18>` |
+| All unique pairs known upfront | `return_dict` + `TableKey` | {ref}`lookup dict <cohort-lookup-dict>` |
+| Memory constrained | `groupby` + setters | {ref}`memory-optimal <cohort-memory-optimal>` |
+
+```python
+from lactuca import LifeTable, TableRegistry, ax
+
+reg = TableRegistry(LifeTable, maxsize=256)  # LRU cap; reg.clear() to empty
+tables = [reg.get_or_create(None, "PER2020_Ind_1o", p["sex"], cohort=p["cohort"]) for p in policies]
+results = ax(tables, [p["age"] for p in policies], ir=0.03)
+```
+
+Cached instances are **stable** (never mutate after retrieval). `interest_rate` is NOT part of
+`TableKey`; pass `interest_rate=` only on **first** construction for a key — use batch `ir=`
+for per-policy rates with the same demographic key. `config.reset()` does **not** clear
+user registries. Pass a **concrete** table class (`LifeTable`, `DisabilityTable`, `ExitTable`);
+abstract `DecrementTable` raises `TypeError`.
+
+**Pitfall**: passing a still-pending table to batch (`tables=` in `ajoint`, `axy`, …)
+raises `ValueError` immediately — configure the table first.
+
+Full reference: https://www.lactuca.io/latest/user_guide/using_tables.html#deferred-construction
+API: https://www.lactuca.io/latest/api/table_registry.html
+
 
 ## Core parameters
 
@@ -163,7 +238,8 @@ https://www.lactuca.io/latest/user_guide/notation_glossary.html
     (not `cashflow_times`). **`nExy` / `nExyz` / `nEjoint`** — no `gr` or `d` (finite
     term only).
 15. **Activation** — user must have activated license; do not document bypass mechanics.
-16. **Dates vs actuarial products** — derive entry age `x` from birth and valuation dates
+16. **Deferred tables** -- `pending=True` tables cannot compute anything until `configure()` is called. Passing a pending table to a batch `tables=` argument raises `ValueError`.
+17. **Dates vs actuarial products** — derive entry age `x` from birth and valuation dates
     with **`alb`** / **`age_last_birthday`** (or `anb` / `anextb` as needed); do not hand-roll
     year differences. Set **`config.date_format`** before parsing ambiguous slash strings.
     **`age_exact`** is fractional age in years, not life expectancy (`ex`).

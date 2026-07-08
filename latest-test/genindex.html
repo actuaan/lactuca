@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; Lactuca 0.1.6</title>
+    <title>Index &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,17 +50,18 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/genindex.html" />
     <link rel="icon" href="_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -255,7 +256,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -462,7 +463,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -707,6 +708,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/decrement_table.html#lactuca.tables.DecrementTable.batch_update">batch_update() (lactuca.tables.DecrementTable method)</a>
+</li>
       <li><a href="api/utils.html#lactuca.BatchErrorReport">BatchErrorReport (class in lactuca)</a>
 </li>
       <li><a href="api/utils.html#lactuca.BatchResult">BatchResult (class in lactuca)</a>
@@ -725,6 +728,8 @@
         <li><a href="api/life_table.html#lactuca.LifeTable.calculation_mode">(lactuca.LifeTable property)</a>
 </li>
       </ul></li>
+      <li><a href="api/table_registry.html#lactuca.TableRegistry.clear">clear() (lactuca.TableRegistry method)</a>
+</li>
       <li><a href="api/base.html#lactuca.TableKey.cohort">cohort (lactuca.TableKey attribute)</a>
 
       <ul>
@@ -735,8 +740,16 @@
 </li>
       <li><a href="api/config.html#lactuca.Config.config_path">config_path (lactuca.Config property)</a>
 </li>
+      <li><a href="api/life_table.html#lactuca.LifeTable.configure">configure() (lactuca.LifeTable method)</a>
+
+      <ul>
+        <li><a href="api/decrement_table.html#lactuca.tables.DecrementTable.configure">(lactuca.tables.DecrementTable method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/table_registry.html#lactuca.configure_all">configure_all() (in module lactuca)</a>
+</li>
       <li><a href="api/growth_rate.html#lactuca.GrowthRate.copy">copy() (lactuca.GrowthRate method)</a>
 
       <ul>
@@ -939,14 +952,16 @@
 </li>
       <li><a href="api/interest_rate.html#lactuca.InterestRate.get_effective_rate">get_effective_rate() (lactuca.InterestRate method)</a>
 </li>
+      <li><a href="api/table_registry.html#lactuca.TableRegistry.get_or_create">get_or_create() (lactuca.TableRegistry method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/growth_rate.html#lactuca.GrowthRate.get_rate">get_rate() (lactuca.GrowthRate method)</a>
 
       <ul>
         <li><a href="api/interest_rate.html#lactuca.InterestRate.get_rate">(lactuca.InterestRate method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/growth_rate.html#lactuca.GrowthRate.get_segment_info">get_segment_info() (lactuca.GrowthRate method)</a>
 
       <ul>
@@ -1061,6 +1076,8 @@
         <li><a href="api/table_source.html#lactuca.TableSource.metadata">(lactuca.TableSource property)</a>
 </li>
       </ul></li>
+      <li><a href="api/decrement_table.html#lactuca.tables.DecrementTable.metadata_pending">metadata_pending (lactuca.tables.DecrementTable property)</a>
+</li>
       <li><a href="api/decrement_table.html#lactuca.tables.DecrementTable.mi_by_duration">mi_by_duration (lactuca.tables.DecrementTable property)</a>
 
       <ul>
@@ -1373,6 +1390,8 @@
 </li>
       <li><a href="api/base.html#lactuca.TableKey">TableKey (class in lactuca)</a>
 </li>
+      <li><a href="api/table_registry.html#lactuca.TableRegistry">TableRegistry (class in lactuca)</a>
+</li>
       <li><a href="api/config.html#lactuca.Config.tables_path">tables_path (lactuca.Config property)</a>
 
       <ul>
@@ -1493,6 +1512,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/config.html#lactuca.Config.warn_on_chained_table_rebuild">warn_on_chained_table_rebuild (lactuca.Config property)</a>
+</li>
       <li><a href="api/config.html#lactuca.Config.weeks_per_year">weeks_per_year (lactuca.Config property)</a>
 
       <ul>

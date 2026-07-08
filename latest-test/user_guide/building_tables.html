@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Building Custom Table Files (.ltk)" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/user_guide/building_tables.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="If you have your own mortality, disability or exit data that is not included in the package, you can build and save a.ltk file using TableBuilder. A.ltk file can then be loaded by LifeTable, Disabi..." />
+<meta name="description" content="If you have your own mortality, disability or exit data that is not included in the package, you can build and save a.ltk file using TableBuilder. A.ltk file can then be loaded by LifeTable, Disabi..." />
 
-    <title>Building Custom Table Files (.ltk) &#8212; Lactuca 0.1.6</title>
+    <title>Building Custom Table Files (.ltk) &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/user_guide/building_tables.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="Using Actuarial Tables" href="using_tables.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -1900,6 +1907,7 @@ dict manually — it is silently ignored by <code class="docutils literal notran
 <li><p><a class="reference internal" href="using_tables.html"><span class="doc">Using Actuarial Tables</span></a> — loading, vectorial creation, and dynamic cohort assignment</p></li>
 <li><p><a class="reference internal" href="tables_taxonomy.html"><span class="doc">Table Taxonomy</span></a> — Table Taxonomy: temporal and structural classification</p></li>
 <li><p><a class="reference internal" href="modifying_decrements.html"><span class="doc">Modifying Decrements</span></a> — adjusting <span class="math notranslate nohighlight">\(q_x\)</span> rates after loading</p></li>
+<li><p><a class="reference internal" href="using_tables.html#deferred-construction"><span class="std std-ref">Deferred construction: pending, configure, and TableRegistry</span></a> in <a class="reference internal" href="using_tables.html"><span class="doc">Using Actuarial Tables</span></a> – load a table once and configure <code class="docutils literal notranslate"><span class="pre">cohort</span></code>/<code class="docutils literal notranslate"><span class="pre">duration</span></code> per group (ETL workflow pattern)</p></li>
 </ul>
 </section>
 </section>

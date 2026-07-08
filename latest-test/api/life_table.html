@@ -7,8 +7,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="LifeTable" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.lactuca.io/latest/api/life_table.html" />
+<meta property="og:site_name" content="Lactuca" />
+<meta property="og:description" content="LifeTable is the core actuarial table class in Lactuca. It inherits from DecrementTable and adds the full set of life annuity (\ddot{a}_x via äx(), a_x via ax(), continuous\bar{a}_x via Calculation..." />
+<meta name="description" content="LifeTable is the core actuarial table class in Lactuca. It inherits from DecrementTable and adds the full set of life annuity (\ddot{a}_x via äx(), a_x via ax(), continuous\bar{a}_x via Calculation..." />
 
-    <title>LifeTable &#8212; Lactuca 0.1.6</title>
+    <title>LifeTable &#8212; Lactuca 0.1.11</title>
   
   
   
@@ -41,7 +47,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=ad7b7a6e"></script>
+    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,11 +59,12 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://www.lactuca.io/latest/api/life_table.html" />
     <link rel="icon" href="../_static/lactuca_logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -65,7 +72,7 @@
     <link rel="prev" title="DecrementTable" href="decrement_table.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.1.11" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -260,7 +267,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -469,7 +476,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../changelog.html">
-    [0.1.0] - 2026-07-02
+    Changelog
   </a>
 </li>
 
@@ -561,6 +568,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">LifeTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="disability_table.html">DisabilityTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exit_table.html">ExitTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_registry.html">Table registry utilities</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base types</span></p>
 <ul class="nav bd-sidenav">
@@ -677,7 +685,7 @@ insurances (<code class="docutils literal notranslate"><span class="pre">Axy</sp
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="lactuca.LifeTable">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">LifeTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interest_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unisex_blend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cartesian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.LifeTable" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">LifeTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'m'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'f'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'u'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interest_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unisex_blend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cartesian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lactuca.LifeTable" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable" title="lactuca.tables.decrement.DecrementTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecrementTable</span></code></a></p>
 <p>Concrete implementation of DecrementTable for standard mortality life tables.</p>
 <p>LifeTable represents actuarial mortality tables with qx (mortality probability),
@@ -3084,6 +3092,68 @@ internally via the array protocol.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="lactuca.LifeTable.configure">
+<span class="sig-name descname"><span class="pre">configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sex:</span> <span class="pre">~typing.Literal['m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'f'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'u']</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unisex_blend:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interest_rate:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**_extra</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lactuca.LifeTable" title="lactuca.tables.life.LifeTable"><span class="pre">LifeTable</span></a></span></span><a class="headerlink" href="#lactuca.LifeTable.configure" title="Link to this definition">#</a></dt>
+<dd><p>Configure table metadata and optional interest rate atomically.</p>
+<p>Extends <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.configure" title="lactuca.tables.DecrementTable.configure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configure()</span></code></a> with
+<code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> support.  The interest rate is applied <strong>after</strong> the
+structural rebuild so it never triggers an additional rebuild.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sex</strong> (<em>{'m'</em><em>, </em><em>'f'</em><em>, </em><em>'u'}</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Sex for calculations.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means “keep current value”.</p></li>
+<li><p><strong>cohort</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Birth cohort year for generational tables.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means
+“keep current value”.</p></li>
+<li><p><strong>duration</strong> (<em>int</em><em>, </em><em>'ult'</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Select-table duration.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means “keep current value”.</p></li>
+<li><p><strong>unisex_blend</strong> (<em>float</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Male weight for unisex blending in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means
+“keep current value”.</p></li>
+<li><p><strong>interest_rate</strong> (<em>float</em><em>, </em><a class="reference internal" href="interest_rate.html#lactuca.InterestRate" title="lactuca.InterestRate"><em>InterestRate</em></a><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Default interest rate for annuity/insurance calculations.  Omitting
+this argument leaves the current interest rate unchanged.  Pass
+<code class="docutils literal notranslate"><span class="pre">None</span></code> explicitly to clear the interest rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">self</span></code>, enabling method chaining.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lactuca.LifeTable" title="lactuca.LifeTable">LifeTable</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If called with no arguments, or if a supplied value is invalid.</p></li>
+<li><p><strong>TypeError</strong> – If a supplied value has an incorrect type.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p><code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> is applied <strong>after</strong> the structural rebuild
+(<code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">cohort</span></code>, <code class="docutils literal notranslate"><span class="pre">duration</span></code>, <code class="docutils literal notranslate"><span class="pre">unisex_blend</span></code>) so it never
+triggers an additional recomputation.  Passing only <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code>
+is valid and does not perform any structural rebuild.</p>
+<p>Omitting <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> entirely (the default) leaves the current
+rate unchanged.  Pass <code class="docutils literal notranslate"><span class="pre">interest_rate=None</span></code> explicitly to clear the
+rate so that subsequent calculations require an explicit <code class="docutils literal notranslate"><span class="pre">ir=</span></code>
+argument.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.configure" title="lactuca.tables.DecrementTable.configure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configure()</span></code></a></dt><dd><p>Base implementation (without <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code>).</p>
+</dd>
+<dt><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.batch_update" title="lactuca.tables.DecrementTable.batch_update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">batch_update()</span></code></a></dt><dd><p>Context manager for imperative setter-based configuration.</p>
+</dd>
+<dt><a class="reference internal" href="#lactuca.LifeTable.interest_rate" title="lactuca.LifeTable.interest_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LifeTable.interest_rate</span></code></a></dt><dd><p>Property setter for updating the rate without a full rebuild.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lt</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">sex</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1969</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="lactuca.LifeTable.ex">
 <span class="sig-name descname"><span class="pre">ex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#lactuca.LifeTable.ex" title="Link to this definition">#</a></dt>
 <dd><p>Compute the complete expectation of life <code class="docutils literal notranslate"><span class="pre">ex</span></code> at integer ages.</p>
@@ -4067,6 +4137,8 @@ the original base value:</p>
 <ul class="simple">
 <li><p>Use <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.modify_qx" title="lactuca.tables.DecrementTable.modify_qx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">modify_qx()</span></code></a> to apply modifications before calling this method.</p></li>
 <li><p>Use <a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.reset_modifications" title="lactuca.tables.DecrementTable.reset_modifications"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_modifications()</span></code></a> to restore base rates and clear modification state.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">metadata_pending=True</span></code>, this method delegates entirely to
+<a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.summary" title="lactuca.tables.DecrementTable.summary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">summary()</span></code></a> (no sample qx values are computed or shown).</p></li>
 </ul>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
@@ -5332,9 +5404,28 @@ for full documentation of each member.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.is_select" title="lactuca.tables.DecrementTable.is_select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_select</span></code></a></p></td>
 <td><p>Return True if the underlying table is a select-ultimate table.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.metadata_pending" title="lactuca.tables.DecrementTable.metadata_pending"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata_pending</span></code></a></p></td>
+<td><p>True when required metadata has not yet been supplied via configure() or setters.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="deferred-construction">
+<h3>Deferred construction<a class="headerlink" href="#deferred-construction" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.configure" title="lactuca.tables.DecrementTable.configure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configure</span></code></a></p></td>
+<td><p>Configure table metadata atomically with a single rebuild.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="decrement_table.html#lactuca.tables.DecrementTable.batch_update" title="lactuca.tables.DecrementTable.batch_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_update</span></code></a></p></td>
+<td><p>Context manager to batch multiple setter assignments into one rebuild.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See also <a class="reference internal" href="table_registry.html#lactuca.TableRegistry" title="lactuca.TableRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableRegistry</span></code></a> and <a class="reference internal" href="table_registry.html#lactuca.configure_all" title="lactuca.configure_all"><code class="xref py py-func docutils literal notranslate"><span class="pre">configure_all()</span></code></a> in
+<a class="reference internal" href="table_registry.html"><span class="doc">Table registry utilities</span></a> and <a class="reference internal" href="../user_guide/using_tables.html#deferred-construction"><span class="std std-ref">Deferred construction: pending, configure, and TableRegistry</span></a> in <a class="reference internal" href="../user_guide/using_tables.html"><span class="doc">Using Actuarial Tables</span></a>.</p>
 </section>
 <section id="table-metadata">
 <h3>Table metadata<a class="headerlink" href="#table-metadata" title="Link to this heading">#</a></h3>
@@ -5476,6 +5567,7 @@ for full documentation of each member.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.ax"><code class="docutils literal notranslate"><span class="pre">LifeTable.ax()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.axy"><code class="docutils literal notranslate"><span class="pre">LifeTable.axy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.axyz"><code class="docutils literal notranslate"><span class="pre">LifeTable.axyz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.configure"><code class="docutils literal notranslate"><span class="pre">LifeTable.configure()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.ex"><code class="docutils literal notranslate"><span class="pre">LifeTable.ex()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.ex_continuous"><code class="docutils literal notranslate"><span class="pre">LifeTable.ex_continuous()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lactuca.LifeTable.ex_curtate"><code class="docutils literal notranslate"><span class="pre">LifeTable.ex_curtate()</span></code></a></li>
@@ -5504,6 +5596,7 @@ for full documentation of each member.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modification">Modification</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#display">Display</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state">State</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deferred-construction">Deferred construction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-metadata">Table metadata</a></li>
 </ul>
 </li>
