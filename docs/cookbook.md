@@ -29,6 +29,8 @@ For bulk portfolio work, see {ref}`bulk-portfolios` in {doc}`user_guide/using_ta
 | 14 | Net annual premium | `Ax / äx` (equivalence principle) |
 | 15 | Deferred pension | `äx(x, d=…)` |
 | 16 | Prospective reserve | `ts=` + `Ax - P * äx` |
+| 17 | Group loop with deferred construction | `pending=True` + `configure()` |
+| 18 | Heterogeneous batch with `TableRegistry` | `get_or_create()` + functional `ax` |
 
 ---
 
@@ -624,6 +626,93 @@ At `ts=0` the reserve is zero by construction (equivalence principle). At `ts=n`
 benefit and premium APVs are zero, so ${}_n V_x = 0`. See {doc}`user_guide/prospective_reserve`
 for fractional `ts`, interaction with `d=`, and joint-life products.
 :::
+
+
+---
+
+(recipe-17)=
+## 17. Group loop with deferred construction
+
+Process a portfolio grouped by cohort without creating a new `LifeTable` instance per
+group.  `pending=True` loads the base table once; `configure(cohort=c)` applies the
+cohort projection and rebuilds the decrement in one step.
+
+```python
+from lactuca import LifeTable, ax
+
+# Portfolio: list of (cohort, age) pairs sorted by cohort
+portfolio = [
+    {"cohort": 1960, "age": 65},
+    {"cohort": 1960, "age": 62},
+    {"cohort": 1970, "age": 55},
+    {"cohort": 1975, "age": 50},
+    {"cohort": 1975, "age": 48},
+]
+portfolio.sort(key=lambda p: p["cohort"])
+
+# One shell — base data loaded once, cohort projection rebuilt per group
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+
+from itertools import groupby
+results = {}
+for cohort, group in groupby(portfolio, key=lambda p: p["cohort"]):
+    group = list(group)
+    lt.configure(cohort=cohort)                        # one rebuild per cohort
+    ages = [p["age"] for p in group]
+    pvs  = ax(lt, ages, ir=0.03)                       # vectorised batch for this group
+    for p, pv in zip(group, pvs):
+        p["ax"] = float(pv)
+
+print([p["ax"] for p in portfolio])
+```
+
+:::{note}
+`configure()` returns `self`, so you can chain: `lt.configure(cohort=c).ax(65, ir=0.03)`.
+If you need both `LifeTable.ax` (scalar call) and the result immediately, the chain is
+the most compact form.  For batch calls on a group, store the `configure()` result in
+the loop and call the functional API separately.
+:::
+
+---
+
+(recipe-18)=
+## 18. Heterogeneous batch with `TableRegistry`
+
+When different policies require different cohorts **at the same time** (they cannot be
+grouped sequentially), `TableRegistry` caches one configured instance per `TableKey` and
+passes a stable per-policy list to the functional API.
+
+```python
+from lactuca import LifeTable, TableRegistry, ax
+
+reg = TableRegistry(LifeTable)
+
+# Per-policy data: cohort and sex vary per row
+policies = [
+    {"sex": "m", "cohort": 1960, "age": 65, "term": 20},
+    {"sex": "f", "cohort": 1975, "age": 55, "term": 15},
+    {"sex": "m", "cohort": 1960, "age": 62, "term": 20},
+    {"sex": "m", "cohort": 1982, "age": 42, "term": 25},
+    {"sex": "f", "cohort": 1975, "age": 50, "term": 15},
+]
+
+# Build per-policy table list — registry caches by (table_name, sex, cohort)
+tables = [reg.get_or_create(None, "PER2020_Ind_1o", p["sex"], cohort=p["cohort"]) for p in policies]
+ages   = [p["age"]  for p in policies]
+terms  = [p["term"] for p in policies]
+
+pvs = ax(tables, ages, n=terms, ir=0.03)
+
+for p, pv in zip(policies, pvs):
+    p["ax"] = float(pv)
+
+print([p["ax"] for p in policies])
+print(f"Distinct table instances cached: {len(reg)}")
+```
+
+The registry reuses the same instance whenever the same `(sex, cohort)` key appears —
+here the two male-1960 and the two female-1975 policies each share one instance.  No
+mutation happens between batch calls, so there is no aliasing.
 
 
 ## See also

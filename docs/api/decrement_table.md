@@ -23,7 +23,8 @@ top-level `lactuca` package).
 {doc}`../user_guide/modifying_decrements` — Scaling, aggravated risk, and `table_combination`.\
 {doc}`life_table` — {class}`~lactuca.LifeTable` reference.\
 {doc}`disability_table` — {class}`~lactuca.DisabilityTable` reference.\
-{doc}`exit_table` — {class}`~lactuca.ExitTable` reference.
+{doc}`exit_table` — {class}`~lactuca.ExitTable` reference.\
+{doc}`table_registry` — {class}`~lactuca.TableRegistry` and {func}`~lactuca.configure_all`.
 ```
 
 ```{eval-rst}

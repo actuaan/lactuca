@@ -39,6 +39,7 @@ the full explanation, cause, and fix.
 | **Table data** | `ValueError` | [Vectorial constructor](#vectorial-constructor-errors) | Zip length mismatch; cartesian `unisex_blend` sequence with mixed sex; or incompatible table mix |
 | **Table data** | `ValueError` | [Generational table](#generational-table-errors) | Missing, unexpected, or out-of-range `cohort`; or missing `base_year` metadata |
 | **Table data** | `ValueError` | [Duration below start_duration](#duration-below-start-duration) | `duration=` integer `< LifeTable.start_duration` on a select-ultimate table |
+|| **Table data** | `ValueError` | [Table not configured](#table-not-configured) | Calculation method called on a `pending=True` table before `configure()` |
 | **Table modification** | `ValueError` | [Orphan `combination_mode`](#table-modification-combination-mode) | `combination_mode` without `table_combination` in the same dict |
 | **Table modification** | `ValueError` | [Invalid `combination_mode`](#table-modification-combination-mode) | Value not exactly `"independent"` or `"udd"` |
 | **Table modification** | `ValueError` | [UDD with too many causes](#table-modification-combination-mode) | `combination_mode="udd"` with host + 3+ other tables |
@@ -664,6 +665,54 @@ duration {dur!r} is below start_duration={sd} for table '{table_name}'.
 
 **Fix**: Pass `duration=start_duration` or higher, or `duration='ult'` for ultimate rates.
 See {doc}`user_guide/tables_taxonomy` and {doc}`user_guide/notation_glossary`.
+
+
+(table-not-configured)=
+### Table not configured (pending)
+
+**Exception**: `ValueError`
+
+**Message pattern**:
+```
+Table '{table_name}' is not ready: assign '{missing}' before calculations
+({fix_hint}).
+```
+
+**Cause**: A calculation method (`lx`, `qx`, `px`, `ax`, `Ax`, `view_data`,
+`modify_qx`, etc.) was called on a table created with `pending=True` before
+`configure()` — or individual setters — supplied all the required parameters.
+The message identifies the missing parameter: `cohort` for generational tables,
+`duration` for select-ultimate tables, or both.
+
+Passing a still-pending table to a batch function (e.g. `tables=` in `ajoint`,
+`axy`, `Axy`, `axyz`, …) also raises `ValueError` — the batch dispatcher rejects
+pending tables early and specifically.
+
+**Fix**: Call `configure()` (or assign the missing property) before any calculation:
+
+```python
+from lactuca import LifeTable
+
+# Generational table — correct usage
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+lt.configure(cohort=1969)           # assigns cohort and builds decrement
+ax = lt.ax(65, ir=0.03)            # now works
+
+# Incorrect — raises ValueError: table not configured
+lt2 = LifeTable("PER2020_Ind_1o", "m", pending=True)
+lt2.ax(65, ir=0.03)                 # ValueError before any calculation
+
+# Alternative: assign via setter (auto-rebuilds when metadata becomes complete)
+lt3 = LifeTable("PER2020_Ind_1o", "m", pending=True)
+lt3.cohort = 1969                   # setter detects metadata complete and rebuilds
+ax3 = lt3.ax(65, ir=0.03)          # works
+```
+
+Inspect `lt.metadata_pending` (`bool`) or call `lt.summary()` to see which parameters
+are still missing before computing.  Period (static) tables do not support `pending=True`
+and raise `ValueError` at construction instead.
+
+See {ref}`deferred-construction` in {doc}`user_guide/using_tables` for full usage.
 
 (vectorial-constructor-errors)=
 ### Vectorial table constructor errors
@@ -1562,13 +1611,21 @@ duplicate message.
 
 **Message pattern**:
 ```
-[LAC-4001] All concurrent sessions for this license are in use.
-Action: Close the other Lactuca session (e.g. shut down the Jupyter kernel), run
-  'python -m lactuca license release-stale', or wait for the seat to expire (~10 min).
+[LAC-4001] All concurrent sessions for this license are in use (a live session is
+holding the seat, or automatic cleanup of stale seats on this machine did not free one).
+Action: Close the other Lactuca session (e.g. shut down the Jupyter kernel). If nothing
+else is running, retry in a few seconds, run
+  'python -m lactuca license release --force', or wait for the seat to expire (~10 min).
 ```
 
 **Cause**: The maximum number of simultaneous active Python processes allowed by the
 license plan is already in use.  The license server refused to grant a new process lease.
+
+Before raising this error, Lactuca **automatically reclaims stale seats** on this machine
+(leases left behind by a process that exited without releasing its seat — a killed Jupyter
+kernel, an IDE stop, or a crash) and retries once. Seeing LAC-4001 therefore means either a
+genuinely live session still holds a seat, or the reclaimed seat had not yet propagated on
+the license server (retry in a few seconds).
 
 Concurrent session limits per tier:
 
@@ -1586,7 +1643,13 @@ Concurrent session limits per tier:
 1. **Close the other session on this device.** Shut down the Jupyter kernel, notebook,
    or script that imported Lactuca.
 
-2. **Release orphan seats** (requires internet access):
+2. **Retry in a few seconds.** Lactuca already tried to reclaim stale seats automatically.
+   If the seat you just freed had not yet propagated on the license server, a second
+   `import lactuca` (or `python -m lactuca`) usually succeeds.
+
+3. **Release orphan seats manually** (requires internet access) — normally unnecessary,
+   since reclamation is automatic, but useful if the automatic step could not reach the
+   server:
 
    ```bash
    python -m lactuca license release-stale
@@ -1596,11 +1659,11 @@ Concurrent session limits per tier:
    running processes. If the network is unavailable, exit code **2** — restore
    connectivity and retry. See {ref}`Release a stale session seat <release-stale-seat>`.
 
-3. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
+4. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
    the heartbeat lease expires (approximately **10 minutes** on Individual, Trial, and
    Academic; **60 minutes** on Team and Enterprise).
 
-4. **Run diagnostics:**
+5. **Run diagnostics:**
 
    ```bash
    python -m lactuca license doctor
@@ -1608,15 +1671,15 @@ Concurrent session limits per tier:
 
    When a seat is detected on this device, the recommendation includes `release-stale`.
 
-5. **Last resort on this device:** if a session is stuck (process ID still exists but
+6. **Last resort on this device:** if a session is stuck (process ID still exists but
    the kernel is hung), use `python -m lactuca license release --force` with interactive
    confirmation or `--yes` in scripts — only when you are certain no valid calculation
    is running. See {ref}`Release a stale session seat <release-stale-seat>`.
 
-6. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
+7. **Upgrade your plan.** Team (10 sessions) and Enterprise (50 sessions) are suitable
    for server deployments and teams running parallel jobs.
 
-7. **Handle in pipeline scripts** that may run concurrently (inspect ``SystemExit`` on
+8. **Handle in pipeline scripts** that may run concurrently (inspect ``SystemExit`` on
    import — see {ref}`license-errors`):
 
 ```python

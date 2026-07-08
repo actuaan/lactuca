@@ -392,3 +392,4 @@ See {doc}`bundled_tables` for the complete development-table listing.
 - {doc}`using_tables` — constructor reference, vectorial creation, and dynamic cohort assignment
 - {doc}`modifying_decrements` — `modify_qx`, `reset_modifications`
 - {doc}`lx_interpolation` — fractional-age interpolation methods
+- {ref}`deferred-construction` in {doc}`using_tables` -- ``pending=True``, ``configure()``, and ``TableRegistry`` for deferred cohort/duration assignment

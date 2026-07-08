@@ -176,6 +176,12 @@ kernel killed abruptly), the license server may still hold the seat as active un
 heartbeat lease expires. Individual and Academic plans allow only **one concurrent
 session**, so the next `import lactuca` raises `LicenseSeatExhaustedError` **[LAC-4001]**.
 
+**Automatic reclamation:** on `import lactuca`, if the seat pool is exhausted, Lactuca first
+revokes any stale seat on this machine (a lease whose process is gone) and retries once —
+so an abruptly closed kernel usually does **not** require manual intervention. The commands
+below are only needed when the automatic step could not reach the license server, or when a
+seat is held by a process that is still running.
+
 ### Primary recovery: `release-stale`
 
 ```bash

@@ -1176,3 +1176,4 @@ See {class}`lactuca.TableBuilder` for the full API reference.
 - {doc}`using_tables` — loading, vectorial creation, and dynamic cohort assignment
 - {doc}`tables_taxonomy` — Table Taxonomy: temporal and structural classification
 - {doc}`modifying_decrements` — adjusting $q_x$ rates after loading
+- {ref}`deferred-construction` in {doc}`using_tables` -- load a table once and configure ``cohort``/``duration`` per group (ETL workflow pattern)

@@ -179,11 +179,18 @@ Lactuca and was killed without shutting down cleanly. The license server keeps t
 seat active until the heartbeat lease expires (approximately **10 minutes** on
 Individual, Trial, and Academic; **60 minutes** on Team and Enterprise).
 
+Lactuca **reclaims stale seats automatically**: on import, if the seat pool is full, it
+first revokes any seat on this machine whose process is gone and retries once. You usually
+only reach the steps below when a session is genuinely still running, or when the automatic
+step could not reach the license server.
+
 **Recovery steps (try in order):**
 
 1. **Shut down the other session.** Close the Jupyter kernel, notebook tab, or background
    script that imported Lactuca on this device.
-2. **Release orphan seats** (requires internet access):
+2. **Retry in a few seconds.** If a freed seat had not yet propagated on the server, a
+   second `import lactuca` usually succeeds after the automatic reclamation.
+3. **Release orphan seats manually** (requires internet access; normally unnecessary):
 
    ```bash
    python -m lactuca license release-stale
@@ -192,9 +199,9 @@ Individual, Trial, and Academic; **60 minutes** on Team and Enterprise).
    This revokes leases on **this machine** only when the local process is demonstrably
    gone. It never kills a running process. If the network is unavailable, the command
    exits with code **2** — restore connectivity and retry.
-3. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
+4. **Wait for automatic expiry.** If you cannot run the CLI, the seat is released after
    the heartbeat lease expires (approximately 10 minutes on single-user tiers).
-4. **Run diagnostics:**
+5. **Run diagnostics:**
 
    ```bash
    python -m lactuca license doctor

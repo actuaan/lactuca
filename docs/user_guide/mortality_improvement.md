@@ -290,6 +290,49 @@ understates; death benefits: overstates); see
 
 ---
 
+(cohort-group-configure)=
+## Processing multiple cohort groups with `configure()`
+
+When computing reserves or liabilities for a portfolio that spans multiple birth years,
+use `pending=True` + `configure(cohort=c)` to project improvement factors for each
+cohort with a single rebuild per group instead of creating separate instances:
+
+```python
+from lactuca import LifeTable, ax
+from itertools import groupby
+
+# Portfolio sorted by cohort
+policies = [
+    {"cohort": 1955, "age": 70},
+    {"cohort": 1960, "age": 65},
+    {"cohort": 1960, "age": 62},
+    {"cohort": 1970, "age": 55},
+]
+policies.sort(key=lambda p: p["cohort"])
+
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+
+for cohort, group in groupby(policies, key=lambda p: p["cohort"]):
+    group = list(group)
+    lt.configure(cohort=cohort)                   # one projection rebuild per cohort
+    ages = [p["age"] for p in group]
+    pvs  = ax(lt, ages, ir=0.03)
+    for p, pv in zip(group, pvs):
+        p["ax"] = float(pv)
+        print(f"cohort={cohort}, age={p['age']}: ax = {pv:.4f}")
+```
+
+Each `configure(cohort=cohort)` call evaluates the improvement diagonal
+$q_{x,\,\text{cohort}+x}$ for that birth year, replacing the previous cohort's projection.
+The `.ltk` base data (the raw $q_x$ grid and MI factors) is read from the in-process
+cache — only the diagonal projection is recomputed.
+
+:::{seealso}
+{ref}`deferred-construction` in {doc}`using_tables` — full reference for `pending`,
+`configure`, `configure_all`, `batch_update`, and `TableRegistry`.
+:::
+
+
 ## See also
 
 - {doc}`tables_taxonomy` — full classification of all table types by structure and temporal nature

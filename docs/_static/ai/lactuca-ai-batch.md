@@ -4,7 +4,7 @@
 
 <!--
 lactuca_ai_context: batch
-compatible_with_docs: 0.1.6
+compatible_with_docs: 0.1.11
 docs_base_url: https://www.lactuca.io/latest/
 license: CC-BY-4.0
 language: en
@@ -64,6 +64,33 @@ Aggregate cashflow dicts need `return_flows=True` and **precision** modes
 
 Portfolio aggregate dict (batch `return_flows=True`, multiple policies) — keys are
 **`time_grid`**, **`expected_cf`**, **`pv_cf`**, **`total_pv`** (not `t_grid`).
+
+
+## Pending tables in batch
+
+A table created with `pending=True` that has not been finalized with `configure()`
+raises `ValueError` immediately when passed to any batch entry point (`tables=` in
+`ajoint`, `axy`, `Axy`, `axyz`, etc.). Configure before passing to batch.
+
+For heterogeneous portfolios (different cohort/duration per policy), use
+`TableRegistry` instead of a mutated shared instance:
+
+```python
+from lactuca import LifeTable, TableRegistry, ax
+
+reg = TableRegistry(LifeTable)
+tables  = [reg.get_or_create(None, "PER2020_Ind_1o", p["sex"], cohort=p["cohort"]) for p in policies]
+results = ax(tables, [p["age"] for p in policies], ir=0.03)
+```
+
+`interest_rate` is not part of the cache key — apply on first `get_or_create` only;
+use batch `ir=` for per-policy rates with the same demographic key. Pass a **concrete**
+table class (`LifeTable`, `DisabilityTable`, `ExitTable`); abstract `DecrementTable`
+raises `TypeError`. Call `reg.clear()` to empty the cache (`config.reset()` does not
+clear user registries).
+
+See: https://www.lactuca.io/latest/user_guide/using_tables.html#deferred-construction
+API: https://www.lactuca.io/latest/api/table_registry.html
 
 ## Anti-patterns
 

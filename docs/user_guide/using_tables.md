@@ -542,6 +542,261 @@ segment — the up-front allocation is negligible and eliminates all conditional
 checks inside the loop.
 :::
 
+
+(deferred-construction)=
+## Deferred construction: `pending`, `configure`, and `TableRegistry`
+
+Use `pending=True` when you need to load a table's base data — improvement factors,
+select segments — **before** you know the cohort, duration, or sex of the policies
+in scope.  This avoids constructing a throw-away instance with dummy values just to
+instantiate the class.
+
+### `pending=True` — construct a shell
+
+`pending=True` is valid only for **generational** or **select-ultimate** tables (period
+tables have nothing to defer and raise `ValueError`):
+
+```python
+from lactuca import LifeTable
+
+# Generational table — cohort not known yet
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+
+print(lt.metadata_pending)    # True
+print(lt.w)                   # available — base data loaded
+print(lt.generational)        # True
+```
+
+A pending table **cannot** compute `lx`, `qx`, `ax`, or any actuarial quantity — these
+raise `ValueError` with an actionable message:
+
+```
+Table 'PER2020_Ind_1o' is not ready: assign 'cohort' before calculations
+(lt.cohort = 1969, or lt.configure(sex="m", cohort=1969)).
+```
+
+`summary()` and `repr()` are safe to call on a pending table — they display the pending
+state without computing sample values.  See {doc}`../errors_reference`
+for the full error entry.
+
+### `configure()` — assign parameters and rebuild in one step
+
+`configure()` is the recommended way to finalize a pending table (or to reassign
+multiple parameters with a **single** rebuild instead of N separate setter calls):
+
+```python
+lt.configure(sex="m", cohort=1969)   # assigns both, then rebuilds once
+print(lt.metadata_pending)           # False
+ax = lt.ax(65, ir=0.03)             # now available
+```
+
+`configure()` is **transactional**: if any argument fails validation the table stays in
+its previous state (rollback).  It returns `self` for chaining:
+
+```python
+ax = lt.configure(cohort=1970).ax(65, ir=0.03)
+```
+
+Calling `configure()` without arguments raises `ValueError`.
+
+For `LifeTable`, `configure()` also accepts `interest_rate=`:
+
+```python
+lt.configure(cohort=1969, interest_rate=0.03)
+ax = lt.ax(65)    # uses the assigned 3 % default
+```
+
+**Unisex on a pending shell** — same rules as the constructor: if the table has no native
+`q_u` / `l_u` column, pass `unisex_blend` in the same `configure()` call:
+
+```python
+lt = LifeTable("PER2020_Col_2o", pending=True)
+lt.configure(sex="u", cohort=1969, unisex_blend=0.5)
+ax = lt.ax(65, ir=0.03)
+```
+
+**Reconfiguring in a loop** — call `configure()` once per group to iterate over cohorts
+with exactly one rebuild each time:
+
+```python
+from lactuca import LifeTable
+
+lt = LifeTable("PER2020_Ind_1o", "m", pending=True)
+
+for cohort in [1960, 1965, 1970, 1975]:
+    result = lt.configure(cohort=cohort).ax(65, ir=0.03)
+    print(f"cohort {cohort}: ax = {result:.4f}")
+```
+
+This is equivalent to four separate `LifeTable` instances but reuses the table base data
+in memory (the `.ltk` file is read once; only the cohort-diagonal projection is recomputed).
+
+:::{tip}
+Sort the portfolio by `cohort` before the loop to cluster consecutive rebuilds.  Each
+`configure(cohort=c)` triggers one decrement rebuild; policies in the same cohort
+group can all be batched into a single functional-API call without any rebuild.
+:::
+
+### `configure_all()` — apply to a tuple of instances
+
+After creating instances with a zip vectorial call + `pending=True`, finalize them all
+with `configure_all()`:
+
+```python
+from lactuca import LifeTable, configure_all
+
+# Two pending shells — sex known, cohort deferred
+lt_m, lt_f = LifeTable("PER2020_Ind_1o", ["m", "f"], pending=True)
+
+configure_all((lt_m, lt_f), cohort=1969)   # applies configure(cohort=1969) to each
+
+# Optional: set a shared default interest rate for LifeTable shells
+configure_all((lt_m, lt_f), cohort=1969, interest_rate=0.03)
+
+ax_m = lt_m.ax(65, ir=0.03)
+ax_f = lt_f.ax(60, ir=0.03)
+```
+
+`configure_all()` is atomic per-instance: if one fails it propagates and stops; already-
+configured instances keep their new state (no global rollback).  Calling it with no
+keyword arguments raises ``ValueError``.
+
+For **select** tables created with vectorial zip + ``pending=True``, finalize duration
+(and optionally sex if omitted at construction) in one pass:
+
+```python
+lt_m, lt_f = LifeTable("DummyLIFE_Select", ["m", "f"], pending=True)
+configure_all((lt_m, lt_f), duration=5)
+```
+
+``duration='ult'`` is valid in ``configure()`` / ``configure_all()``; metadata fields may
+be supplied in any order (for example ``configure(duration="ult")`` then
+``configure(sex="m")``).
+
+### `batch_update()` — single rebuild for multiple setters
+
+If you prefer setter-style assignment but want only **one** rebuild, use the
+`batch_update()` context manager:
+
+```python
+with lt.batch_update():
+    lt.sex = "f"
+    lt.cohort = 1975
+    lt.duration = 1
+# → exactly one decrement rebuild when the with block exits
+```
+
+An exception inside the block rolls back metadata and decrement arrays to the state before entering.
+Nesting `batch_update()` raises `RuntimeError`.
+
+### What combinations raise `ValueError`
+
+| Combination | Reason |
+|---|---|
+| `pending=True` on a period (static) table | Nothing to defer |
+| `pending=True` with partial scalar metadata (`sex`, `cohort`, and/or `duration`) | Values stored on the shell; table stays pending until complete |
+| `pending=True` with **all** required metadata at construction | Fully configured immediately (`metadata_pending=False`) |
+| `cohort=[...]` or `duration=[...]` + `pending=True` | Contradicts: enumerating and deferring the same axis |
+| `cartesian=True` + `pending=True` | No clean semantics |
+| `return_dict=True` + `pending=True` | `TableKey` would be stale after `configure()` |
+
+For **dict-keyed lookup** after configuring, use `TableRegistry` (see below).
+
+(deferred-choice)=
+### When to use which tool
+
+None of these patterns is mandatory for batch — they are ways to build a **list of
+configured** `LifeTable` instances without aliasing or redundant construction.
+
+| Situation | Recommended approach | Code example |
+|---|---|---|
+| Same cohort (or duration) processed **one group at a time** | `pending=True` + `configure(cohort=…)` per group | {ref}`recipe 17 <recipe-17>` ({doc}`../cookbook`) |
+| Vectorial zip on sex with a **shared deferred** cohort | `pending=True` + `configure_all(..., cohort=…)` | § `configure_all()` above (this page) |
+| Mixed demographics in **one batch**, keys built incrementally | `TableRegistry` + `get_or_create()` | {ref}`recipe 18 <recipe-18>` ({doc}`../cookbook`) |
+| Large portfolio; all unique `(sex, cohort)` pairs **known upfront** | `return_dict=True` + `TableKey` lookup | {ref}`lookup dict <cohort-lookup-dict>` ({doc}`batch_calculations`) |
+| Study grid / cartesian parameter sweep | `return_dict=True` + `cartesian=True` | {ref}`return_dict lookup <return-dict-lookup>` ({doc}`batch_calculations`) |
+| Few distinct cohorts; assemble list by hand | Vectorial zip constructor | {ref}`few distinct cohorts <cohort-few-distinct>` ({doc}`batch_calculations`) |
+| Very large portfolio; **memory** constrained | `groupby` + one instance + setters | {ref}`memory-optimal <cohort-memory-optimal>` ({doc}`batch_calculations`) |
+| Small portfolio; metadata known per row | Direct constructor in a list comp | ``[LifeTable(..., cohort=p["cohort"]) for p in policies]`` |
+| Select table; **different duration** per policy | `TableRegistry` (`duration` in cache key) | {ref}`tableregistry` below; {ref}`recipe 18 <recipe-18>` |
+| Same demographic key; **different** interest rate | Pass `ir=` to the batch call | {ref}`multi-table batch <multi-table-batch-functional-api>` ({doc}`batch_calculations`) |
+
+:::{tip}
+`TableRegistry` is a convenience wrapper around the same idea as the
+{ref}`lookup dict <cohort-lookup-dict>` pattern — lazy `get_or_create` with LRU
+instead of building every unique key in one constructor call.
+:::
+
+API reference: {doc}`../api/table_registry`.
+
+(tableregistry)=
+### `TableRegistry` — stable instance cache for heterogeneous batch
+
+A pending instance can represent only **one** cohort/duration at a time.  For a portfolio
+where different policies require **different** cohort or duration values simultaneously,
+use `TableRegistry`: it caches one configured instance per `TableKey` and never mutates
+cached instances.
+
+```python
+from lactuca import LifeTable, TableRegistry
+
+reg = TableRegistry(LifeTable)
+
+# Cache one instance per (sex, cohort) — same key always returns the same object
+lt_m60  = reg.get_or_create(None, "PER2020_Ind_1o", "m", cohort=1960)
+lt_f75  = reg.get_or_create(None, "PER2020_Ind_1o", "f", cohort=1975)
+lt_m60b = reg.get_or_create(None, "PER2020_Ind_1o", "m", cohort=1960)   # same cached instance
+assert lt_m60 is lt_m60b
+```
+
+Build a per-policy table list for the functional batch API without aliasing risk:
+
+```python
+from lactuca import LifeTable, TableRegistry, ax
+
+reg = TableRegistry(LifeTable)
+
+policies = [
+    {"sex": "m", "cohort": 1960, "age": 65},
+    {"sex": "f", "cohort": 1975, "age": 60},
+    {"sex": "m", "cohort": 1960, "age": 62},
+]
+tables  = [reg.get_or_create(None, "PER2020_Ind_1o", p["sex"], cohort=p["cohort"]) for p in policies]
+ages    = [p["age"] for p in policies]
+results = ax(tables, ages, ir=0.03)
+```
+
+`interest_rate` is **not** part of `TableKey`.  Pass `interest_rate=` (and other constructor
+kwargs) only on the **first** request for a demographic key — cache hits return the existing
+instance unchanged:
+
+```python
+lt = reg.get_or_create(None, "PER2020_Ind_1o", "m", cohort=1960, interest_rate=0.035)
+# Same key later — same object; rate is NOT re-applied:
+lt2 = reg.get_or_create(None, "PER2020_Ind_1o", "m", cohort=1960, interest_rate=0.04)
+assert lt is lt2 and lt.interest_rate == 0.035
+```
+
+When policies share a demographic key but need different rates, pass `ir=` to the batch
+method instead of expecting `get_or_create` to update the cached instance.
+
+The registry is **instance-scoped** and bounded (LRU, default `maxsize=256`).  Override
+`maxsize` at construction if needed.  Call `reg.clear()` to empty the cache;
+`config.reset()` does **not** clear user-owned registries.  Cached instances are
+**stable** — do not mutate them after retrieval — so the same object can be shared
+safely across a batch call.
+
+`TableRegistry` accepts any **concrete** decrement table class (`LifeTable`, `DisabilityTable`,
+`ExitTable`) — pass the class to the constructor or to each `get_or_create()` call.
+Abstract :class:`~lactuca.tables.DecrementTable` raises :exc:`TypeError`.
+
+:::{warning}
+**Aliasing with a mutated pending instance** — if you pass the same instance to multiple
+entries of a `tables=` list and call `configure()` between uses, all list entries reflect
+the last configured state (they all point to the same object).  Use `TableRegistry` for
+heterogeneous batches to guarantee that each `TableKey` maps to a distinct stable instance.
+:::
+
 ## Decimal precision
 
 `lt.decimals` is a **read-only proxy** that exposes the current precision settings from

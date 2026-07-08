@@ -112,6 +112,37 @@ regardless of portfolio size.
 
 ---
 
+
+(pending-tables-in-batch)=
+## Pending tables in batch mode
+
+A table created with `pending=True` that has **not** been finalized via `configure()`
+is rejected immediately by all batch entry points that accept a `tables=` argument
+(`ajoint`, `axy`, `Axy`, `axyz`, `Axyz`, `Afirst`, `nExy`, `nExyz`, `nEjoint`, and the
+single-life functional variants with a list of per-policy tables).
+
+**Cause**: a pending instance contains no decrement vector, so any calculation would
+produce undefined results.  The batch dispatcher rejects any table whose
+``metadata_pending`` flag is still ``True`` before touching any data.
+
+```python
+from lactuca import LifeTable, ax
+
+lt_pending = LifeTable("PER2020_Ind_1o", "m", pending=True)
+
+# This raises ValueError — table not configured
+ax([lt_pending], [65], ir=0.03)   # ValueError: pending table
+
+# Configure first, then pass to batch
+lt_pending.configure(cohort=1969)
+result = ax([lt_pending], [65], ir=0.03)   # OK
+```
+
+For portfolios where **different policies require different cohorts or durations**,
+use {class}`~lactuca.TableRegistry` to build a stable per-policy table list without
+aliasing risk — see {ref}`tableregistry` and {ref}`deferred-choice` in
+{doc}`using_tables`, and {doc}`../api/table_registry`.
+
 (error-handling-in-batch-mode)=
 ## Error handling in batch mode
 
@@ -615,6 +646,7 @@ requires one `LifeTable` per unique `(sex, cohort)` combination.  See
 [Cohort and duration](#cohort-and-duration-instance-level-properties) for the recommended patterns.
 :::
 
+(return-dict-lookup)=
 ### Building a lookup dict with `return_dict=True`
 
 For **study grids** and **parameterised valuation runs**, pass `return_dict=True` to the
@@ -1312,6 +1344,9 @@ The two dimensions that **cannot** be passed per-policy are:
 | `cohort` | Drives projection of the generational *qx* grid at construction time | `LifeTable(..., cohort=year)` or `lt.cohort = year`. Use one `LifeTable` per distinct cohort — see patterns below. |
 | `duration` | Select-table offset applied at construction time | `LifeTable(..., duration=k)` or `lt.duration = k`. Use one `LifeTable` per distinct select duration. |
 
+For a consolidated decision guide (`pending`, `TableRegistry`, `return_dict`, group loops),
+see {ref}`deferred-choice` in {doc}`using_tables`.
+
 :::{note}
 Passing lists to the `LifeTable` constructor (e.g.
 `LifeTable("...", ["m", "f"], cohort=[1960, 1963])`) creates one instance per entry.
@@ -1326,6 +1361,7 @@ distinct cohort value and assemble a per-policy reference list — the lookup-di
 pattern shown below.
 :::
 
+(cohort-few-distinct)=
 ### Few distinct cohorts (direct construction)
 
 ```python
@@ -1343,6 +1379,7 @@ print(result)
 config.reset_to_defaults()
 ```
 
+(cohort-lookup-dict)=
 ### Large portfolios with many cohorts (lookup dict, no policy limit)
 
 ```python
@@ -1393,6 +1430,7 @@ result = ax(table_list, ages, n=20)
 
 Contracts sharing the same sex and cohort are calculated together — no per-member Python loop is needed.
 
+(cohort-memory-optimal)=
 ### Memory-optimal: one table, group-then-update
 
 When a portfolio spans many `(sex, cohort, duration)` combinations and memory is

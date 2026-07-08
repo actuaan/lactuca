@@ -10,6 +10,7 @@ decrement_table
 life_table
 disability_table
 exit_table
+table_registry
 ```
 
 ```{toctree}

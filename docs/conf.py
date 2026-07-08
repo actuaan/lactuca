@@ -41,6 +41,8 @@ extensions = [
     "sphinx_copybutton",  # Copy code button
     "myst_parser",  # Markdown support
     "sphinx_design",  # Cards, tabs, grids
+    "sphinx_sitemap",  # sitemap.xml for search engines (uses html_baseurl)
+    "sphinxext.opengraph",  # Open Graph meta tags (social + discovery)
 ]
 
 # MyST configuration (Markdown support)
@@ -139,6 +141,22 @@ html_copy_source = False  # Do NOT copy .md/.rst files to _sources/ in the build
 
 html_logo = "_static/lactuca_logo.svg"
 html_favicon = "_static/lactuca_logo.svg"
+
+# -- SEO (canonical URLs + sitemap) --------------------------------------------
+# Canonical URLs come from Sphinx core (html_baseurl), not from sphinx-sitemap.
+# Multi-version deploy serves /latest/ as the canonical tree on www.lactuca.io.
+_DOCS_BASE_URL = os.getenv("SPHINX_HTML_BASEURL", "https://www.lactuca.io/latest/")
+html_baseurl = _DOCS_BASE_URL
+sitemap_url_scheme = "{link}"
+sitemap_excludes = [
+    "genindex.html",
+    "py-modindex.html",
+    "search.html",
+]
+ogp_site_url = _DOCS_BASE_URL
+ogp_site_name = project
+# Logo is SVG; auto-generated social preview cards warn on every page in -W CI.
+ogp_social_cards = {"enable": False}
 
 # -- Options for MathJax (LaTeX math) ----------------------------------------
 # MathJax configuration for actuarial notation with custom macros

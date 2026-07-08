@@ -89,7 +89,21 @@ for full documentation of each member.
    ~lactuca.tables.DecrementTable.modified
    ~lactuca.tables.DecrementTable.modifications_applied
    ~lactuca.tables.DecrementTable.is_select
+   ~lactuca.tables.DecrementTable.metadata_pending
 ```
+
+### Deferred construction
+
+```{eval-rst}
+.. autosummary::
+   :nosignatures:
+
+   ~lactuca.tables.DecrementTable.configure
+   ~lactuca.tables.DecrementTable.batch_update
+```
+
+See also {class}`~lactuca.TableRegistry` and {func}`~lactuca.configure_all` in
+{doc}`table_registry` and {ref}`deferred-construction` in {doc}`../user_guide/using_tables`.
 
 ### Table metadata
 
