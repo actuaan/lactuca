@@ -934,11 +934,11 @@ adjusted-rate equivalence <span class="math notranslate nohighlight">\(i'=(1+i)/
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Annual whole-life annuity-due: äx(65)</span>
 <span class="n">a_wl</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">a_wl</span><span class="p">)</span>           <span class="c1"># → 16.0899</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_wl</span><span class="p">)</span>           <span class="c1"># → 18.0389</span>
 
 <span class="c1"># 20-year temporary annuity-due: ä_{65:20|}</span>
 <span class="n">a_temp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -961,7 +961,7 @@ adjusted-rate equivalence <span class="math notranslate nohighlight">\(i'=(1+i)/
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">x</span> <span class="o">=</span> <span class="mi">65</span>
@@ -979,31 +979,16 @@ adjusted-rate equivalence <span class="math notranslate nohighlight">\(i'=(1+i)/
 </section>
 <section id="annuity-insurance-duality">
 <h3>Annuity-insurance duality<a class="headerlink" href="#annuity-insurance-duality" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
-
-<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">insurances</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
-
-<span class="n">i</span> <span class="o">=</span> <span class="mf">0.03</span>
-<span class="n">d_rate</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>    <span class="c1"># annual discount rate d = 1 - v</span>
-
-<span class="n">ax_val</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>      <span class="c1"># annuity-due, m=1</span>
-<span class="n">Ax_val</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">Ax</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>      <span class="c1"># annual whole-life insurance</span>
-
-<span class="c1"># Check: Ax + d * äx ≈ 1  (exact under m=1, mortality_placement=&quot;end&quot;)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">Ax_val</span> <span class="o">+</span> <span class="n">d_rate</span> <span class="o">*</span> <span class="n">ax_val</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>   <span class="c1"># ≈ 1.0 (small gap from default &quot;mid&quot; placement)</span>
-
-<span class="n">config</span><span class="o">.</span><span class="n">reset_to_defaults</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>The worked numerical check of <span class="math notranslate nohighlight">\(A_x + d\,\ddot{a}_x \approx 1\)</span> (same mortality
+base for insurance and premium annuity) lives in <a class="reference internal" href="life_insurances_guide.html"><span class="doc">Life Insurances</span></a>
+§ Annuity-insurance duality, using a life-risk table (PASEM).</p>
 </section>
 <section id="prospective-reserve-at-elapsed-time-ts">
 <h3>Prospective reserve at elapsed time <code class="docutils literal notranslate"><span class="pre">ts</span></code><a class="headerlink" href="#prospective-reserve-at-elapsed-time-ts" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">x</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">30</span>
 

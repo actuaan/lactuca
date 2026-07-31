@@ -33,7 +33,7 @@ Scalar `x` + none of the above → returns **`float`**.
 ```python
 from lactuca import äx, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 result = lt.äx([50, 150, 65], n=20, on_error="nan", record_ids=["P1", "P2", "P3"])
 values, report = result  # tuple unpack (usual)
 # Or: result.values, result.errors

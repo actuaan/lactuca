@@ -1320,7 +1320,7 @@ policy when you need independent scenario state.  See <a class="reference intern
 <span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">GrowthRate</span><span class="p">,</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
 <span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">({</span><span class="s2">&quot;base&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s2">&quot;piecewise&quot;</span><span class="p">:</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])})</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Gen_2o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">55.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">])</span>
 
 <span class="n">ir</span><span class="o">.</span><span class="n">active_scenario</span> <span class="o">=</span> <span class="s2">&quot;base&quot;</span>
@@ -2056,7 +2056,7 @@ This is the pattern required when a regulatory template demands a fixed-bucket t
 <p class="sd-card-text">The following example shows the reshape effect for a monthly life annuity (<code class="docutils literal notranslate"><span class="pre">äx</span></code>, <code class="docutils literal notranslate"><span class="pre">m=12</span></code>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">payment_times</span>
 
-<span class="n">lt</span>   <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span>   <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">6</span>
@@ -2066,7 +2066,7 @@ This is the pattern required when a regulatory template demands a fixed-bucket t
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exact  total_pv         : </span><span class="si">{</span><span class="n">flows_exact</span><span class="p">[</span><span class="s1">&#39;total_pv&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exact  len(expected_cf) : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">flows_exact</span><span class="p">[</span><span class="s1">&#39;expected_cf&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exact  time_grid[:4]    : </span><span class="si">{</span><span class="n">flows_exact</span><span class="p">[</span><span class="s1">&#39;time_grid&#39;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="c1"># Exact  total_pv         : 53.767205</span>
+<span class="c1"># Exact  total_pv         : 50.631616</span>
 <span class="c1"># Exact  len(expected_cf) : 240</span>
 <span class="c1"># Exact  time_grid[:4]    : [0.         0.08333333 0.16666667 0.25      ]</span>
 
@@ -2077,7 +2077,7 @@ This is the pattern required when a regulatory template demands a fixed-bucket t
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annual total_pv         : </span><span class="si">{</span><span class="n">flows_annual</span><span class="p">[</span><span class="s1">&#39;total_pv&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annual len(expected_cf) : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">flows_annual</span><span class="p">[</span><span class="s1">&#39;expected_cf&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annual time_grid        : </span><span class="si">{</span><span class="n">flows_annual</span><span class="p">[</span><span class="s1">&#39;time_grid&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="c1"># Annual total_pv         : 53.767205   ← identical to exact</span>
+<span class="c1"># Annual total_pv         : 50.631616   ← identical to exact</span>
 <span class="c1"># Annual len(expected_cf) : 20</span>
 <span class="c1"># Annual time_grid        : [ 1.  2.  3. … 20.]</span>
 

@@ -809,7 +809,7 @@ same two required arguments: the table identifier (a string) and the sex code
 <p>Static tables need no cohort. The object is ready to use immediately:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="c1"># PASEM 2020, 1st order — Spanish annuity reserves (conservative)</span>
+<span class="c1"># PASEM 2020, 1st order — Spanish life-risk / mortality table (conservative)</span>
 <span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>   <span class="c1"># male</span>
 <span class="n">pasem_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">)</span> <span class="c1"># female</span>
 
@@ -1000,10 +1000,10 @@ It can be set at construction time or assigned later:</p>
 only; <code class="docutils literal notranslate"><span class="pre">interest_rate</span></code> is left unchanged:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">pasem</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
-<span class="n">pasem</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="mf">0.03</span>
-<span class="n">a_default</span>  <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>           <span class="c1"># uses 0.03</span>
-<span class="n">a_override</span> <span class="o">=</span> <span class="n">pasem</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># uses 0.05; interest_rate still 0.03</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">)</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">a_default</span>  <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>           <span class="c1"># uses 0.03</span>
+<span class="n">a_override</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># uses 0.05; interest_rate still 0.03</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_default  = </span><span class="si">{</span><span class="n">a_default</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_override = </span><span class="si">{</span><span class="n">a_override</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1358,7 +1358,7 @@ provides four standard variants — whole life, temporary, deferred, and continu
 <h3>Whole life annuities<a class="headerlink" href="#whole-life-annuities" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Whole life annuity-due (annual payments): äx(65)</span>
 <span class="n">adue</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
@@ -1378,7 +1378,7 @@ provides four standard variants — whole life, temporary, deferred, and continu
 <h3>Temporary annuities<a class="headerlink" href="#temporary-annuities" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># 20-year temporary annuity-due: ä65:20|</span>
 <span class="n">atemp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -1405,15 +1405,15 @@ provides four standard variants — whole life, temporary, deferred, and continu
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1971</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># 10-year deferred whole life annuity: 10|äx(55)</span>
 <span class="n">adef</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">adef</span><span class="p">)</span>         <span class="c1"># → 11.3534</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adef</span><span class="p">)</span>         <span class="c1"># → 13.4328</span>
 
 <span class="c1"># 5-year deferred, 20-year temporary: 5|ä60:20|</span>
 <span class="n">adef_temp</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">adef_temp</span><span class="p">)</span>    <span class="c1"># → 11.3491</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adef_temp</span><span class="p">)</span>    <span class="c1"># → 12.2533</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">reset_to_defaults</span><span class="p">()</span>
 </pre></div>
@@ -1426,7 +1426,7 @@ deferred products (joint annuities and first-death insurances), see <a class="re
 <p>Continuous mode is activated globally via <code class="docutils literal notranslate"><span class="pre">config.calculation_mode</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_precision&quot;</span>
 
 <span class="c1"># Continuous whole life annuity: āx(65)</span>
@@ -1551,17 +1551,18 @@ identical to the method call:</p>
 
 <span class="n">ir</span> <span class="o">=</span> <span class="mf">0.03</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+<span class="n">lt_ann</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+<span class="n">lt_ins</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="n">DisabilityTable</span><span class="p">(</span><span class="s2">&quot;PEAI2007_IAP_Ind&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">et</span> <span class="o">=</span> <span class="n">ExitTable</span><span class="p">(</span><span class="s2">&quot;DummyEXIT&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 
-<span class="n">äx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># whole-life annuity-due</span>
-<span class="n">ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># whole-life immediate annuity</span>
-<span class="n">Ax</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>               <span class="c1"># whole-life insurance</span>
-<span class="n">nEx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>        <span class="c1"># 10-year pure endowment</span>
+<span class="n">äx</span><span class="p">(</span><span class="n">lt_ann</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>           <span class="c1"># whole-life annuity-due (longevity / PER)</span>
+<span class="n">ax</span><span class="p">(</span><span class="n">lt_ann</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>           <span class="c1"># whole-life immediate annuity</span>
+<span class="n">Ax</span><span class="p">(</span><span class="n">lt_ins</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>           <span class="c1"># whole-life insurance (life-risk / PASEM)</span>
+<span class="n">nEx</span><span class="p">(</span><span class="n">lt_ins</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>    <span class="c1"># 10-year pure endowment</span>
 
-<span class="n">lx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>               <span class="c1"># survivors at age 65</span>
-<span class="n">qx</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>               <span class="c1"># annual mortality probability at 50</span>
+<span class="n">lx</span><span class="p">(</span><span class="n">lt_ann</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>           <span class="c1"># survivors at age 65</span>
+<span class="n">qx</span><span class="p">(</span><span class="n">lt_ins</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>           <span class="c1"># annual mortality probability at 50</span>
 <span class="n">ix</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>               <span class="c1"># annual disability incidence at 40</span>
 <span class="n">ox</span><span class="p">(</span><span class="n">et</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>               <span class="c1"># annual withdrawal probability at 45</span>
 </pre></div>
@@ -1581,7 +1582,7 @@ re-anchors survival and discount factors to the valuation date (for <code class=
 equivalent to calling at attained age <span class="math notranslate nohighlight">\(x + ts\)</span> with remaining term <span class="math notranslate nohighlight">\(n_\text{eff}=\max(n-ts,\,0)\)</span>; in general <span class="math notranslate nohighlight">\(n_\text{eff}=\max(n-\max(ts-d,\,0),\,0)\)</span> and <span class="math notranslate nohighlight">\(d_\text{eff}=\max(d-ts,\,0)\)</span> — see <a class="reference internal" href="prospective_reserve.html"><span class="doc">Prospective Reserves and the ts Parameter</span></a> and <a class="reference internal" href="last_payment_adjustment.html"><span class="doc">Last Payment Adjustment</span></a>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1976</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Mid-year reserve: 15-year annuity-due at age 50, 6 months into the policy year</span>
 <span class="n">a_midyear</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>

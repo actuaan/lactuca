@@ -96,6 +96,9 @@ lt = LifeTable("PER2020_Ind_1o", "m", cohort=1969)
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 ```
 
+Match table family to product: **longevity / pensions** → `PER2020_*` + `cohort=`;
+**life-risk / death benefits** → `PASEM2020_*`. Static demos may use `GRMF95`.
+
 Table names and bundled IDs: see
 https://www.lactuca.io/latest/user_guide/bundled_tables.html
 

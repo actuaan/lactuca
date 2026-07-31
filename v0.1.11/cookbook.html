@@ -661,8 +661,8 @@ For bulk portfolio work, see <a class="reference internal" href="user_guide/usin
 <td><p>multi-scenario <code class="docutils literal notranslate"><span class="pre">InterestRate</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>6</p></td>
-<td><p>Period vs generational mortality</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">cohort=</span></code> on generational tables</p></td>
+<td><p>Static vs generational mortality</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GRMF95</span></code> vs <code class="docutils literal notranslate"><span class="pre">PER</span></code> + <code class="docutils literal notranslate"><span class="pre">cohort=</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>7</p></td>
 <td><p>Tiered benefit schedule</p></td>
@@ -742,13 +742,14 @@ for whole-life.</p>
 </section>
 <section id="whole-life-annuity-due">
 <h2>2. Whole-life annuity-due<a class="headerlink" href="#whole-life-annuity-due" title="Link to this heading">#</a></h2>
-<p>Present value of a unit whole-life annuity-due for a female aged 60,
-using the PASEM2020 sector aggregate related-risk table <code class="docutils literal notranslate"><span class="pre">Rel</span></code> (first order):</p>
+<p>Present value of a unit whole-life annuity-due for a female aged 60
+(born 1966; valuation year ≈ 2026), using the Spanish longevity table
+<code class="docutils literal notranslate"><span class="pre">PER2020_Ind_1o</span></code> (first order):</p>
 <div class="math notranslate nohighlight">
 \[\ddot{a}_x^{(m)} = \frac{1}{m} \sum_{k=0}^{\infty} v^{k/m} \cdot {}_{k/m}p_x\]</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1966</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">a_due</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Whole-life annuity-due (a_dd_60) = </span><span class="si">{</span><span class="n">a_due</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -785,7 +786,10 @@ The last-survivor annuity follows from the standard identity:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
 <span class="c1"># Vectorized instantiation: two LifeTable objects in one call</span>
-<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">),</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="c1"># Ages 65/62 in 2026 → cohorts 1961 / 1964</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
+    <span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">),</span> <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">1964</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.02</span>
+<span class="p">)</span>
 
 <span class="n">a_x</span>     <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a_y</span>     <span class="o">=</span> <span class="n">lt_f</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">62</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -815,7 +819,7 @@ and other derivable joint-life formulas.</p>
     <span class="s1">&#39;stressed&#39;</span><span class="p">:</span>  <span class="mf">0.00</span><span class="p">,</span>
 <span class="p">})</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Gen_2o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;GRMF95&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="n">ir</span><span class="o">.</span><span class="n">scenarios</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="n">scenario</span><span class="p">)</span>
@@ -832,7 +836,7 @@ multi-scenario object once (to <code class="docutils literal notranslate"><span 
     <span class="s1">&#39;stressed&#39;</span><span class="p">:</span>  <span class="mf">0.00</span><span class="p">,</span>
 <span class="p">})</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Gen_2o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;GRMF95&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
 
 <span class="n">ir</span><span class="o">.</span><span class="n">active_scenario</span> <span class="o">=</span> <span class="s1">&#39;base&#39;</span>
 <span class="n">bel_base</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
@@ -852,21 +856,22 @@ See <a class="reference internal" href="user_guide/interest_rates_guide.html#int
 For piecewise scenarios, use <code class="docutils literal notranslate"><span class="pre">scenario.get_rate(t)</span></code> or inspect <code class="docutils literal notranslate"><span class="pre">scenario.rates</span></code>.</p>
 </div>
 </section>
-<section id="cohort-vs-period-projection">
-<h2>6. Cohort vs. period projection<a class="headerlink" href="#cohort-vs-period-projection" title="Link to this heading">#</a></h2>
-<p>Compare period and generational annuity values. A 65-year-old in 2026 was born
-in 1961. The generational table <code class="docutils literal notranslate"><span class="pre">PER2020_Ind_2o</span></code> embeds projection improvements:</p>
+<section id="static-vs-generational-mortality">
+<h2>6. Static vs. generational mortality<a class="headerlink" href="#static-vs-generational-mortality" title="Link to this heading">#</a></h2>
+<p>Compare a <strong>static</strong> (period) table with a <strong>generational</strong> longevity table.
+A 65-year-old in 2026 was born in 1961. The generational table <code class="docutils literal notranslate"><span class="pre">PER2020_Ind_2o</span></code>
+embeds projection improvements; <code class="docutils literal notranslate"><span class="pre">GRMF95</span></code> is a classical static table (no cohort):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt_period</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
-<span class="n">lt_cohort</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_2o&#39;</span><span class="p">,</span>   <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_static</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;GRMF95&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_cohort</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_2o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
-<span class="n">a_period</span> <span class="o">=</span> <span class="n">lt_period</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">65</span><span class="p">)</span>
+<span class="n">a_static</span> <span class="o">=</span> <span class="n">lt_static</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">65</span><span class="p">)</span>
 <span class="n">a_cohort</span> <span class="o">=</span> <span class="n">lt_cohort</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">65</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Period annuity:  </span><span class="si">{</span><span class="n">a_period</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cohort annuity:  </span><span class="si">{</span><span class="n">a_cohort</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference:      </span><span class="si">{</span><span class="n">a_cohort</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a_period</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Static annuity:       </span><span class="si">{</span><span class="n">a_static</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generational annuity: </span><span class="si">{</span><span class="n">a_cohort</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference:           </span><span class="si">{</span><span class="n">a_cohort</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a_static</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -876,7 +881,7 @@ in 1961. The generational table <code class="docutils literal notranslate"><span
 using <code class="docutils literal notranslate"><span class="pre">ax</span></code> (annuity-immediate), which supports custom cashflow schedules:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">payment_times</span><span class="p">,</span> <span class="n">tiered_amounts</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">times</span>   <span class="o">=</span> <span class="n">payment_times</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">amounts</span> <span class="o">=</span> <span class="n">tiered_amounts</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">breakpoints</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mf">12_000.0</span><span class="p">,</span> <span class="mf">8_000.0</span><span class="p">])</span>
@@ -1027,7 +1032,7 @@ no cohort updates) and you want to keep the transformation inside a Polars chain
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span>      <span class="p">[</span><span class="s1">&#39;A001&#39;</span><span class="p">,</span> <span class="s1">&#39;A002&#39;</span><span class="p">,</span> <span class="s1">&#39;A003&#39;</span><span class="p">],</span>
@@ -1224,7 +1229,7 @@ Pass the deferment in years as <code class="docutils literal notranslate"><span 
 \[\ddot{a}_{x:\overline{n}|}^{(m)} \text{ with deferment } d \quad\Rightarrow\quad {}_d|\ddot{a}_x^{(m)}\]</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PASEM2020_Rel_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s1">&#39;PER2020_Ind_1o&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1974</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">current_age</span>    <span class="o">=</span> <span class="mi">52</span>
 <span class="n">retirement_age</span> <span class="o">=</span> <span class="mi">65</span>
@@ -1425,7 +1430,7 @@ mutation happens between batch calls, so there is no aliasing.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pension-liability-monthly-payments-generational-mortality">3. Pension liability (monthly payments, generational mortality)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-life-pension-couple-vectorized-instantiation">4. Joint-life pension (couple, vectorized instantiation)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interest-rate-sensitivity">5. Interest rate sensitivity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohort-vs-period-projection">6. Cohort vs. period projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-vs-generational-mortality">6. Static vs. generational mortality</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-benefit-schedule">7. Custom benefit schedule</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-expectation-of-life">8. Complete expectation of life</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#portfolio-liability-valuation">9. Portfolio liability valuation</a></li>

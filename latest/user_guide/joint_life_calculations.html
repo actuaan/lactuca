@@ -731,7 +731,10 @@ any number of lives (<code class="docutils literal notranslate"><span class="pre
 instead of setting it individually on each object afterwards:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># All four instances get interest_rate=0.03 in a single call</span>
 <span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">,</span> <span class="n">lt_m2</span><span class="p">,</span> <span class="n">lt_f2</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
-    <span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">),</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+    <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">),</span>
+    <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">1964</span><span class="p">,</span> <span class="mi">1968</span><span class="p">,</span> <span class="mi">1974</span><span class="p">],</span>
+    <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -739,8 +742,12 @@ instead of setting it individually on each object afterwards:</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
+<span class="c1"># Cohorts for valuation ≈ 2026: 65/62 → 1961/1964; extra lives ≈ 58/52</span>
 <span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">,</span> <span class="n">lt_m2</span><span class="p">,</span> <span class="n">lt_f2</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
-    <span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">),</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+    <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">),</span>
+    <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">1964</span><span class="p">,</span> <span class="mi">1968</span><span class="p">,</span> <span class="mi">1974</span><span class="p">],</span>
+    <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Two lives: äxy(65, 62) — annuity-due while both survive</span>
@@ -825,11 +832,16 @@ death is governed by <code class="docutils literal notranslate"><span class="pre
 The first argument is a sequence of tables; <code class="docutils literal notranslate"><span class="pre">ages</span></code> is a keyword argument:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">äxy</span><span class="p">,</span> <span class="n">axy</span><span class="p">,</span> <span class="n">Axy</span><span class="p">,</span> <span class="n">nExy</span><span class="p">,</span> <span class="n">äjoint</span><span class="p">,</span> <span class="n">Afirst</span>
 
-<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
+    <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">1964</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+<span class="p">)</span>
+<span class="n">lt_m_risk</span><span class="p">,</span> <span class="n">lt_f_risk</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
+    <span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+<span class="p">)</span>
 
 <span class="c1"># Functional form: pass a sequence of tables and keyword ages</span>
-<span class="n">a_func</span> <span class="o">=</span> <span class="n">äxy</span><span class="p">([</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">62</span><span class="p">])</span>
-<span class="n">A_func</span> <span class="o">=</span> <span class="n">Axy</span><span class="p">([</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">62</span><span class="p">])</span>
+<span class="n">a_func</span> <span class="o">=</span> <span class="n">äxy</span><span class="p">([</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">62</span><span class="p">])</span>           <span class="c1"># longevity / PER</span>
+<span class="n">A_func</span> <span class="o">=</span> <span class="n">Axy</span><span class="p">([</span><span class="n">lt_m_risk</span><span class="p">,</span> <span class="n">lt_f_risk</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">62</span><span class="p">])</span>  <span class="c1"># life-risk / PASEM</span>
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -854,7 +866,9 @@ yields, on taking actuarial present values:</p>
   - \ddot{a}_{xy} - \ddot{a}_{xz} - \ddot{a}_{yz} + \ddot{a}_{xyz}\]</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
+    <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1966</span><span class="p">,</span> <span class="mi">1964</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+<span class="p">)</span>
 
 <span class="n">ax</span>  <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
 <span class="n">ay</span>  <span class="o">=</span> <span class="n">lt_f</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">62</span><span class="p">)</span>
@@ -872,7 +886,9 @@ yields, on taking actuarial present values:</p>
 \[\ddot{a}_{x|y} = \ddot{a}_y - \ddot{a}_{xy}\]</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span>
+    <span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">cohort</span><span class="o">=</span><span class="p">[</span><span class="mi">1966</span><span class="p">,</span> <span class="mi">1964</span><span class="p">],</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span>
+<span class="p">)</span>
 
 <span class="n">ay</span>  <span class="o">=</span> <span class="n">lt_f</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">62</span><span class="p">)</span>
 <span class="n">axy</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äxy</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">62</span><span class="p">],</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">)</span>
@@ -973,8 +989,12 @@ grouping by product when schedules differ).</p>
 <h3>Two-life batch<a class="headerlink" href="#two-life-batch" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">äxy</span><span class="p">,</span> <span class="n">Axy</span>
 
-<span class="n">lt_m</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
-<span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="c1"># Longevity tables for joint annuities (representative cohorts for the age grid)</span>
+<span class="n">lt_m</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1966</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_f</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1971</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="c1"># Life-risk tables for first-death insurance</span>
+<span class="n">lt_m_risk</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_f_risk</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">x_ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">65</span><span class="p">]</span>
 <span class="n">y_ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">61</span><span class="p">]</span>
@@ -982,14 +1002,14 @@ grouping by product when schedules differ).</p>
 <span class="c1"># Joint annuity-due: payments while both lives survive</span>
 <span class="n">result_ann</span> <span class="o">=</span> <span class="n">äxy</span><span class="p">([</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">(</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="c1"># First-death insurance</span>
-<span class="n">result_ins</span> <span class="o">=</span> <span class="n">Axy</span><span class="p">([</span><span class="n">lt_m</span><span class="p">,</span> <span class="n">lt_f</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">(</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-
-<span class="n">net_premium</span> <span class="o">=</span> <span class="n">result_ins</span> <span class="o">/</span> <span class="n">result_ann</span>
+<span class="c1"># First-death insurance (same mortality base for A and ä if computing net premium)</span>
+<span class="n">result_ins</span> <span class="o">=</span> <span class="n">Axy</span><span class="p">([</span><span class="n">lt_m_risk</span><span class="p">,</span> <span class="n">lt_f_risk</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">(</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">result_ann_risk</span> <span class="o">=</span> <span class="n">äxy</span><span class="p">([</span><span class="n">lt_m_risk</span><span class="p">,</span> <span class="n">lt_f_risk</span><span class="p">],</span> <span class="n">ages</span><span class="o">=</span><span class="p">(</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">net_premium</span> <span class="o">=</span> <span class="n">result_ins</span> <span class="o">/</span> <span class="n">result_ann_risk</span>
 
 <span class="c1"># OOP equivalent — shared table for life x, table_y for life y</span>
 <span class="n">result_ann_oop</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">äxy</span><span class="p">((</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">result_ins_oop</span> <span class="o">=</span> <span class="n">lt_m</span><span class="o">.</span><span class="n">Axy</span><span class="p">((</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">result_ins_oop</span> <span class="o">=</span> <span class="n">lt_m_risk</span><span class="o">.</span><span class="n">Axy</span><span class="p">((</span><span class="n">x_ages</span><span class="p">,</span> <span class="n">y_ages</span><span class="p">),</span> <span class="n">table_y</span><span class="o">=</span><span class="n">lt_f_risk</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -997,7 +1017,7 @@ grouping by product when schedules differ).</p>
 <h3>Three-life batch<a class="headerlink" href="#three-life-batch" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">äxyz</span>
 
-<span class="n">lt_z</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt_z</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PER2020_Ind_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">cohort</span><span class="o">=</span><span class="mi">1976</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">z_ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">58</span><span class="p">]</span>
 

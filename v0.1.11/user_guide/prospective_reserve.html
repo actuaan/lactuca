@@ -771,7 +771,7 @@ age <span class="math notranslate nohighlight">\(x + ts\)</span>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Standard anniversary reserve (ts = 0, no shift)</span>
 <span class="n">reserve_ann</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
@@ -790,7 +790,7 @@ The survival and discounting are computed exactly for the fractional age:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Mid-year valuation: 0.5 years since last anniversary</span>
 <span class="n">reserve_mid</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -866,7 +866,7 @@ portion of <span class="math notranslate nohighlight">\(ts\)</span> beyond <span
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># ts=0.5 &lt; d=5 → deferment is only partially consumed: d_eff = 4.5, n_eff = 20</span>
 <span class="n">reserve_combined</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -908,7 +908,7 @@ fractional <code class="docutils literal notranslate"><span class="pre">ts</span
 <span class="n">config</span><span class="o">.</span><span class="n">force_integer_ts</span> <span class="o">=</span> <span class="kc">True</span>          <span class="c1"># fractional ts now raises ValueError</span>
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="c1"># ValueError: [äx] Parameter &#39;ts&#39; (shift) must be an integer value (got ts=0.5).</span>
 <span class="c1"># To allow fractional shifts, set &#39;Config.force_integer_ts = False&#39;. Note that GrowthRate</span>
@@ -974,7 +974,7 @@ is needed:</p>
 <span class="c1"># Piecewise curve: 2.5% for years 0–5, 3.0% for years 5–10, 3.5% thereafter</span>
 <span class="c1"># 2 terms → 3 rates required (last rate applies indefinitely)</span>
 <span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.030</span><span class="p">,</span> <span class="mf">0.035</span><span class="p">])</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 
 <span class="c1"># The yield curve is automatically shifted by ts=2.5 yr internally:</span>
 <span class="c1"># effective curve from valuation date = 2.5% for 2.5 yr, 3.0% for 5 yr, 3.5% thereafter</span>
@@ -1000,7 +1000,7 @@ not by the raw <code class="docutils literal notranslate"><span class="pre">ts</
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Growth schedule: 3% for first 2 years, then 2% indefinitely</span>
 <span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span> <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1020,7 +1020,7 @@ the user to confirm the convention is appropriate for their calculation:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">GrowthRate</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">gr</span> <span class="o">=</span> <span class="n">GrowthRate</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>  <span class="c1"># constant 2% growth schedule</span>
 
 <span class="n">reserve</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">gr</span><span class="o">=</span><span class="n">gr</span><span class="p">)</span>
@@ -1098,7 +1098,7 @@ joint-life calculations.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Reference age (last anniversary), full remaining term, elapsed fraction this year</span>
 <span class="n">ages</span>   <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">]</span>

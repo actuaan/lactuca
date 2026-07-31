@@ -32,8 +32,9 @@ Use Ax(n=20). OOP or functional API — your choice, but be consistent.
 
 ```
 Context: lactuca-ai-core.md + lactuca-ai-batch.md attached.
-Task: Vector of ages [55, 60, 65], same table, per-policy benefits [100, 200, 150],
-20-year temporary annuity-due, m=12, i=3%. Use batch äx with benefits=.
+Task: Vector of ages [55, 60, 65], table PER2020_Ind_1o with cohort=1961 (same table
+for all policies), per-policy benefits [100, 200, 150], 20-year temporary annuity-due,
+m=12, i=3%. Use batch äx with benefits=.
 Avoid naive Python loops with cohort setter.
 ```
 

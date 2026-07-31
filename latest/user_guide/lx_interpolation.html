@@ -765,7 +765,7 @@ The difference is small for low <span class="math notranslate nohighlight">\(q_x
 
 <span class="c1"># discrete_precision: payment grid at 66.5, 67.5, … → lx_interpolation applies at every step</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># --- UDD (linear interpolation) ---</span>
 <span class="n">config</span><span class="o">.</span><span class="n">lx_interpolation</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
@@ -851,14 +851,14 @@ calculations involve a fractional starting age.  The differences arise because U
 places slightly more weight on deaths near the middle of the year, while CFM distributes
 them geometrically.</p>
 <p>The code below compares whole-life annuity values <span class="math notranslate nohighlight">\(\ddot{a}_x^{(m)}\)</span> for a male life
-using <code class="docutils literal notranslate"><span class="pre">PASEM2020_Rel_1o</span></code> at <span class="math notranslate nohighlight">\(i = 3\%\)</span>, at three representative ages and three payment
+using <code class="docutils literal notranslate"><span class="pre">GRMF95</span></code> at <span class="math notranslate nohighlight">\(i = 3\%\)</span>, at three representative ages and three payment
 frequencies.  Since <code class="docutils literal notranslate"><span class="pre">config.lx_interpolation</span></code> is evaluated at call-time, both valuations
 use the same table instance with the setting switched between calls:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">decimals</span><span class="o">.</span><span class="n">annuities</span> <span class="o">=</span> <span class="mi">6</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="c1"># config.lx_interpolation is read at call-time, not at table construction</span>
 
 <span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>

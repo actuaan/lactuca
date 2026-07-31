@@ -789,7 +789,7 @@ call only.</p>
     <span class="s2">&quot;base&quot;</span><span class="p">:</span>      <span class="mf">0.02</span><span class="p">,</span>
     <span class="s2">&quot;piecewise&quot;</span><span class="p">:</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">]),</span>
 <span class="p">})</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Gen_2o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="p">)</span>
 
 <span class="n">ir</span><span class="o">.</span><span class="n">active_scenario</span> <span class="o">=</span> <span class="s2">&quot;base&quot;</span>
 <span class="n">a_base</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -799,7 +799,7 @@ call only.</p>
 </pre></div>
 </div>
 <p>To <strong>freeze</strong> the scenario active when you attach a rate to a table, pass a deep copy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Gen_2o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="n">ir</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 <span class="c1"># lt.interest_rate is independent; parent ir.active_scenario switches do not affect lt</span>
 </pre></div>
 </div>
@@ -1085,7 +1085,7 @@ the global calculation mode from <code class="docutils literal notranslate"><spa
 <span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">calculation_mode</span><span class="p">)</span>   <span class="c1"># mirrors Config</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">calculation_mode</span><span class="p">)</span>   <span class="c1"># same global setting</span>
 </pre></div>
 </div>
@@ -1101,7 +1101,7 @@ configuration).  To change how annuities are valued, update
 and will be wrapped automatically:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">ir</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">ir</span><span class="o">=</span><span class="n">ir</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>     <span class="c1"># explicit InterestRate object</span>
@@ -1113,7 +1113,7 @@ structure or constant rate, pass a per-policy <code class="docutils literal notr
 (not to <code class="docutils literal notranslate"><span class="pre">InterestRate.a()</span></code> batch, which shares one curve per instance):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span>
 <span class="n">ir_flat</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">ir_curve</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">])</span>
@@ -1129,7 +1129,7 @@ Once set, every calculation method uses it automatically — no need to repeat <
 each call:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="mf">0.03</span>          <span class="c1"># set once; accepts float or InterestRate</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>       <span class="c1"># uses 0.03</span>
@@ -1140,7 +1140,7 @@ each call:</p>
 <p>You can also pass the rate at construction time:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>       <span class="c1"># 0.03 is the default</span>
 </pre></div>
 </div>
@@ -1149,7 +1149,7 @@ rather than a single flat rate:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterestRate</span><span class="p">,</span> <span class="n">LifeTable</span>
 
 <span class="n">ir_curve</span> <span class="o">=</span> <span class="n">InterestRate</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.035</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">])</span>
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">interest_rate</span> <span class="o">=</span> <span class="n">ir_curve</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">lt</span><span class="o">.</span><span class="n">ax</span><span class="p">(</span><span class="mi">65</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>       <span class="c1"># discounted with the full term structure</span>

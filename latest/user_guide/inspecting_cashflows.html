@@ -682,7 +682,7 @@ GMM (CSM, RA) or Solvency II SCR calculation by itself.  See <a class="reference
 and the note in § <a class="reference internal" href="#decomposing-and-verifying-a-present-value">Decomposing and verifying a present value</a> below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># result is a dict — inspect all available keys:</span>
@@ -692,7 +692,7 @@ and the note in § <a class="reference internal" href="#decomposing-and-verifyin
 
 <span class="c1"># Reconstruct the scalar PV:</span>
 <span class="n">pv</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2805</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 12.3774</span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -716,7 +716,7 @@ and the note in § <a class="reference internal" href="#decomposing-and-verifyin
 </div>
 <p>A one-element list or array such as <code class="docutils literal notranslate"><span class="pre">x=[65]</span></code> <strong>triggers batch mode</strong> and returns the
 compact four-key dict — not the detailed per-payment dict:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="c1"># Scalar x — detailed per-payment engine dict</span>
 <span class="n">flows_scalar</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1085,11 +1085,11 @@ integrating the <code class="docutils literal notranslate"><span class="pre">int
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_precision&quot;</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;integrand&quot;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;time_grid&quot;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2532</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 12.3474</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>
 </pre></div>
 </div>
@@ -1202,7 +1202,7 @@ For <strong>endowment</strong> methods, both modes return flat scalar dicts — 
 <p><strong><code class="docutils literal notranslate"><span class="pre">discrete_simplified</span></code></strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_simplified&quot;</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -1215,7 +1215,7 @@ For <strong>endowment</strong> methods, both modes return flat scalar dicts — 
 <span class="n">pv_final</span>     <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">]</span>  <span class="c1"># scalar PV: coef_due*pv_due + coef_imm*pv_immediate</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;coef_due=</span><span class="si">{</span><span class="n">coef_due</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, coef_imm=</span><span class="si">{</span><span class="n">coef_imm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 0.5417, 0.4583</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv_final</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 15.6316</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">pv_final</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 14.5029</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore</span>
 </pre></div>
@@ -1236,14 +1236,14 @@ empty dict when <span class="math notranslate nohighlight">\(k = 0\)</span>), al
 <p><strong><code class="docutils literal notranslate"><span class="pre">continuous_simplified</span></code></strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span><span class="p">,</span> <span class="n">config</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;continuous_simplified&quot;</span>
 
 <span class="c1"># Integer n — fractional sub-dict is empty</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 <span class="c1"># [&#39;due&#39;, &#39;immediate&#39;, &#39;interpolated&#39;, &#39;fractional&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.2555</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 12.35</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">])</span>              <span class="c1"># {}</span>
 
 <span class="c1"># Fractional n — fractional sub-dict holds the two-point quadrature tail</span>
@@ -1252,7 +1252,7 @@ empty dict when <span class="math notranslate nohighlight">\(k = 0\)</span>), al
 <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">frac</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 <span class="c1"># [&#39;time_grid&#39;, &#39;interest_rate&#39;, &#39;discount_factor&#39;,</span>
 <span class="c1">#  &#39;survival_probability&#39;, &#39;growth&#39;, &#39;present_value&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 13.4242</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="s2">&quot;interpolated&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 12.4868</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">calculation_mode</span> <span class="o">=</span> <span class="s2">&quot;discrete_precision&quot;</span>  <span class="c1"># restore</span>
 </pre></div>
@@ -1450,7 +1450,7 @@ policy</strong>: it demonstrates the decomposition pattern, not a complete BEL c
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">LifeTable</span>
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;PASEM2020_Rel_1o&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">lt</span> <span class="o">=</span> <span class="n">LifeTable</span><span class="p">(</span><span class="s2">&quot;GRMF95&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">interest_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
 
 <span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">12</span>
 <span class="n">flows</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="n">äx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">return_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1464,7 +1464,7 @@ policy</strong>: it demonstrates the decomposition pattern, not a complete BEL c
 <span class="n">pv_per_pmnt</span> <span class="o">=</span> <span class="n">flows</span><span class="p">[</span><span class="s2">&quot;present_value&quot;</span><span class="p">]</span> <span class="c1"># = tpx * v_t * g_t * adj / m</span>
 
 <span class="n">pv</span> <span class="o">=</span> <span class="n">pv_per_pmnt</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV: </span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># PV: 13.2805</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV: </span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># PV: 12.3774</span>
 
 <span class="c1"># Verify that each element matches its formula component-by-component</span>
 <span class="n">reconstructed</span> <span class="o">=</span> <span class="n">tpx</span> <span class="o">*</span> <span class="n">v_t</span> <span class="o">*</span> <span class="n">g_t</span> <span class="o">*</span> <span class="n">adj</span> <span class="o">/</span> <span class="n">m</span>
