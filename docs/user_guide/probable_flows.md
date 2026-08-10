@@ -411,7 +411,7 @@ pensioner_ages = [65, 67, 70, 72, 75, 68, 63, 71, 74, 66]
 annual_pension = [24_000.0, 18_000.0, 30_000.0, 22_000.0, 15_000.0,
                   20_000.0, 28_000.0, 17_000.0, 12_000.0, 25_000.0]
 
-lt = LifeTable("PASEM2010", "m", interest_rate=0.03)  # static table — no cohort required
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)  # representative cohort; see note
 ia19_rate = InterestRate(0.0380)
 
 # PVDBO: per-pensioner APV × annual pension, discounted at IAS 19 rate (monthly, m=12, postpagable)

@@ -86,7 +86,7 @@ Annual payments that step up by 10 % every five years over 20 years:
 ```python
 from lactuca import LifeTable, payment_times, tiered_amounts
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 times   = payment_times(n=20, m=1)
 amounts = tiered_amounts(
@@ -96,7 +96,7 @@ amounts = tiered_amounts(
 )
 
 pv = lt.ax(65, cashflow_times=times, cashflow_amounts=amounts)
-print(round(pv, 4))   # 14.5547  (unit benefit ≈ 1 per year; scale freely, e.g. × 10 000)
+print(round(pv, 4))   # 15.4978  (unit benefit ≈ 1 per year; scale freely, e.g. × 10 000)
 ```
 
 The `breakpoints` list is **inclusive on the right**: a payment at exactly $t = 5$
@@ -110,13 +110,13 @@ Monthly payments that grow at 2 % per year over 20 years:
 ```python
 from lactuca import LifeTable, payment_times
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 times   = payment_times(n=20, m=12)        # t = 1/12, 2/12, ..., 20.0
 amounts = (1.02 ** times) / 12.0           # 2 % annual inflation, 1/12 per month
 
 pv = lt.ax(65, cashflow_times=times, cashflow_amounts=amounts)
-print(round(pv, 3))   # 15.717
+print(round(pv, 3))   # 16.678
 ```
 
 ### Arbitrary benefit schedule
@@ -126,13 +126,13 @@ Any non-standard payment pattern — lump sums, variable benefits, or irregular 
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1986, interest_rate=0.03)
 
 times   = [1.0, 2.0, 3.0, 5.0, 10.0]
 amounts = [1.0, 1.0, 0.5, 2.0,  0.5]    # all strictly positive
 
 pv = lt.ax(40, cashflow_times=times, cashflow_amounts=amounts)
-print(round(pv, 4))   # 4.4566
+print(round(pv, 4))   # 4.461
 ```
 
 (due-via-explicit-times)=
@@ -146,7 +146,7 @@ $t = 0$ in `cashflow_times`:
 import numpy as np
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 x, n = 65, 20
 
 # Due schedule: payments at t = 0, 1, 2, ..., n-1
@@ -169,7 +169,7 @@ identical results (within floating-point tolerance):
 import numpy as np
 from lactuca import LifeTable, payment_times
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 x, n, m = 65, 10, 4
 
 # Standard quarterly annuity
@@ -253,7 +253,7 @@ that cannot be expressed as a constant `gr`:
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1966, interest_rate=0.03)
 
 # Quarterly annuity for 5 years with arbitrary amounts (20 payments)
 amounts = [1.0, 1.0, 1.1, 1.1,   # year 1
@@ -263,7 +263,7 @@ amounts = [1.0, 1.0, 1.1, 1.1,   # year 1
            1.4, 1.4, 1.5, 1.5]   # year 5
 
 pv = lt.ax(60, n=5, m=4, cashflow_amounts=amounts)
-print(round(pv, 4))   # 22.6638
+print(round(pv, 4))   # 22.7887
 ```
 
 The same interface works for due (prepayable) annuities.  The array must cover the
@@ -274,7 +274,7 @@ is fractional:
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1966, interest_rate=0.03)
 
 # Quarterly due annuity for 5 years with step-up amounts (20 payments)
 amounts = [1.0, 1.0, 1.1, 1.1,   # year 1 (payments at t = 0, 0.25, 0.5, 0.75)
@@ -284,7 +284,7 @@ amounts = [1.0, 1.0, 1.1, 1.1,   # year 1 (payments at t = 0, 0.25, 0.5, 0.75)
            1.4, 1.4, 1.5, 1.5]   # year 5
 
 pv = lt.äx(60, n=5, m=4, cashflow_amounts=amounts)
-print(round(pv, 4))   # 22.8686
+print(round(pv, 4))   # 22.9824
 ```
 
 ## Generating payment schedules with `payment_times`
@@ -328,7 +328,7 @@ import numpy as np
 from lactuca import LifeTable
 from lactuca import payment_times
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 x, n = 65, 20.0
 
 # Regular component: standard monthly annuity

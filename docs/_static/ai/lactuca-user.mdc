@@ -33,9 +33,10 @@ lt = LifeTable("PER2020_Ind_1o", "m", cohort=1969)  # generational: cohort requi
   immediate paths; not with `gr=`.
 - **`payment_times`**, **`tiered_amounts`** — top-level schedule helpers (not
   `functional`); build grids and tiered amounts for irregular cashflows.
-- **`alb`** / **`age_last_birthday`** — entry age `x` from birth + valuation dates; aliases
-  `anb`, `anextb`. Set **`config.date_format`** (`ymd`, `dmy`, `mdy`, `ymd_int`) before
-  parsing ambiguous slash strings. **`age_exact`** ≠ **`ex`** (life expectancy).
+- **`alb`** / **`age_last_birthday`** — entry age `x` from birth + valuation dates (calendar
+  birthdays); aliases `anb`, `anextb`. **`FormatDates` len-1** (`make_date`) → scalar ages;
+  `list`/`Series` len-1 → vector. Set **`config.date_format`** (`ymd`, `dmy`, `mdy`, `ymd_int`)
+  before parsing ambiguous slash strings. **`age_exact`** ≠ **`ex`** (life expectancy).
 - **Batch `return_flows=True`** — only `discrete_precision` / `continuous_precision`;
   `*_simplified` modes raise `ValueError`.
 - **`nEx*`** — no `gr=` or `d`. Joint annuities (`äxy`/`axy`/…) and first-death

@@ -9,7 +9,7 @@ and the note in § [Decomposing and verifying a present value](#decomposing-and-
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 result = lt.äx(65, n=20, m=12, return_flows=True)
 
 # result is a dict — inspect all available keys:
@@ -19,7 +19,7 @@ print(list(result.keys()))
 
 # Reconstruct the scalar PV:
 pv = result["present_value"].sum()
-print(round(pv, 4))  # 13.2805
+print(round(pv, 4))  # 12.3774
 ```
 
 :::{important}
@@ -34,7 +34,7 @@ A one-element list or array such as `x=[65]` **triggers batch mode** and returns
 compact four-key dict — not the detailed per-payment dict:
 
 ```python
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # Scalar x — detailed per-payment engine dict
 flows_scalar = lt.äx(65, n=20, return_flows=True)
@@ -255,11 +255,11 @@ integrating the `integrand` array:
 import numpy as np
 from lactuca import LifeTable, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 config.calculation_mode = "continuous_precision"
 result = lt.äx(65, n=20, return_flows=True)
 pv = np.trapezoid(result["integrand"], result["time_grid"])
-print(round(pv, 4))  # 13.2532
+print(round(pv, 4))  # 12.3474
 config.calculation_mode = "discrete_precision"
 ```
 :::
@@ -323,7 +323,7 @@ For **endowment** methods, both modes return flat scalar dicts — see below.
 ```python
 from lactuca import LifeTable, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 config.calculation_mode = "discrete_simplified"
 result = lt.äx(65, m=12, return_flows=True)
 
@@ -336,7 +336,7 @@ coef_imm     = result["coef_immediate"]
 pv_final     = result["interpolated"]  # scalar PV: coef_due*pv_due + coef_imm*pv_immediate
 
 print(f"coef_due={coef_due:.4f}, coef_imm={coef_imm:.4f}")  # 0.5417, 0.4583
-print(round(pv_final, 4))  # 15.6316
+print(round(pv_final, 4))  # 14.5029
 
 config.calculation_mode = "discrete_precision"  # restore
 ```
@@ -360,14 +360,14 @@ empty dict when $k = 0$), alongside ``"pv_due"``, ``"pv_immediate"``, and
 ```python
 from lactuca import LifeTable, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 config.calculation_mode = "continuous_simplified"
 
 # Integer n — fractional sub-dict is empty
 result = lt.äx(65, n=20, return_flows=True)
 print(list(result.keys()))
 # ['due', 'immediate', 'interpolated', 'fractional']
-print(round(result["interpolated"], 4))  # 13.2555
+print(round(result["interpolated"], 4))  # 12.35
 print(result["fractional"])              # {}
 
 # Fractional n — fractional sub-dict holds the two-point quadrature tail
@@ -376,7 +376,7 @@ frac = result2["fractional"]
 print(list(frac.keys()))
 # ['time_grid', 'interest_rate', 'discount_factor',
 #  'survival_probability', 'growth', 'present_value']
-print(round(result2["interpolated"], 4))  # 13.4242
+print(round(result2["interpolated"], 4))  # 12.4868
 
 config.calculation_mode = "discrete_precision"  # restore
 ```
@@ -497,7 +497,7 @@ policy**: it demonstrates the decomposition pattern, not a complete BEL calculat
 import numpy as np
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 x, n, m = 65, 20, 12
 flows = lt.äx(x, n=n, m=m, return_flows=True)
@@ -511,7 +511,7 @@ adj = flows["payment_adjustment"]    # 1.0 for all full payments
 pv_per_pmnt = flows["present_value"] # = tpx * v_t * g_t * adj / m
 
 pv = pv_per_pmnt.sum()
-print(f"PV: {pv:.4f}")  # PV: 13.2805
+print(f"PV: {pv:.4f}")  # PV: 12.3774
 
 # Verify that each element matches its formula component-by-component
 reconstructed = tpx * v_t * g_t * adj / m

@@ -258,31 +258,34 @@ combined.
 | `"udd"` | Uniform Distribution of Decrements (UDD) — Lactuca applies the correct
   associated-single formula for two or three causes internally |
 
-**Default.** Omitting the key is equivalent to `"independent"` and matches pre-v1
-behaviour. Pass `"independent"` explicitly when you need traceability in
-`summary()` / `modifications_applied`.
+**Default.** Omitting the key is equivalent to `"independent"` and matches behaviour
+before `combination_mode` was introduced. Pass `"independent"` explicitly when you
+need traceability in `summary()` / `modifications_applied`.
 
 **Mode `"udd"`.** Host + **one** other table (two causes) uses the two-way UDD
 associated singles; host + **two** others (three causes, e.g. *Masa Activa* with
 `[dt, et]`) uses the three-way Bowers/Jordan formula. Host + **three or more**
-others raises `ValueError` in v1.
+others raises `ValueError`.
 
-**v1 collapsed total.** For two or three causes, `"independent"` and `"udd"`
-produce the **same** stored vector $q_x^{\mathrm{comb}}$ (algebraic identity). The
-difference is **declarative** — which assumption is recorded. Cause-specific
-associated rates $q'^{(j)}$ are **not** returned in v1 (planned for a future release).
+**Collapsed total.** `table_combination` stores a single combined decrement vector
+$q_x^{\mathrm{comb}}$ per age — not separate per-cause rates $q'^{(j)}$. For two or
+three causes, `"independent"` and `"udd"` produce the **same** stored vector
+(algebraic identity). The difference is **declarative** — which assumption is
+recorded in `modifications_applied`. Associated singles $q'^{(j)}$ are computed
+internally under UDD but are **not** returned by the public API (planned for a
+future release).
 
 **Key order.** `combination_mode` may appear before or after `table_combination` in
 the dict (same result). Other keys (`decrement_multiplier`, `age_shift`, …) still
 depend on insertion order — see {ref}`combining-modifications-order` below.
 
-**Order of `others`.** For the collapsed total $q_x^{\mathrm{comb}}$ in v1, permuting
+**Order of `others`.** For the collapsed total $q_x^{\mathrm{comb}}$, permuting
 the list of other tables (e.g. `[dt, et]` vs `[et, dt]`) yields the **same** result
 up to float64 rounding noise — the product and UDD collapsed formulas are commutative
 in the other causes when the host is fixed. List order **does not** change stored
 $q_x^{\mathrm{comb}}$; dict key order for other modifications still matters (see above).
 
-**UDD formulas (v1 collapsed total).** For two causes with host $q^{(0)}$ and one other
+**UDD formulas (collapsed total).** For two causes with host $q^{(0)}$ and one other
 $q^{(1)}$:
 
 $$q'^{(1)} = q^{(0)}\left(1 - \frac{q^{(1)}}{2}\right), \quad
@@ -463,7 +466,7 @@ table that forces exit before the host’s natural $\omega$.
 | Combined $q > 1$ at any aligned age | Invalid competing risks (message reports index and calendar age when `age_shift` preceded combine) |
 | Host instance in `others` or duplicate instance in `others` | Same object twice inflates decrements — use distinct instances |
 | `combination_mode` without `table_combination` | Orphan key |
-| `combination_mode="udd"` with 4+ causes | UDD limited to 2–3 causes in v1 |
+| `combination_mode="udd"` with 4+ causes | UDD limited to 2–3 causes (host plus 1–2 others) |
 | Unknown `combination_mode` (`"udd_2"`, `"UDD"`, bool, etc.) | Invalid literal |
 
 **`age_shift` on the *other* table.** Do not call `age_shift` on a table you only
@@ -481,19 +484,19 @@ When validating by hand, compare full decrement arrays (`qx(None)` / `ix(None)` 
 at aligned indices — not beyond-$\omega$ single-age API returns. Example: `DummySD2015` has $\omega = 65$; at age 75, `dt.ix(75)` is `1.0`
 but combination uses $i_{75} = 0$, so `lt.qx(75)` equals life mortality only.
 
-**Partial MDDT support (v1).** `table_combination` with
+**What the API returns.** `table_combination` with
 `combination_mode="udd"` declares the UDD multiple-decrement assumption and stores
 the **collapsed total** decrement $q_x^{\mathrm{comb}}$ for integer ages.
-Cause-specific associated rates $q'^{(j)}$ are not returned in the public API in v1.
+Cause-specific associated rates $q'^{(j)}$ are not returned by the public API.
 
-**Fractional-year survival.** After combination (both `independent` and `udd` in v1),
+**Fractional-year survival.** After combination (both `independent` and `udd`),
 fractional `lx`, `px(m>1)`, and `tpx` use `config.lx_interpolation` on the collapsed
 total $q_x^{\mathrm{comb}}$ stored in the host table. With default linear (UDD)
 interpolation this is ${}_s p_x = 1 - s\,q_x^{\mathrm{comb}}$ within each year,
 coherent with the annual recursion $l_{x+1} = l_x(1-q_x^{\mathrm{comb}})$.
 The `udd` mode records the UDD associated-single **assumption** used to build
 $q^{\mathrm{comb}}$ at combine time; fractional survival matches `independent`
-while v1 stores only the collapsed vector.
+while the library stores only the collapsed vector.
 
 **Masa Activa (aggregated, not Markov).** Combining life + disability + exit treats
 mortality, disability incidence ($i_x$), and exit ($o_x$) as **mutually exclusive
@@ -545,7 +548,7 @@ et = ExitTable("DummyEXIT", "m")
 # Single call — q = 1 − (1−q_life)(1−q_disability)(1−q_exit)
 lt.modify_qx({"table_combination": [dt, et]})
 
-# Same total q in v1, UDD assumption recorded explicitly (Masa Activa)
+# Same total q, UDD assumption recorded explicitly (Masa Activa)
 lt.modify_qx({"table_combination": [dt, et], "combination_mode": "udd"})
 ```
 
@@ -628,7 +631,7 @@ print(lt.qx(60))  # result B — different from A
 |---|---|---|
 | `combination_mode` ↔ `table_combination` | No | Pre-scan; same collapsed `q` |
 | `age_shift` ↔ `table_combination` | No | Calendar-age alignment (host index $i$ ↔ age $i+n$) |
-| `others` list (`[dt, et]` vs `[et, dt]`) | No | Collapsed total $q$ in v1 (float noise only) |
+| `others` list (`[dt, et]` vs `[et, dt]`) | No | Collapsed total $q$ (float noise only) |
 | `decrement_multiplier` ↔ `table_combination` | **Yes** | Scales host **before** vs **after** merge |
 | `aggravated_risk` ↔ `decrement_multiplier` | **Yes** | Non-linear survival transform vs linear scale |
 | `decrement_geometric_increase` ↔ `age_shift` | **Yes** | Tail indices depend on pre-shift length |

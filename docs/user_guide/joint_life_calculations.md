@@ -66,7 +66,10 @@ instead of setting it individually on each object afterwards:
 ```python
 # All four instances get interest_rate=0.03 in a single call
 lt_m, lt_f, lt_m2, lt_f2 = LifeTable(
-    "PASEM2020_Rel_1o", ("m", "f", "m", "f"), interest_rate=0.03
+    "PER2020_Ind_1o",
+    ("m", "f", "m", "f"),
+    cohort=[1961, 1964, 1968, 1974],
+    interest_rate=0.03,
 )
 ```
 
@@ -76,8 +79,12 @@ See {ref}`vectorial-interest-rate` for the full broadcast and per-instance seque
 ```python
 from lactuca import LifeTable
 
+# Cohorts for valuation ≈ 2026: 65/62 → 1961/1964; extra lives ≈ 58/52
 lt_m, lt_f, lt_m2, lt_f2 = LifeTable(
-    "PASEM2020_Rel_1o", ("m", "f", "m", "f"), interest_rate=0.03
+    "PER2020_Ind_1o",
+    ("m", "f", "m", "f"),
+    cohort=[1961, 1964, 1968, 1974],
+    interest_rate=0.03,
 )
 
 # Two lives: äxy(65, 62) — annuity-due while both survive
@@ -169,11 +176,16 @@ The first argument is a sequence of tables; `ages` is a keyword argument:
 ```python
 from lactuca import LifeTable, äxy, axy, Axy, nExy, äjoint, Afirst
 
-lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+lt_m, lt_f = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1961, 1964], interest_rate=0.03
+)
+lt_m_risk, lt_f_risk = LifeTable(
+    "PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03
+)
 
 # Functional form: pass a sequence of tables and keyword ages
-a_func = äxy([lt_m, lt_f], ages=[65, 62])
-A_func = Axy([lt_m, lt_f], ages=[65, 62])
+a_func = äxy([lt_m, lt_f], ages=[65, 62])           # longevity / PER
+A_func = Axy([lt_m_risk, lt_f_risk], ages=[65, 62])  # life-risk / PASEM
 ```
 
 ---
@@ -204,7 +216,9 @@ $$\ddot{a}_{\overline{xyz}} = \ddot{a}_x + \ddot{a}_y + \ddot{a}_z
 ```python
 from lactuca import LifeTable
 
-lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+lt_m, lt_f = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1966, 1964], interest_rate=0.03
+)
 
 ax  = lt_m.äx(60)
 ay  = lt_f.äx(62)
@@ -223,7 +237,9 @@ $$\ddot{a}_{x|y} = \ddot{a}_y - \ddot{a}_{xy}$$
 ```python
 from lactuca import LifeTable
 
-lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+lt_m, lt_f = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1966, 1964], interest_rate=0.03
+)
 
 ay  = lt_f.äx(62)
 axy = lt_m.äxy([60, 62], table_y=lt_f)
@@ -292,8 +308,12 @@ grouping by product when schedules differ).
 ```python
 from lactuca import LifeTable, äxy, Axy
 
-lt_m = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
-lt_f = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+# Longevity tables for joint annuities (representative cohorts for the age grid)
+lt_m = LifeTable("PER2020_Ind_1o", "m", cohort=1966, interest_rate=0.03)
+lt_f = LifeTable("PER2020_Ind_1o", "f", cohort=1971, interest_rate=0.03)
+# Life-risk tables for first-death insurance
+lt_m_risk = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt_f_risk = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
 
 x_ages = [60, 62, 65]
 y_ages = [55, 58, 61]
@@ -301,14 +321,14 @@ y_ages = [55, 58, 61]
 # Joint annuity-due: payments while both lives survive
 result_ann = äxy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
 
-# First-death insurance
-result_ins = Axy([lt_m, lt_f], ages=(x_ages, y_ages), n=20)
-
-net_premium = result_ins / result_ann
+# First-death insurance (same mortality base for A and ä if computing net premium)
+result_ins = Axy([lt_m_risk, lt_f_risk], ages=(x_ages, y_ages), n=20)
+result_ann_risk = äxy([lt_m_risk, lt_f_risk], ages=(x_ages, y_ages), n=20)
+net_premium = result_ins / result_ann_risk
 
 # OOP equivalent — shared table for life x, table_y for life y
 result_ann_oop = lt_m.äxy((x_ages, y_ages), table_y=lt_f, n=20)
-result_ins_oop = lt_m.Axy((x_ages, y_ages), table_y=lt_f, n=20)
+result_ins_oop = lt_m_risk.Axy((x_ages, y_ages), table_y=lt_f_risk, n=20)
 ```
 
 ### Three-life batch
@@ -316,7 +336,7 @@ result_ins_oop = lt_m.Axy((x_ages, y_ages), table_y=lt_f, n=20)
 ```python
 from lactuca import äxyz
 
-lt_z = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+lt_z = LifeTable("PER2020_Ind_1o", "f", cohort=1976, interest_rate=0.03)
 
 z_ages = [50, 55, 58]
 

@@ -126,7 +126,7 @@ ir = InterestRate({
     "base":      0.02,
     "piecewise": ([5, 10], [0.01, 0.02, 0.025]),
 })
-lt = LifeTable("PASEM2020_Gen_2o", "m", interest_rate=ir)
+lt = LifeTable("GRMF95", "m", interest_rate=ir)
 
 ir.active_scenario = "base"
 a_base = lt.ax(65, n=20)
@@ -138,7 +138,7 @@ a_piecewise = lt.ax(65, n=20)   # differs from a_base
 To **freeze** the scenario active when you attach a rate to a table, pass a deep copy:
 
 ```python
-lt = LifeTable("PASEM2020_Gen_2o", "m", interest_rate=ir.copy())
+lt = LifeTable("GRMF95", "m", interest_rate=ir.copy())
 # lt.interest_rate is independent; parent ir.active_scenario switches do not affect lt
 ```
 
@@ -423,7 +423,7 @@ Config().calculation_mode = "discrete_precision"   # default
 ir = InterestRate(0.03)
 print(ir.calculation_mode)   # mirrors Config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 print(lt.calculation_mode)   # same global setting
 ```
 
@@ -441,7 +441,7 @@ and will be wrapped automatically:
 ```python
 from lactuca import InterestRate, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 ir = InterestRate(0.03)
 
 print(round(lt.ax(65, ir=ir), 4))     # explicit InterestRate object
@@ -455,7 +455,7 @@ structure or constant rate, pass a per-policy `ir` array to `LifeTable` batch me
 ```python
 from lactuca import InterestRate, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 ages = [55, 60, 65, 70]
 ir_flat = InterestRate(0.03)
 ir_curve = InterestRate(terms=[5, 5], rates=[0.02, 0.03, 0.04])
@@ -473,7 +473,7 @@ each call:
 ```python
 from lactuca import InterestRate, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 lt.interest_rate = 0.03          # set once; accepts float or InterestRate
 
 print(round(lt.ax(65), 4))       # uses 0.03
@@ -486,7 +486,7 @@ You can also pass the rate at construction time:
 ```python
 from lactuca import InterestRate, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 print(round(lt.ax(65), 4))       # 0.03 is the default
 ```
 
@@ -497,7 +497,7 @@ rather than a single flat rate:
 from lactuca import InterestRate, LifeTable
 
 ir_curve = InterestRate(terms=[5, 5, 10], rates=[0.025, 0.03, 0.035, 0.04])
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 lt.interest_rate = ir_curve
 
 print(round(lt.ax(65), 4))       # discounted with the full term structure

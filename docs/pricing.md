@@ -191,12 +191,6 @@ full restrictions.
 | Devices per user | 1 | 1 | 1 | 1 | 1 |
 | Duration | 30 days | Monthly | Monthly | Monthly / direct annual | 1 year |
 
-:::{note}
-**Multiple-decrement:** v1 returns a collapsed total $q$ only; optional
-`combination_mode="udd"` supports two or three causes.  See
-{doc}`user_guide/modifying_decrements`.
-:::
-
 ---
 
 ## FAQ

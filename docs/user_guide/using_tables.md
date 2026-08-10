@@ -33,7 +33,7 @@ Pass `interest_rate` to avoid specifying it in every method call:
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 ax = lt.ax(65, n=10)              # uses 3%
 ax2 = lt.ax(65, n=10, ir=0.02)   # overrides to 2% for this call only
@@ -50,10 +50,10 @@ from lactuca import LifeTable, InterestRate
 ir = InterestRate(terms=[10, 10], rates=[0.025, 0.035, 0.04])
 
 # Option A — pass at construction
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=ir)
+lt = LifeTable("GRMF95", "m", interest_rate=ir)
 
 # Option B — assign after construction (equivalent)
-lt2 = LifeTable("PASEM2020_Rel_1o", "m")
+lt2 = LifeTable("GRMF95", "m")
 lt2.interest_rate = ir
 print(lt.ax(65, n=20))   # rounded to config.decimals.annuities (default 15)
 ```

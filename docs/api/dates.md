@@ -4,7 +4,8 @@ High-performance date manipulation and actuarial age/duration functions followin
 Spanish and international conventions.  Key capabilities:
 
 - **Actuarial age** — Age Last Birthday (ALB), Age Nearest Birthday (ANB), Age Next
-  Birthday (ANEXT), and exact fractional age with daily resolution.
+  Birthday (ANEXT) from **calendar birthdays** (`m=1`), plus exact fractional age.
+  `FormatDates` length-1 (e.g. `make_date`) re-enters as a scalar.
 - **Duration calculations** — days, complete calendar months, and fractional years
   (Actual/Actual ISDA or days/365.25 approximation).
 - **Anniversary dates** — generation of payment or projection date grids at any
@@ -39,9 +40,9 @@ Short-form aliases are exported directly in the top-level `lactuca` namespace:
 
 | Alias | Equivalent | Convention |
 |-------|-----------|------------|
-| `lactuca.alb` | `age_last_birthday` | ALB — floor to last integer year |
-| `lactuca.anb` | `age_nearest_birthday` | ANB — round to nearest integer year |
-| `lactuca.anextb` | `age_next_birthday` | ANEXTB — ceiling to next integer year |
+| `lactuca.alb` | `age_last_birthday` | ALB — completed calendar birthdays |
+| `lactuca.anb` | `age_nearest_birthday` | ANB — nearest calendar birthday (midpoint → next) |
+| `lactuca.anextb` | `age_next_birthday` | ANEXT — next calendar birthday; on birthday = ALB |
 
 The name `anextb` (not `anext`) is used to avoid shadowing `builtins.anext`
 (Python 3.10+, used for async iteration).

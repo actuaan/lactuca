@@ -137,27 +137,27 @@ Pass `d=` (and optionally `n=`) to `lt.Ax(x, d=d)`.
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1971, interest_rate=0.03)
 
 # 10-year deferred whole-life annuity-due:  10|äx(55)
 a_def_whole_due = lt.äx(55, d=10)
-print(a_def_whole_due)    # → 11.3534
+print(a_def_whole_due)    # → 13.4328
 
 # 10-year deferred whole-life annuity-immediate:  10|ax(55)
 a_def_whole_imm = lt.ax(55, d=10)
-print(a_def_whole_imm)    # → 10.6478
+print(a_def_whole_imm)    # → 12.7128
 
 # 10-year deferred, 20-year temporary annuity-due:  10|ä55:20|
 a_def_temp_due = lt.äx(55, n=20, d=10)
-print(a_def_temp_due)     # → 9.5844
+print(a_def_temp_due)     # → 10.4254
 
 # 10-year deferred, 20-year temporary annuity-immediate:  10|a55:20|
 a_def_temp_imm = lt.ax(55, n=20, d=10)
-print(a_def_temp_imm)     # → 9.1223
+print(a_def_temp_imm)     # → 10.0267
 
 # For comparison: standard whole-life annuity at age 65 (no deferment)
 a_reference = lt.äx(65)
-print(a_reference)        # → 16.0899
+print(a_reference)        # → 18.6558
 
 config.reset_to_defaults()
 ```
@@ -168,15 +168,15 @@ The pure endowment factorisation produces the same result:
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1971, interest_rate=0.03)
 
 # Direct: 10|äx(55)
 a_direct = lt.äx(55, d=10)
-print(a_direct)                                     # → 11.3534
+print(a_direct)                                     # → 13.4328
 
 # Equivalent via pure endowment:  10Ex(55) × äx(65)
 via_endowment = round(lt.nEx(55, n=10) * lt.äx(65), 4)
-print(via_endowment)                                # → 11.3534
+print(via_endowment)                                # → 13.4329  (equal within 1e-4)
 
 config.reset_to_defaults()
 ```
@@ -218,11 +218,11 @@ reducing the expected present value.
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1966, interest_rate=0.03)
 
 # 6-month deferment, 20-year temporary:  0.5|ä60:20|
 a_half = lt.äx(60, d=0.5, n=20)
-print(a_half)    # → 13.8892
+print(a_half)    # → 14.3871
 
 config.reset_to_defaults()
 ```
@@ -239,11 +239,11 @@ $t_j = j/(m) + d$ for annuity-due, regardless of frequency:
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1971, interest_rate=0.03)
 
 # Monthly payments, 10-year deferred whole-life:  10|ä⁽¹²⁾x(55)
 a_monthly = lt.äx(55, d=10, m=12)
-print(a_monthly)    # → 11.0274
+print(a_monthly)    # → 13.1002
 
 config.reset_to_defaults()
 ```
@@ -261,22 +261,27 @@ from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
 config.decimals.insurances = 6
-lt_m, lt_f = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+lt_m, lt_f = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1966, 1968], interest_rate=0.03
+)
+lt_m_risk, lt_f_risk = LifeTable(
+    "PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03
+)
 
 # Standard joint-life annuity-due (no deferment):  äxy(60, 58)
 a_joint = lt_m.äxy([60, 58], table_y=lt_f)
-print(a_joint)           # → 16.7085
+print(a_joint)           # → 19.0022
 
 # 10-year deferred joint-life annuity-due:  10|äxy(60, 58)
 a_joint_def = lt_m.äxy([60, 58], table_y=lt_f, d=10)
-print(a_joint_def)       # → 8.2606
+print(a_joint_def)       # → 10.4434
 
 # 10-year deferred, 15-year temporary:  10|äxy:15|(60, 58)
 a_joint_def_tmp = lt_m.äxy([60, 58], table_y=lt_f, d=10, n=15)
-print(a_joint_def_tmp)   # → 6.9214
+print(a_joint_def_tmp)   # → 7.8594
 
 # 5-year deferred joint first-death insurance:  5|Axy(60, 58)
-Axy_def = lt_m.Axy([60, 58], table_y=lt_f, d=5)
+Axy_def = lt_m_risk.Axy([60, 58], table_y=lt_f_risk, d=5)
 print(Axy_def)           # → 0.481055
 
 config.reset_to_defaults()
@@ -346,17 +351,17 @@ $$
 from lactuca import LifeTable, GrowthRate, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1971, interest_rate=0.03)
 gr = GrowthRate(0.02)
 
 # Deferred growing annuity: growth index starts from first payment at age 65
 a_deferred = lt.äx(55, d=10, gr=gr)
-print(a_deferred)           # → 14.1698
+print(a_deferred)           # → 17.3996
 
 # Equivalent factorisation: nEx(55, 10) × äx(65, gr=2%)
 nex = lt.nEx(55, n=10)
 a_factor = round(nex * lt.äx(65, gr=gr), 4)
-print(a_factor)             # → 14.1698
+print(a_factor)             # → 17.3996
 
 config.reset_to_defaults()
 ```

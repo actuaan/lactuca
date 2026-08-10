@@ -110,7 +110,7 @@ $m > 1$.  Growth steps at annual anniversaries $\lfloor j/m \rfloor$, not contin
 ```python
 from lactuca import Config, GrowthRate, LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 gr = GrowthRate(0.02)
 i, g, m = 0.03, 0.02, 12
 i_prime = (1 + i) / (1 + g) - 1   # valid mental model only for m=1
@@ -166,7 +166,7 @@ print(gr.shifted(2.5))  # GrowthRate(rates=[0.05, 0.08], terms=[1], growth_type=
 
 # At ts=2.5 the effective schedule starts at 0.05:
 # F(0)=1, F(1)=1.05, F(2)=1.05×1.08, ...
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 # A UserWarning is emitted because a GrowthRate is active with a fractional ts.
 val = lt.ax(x=60, ts=2.5, m=12, ir=0.03, gr=gr)
 print(round(val, 4))

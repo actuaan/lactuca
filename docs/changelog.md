@@ -5,6 +5,64 @@ All notable changes to Lactuca will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.13] - 2026-08-10
+
+### Features
+
+- **docs**: Add Open Graph and Twitter cards for social preview
+
+
+### Bug Fixes
+
+- **dates**: Align FormatDates scalar contract and calendar ages [**BREAKING**]
+
+- **dates**: Detect FormatDates under Cython pyx module name
+
+
+### Refactoring
+
+- **dates**: Dry calendar helpers and align age docstrings
+
+
+### Documentation
+
+- **docs**: Clarify multiple-decrement scope without v1 jargon
+
+- **mkt**: Close Fase 0 and open Q1 2026 cadence
+
+- **scripts**: Install docs deps in serve-docs.sh
+
+- **changelog**: Add unreleased documentation entries
+
+- **notebooks**: Clear demo outputs and show PER summary
+
+- **docs**: Align annuity examples with PER longevity tables
+
+- **notebooks**: Add Quibus nEx lx interpolation contrast
+
+- **data**: Clarify AM92_AF92 select-ultimate in module docstring
+
+- **dates**: Document FormatDates scalar contract and calendar ALB
+
+- **dates**: Align guide and API with calendar ages
+
+
+### Testing
+
+- **dates**: Add coverage gaps and I9 monthly DOM smoke
+
+
+### Reverts
+
+- **docs**: Drop manual changelog edits (git-cliff owns changelog)
+
+
+### Miscellaneous
+
+- **vscode**: Enable full pytest discovery in Testing panel
+
+- **vscode**: Load workspace .env into integrated terminal
+
 ## [0.1.11] - 2026-07-08
 
 ### Features
@@ -80,6 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **mkt**: Fix actuarial coherence in lactuca_demo_es notebook
 
 - **mkt**: Use reset_to_defaults in lactuca_demo_es section 5
+
+- **changelog**: Release v0.1.11
 
 
 ### Testing

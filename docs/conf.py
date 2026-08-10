@@ -155,7 +155,12 @@ sitemap_excludes = [
 ]
 ogp_site_url = _DOCS_BASE_URL
 ogp_site_name = project
-# Logo is SVG; auto-generated social preview cards warn on every page in -W CI.
+ogp_image = "_static/lactuca_og.png"
+ogp_description_length = 200
+ogp_custom_meta_tags = [
+    '<meta name="twitter:card" content="summary_large_image" />',
+]
+# Per-page social cards need raster html_logo; static ogp_image is enough.
 ogp_social_cards = {"enable": False}
 
 # -- Options for MathJax (LaTeX math) ----------------------------------------

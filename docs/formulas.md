@@ -617,12 +617,13 @@ $q_x^{\mathrm{comb}}$ in the host table.  Default ``combination_mode`` is
 **independent competing risks**; optional ``combination_mode="udd"`` applies
 UDD associated singles (two or three causes) before collapsing.  For two or
 three causes the collapsed total equals the independent product exactly.
-Per-cause $q'^{(j)}$ are not returned in v1.  See
+Per-cause associated singles $q'^{(j)}$ are computed internally under UDD but are
+not exposed by the public API.  See
 {doc}`user_guide/modifying_decrements` and {ref}`table-combination-formulas` below.
 :::
 
 (table-combination-formulas)=
-### Table combination (v1 collapsed total)
+### Table combination (collapsed total)
 
 **Independent** (default):
 

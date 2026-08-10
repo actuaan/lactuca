@@ -15,16 +15,16 @@ equally valid. Both styles delegate to the same underlying implementation.
 ```python
 from lactuca import LifeTable, ax, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 config.decimals.annuities = 4
 
 # OOP style
 value = lt.ax(65, n=10)
-print(value)   # 8.0767
+print(value)   # 7.7936
 
 # Functional style — identical result
 value = ax(lt, 65, n=10)
-print(value)   # 8.0767
+print(value)   # 7.7936
 ```
 
 The functional form takes the table as its first positional argument. All remaining
@@ -46,13 +46,14 @@ that instance. The per-call `ir=` argument overrides it when needed:
 ```python
 from lactuca import LifeTable, äx, Ax, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt_ann = LifeTable("GRMF95", "m", interest_rate=0.03)
+lt_ins = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 config.decimals.annuities  = 4
 config.decimals.insurances = 4
 
-print(äx(lt, 65))              # 16.0899  (uses ir=0.03 from the table)
-print(Ax(lt, 65, n=20))        # 0.2631   (same)
-print(äx(lt, 65, ir=0.04))     # 14.5792  (explicit ir= overrides for this call only)
+print(äx(lt_ann, 65))              # 14.9612  (uses ir=0.03 from the table)
+print(Ax(lt_ins, 65, n=20))        # 0.2631   (life-risk / PASEM)
+print(äx(lt_ann, 65, ir=0.04))     # 13.5884  (explicit ir= overrides for this call only)
 ```
 
 ### Benefit growth (`gr=`)
@@ -202,12 +203,12 @@ print(Tx_continuous(lt, 50.5))           # 34095551.11
 ```python
 from lactuca import LifeTable, ax, äx, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 config.decimals.annuities = 4
 
-print(ax(lt, 65))                # 15.0899  (whole-life, postpayable)
-print(äx(lt, 65, n=20, m=12))   # 13.2805  (temporary, prepayable, monthly)
-print(äx(lt, 65, d=5, n=15))    # 8.9446   (deferred 5y, 15y term)
+print(ax(lt, 65))                # 17.0389  (whole-life, postpayable)
+print(äx(lt, 65, n=20, m=12))   # 14.0013  (temporary, prepayable, monthly)
+print(äx(lt, 65, d=5, n=15))    # 9.6066   (deferred 5y, 15y term)
 ```
 
 ## Life insurances (`LifeTable` only)
@@ -255,11 +256,13 @@ Paid while **both lives are simultaneously alive** (payments stop at the first d
 ```python
 from lactuca import LifeTable, axy, äxy, config
 
-ltx, lty = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+ltx, lty = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1961, 1964], interest_rate=0.03
+)
 config.decimals.annuities = 4
 
-print(axy([ltx, lty], ages=[65, 62]))    # 13.7589
-print(äxy([ltx, lty], ages=[65, 62]))    # 14.7589
+print(axy([ltx, lty], ages=[65, 62]))    # 15.8845
+print(äxy([ltx, lty], ages=[65, 62]))    # 16.8845
 ```
 
 ### Generic n-life joint-life annuities (`ajoint`, `äjoint`)
@@ -270,11 +273,13 @@ they produce the same result as `axy` / `äxy`:
 ```python
 from lactuca import LifeTable, ajoint, äjoint, config
 
-ltx, lty = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
+ltx, lty = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1961, 1964], interest_rate=0.03
+)
 config.decimals.annuities = 4
 
-print(ajoint([ltx, lty], ages=[65, 62], n=20))   # 12.3405
-print(äjoint([ltx, lty], ages=[65, 62], n=20))   # 13.0518
+print(ajoint([ltx, lty], ages=[65, 62], n=20))   # 13.3004
+print(äjoint([ltx, lty], ages=[65, 62], n=20))   # 13.9139
 ```
 
 ### Three-life joint-life annuities (`axyz`, `äxyz`)
@@ -284,12 +289,14 @@ Payments continue while **all three lives are simultaneously alive**:
 ```python
 from lactuca import LifeTable, axyz, äxyz, config
 
-ltx, lty = LifeTable("PASEM2020_Rel_1o", ["m", "f"], interest_rate=0.03)
-ltz      = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+ltx, lty = LifeTable(
+    "PER2020_Ind_1o", ["m", "f"], cohort=[1961, 1964], interest_rate=0.03
+)
+ltz = LifeTable("PER2020_Ind_1o", "f", cohort=1966, interest_rate=0.03)
 config.decimals.annuities = 4
 
-print(axyz([ltx, lty, ltz], ages=[65, 62, 60]))   # 12.9700
-print(äxyz([ltx, lty, ltz], ages=[65, 62, 60]))   # 13.9700
+print(axyz([ltx, lty, ltz], ages=[65, 62, 60]))   # 15.1876
+print(äxyz([ltx, lty, ltz], ages=[65, 62, 60]))   # 16.1876
 ```
 
 ### Two-life first-death insurance (`Axy`)
@@ -395,18 +402,22 @@ are arrays of the same length.
 ```python
 from lactuca import LifeTable, äx, Ax, config
 
-lt_m = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
-lt_f = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
+lt_m = LifeTable("PER2020_Ind_1o", "m", cohort=1966, interest_rate=0.03)
+lt_f = LifeTable("PER2020_Ind_1o", "f", cohort=1964, interest_rate=0.03)
+lt_m_risk = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt_f_risk = LifeTable("PASEM2020_Rel_1o", "f", interest_rate=0.03)
 
 config.decimals.annuities  = 4
 config.decimals.insurances = 4
 
-ages   = [60, 62, 65, 68]
-tables = [lt_m, lt_f, lt_m, lt_f]   # one per policy
+ages = [60, 62, 65, 68]
+tables_ann = [lt_m, lt_f, lt_m, lt_f]                 # longevity / PER
+tables_ins = [lt_m_risk, lt_f_risk, lt_m_risk, lt_f_risk]  # life-risk / PASEM
 
-annuities  = äx(tables, ages, n=20)   # NDArray shape (4,)
-insurances = Ax(tables, ages, n=20)   # NDArray shape (4,)
-premiums   = insurances / annuities   # element-wise
+annuities  = äx(tables_ann, ages, n=20)   # NDArray shape (4,)
+insurances = Ax(tables_ins, ages, n=20)   # NDArray shape (4,)
+# Net premium needs the same mortality base for A and ä:
+premiums   = insurances / äx(tables_ins, ages, n=20)
 ```
 
 For **two-life joint** batch calculations pass arrays for both lives via `ages=(x_arr, y_arr)`:
@@ -478,7 +489,7 @@ on `ax(lt, …)`, `Ax(lt, …)`, etc.:
 from lactuca import LifeTable, ax, config
 
 config.calculation_mode = "discrete_simplified"
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 print(ax(lt, 65, n=10))   # discrete_simplified via config
 ```
 

@@ -18,7 +18,7 @@ For bulk portfolio work, see {ref}`bulk-portfolios` in {doc}`user_guide/using_ta
 | 3 | Monthly pension liability | `äx(x, m=12)` + benefit scaling |
 | 4 | Joint-life / last-survivor pension | vectorized `LifeTable` + inclusion–exclusion |
 | 5 | Interest-rate sensitivity | multi-scenario `InterestRate` |
-| 6 | Period vs generational mortality | `cohort=` on generational tables |
+| 6 | Static vs generational mortality | `GRMF95` vs `PER` + `cohort=` |
 | 7 | Tiered benefit schedule | `payment_times` + `tiered_amounts` → `ax` + `cashflow_*` |
 | 8 | Complete expectation of life | `ex` / `ex_continuous` |
 | 9 | Portfolio liability (plain Python) | loop + cohort setter |
@@ -61,15 +61,16 @@ print(f"Term insurance APV (A^1_45:20) = {term_pv:.6f}")
 
 ## 2. Whole-life annuity-due
 
-Present value of a unit whole-life annuity-due for a female aged 60,
-using the PASEM2020 sector aggregate related-risk table `Rel` (first order):
+Present value of a unit whole-life annuity-due for a female aged 60
+(born 1966; valuation year ≈ 2026), using the Spanish longevity table
+`PER2020_Ind_1o` (first order):
 
 $$\ddot{a}_x^{(m)} = \frac{1}{m} \sum_{k=0}^{\infty} v^{k/m} \cdot {}_{k/m}p_x$$
 
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable('PASEM2020_Rel_1o', 'f', interest_rate=0.03)
+lt = LifeTable('PER2020_Ind_1o', 'f', cohort=1966, interest_rate=0.03)
 
 a_due = lt.äx(x=60)
 print(f"Whole-life annuity-due (a_dd_60) = {a_due:.6f}")
@@ -108,7 +109,10 @@ $$\ddot{a}_{\overline{xy}} = \ddot{a}_x + \ddot{a}_y - \ddot{a}_{xy}$$
 from lactuca import LifeTable
 
 # Vectorized instantiation: two LifeTable objects in one call
-lt_m, lt_f = LifeTable('PASEM2020_Rel_1o', ('m', 'f'), interest_rate=0.02)
+# Ages 65/62 in 2026 → cohorts 1961 / 1964
+lt_m, lt_f = LifeTable(
+    'PER2020_Ind_1o', ('m', 'f'), cohort=[1961, 1964], interest_rate=0.02
+)
 
 a_x     = lt_m.äx(x=65, m=12)
 a_y     = lt_f.äx(x=62, m=12)
@@ -141,7 +145,7 @@ ir = InterestRate({
     'stressed':  0.00,
 })
 
-lt = LifeTable('PASEM2020_Gen_2o', 'm')
+lt = LifeTable('GRMF95', 'm')
 
 for name, scenario in ir.scenarios.items():
     value = lt.äx(x=65, ir=scenario)
@@ -160,7 +164,7 @@ ir = InterestRate({
     'stressed':  0.00,
 })
 
-lt = LifeTable('PASEM2020_Gen_2o', 'm', interest_rate=ir)
+lt = LifeTable('GRMF95', 'm', interest_rate=ir)
 
 ir.active_scenario = 'base'
 bel_base = lt.äx(65)
@@ -180,23 +184,24 @@ See {ref}`interest-rate-scenarios-lifetable` for `copy()` snapshotting and batch
 For piecewise scenarios, use `scenario.get_rate(t)` or inspect `scenario.rates`.
 :::
 
-## 6. Cohort vs. period projection
+## 6. Static vs. generational mortality
 
-Compare period and generational annuity values. A 65-year-old in 2026 was born
-in 1961. The generational table `PER2020_Ind_2o` embeds projection improvements:
+Compare a **static** (period) table with a **generational** longevity table.
+A 65-year-old in 2026 was born in 1961. The generational table `PER2020_Ind_2o`
+embeds projection improvements; `GRMF95` is a classical static table (no cohort):
 
 ```python
 from lactuca import LifeTable
 
-lt_period = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
-lt_cohort = LifeTable('PER2020_Ind_2o',   'm', cohort=1961, interest_rate=0.03)
+lt_static = LifeTable('GRMF95', 'm', interest_rate=0.03)
+lt_cohort = LifeTable('PER2020_Ind_2o', 'm', cohort=1961, interest_rate=0.03)
 
-a_period = lt_period.äx(x=65)
+a_static = lt_static.äx(x=65)
 a_cohort = lt_cohort.äx(x=65)
 
-print(f"Period annuity:  {a_period:.4f}")
-print(f"Cohort annuity:  {a_cohort:.4f}")
-print(f"Difference:      {a_cohort - a_period:.4f}")
+print(f"Static annuity:       {a_static:.4f}")
+print(f"Generational annuity: {a_cohort:.4f}")
+print(f"Difference:           {a_cohort - a_static:.4f}")
 ```
 
 ## 7. Custom benefit schedule
@@ -207,7 +212,7 @@ using `ax` (annuity-immediate), which supports custom cashflow schedules:
 ```python
 from lactuca import LifeTable, payment_times, tiered_amounts
 
-lt = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
+lt = LifeTable('PER2020_Ind_1o', 'm', cohort=1961, interest_rate=0.03)
 
 times   = payment_times(n=40, m=1)
 amounts = tiered_amounts(times, breakpoints=[10], values=[12_000.0, 8_000.0])
@@ -364,7 +369,7 @@ no cohort updates) and you want to keep the transformation inside a Polars chain
 import polars as pl
 from lactuca import LifeTable, GrowthRate
 
-lt = LifeTable('PASEM2020_Rel_1o', 'f', interest_rate=0.03)
+lt = LifeTable('PER2020_Ind_1o', 'f', cohort=1961, interest_rate=0.03)
 
 df = pl.DataFrame({
     'id':      ['A001', 'A002', 'A003'],
@@ -571,7 +576,7 @@ $$\ddot{a}_{x:\overline{n}|}^{(m)} \text{ with deferment } d \quad\Rightarrow\qu
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable('PASEM2020_Rel_1o', 'm', interest_rate=0.03)
+lt = LifeTable('PER2020_Ind_1o', 'm', cohort=1974, interest_rate=0.03)
 
 current_age    = 52
 retirement_age = 65

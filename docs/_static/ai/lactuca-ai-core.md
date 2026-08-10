@@ -6,7 +6,7 @@
 
 <!--
 lactuca_ai_context: core
-compatible_with_docs: 0.1.11
+compatible_with_docs: 0.1.13
 docs_base_url: https://www.lactuca.io/latest/
 license: CC-BY-4.0
 language: en
@@ -80,6 +80,10 @@ config.date_format = "dmy"  # required before parsing "15/01/2024"
   ambiguous string parsing and default output format.
 - **`age_exact`** / **`act_age`** — fractional age in years; not the same as **`ex(x)`**
   (complete life expectancy on `LifeTable`).
+- **`FormatDates` len-1** from `make_date` / constructors → scalar re-entry
+  (`age_exact(make_date(...), …)` → `float`). Plain `list`/`Series`/`ndarray` len-1 → vector.
+- **ALB/ANB/ANEXT** — calendar birthdays (`m=1`); not `floor(age_exact)`. Annual
+  `anniversary_dates` keeps original DOM (29-feb on leap years); N=1 → flat grid.
 - Vectorized inputs: `list`, `tuple`, `ndarray`, `pandas.Series`, `polars.Series`;
   broadcasting rules apply (length 1 broadcasts; mismatched lengths > 1 → `ValueError`).
 
@@ -95,6 +99,9 @@ lt = LifeTable("PER2020_Ind_1o", "m", cohort=1969)
 # Optional default interest on the table instance
 lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
 ```
+
+Match table family to product: **longevity / pensions** → `PER2020_*` + `cohort=`;
+**life-risk / death benefits** → `PASEM2020_*`. Static demos may use `GRMF95`.
 
 Table names and bundled IDs: see
 https://www.lactuca.io/latest/user_guide/bundled_tables.html

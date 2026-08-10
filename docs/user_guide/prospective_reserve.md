@@ -109,7 +109,7 @@ age $x + ts$:
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # Standard anniversary reserve (ts = 0, no shift)
 reserve_ann = lt.äx(50, n=15)
@@ -130,7 +130,7 @@ The survival and discounting are computed exactly for the fractional age:
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # Mid-year valuation: 0.5 years since last anniversary
 reserve_mid = lt.äx(50, n=15, ts=0.5)
@@ -179,7 +179,7 @@ Example — a 5-year-deferred, 20-year annuity evaluated at `ts=0.5` (mid-year):
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # ts=0.5 < d=5 → deferment is only partially consumed: d_eff = 4.5, n_eff = 20
 reserve_combined = lt.äx(50, n=20, d=5, ts=0.5)
@@ -223,7 +223,7 @@ from lactuca import LifeTable, config
 config.force_integer_ts = True          # fractional ts now raises ValueError
 config.decimals.annuities = 4
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 lt.äx(50, n=15, ts=0.5)
 # ValueError: [äx] Parameter 'ts' (shift) must be an integer value (got ts=0.5).
 # To allow fractional shifts, set 'Config.force_integer_ts = False'. Note that GrowthRate
@@ -268,7 +268,7 @@ config.decimals.annuities = 4
 # Piecewise curve: 2.5% for years 0–5, 3.0% for years 5–10, 3.5% thereafter
 # 2 terms → 3 rates required (last rate applies indefinitely)
 ir = InterestRate(terms=[5, 5], rates=[0.025, 0.030, 0.035])
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 
 # The yield curve is automatically shifted by ts=2.5 yr internally:
 # effective curve from valuation date = 2.5% for 2.5 yr, 3.0% for 5 yr, 3.5% thereafter
@@ -297,7 +297,7 @@ not by the raw `ts` value.  This is correct and expected for **integer `ts`**:
 from lactuca import LifeTable, GrowthRate, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # Growth schedule: 3% for first 2 years, then 2% indefinitely
 gr = GrowthRate(rates=[0.03, 0.02], terms=[2])
@@ -319,7 +319,7 @@ the user to confirm the convention is appropriate for their calculation:
 from lactuca import LifeTable, GrowthRate, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 gr = GrowthRate(rate=0.02)  # constant 2% growth schedule
 
 reserve = lt.äx(50, n=15, ts=0.5, gr=gr)
@@ -381,7 +381,7 @@ import numpy as np
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # Reference age (last anniversary), full remaining term, elapsed fraction this year
 ages   = [50, 55, 60, 65]

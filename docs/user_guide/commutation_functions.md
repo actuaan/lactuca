@@ -265,7 +265,7 @@ the term structure:
 from lactuca import LifeTable, InterestRate
 
 ir_term = InterestRate(terms=[10], rates=[0.02, 0.04])
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=ir_term)
+lt = LifeTable("GRMF95", "m", interest_rate=ir_term)
 
 # Discounting from age x0=25 — D_65 reflects 40 years of discounting
 Dx_65 = lt.Dx(65, x0=25)
@@ -286,7 +286,7 @@ the method call:
 ```python
 from lactuca import LifeTable, Dx, Nx, Cx, Mx, Sx, Rx, Lx, Tx, ex
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 Nx(lt, 65)          # equivalent to lt.Nx(65)
 Nx(lt, 65) / Dx(lt, 65)  # whole-life annuity-due via commutation
@@ -330,11 +330,11 @@ This cross-check should pass with a loose tolerance:
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 a_comm   = lt.Nx(65) / lt.Dx(65)   # commutation path
 a_direct = lt.äx(65)               # direct engine (discrete_precision)
-print(abs(a_comm - a_direct) < 2e-5)  # True (PASEM2020 at age 65, i=3 %)
+print(abs(a_comm - a_direct) < 2e-5)  # True (GRMF95 at age 65, i=3 %)
 ```
 
 ### Divergence for m > 1

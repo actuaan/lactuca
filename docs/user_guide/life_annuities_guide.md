@@ -206,11 +206,11 @@ adjusted-rate equivalence $i'=(1+i)/(1+g)-1$ holds for $m=1$ only.  See
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 # Annual whole-life annuity-due: äx(65)
 a_wl = lt.äx(65)
-print(a_wl)           # → 16.0899
+print(a_wl)           # → 18.0389
 
 # 20-year temporary annuity-due: ä_{65:20|}
 a_temp = lt.äx(65, n=20)
@@ -233,7 +233,7 @@ config.reset_to_defaults()
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 n = 20
 x = 65
@@ -250,24 +250,9 @@ config.reset_to_defaults()
 
 ### Annuity-insurance duality
 
-```python
-from lactuca import LifeTable, config
-
-config.decimals.annuities = 6
-config.decimals.insurances = 6
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
-
-i = 0.03
-d_rate = i / (1 + i)    # annual discount rate d = 1 - v
-
-ax_val = lt.äx(65)      # annuity-due, m=1
-Ax_val = lt.Ax(65)      # annual whole-life insurance
-
-# Check: Ax + d * äx ≈ 1  (exact under m=1, mortality_placement="end")
-print(round(Ax_val + d_rate * ax_val, 4))   # ≈ 1.0 (small gap from default "mid" placement)
-
-config.reset_to_defaults()
-```
+The worked numerical check of $A_x + d\,\ddot{a}_x \approx 1$ (same mortality
+base for insurance and premium annuity) lives in {doc}`life_insurances_guide`
+§ Annuity-insurance duality, using a life-risk table (PASEM).
 
 ### Prospective reserve at elapsed time `ts`
 
@@ -275,7 +260,7 @@ config.reset_to_defaults()
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 x, n = 55, 30
 

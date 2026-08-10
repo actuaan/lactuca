@@ -320,7 +320,7 @@ config.reset_to_defaults()
 ## See also
 
 - {doc}`notation_glossary` — actuarial symbols and notation
-- {doc}`life_annuities_guide` — `äx`, `ax` and the annuity-insurance duality
+- {doc}`life_annuities_guide` — `äx`, `ax` life annuities (duality example is on this page)
 - {doc}`commutation_functions` — $M_x/D_x$ formula and commutation function reference
 - {doc}`deferment` — deferment parameter `d`: deferred insurances with factorisation proof
 - {doc}`prospective_reserve` — net level premium $P = A_x / \ddot{a}_x$, prospective reserve formula, and the `ts` parameter

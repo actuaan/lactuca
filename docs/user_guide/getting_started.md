@@ -126,7 +126,7 @@ Static tables need no cohort. The object is ready to use immediately:
 ```python
 from lactuca import LifeTable
 
-# PASEM 2020, 1st order — Spanish annuity reserves (conservative)
+# PASEM 2020, 1st order — Spanish life-risk / mortality table (conservative)
 pasem = LifeTable("PASEM2020_Rel_1o", "m")   # male
 pasem_f = LifeTable("PASEM2020_Rel_1o", "f") # female
 
@@ -332,10 +332,10 @@ only; `interest_rate` is left unchanged:
 ```python
 from lactuca import LifeTable
 
-pasem = LifeTable("PASEM2020_Rel_1o", "m")
-pasem.interest_rate = 0.03
-a_default  = pasem.äx(65)           # uses 0.03
-a_override = pasem.äx(65, ir=0.05)  # uses 0.05; interest_rate still 0.03
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961)
+lt.interest_rate = 0.03
+a_default  = lt.äx(65)           # uses 0.03
+a_override = lt.äx(65, ir=0.05)  # uses 0.05; interest_rate still 0.03
 
 print(f"a_default  = {a_default:.6f}")
 print(f"a_override = {a_override:.6f}")
@@ -705,7 +705,7 @@ provides four standard variants — whole life, temporary, deferred, and continu
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 # Whole life annuity-due (annual payments): äx(65)
 adue = lt.äx(65)
@@ -725,7 +725,7 @@ agrowth = lt.äx(65, gr=0.02)
 ```python
 from lactuca import LifeTable, GrowthRate
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 
 # 20-year temporary annuity-due: ä65:20|
 atemp = lt.äx(65, n=20)
@@ -752,15 +752,15 @@ atemp_arith = lt.äx(65, n=20, gr=GrowthRate(0.02, growth_type='a'))
 from lactuca import LifeTable, config
 
 config.decimals.annuities = 4
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1971, interest_rate=0.03)
 
 # 10-year deferred whole life annuity: 10|äx(55)
 adef = lt.äx(55, d=10)
-print(adef)         # → 11.3534
+print(adef)         # → 13.4328
 
 # 5-year deferred, 20-year temporary: 5|ä60:20|
 adef_temp = lt.äx(60, n=20, d=5)
-print(adef_temp)    # → 11.3491
+print(adef_temp)    # → 12.2533
 
 config.reset_to_defaults()
 ```
@@ -775,7 +775,7 @@ Continuous mode is activated globally via `config.calculation_mode`:
 ```python
 from lactuca import LifeTable, config
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=0.03)
 config.calculation_mode = "continuous_precision"
 
 # Continuous whole life annuity: āx(65)
@@ -905,17 +905,18 @@ from lactuca import LifeTable, DisabilityTable, ExitTable
 
 ir = 0.03
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=ir)
+lt_ann = LifeTable("PER2020_Ind_1o", "m", cohort=1961, interest_rate=ir)
+lt_ins = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=ir)
 dt = DisabilityTable("PEAI2007_IAP_Ind", "m")
 et = ExitTable("DummyEXIT", "m")
 
-äx(lt, 65)               # whole-life annuity-due
-ax(lt, 65)               # whole-life immediate annuity
-Ax(lt, 50)               # whole-life insurance
-nEx(lt, 40, n=10)        # 10-year pure endowment
+äx(lt_ann, 65)           # whole-life annuity-due (longevity / PER)
+ax(lt_ann, 65)           # whole-life immediate annuity
+Ax(lt_ins, 50)           # whole-life insurance (life-risk / PASEM)
+nEx(lt_ins, 40, n=10)    # 10-year pure endowment
 
-lx(lt, 65)               # survivors at age 65
-qx(lt, 50)               # annual mortality probability at 50
+lx(lt_ann, 65)           # survivors at age 65
+qx(lt_ins, 50)           # annual mortality probability at 50
 ix(dt, 40)               # annual disability incidence at 40
 ox(et, 45)               # annual withdrawal probability at 45
 ```
@@ -938,7 +939,7 @@ equivalent to calling at attained age $x + ts$ with remaining term $n_\text{eff}
 ```python
 from lactuca import LifeTable
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("PER2020_Ind_1o", "m", cohort=1976, interest_rate=0.03)
 
 # Mid-year reserve: 15-year annuity-due at age 50, 6 months into the policy year
 a_midyear = lt.äx(50, n=15, ts=0.5)

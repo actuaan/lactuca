@@ -99,7 +99,7 @@ from lactuca import LifeTable, config
 
 # discrete_precision: payment grid at 66.5, 67.5, … → lx_interpolation applies at every step
 config.calculation_mode = "discrete_precision"
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 
 # --- UDD (linear interpolation) ---
 config.lx_interpolation = "linear"
@@ -189,7 +189,7 @@ places slightly more weight on deaths near the middle of the year, while CFM dis
 them geometrically.
 
 The code below compares whole-life annuity values $\ddot{a}_x^{(m)}$ for a male life
-using `PASEM2020_Rel_1o` at $i = 3\%$, at three representative ages and three payment
+using `GRMF95` at $i = 3\%$, at three representative ages and three payment
 frequencies.  Since `config.lx_interpolation` is evaluated at call-time, both valuations
 use the same table instance with the setting switched between calls:
 
@@ -198,7 +198,7 @@ from lactuca import LifeTable, config
 
 config.decimals.annuities = 6
 
-lt = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt = LifeTable("GRMF95", "m", interest_rate=0.03)
 # config.lx_interpolation is read at call-time, not at table construction
 
 ages = [45, 65, 80]

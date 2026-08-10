@@ -249,7 +249,7 @@ are rejected; `n = +inf` is accepted as a whole-life sentinel (see note above).
 
 ```python
 from lactuca import LifeTable
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 
 lt.äx(65, n=20, ir=0.03)     # ✔  20-year temporary annuity
 lt.äx(65, n=0, ir=0.03)      # ✔  zero-term returns 0.0, no error
@@ -541,7 +541,7 @@ is a float but means 300 % — use `0.03` for 3%: `0.03`, `3.0 / 100`, or
 
 ```python
 from lactuca import LifeTable, InterestRate
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 
 # Property assignment:
 lt.interest_rate = 0.03                 # ✔  float
@@ -1959,7 +1959,7 @@ combination_mode='udd' is limited to 2 or 3 causes (host plus 1 or 2 other table
 ```
 
 **Cause**: `combination_mode="udd"` with host plus three or more other tables (four+
-causes). v1 supports UDD for two or three causes only.
+causes). UDD is limited to two or three causes (host plus one or two others).
 
 **Fix**: Use `"independent"` for four or more causes, or reduce the number of tables
 in `table_combination`.

@@ -123,7 +123,8 @@ accepted and wrapped automatically:
 ```python
 from lactuca import LifeTable, GrowthRate
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
+lt_ins = LifeTable("PASEM2020_Rel_1o", "m")
 gr = GrowthRate(0.02)
 
 # Escalating whole-life annuity-due at 3% interest
@@ -132,8 +133,8 @@ lt.äx(65, ir=0.03, gr=gr)
 # 20-year temporary annuity, monthly, using a plain float for growth
 lt.äx(65, n=20, m=12, ir=0.03, gr=0.02)
 
-# Escalating whole-life insurance
-lt.Ax(65, ir=0.03, gr=gr)
+# Escalating whole-life insurance (life-risk / PASEM)
+lt_ins.Ax(65, ir=0.03, gr=gr)
 ```
 
 The `gr=` parameter is accepted by the annuity methods `äx`, `ax` and their
@@ -150,7 +151,7 @@ a per-policy list such as `gr=[gr, gr, gr]`.
 ```python
 from lactuca import LifeTable, GrowthRate
 
-lt = LifeTable("PASEM2020_Rel_1o", "m")
+lt = LifeTable("GRMF95", "m")
 gr = GrowthRate({"base": 0.02, "stress": 0.04})
 
 gr.active_scenario = "base"

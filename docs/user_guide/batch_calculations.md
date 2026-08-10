@@ -431,7 +431,7 @@ import numpy as np
 from lactuca import GrowthRate, InterestRate, LifeTable
 
 ir = InterestRate({"base": 0.02, "piecewise": ([5, 10], [0.01, 0.02, 0.025])})
-lt = LifeTable("PASEM2020_Gen_2o", "m")
+lt = LifeTable("GRMF95", "m")
 ages = np.array([50.0, 55.0, 60.0])
 
 ir.active_scenario = "base"
@@ -1180,7 +1180,7 @@ The following example shows the reshape effect for a monthly life annuity (`äx`
 ```python
 from lactuca import LifeTable, config, payment_times
 
-lt   = LifeTable("PASEM2020_Rel_1o", "m", interest_rate=0.03)
+lt   = LifeTable("GRMF95", "m", interest_rate=0.03)
 ages = [55, 60, 65, 70]
 
 config.decimals.annuities = 6
@@ -1190,7 +1190,7 @@ flows_exact = lt.äx(ages, n=20, m=12, ir=0.03, return_flows=True)
 print(f"Exact  total_pv         : {flows_exact['total_pv']:.6f}")
 print(f"Exact  len(expected_cf) : {len(flows_exact['expected_cf'])}")
 print(f"Exact  time_grid[:4]    : {flows_exact['time_grid'][:4]}")
-# Exact  total_pv         : 53.767205
+# Exact  total_pv         : 50.631616
 # Exact  len(expected_cf) : 240
 # Exact  time_grid[:4]    : [0.         0.08333333 0.16666667 0.25      ]
 
@@ -1201,7 +1201,7 @@ flows_annual = lt.äx(ages, n=20, m=12, ir=0.03,
 print(f"Annual total_pv         : {flows_annual['total_pv']:.6f}")
 print(f"Annual len(expected_cf) : {len(flows_annual['expected_cf'])}")
 print(f"Annual time_grid        : {flows_annual['time_grid']}")
-# Annual total_pv         : 53.767205   ← identical to exact
+# Annual total_pv         : 50.631616   ← identical to exact
 # Annual len(expected_cf) : 20
 # Annual time_grid        : [ 1.  2.  3. … 20.]
 

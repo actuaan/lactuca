@@ -21,7 +21,7 @@ String and numeric parsing rules depend on `config.date_format` (see
 | ISO string | `"2024-01-15"` |
 | European date string | `"15/01/2024"` (`DD/MM/YYYY`, when `date_format="dmy"`) |
 | US date string | `"01/15/2024"` (`MM/DD/YYYY`, when `date_format="mdy"`) |
-| Integer YYYYMMDD | `20240115` |
+| Integer YYYYMMDD | `20240115` (only when `date_format="ymd_int"`) |
 | pandas `Timestamp` | `pd.Timestamp("2024-01-15")` |
 | Polars `Date` | Polars date scalar |
 | NumPy `datetime64` | `np.datetime64("2024-01-15")` |
@@ -33,10 +33,18 @@ Accepted string/number forms by configuration:
 - `config.date_format="mdy"`: accepts `MM/DD/YYYY` and `MM-DD-YYYY`
 - `config.date_format="ymd_int"`: accepts 8-digit integers / numeric strings (`YYYYMMDD`)
 
-Sequence inputs (Python `list`, NumPy array, etc.) are accepted wherever documented.
-Age functions return `numpy.ndarray` of `float64`. Duration functions return
-`numpy.ndarray` of `int32` for days/months and `float64` for years. Date
-construction functions (`make_date`, `end_of_month`, `add_duration`,
+Sequence inputs (Python `list`, NumPy array, pandas/Polars `Series`, etc.) are
+accepted wherever documented. **Length-1 sequences remain vectors** (return
+`ndarray` of shape `(1,)`). By contrast, a `FormatDates` wrapper of length 1
+(e.g. from `make_date(y, m, d)`) is treated as a **scalar** when re-entering age,
+duration, and extractor APIs — so `age_exact(make_date(...), make_date(...))`
+returns a Python `float`, not a length-1 array. Do not index with `[0]` for that
+pipeline.
+
+Age functions return `numpy.ndarray` of `float64` when any true sequence is
+passed. Duration functions return `numpy.ndarray` of `int32` for days/months and
+`float64` for years whenever any input is a sequence (including length 1).
+Date construction functions (`make_date`, `end_of_month`, `add_duration`,
 `anniversary_dates`) return a `FormatDates` list.
 
 When multiple sequence arguments are provided, lengths must be compatible for
@@ -144,9 +152,16 @@ Functions such as `make_date`, `end_of_month`, `add_duration`, `next_anniversary
 configured output representation.
 When `date_format=None` the global `config.date_format` setting is used.
 
-`.format()` returns a **scalar** when the wrapper contains a single date, and a
-**list** when it contains multiple dates. Values are strings for
-`"ymd"`, `"dmy"`, and `"mdy"`, and integers for `"ymd_int"`.
+`.format()` returns a **scalar** when the wrapper contains a single `date` leaf,
+a **list** for multiple dates, and a **nested list** (`list[list[str|int]]`) when
+the wrapper holds a multi-policy list-of-lists (e.g. `anniversary_dates` with
+N>1). Values are strings for `"ymd"`, `"dmy"`, and `"mdy"`, and integers for
+`"ymd_int"`.
+
+For annual grids (`m=1`), `anniversary_dates` re-anchors the original day-of-month
+each year (so a start on 29 February keeps 29 February on later leap years). Prefer
+`add_duration(..., years=N)` from the original anchor (or `anniversary_dates`)
+rather than chaining repeated `+1 year` steps from a clamped February date.
 
 ```python
 from lactuca.dates import make_date, anniversary_dates
@@ -268,14 +283,21 @@ print(age_exact("1990-01-01", "2024-07-01", day_count="exact"))   # 34.496919917
 
 ### Rounded age conventions
 
-The three convenience functions apply standard actuarial rounding at integer birthday
-boundaries:
+The three convenience functions use **calendar birthday** boundaries (not
+`floor`/`ceil` of the fractional Exact/Actual age). That avoids leap-year cases
+where Actual/Actual is slightly under an integer on an exact birthday.
 
-| Function | Notation | Formula | Description |
-|----------|----------|---------|-------------|
-| `age_last_birthday` | ALB, $[x]$ | $\lfloor x_{\text{exact}} \rfloor$ | Rounded **down** to last integer birthday |
-| `age_nearest_birthday` | ANB | $\operatorname{round}(x_{\text{exact}})$ | Rounded to **nearest** integer birthday |
-| `age_next_birthday` | ANEXT | $\lceil x_{\text{exact}} \rceil$ | Rounded **up** to next integer birthday |
+| Function | Notation | Rule | Description |
+|----------|----------|------|-------------|
+| `age_last_birthday` | ALB, $[x]$ | Completed calendar birthdays | Integer age at last birthday |
+| `age_nearest_birthday` | ANB | Nearest calendar birthday; midpoint → **next** | Half-up at exact midpoint |
+| `age_next_birthday` | ANEXT | Next calendar birthday; on birthday = ALB | Integer age at next birthday |
+
+`age_exact` / `act_age(..., method='exact')` remain fractional day-count ages and
+are **not** the same as `floor(age_exact)`.
+
+`years_between` may be negative when `date2 < date1`. Actuarial age APIs require
+`valuation_date >= birth_date` and raise `ValueError` otherwise.
 
 All three share the same signature:
 `(birth_date, valuation_date, *, day_count='act_act')`.
@@ -302,9 +324,9 @@ Calling `act_age(birth, val)` with the defaults is identical to `age_exact(birth
 | `method` | Description |
 |----------|-------------|
 | `'exact'` | No rounding — exact fractional age (same as `age_exact`). Requires `m=365`. |
-| `'last'` | Rounds **down** to the nearest $1/m$ year (ALB when $m=1$) |
-| `'nearest'` | Rounds to the **nearest** $1/m$ year (ANB when $m=1$) |
-| `'next'` | Rounds **up** to the nearest $1/m$ year (ANEXT when $m=1$) |
+| `'last'` | For $m=1$: calendar ALB. For $m>1$: floor of day-count age to $1/m$ years. |
+| `'nearest'` | For $m=1$: calendar ANB (midpoint → next). For $m>1$: nearest $1/m$ of day-count age. |
+| `'next'` | For $m=1$: calendar ANEXT (on birthday = ALB). For $m>1$: ceil of day-count age to $1/m$. |
 
 To compute age rounded down to the nearest completed month ($m=12$, `method='last'`):
 
