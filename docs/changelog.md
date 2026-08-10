@@ -7,11 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.13] - 2026-08-10
 
-### Features
-
-- **docs**: Add Open Graph and Twitter cards for social preview
-
-
 ### Bug Fixes
 
 - **dates**: Align FormatDates scalar contract and calendar ages [**BREAKING**]
@@ -28,40 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **docs**: Clarify multiple-decrement scope without v1 jargon
 
-- **mkt**: Close Fase 0 and open Q1 2026 cadence
-
-- **scripts**: Install docs deps in serve-docs.sh
-
-- **changelog**: Add unreleased documentation entries
-
-- **notebooks**: Clear demo outputs and show PER summary
-
 - **docs**: Align annuity examples with PER longevity tables
-
-- **notebooks**: Add Quibus nEx lx interpolation contrast
 
 - **data**: Clarify AM92_AF92 select-ultimate in module docstring
 
 - **dates**: Document FormatDates scalar contract and calendar ALB
 
 - **dates**: Align guide and API with calendar ages
-
-
-### Testing
-
-- **dates**: Add coverage gaps and I9 monthly DOM smoke
-
-
-### Reverts
-
-- **docs**: Drop manual changelog edits (git-cliff owns changelog)
-
-
-### Miscellaneous
-
-- **vscode**: Enable full pytest discovery in Testing panel
-
-- **vscode**: Load workspace .env into integrated terminal
 
 ## [0.1.11] - 2026-07-08
 
@@ -78,10 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **_activation,docs**: Align LAC-4001 message and user docs with auto-recovery
 
-- **ci**: Own gh-pages root landing page on prod docs deploy
-
-- **scripts,ci**: Generate changelog per prod tag, drop emojis
-
 - **tables**: Accept cartesian/return_dict in concrete table __init__
 
 - **tables**: Close TBL-01 audit gaps for pending configure
@@ -96,15 +60,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **tables,tests**: Select duration flag and pending configure gaps
 
-- **scripts,tests**: Enrich constructor stubs regardless of source Union
-
 - **tables**: Widen TableRegistry table_class for Cython wheels
 
 - **tables**: Harden TableRegistry table_class validation for wheels
-
-- **ci**: Copy src and extra scripts into isolated wheel pytest root
-
-- **ci**: Align prod release gates with test workflow
 
 
 ### Documentation
@@ -123,65 +81,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **docs**: Fix errors_reference cross-ref in using_tables
 
-- **docs,ci**: Add sitemap, canonical URLs, and robots.txt for SEO
-
 - **docs**: Document pending unisex configure in using_tables
 
-- **mkt**: Add Spanish demo video artifacts for FASE_0 launch
-
 - **docs**: Clarify TableRegistry requires concrete table class
-
-- **mkt**: Relocate Spanish demo notebook to notebooks/
-
-- **mkt**: Add executed outputs to lactuca_demo_es notebook
-
-- **mkt**: Fix actuarial coherence in lactuca_demo_es notebook
-
-- **mkt**: Use reset_to_defaults in lactuca_demo_es section 5
-
-- **changelog**: Release v0.1.11
-
-
-### Testing
-
-- **tests**: Fix TBL-01 suite regressions and sync gate docs
-
-
-### Miscellaneous
-
-- **scripts**: Remove verify_pending_docs harness
 
 ## [0.1.6] - 2026-07-05
 
 ### Features
 
 - **_activation**: Add license release-stale and release --force CLI
-
-
-### Bug Fixes
-
-- **scripts**: Enrich wheel pyi stubs for IDE typing contract (IDE-01)
-
-- **tests**: Read wheel pyi in test_64 when scripts tree absent
-
-- **scripts**: Resolve re-exported Literal aliases in wheel pyi stubs
-
-- **scripts,tests**: Harden wheel stub IDE contract after import audit
-
-- **scripts**: Emit local Literal aliases without duplicate imports
-
-- **scripts,tests**: Expand Tier 1 stub overrides and union ordering contract
-
-- **ci**: Use wheel artifacts for Test PyPI stub validation
-
-- **ci**: Stage docs scripts for isolated wheel pytest
-
-- **ci**: Run wheel E2E steps with bash shell on Windows
-
-
-### Performance
-
-- **scripts**: Public-only pyi stubs and faster stub generator
 
 
 ### Refactoring
@@ -191,25 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
-- **changelog**: Exclude test PyPI tags from public history
-
-- **engine,ci**: Clarify engine base re-exports and scripts-utilities Track 2c
-
 - **activation**: Document license release-stale and release --force CLI
-
-- **conf**: Move version-switcher between theme and github icons
-
-
-### CI/CD
-
-- **docs**: Use committed changelog in doc workflows
-
-- **docs,scripts,tests**: Enable version switcher and accumulative gh-pages deploy (DOCS-01)
-
-
-### Miscellaneous
-
-- **build**: Set PyPI classifier to Production/Stable
 
 ## [0.1.0] - 2026-07-02
 
@@ -221,8 +111,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 - **tables**: Replace horizontal pl.concat with insert_column
-
-- **ci**: Select wheel ABI matching E2E Python interpreter
 
 
 ### Documentation
@@ -236,30 +124,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **api**: Align first-death and pure-endowment terminology
 
 - Align LICENSE with CC BY carve-out and EULA reference
-
-
-### Testing
-
-- **tests**: Relax test_56 golden ULP tolerance for wheel_test
-
-
-### CI/CD
-
-- **ci**: Avoid duplicate pytest on release push
-
-- **ci**: Disable pre-push pytest by default
-
-- **tests**: Fail pytest when runtime deps lag behind CI floors
-
-- Harden wheel license smoke and align release workflows
-
-- Fix wheel numerical smoke with table interest_rate
-
-- Add linux canary scope and fix wheel pytest layout
-
-- Complete wheel pytest layout and fix polars date deprecation
-
-- Unify wheel E2E across release-test and production
-
-- Copy swiss SOA fixture into isolated wheel pytest root
 <!-- generated by git-cliff -->
