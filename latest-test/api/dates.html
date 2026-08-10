@@ -12,9 +12,12 @@
 <meta property="og:url" content="https://www.lactuca.io/latest/api/dates.html" />
 <meta property="og:site_name" content="Lactuca" />
 <meta property="og:description" content="High-performance date manipulation and actuarial age/duration functions following Spanish and international conventions. Key capabilities: Actuarial age — Age Last Birthday (ALB), Age Nearest Birth..." />
+<meta property="og:image" content="https://www.lactuca.io/latest/_static/lactuca_og.png" />
+<meta property="og:image:alt" content="Lactuca" />
 <meta name="description" content="High-performance date manipulation and actuarial age/duration functions following Spanish and international conventions. Key capabilities: Actuarial age — Age Last Birthday (ALB), Age Nearest Birth..." />
+<meta name="twitter:card" content="summary_large_image" />
 
-    <title>Date Utilities &#8212; Lactuca 0.1.11</title>
+    <title>Date Utilities &#8212; Lactuca 0.1.13</title>
   
   
   
@@ -33,8 +36,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -42,12 +45,12 @@
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2508a89d" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=cb0dc1a8"></script>
+    <script src="../_static/documentation_options.js?v=02926120"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,9 +60,9 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/dates';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.11-test';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.13-test';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -72,7 +75,7 @@
     <link rel="prev" title="Config" href="config.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.11" />
+  <meta name="docsearch:version" content="0.1.13" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -551,7 +554,8 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
   <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
@@ -662,7 +666,8 @@
 Spanish and international conventions.  Key capabilities:</p>
 <ul class="simple">
 <li><p><strong>Actuarial age</strong> — Age Last Birthday (ALB), Age Nearest Birthday (ANB), Age Next
-Birthday (ANEXT), and exact fractional age with daily resolution.</p></li>
+Birthday (ANEXT) from <strong>calendar birthdays</strong> (<code class="docutils literal notranslate"><span class="pre">m=1</span></code>), plus exact fractional age.
+<code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> length-1 (e.g. <code class="docutils literal notranslate"><span class="pre">make_date</span></code>) re-enters as a scalar.</p></li>
 <li><p><strong>Duration calculations</strong> — days, complete calendar months, and fractional years
 (Actual/Actual ISDA or days/365.25 approximation).</p></li>
 <li><p><strong>Anniversary dates</strong> — generation of payment or projection date grids at any
@@ -687,25 +692,20 @@ and actuarial age conventions.</p>
 <span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">age_last_birthday</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">birth_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuation_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DayCountMethodLiteral</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'act_act'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.age_last_birthday" title="Link to this definition">#</a></dt>
 <dd><p>Compute Age Last Birthday (ALB) - whole completed years.</p>
 <p>Convenience wrapper for <code class="docutils literal notranslate"><span class="pre">act_age(...,</span> <span class="pre">m=1,</span> <span class="pre">method='last')</span></code> implementing
-the Age Last Birthday convention: the integer number of years completed
-since birth. This is the standard age definition used in life insurance
-and pension actuarial work throughout international practice.</p>
-<p>ALB uses floor behavior: age increments on the exact birthday and remains
-constant until the next birthday anniversary. For example, a person born
-on June 15, 1990 has ALB = 33 from June 15, 2023 until June 14, 2024,
-then transitions to ALB = 34 on June 15, 2024.</p>
+the Age Last Birthday convention: the integer number of calendar birthdays
+completed on the valuation date. This is the standard age definition used
+in life insurance and pension actuarial work throughout international practice.</p>
+<p>ALB increments on the exact birthday and remains constant until the next
+anniversary. For example, a person born on June 15, 1990 has ALB = 33 from
+June 15, 2023 through June 14, 2024, then ALB = 34 on June 15, 2024.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>birth_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Birth date(s). Accepts integers (YYYYMMDD), strings, <code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">datetime</span></code>
 objects, and pandas/Polars date types.</p></li>
 <li><p><strong>valuation_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Valuation or reference date(s). Must not precede corresponding birth date.</p></li>
-<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – <p>Day-count convention for computing the base fractional age before flooring:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'act_act'</span></code>: Actual/Actual ISDA (maximum precision, leap year aware)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'exact'</span></code>: Approximation using days / 365.25 (faster)</p></li>
-</ul>
-</p></li>
+<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – Accepted for API consistency with <a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-func docutils literal notranslate"><span class="pre">act_age()</span></code></a>. Annual ALB uses
+calendar birthday boundaries, so <code class="docutils literal notranslate"><span class="pre">day_count</span></code> does not change the result.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -725,11 +725,10 @@ represented as float):</p>
 <p>The returned values are floats (not integers) to maintain consistency with
 other age calculation functions and to support vectorized NumPy arrays.
 Values are guaranteed to be non-negative whole numbers (0.0, 1.0, 2.0, …).</p>
-<p>This function is equivalent to:</p>
-<div class="math notranslate nohighlight">
-\[\text{ALB}(x, t) = \left\lfloor \frac{t - x}{\text{year}} \right\rfloor\]</div>
-<p>where <span class="math notranslate nohighlight">\(x\)</span> is birth date and <span class="math notranslate nohighlight">\(t\)</span> is valuation date, using the specified
-day-count convention to measure fractional years.</p>
+<p>ALB counts completed calendar birthdays (Feb-29 births use Feb-28 in
+non-leap years), not <code class="docutils literal notranslate"><span class="pre">floor</span></code> of a day-count fractional age. That avoids
+leap-year shortfalls where Actual/Actual can be slightly under an integer
+on an exact birthday.</p>
 <p>Available in the top-level namespace as the compact alias <code class="docutils literal notranslate"><span class="pre">lactuca.alb</span></code>.</p>
 <p class="rubric">Examples</p>
 <p>Standard ALB calculation:</p>
@@ -760,9 +759,9 @@ day-count convention to measure fractional years.</p>
 <dl class="simple">
 <dt><a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act_age</span></code></a></dt><dd><p>General actuarial age function with configurable rounding.</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_nearest_birthday" title="lactuca.age_nearest_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></a></dt><dd><p>ANB convention (rounds to nearest year).</p>
+<dt><a class="reference internal" href="#lactuca.age_nearest_birthday" title="lactuca.age_nearest_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></a></dt><dd><p>ANB convention (nearest calendar birthday).</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_next_birthday" title="lactuca.age_next_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_next_birthday</span></code></a></dt><dd><p>ANEXT convention (ceiling to next year).</p>
+<dt><a class="reference internal" href="#lactuca.age_next_birthday" title="lactuca.age_next_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_next_birthday</span></code></a></dt><dd><p>ANEXT convention (next calendar birthday).</p>
 </dd>
 <dt><a class="reference internal" href="#lactuca.age_exact" title="lactuca.age_exact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_exact</span></code></a></dt><dd><p>Exact fractional age without rounding.</p>
 </dd>
@@ -773,32 +772,24 @@ day-count convention to measure fractional years.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.age_nearest_birthday">
 <span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">age_nearest_birthday</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">birth_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuation_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DayCountMethodLiteral</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'act_act'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.age_nearest_birthday" title="Link to this definition">#</a></dt>
-<dd><p>Compute Age Nearest Birthday (ANB) - round to nearest integer year.</p>
+<dd><p>Compute Age Nearest Birthday (ANB) - nearest calendar birthday.</p>
 <p>Convenience wrapper for <code class="docutils literal notranslate"><span class="pre">act_age(...,</span> <span class="pre">m=1,</span> <span class="pre">method='nearest')</span></code> implementing
-the Age Nearest Birthday convention: the age is rounded to the nearest
-integer year based on proximity to the closest birthday. Used in certain
-actuarial contexts and pricing models where symmetric rounding around
-birthdays is preferred.</p>
-<p>ANB transitions occur at the midpoint between birthdays: a person born on
-June 15, 1990 has ANB = 33 until approximately December 15, 2023 (6 months
-after the 33rd birthday), then transitions to ANB = 34 until approximately
-December 15, 2024 (6 months after the 34th birthday), continuing the pattern.</p>
+the Age Nearest Birthday convention: choose the closer of the last and next
+calendar birthdays. Used where symmetric rounding around birthdays is preferred.</p>
+<p>ANB transitions at the day midpoint between consecutive birthdays. An exact
+midpoint rounds <strong>toward the next birthday</strong> (half-up).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>birth_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Birth date(s). Accepts integers (YYYYMMDD), strings, <code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">datetime</span></code>
 objects, and pandas/Polars date types.</p></li>
 <li><p><strong>valuation_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Valuation or reference date(s). Must not precede corresponding birth date.</p></li>
-<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – <p>Day-count convention for computing base fractional age:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'act_act'</span></code>: Actual/Actual ISDA (maximum precision)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'exact'</span></code>: Approximation using days / 365.25 (faster)</p></li>
-</ul>
-</p></li>
+<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – Accepted for API consistency with <a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-func docutils literal notranslate"><span class="pre">act_age()</span></code></a>. Annual ANB uses
+calendar birthday distances, so <code class="docutils literal notranslate"><span class="pre">day_count</span></code> does not change the result.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Age(s) rounded to nearest whole year (as float):</p>
+<dd class="field-even"><p><p>Age(s) at the nearest calendar birthday (as float):</p>
 <ul class="simple">
 <li><p>Python <code class="docutils literal notranslate"><span class="pre">float</span></code> for scalar inputs</p></li>
 <li><p>NumPy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of dtype <code class="docutils literal notranslate"><span class="pre">float64</span></code> for sequence inputs</p></li>
@@ -810,25 +801,20 @@ objects, and pandas/Polars date types.</p></li>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Rounding uses IEEE 754 round-half-to-even (banker’s rounding, <code class="docutils literal notranslate"><span class="pre">np.rint</span></code>):
-fractional ages of exactly 0.5 years round to the nearest even integer.
-The operation applied is:</p>
-<div class="math notranslate nohighlight">
-\[\text{ANB}(x, t) = \operatorname{rint}\!\left( \frac{t - x}{\text{year}} \right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(x\)</span> is birth date and <span class="math notranslate nohighlight">\(t\)</span> is valuation date.</p>
-<p>While less common than ALB in traditional life insurance pricing, ANB is
-used in certain health insurance products and demographic analyses where
-symmetric age distribution around birthdays is analytically convenient.</p>
+<p>Distances are measured in calendar days to the last and next birthday
+anniversaries (Feb-29 → Feb-28 in non-leap years). Equal distances round
+up to the next birthday. This is <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">np.rint</span></code> of a day-count
+fractional age.</p>
 <p>Available in the top-level namespace as the compact alias <code class="docutils literal notranslate"><span class="pre">lactuca.anb</span></code>.</p>
 <p class="rubric">Examples</p>
-<p>Before the 6-month midpoint (rounds down to previous age):</p>
+<p>Before the midpoint (closer to last birthday):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">age_nearest_birthday</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">age_nearest_birthday</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="go">33.0</span>
 </pre></div>
 </div>
-<p>After the 6-month midpoint (rounds up to next age):</p>
+<p>After the midpoint (closer to next birthday):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">age_nearest_birthday</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="go">34.0</span>
 </pre></div>
@@ -849,9 +835,9 @@ symmetric age distribution around birthdays is analytically convenient.</p>
 <dl class="simple">
 <dt><a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act_age</span></code></a></dt><dd><p>General actuarial age function with configurable rounding.</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_last_birthday" title="lactuca.age_last_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_last_birthday</span></code></a></dt><dd><p>ALB convention (floor to last completed year).</p>
+<dt><a class="reference internal" href="#lactuca.age_last_birthday" title="lactuca.age_last_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_last_birthday</span></code></a></dt><dd><p>ALB convention (last completed birthday).</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_next_birthday" title="lactuca.age_next_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_next_birthday</span></code></a></dt><dd><p>ANEXT convention (ceiling to next year).</p>
+<dt><a class="reference internal" href="#lactuca.age_next_birthday" title="lactuca.age_next_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_next_birthday</span></code></a></dt><dd><p>ANEXT convention (next calendar birthday).</p>
 </dd>
 <dt><a class="reference internal" href="#lactuca.age_exact" title="lactuca.age_exact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_exact</span></code></a></dt><dd><p>Exact fractional age without rounding.</p>
 </dd>
@@ -862,33 +848,25 @@ symmetric age distribution around birthdays is analytically convenient.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.age_next_birthday">
 <span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">age_next_birthday</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">birth_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuation_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DayCountMethodLiteral</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'act_act'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.age_next_birthday" title="Link to this definition">#</a></dt>
-<dd><p>Compute Age Next Birthday (ANEXT) - ceiling to next whole year.</p>
+<dd><p>Compute Age Next Birthday (ANEXT) - age at next calendar birthday.</p>
 <p>Convenience wrapper for <code class="docutils literal notranslate"><span class="pre">act_age(...,</span> <span class="pre">m=1,</span> <span class="pre">method='next')</span></code> implementing
-the Age Next Birthday convention: the age is rounded up (ceiling) to the
-next integer year. Commonly used in health insurance underwriting and
-certain life insurance pricing contexts where conservative (older) age
-assumptions are preferred.</p>
-<p>ANEXT uses ceiling behavior: the age transitions to the next integer
-immediately after each birthday (or on the birthday itself in leap years).
-For example, a person born on June 15, 1990 has ANEXT = 34 from
-June 16, 2023 through June 14, 2024, then transitions to ANEXT = 35
-on June 15, 2024 (2024 is a leap year; see Notes).</p>
+the Age Next Birthday convention: the integer age attained at the next
+upcoming birthday. Common in health insurance underwriting and some life
+pricing contexts that prefer a slightly older age.</p>
+<p>On an exact birthday, ANEXT equals ALB (the birthday just attained), not
+ALB + 1. The day after the birthday, ANEXT advances to the following age.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>birth_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Birth date(s). Accepts integers (YYYYMMDD), strings, <code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">datetime</span></code>
 objects, and pandas/Polars date types.</p></li>
 <li><p><strong>valuation_date</strong> (<em>DateLike</em><em> or </em><em>sequence</em><em> of </em><em>DateLike</em>) – Valuation or reference date(s). Must not precede corresponding birth date.</p></li>
-<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – <p>Day-count convention for computing base fractional age:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'act_act'</span></code>: Actual/Actual ISDA (maximum precision)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'exact'</span></code>: Approximation using days / 365.25 (faster)</p></li>
-</ul>
-</p></li>
+<li><p><strong>day_count</strong> (<em>{'act_act'</em><em>, </em><em>'exact'}</em><em>, </em><em>default='act_act'</em>) – Accepted for API consistency with <a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-func docutils literal notranslate"><span class="pre">act_age()</span></code></a>. Annual ANEXT uses
+calendar birthday boundaries, so <code class="docutils literal notranslate"><span class="pre">day_count</span></code> does not change the result.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Age(s) rounded up to next whole year (as float):</p>
+<dd class="field-even"><p><p>Age(s) at next birthday (as float), equal to ALB on the birthday itself:</p>
 <ul class="simple">
 <li><p>Python <code class="docutils literal notranslate"><span class="pre">float</span></code> for scalar inputs</p></li>
 <li><p>NumPy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of dtype <code class="docutils literal notranslate"><span class="pre">float64</span></code> for sequence inputs</p></li>
@@ -900,31 +878,20 @@ objects, and pandas/Polars date types.</p></li>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The ceiling operation is applied to the fractional age:</p>
-<div class="math notranslate nohighlight">
-\[\text{ANEXT}(x, t) = \left\lceil \frac{t - x}{\text{year}} \right\rceil\]</div>
-<p>where <span class="math notranslate nohighlight">\(x\)</span> is birth date and <span class="math notranslate nohighlight">\(t\)</span> is valuation date.</p>
-<p>Under the default Actual/Actual ISDA convention (<code class="docutils literal notranslate"><span class="pre">day_count='act_act'</span></code>),
-the fractional age on an exact birthday equals the integer exactly when the
-valuation year is not a leap year (the first and last partial-year fractions
-sum to exactly 1). When the valuation year is a leap year the last partial
-year uses 366 in the denominator while the first used 365, so their sum
-slightly exceeds 1 and the ceiling advances to ALB + 1 on the birthday
-itself. This matches the actuarial definition: ANEXT is the age attained
-at the next upcoming birthday.</p>
-<p>This convention is particularly common in health insurance applications where
-rate tables are structured by ANEXT and conservative (slightly older) age
-classifications are preferred for underwriting purposes.</p>
+<p>ANEXT is the calendar age at the next birthday anniversary, except that on
+the birthday date it equals the age just attained (same as ALB). It is
+<strong>not</strong> <code class="docutils literal notranslate"><span class="pre">ceil</span></code> of a day-count fractional age (which can disagree on leap
+years).</p>
 <p>Available in the top-level namespace as the compact alias <code class="docutils literal notranslate"><span class="pre">lactuca.anextb</span></code>.</p>
 <p class="rubric">Examples</p>
-<p>On exact birthday, ANEXT advances to the next upcoming birthday age:</p>
+<p>On exact birthday, ANEXT equals ALB (not +1):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">age_next_birthday</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">age_next_birthday</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
-<span class="go">35.0</span>
+<span class="go">34.0</span>
 </pre></div>
 </div>
-<p>One day after birthday (age increments to next year):</p>
+<p>One day after birthday (age at the next upcoming birthday):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">age_next_birthday</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
 <span class="go">35.0</span>
 </pre></div>
@@ -945,9 +912,9 @@ classifications are preferred for underwriting purposes.</p>
 <dl class="simple">
 <dt><a class="reference internal" href="#lactuca.act_age" title="lactuca.act_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act_age</span></code></a></dt><dd><p>General actuarial age function with configurable rounding.</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_last_birthday" title="lactuca.age_last_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_last_birthday</span></code></a></dt><dd><p>ALB convention (floor to last completed year).</p>
+<dt><a class="reference internal" href="#lactuca.age_last_birthday" title="lactuca.age_last_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_last_birthday</span></code></a></dt><dd><p>ALB convention (last completed birthday).</p>
 </dd>
-<dt><a class="reference internal" href="#lactuca.age_nearest_birthday" title="lactuca.age_nearest_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></a></dt><dd><p>ANB convention (round to nearest year).</p>
+<dt><a class="reference internal" href="#lactuca.age_nearest_birthday" title="lactuca.age_nearest_birthday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></a></dt><dd><p>ANB convention (nearest calendar birthday).</p>
 </dd>
 <dt><a class="reference internal" href="#lactuca.age_exact" title="lactuca.age_exact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">age_exact</span></code></a></dt><dd><p>Exact fractional age without rounding.</p>
 </dd>
@@ -1128,17 +1095,24 @@ controlled by frequency parameter <code class="docutils literal notranslate"><sp
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Rounding is applied per-method at frequency <span class="math notranslate nohighlight">\(m\)</span>:</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">m=1</span></code> and <code class="docutils literal notranslate"><span class="pre">method</span></code> in <code class="docutils literal notranslate"><span class="pre">{'last',</span> <span class="pre">'nearest',</span> <span class="pre">'next'}</span></code>, ages use
+<strong>calendar birthday</strong> boundaries (ALB / ANB / ANEXT), not
+<code class="docutils literal notranslate"><span class="pre">floor</span></code> / <code class="docutils literal notranslate"><span class="pre">rint</span></code> / <code class="docutils literal notranslate"><span class="pre">ceil</span></code> of the fractional day-count age. This avoids
+leap-year shortfalls where Actual/Actual is slightly under an integer on an
+exact birthday. <code class="docutils literal notranslate"><span class="pre">method='exact'</span></code> still uses the selected <code class="docutils literal notranslate"><span class="pre">day_count</span></code>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">m&gt;1</span></code>, rounding is applied to the fractional day-count age:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">'last'</span></code>: <span class="math notranslate nohighlight">\(\lfloor \text{age} \cdot m \rfloor / m\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">'nearest'</span></code>: <span class="math notranslate nohighlight">\(\operatorname{round}(\text{age} \cdot m) / m\)</span>
-(IEEE 754 round-half-to-even: ties round to the nearest even integer)</p></li>
+(IEEE 754 round-half-to-even)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">'next'</span></code>: <span class="math notranslate nohighlight">\(\lceil \text{age} \cdot m \rceil / m\)</span></p></li>
 </ul>
+<p>For annual ANB (<code class="docutils literal notranslate"><span class="pre">m=1</span></code>, <code class="docutils literal notranslate"><span class="pre">method='nearest'</span></code>), an exact midpoint between
+consecutive birthdays rounds <strong>toward the next birthday</strong> (half-up).</p>
 <p>The Actual/Actual ISDA convention (<code class="docutils literal notranslate"><span class="pre">day_count='act_act'</span></code>) is the recognized
-standard for actuarial calculations and is required for regulatory compliance
-in many jurisdictions. The <code class="docutils literal notranslate"><span class="pre">'exact'</span></code> approximation may be used for performance-
-sensitive applications where precision differences of ~0.003 years are acceptable.</p>
+standard for actuarial fractional ages. The <code class="docutils literal notranslate"><span class="pre">'exact'</span></code> approximation may be
+used for performance-sensitive applications where precision differences of
+~0.003 years are acceptable.</p>
 <p>Broadcasting rules follow NumPy semantics: scalars and length-1 sequences are
 replicated to match the longest input sequence.</p>
 <p class="rubric">Examples</p>
@@ -1202,15 +1176,15 @@ replicated to match the longest input sequence.</p>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lactuca.alb</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">age_last_birthday</span></code></p></td>
-<td><p>ALB — floor to last integer year</p></td>
+<td><p>ALB — completed calendar birthdays</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lactuca.anb</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">age_nearest_birthday</span></code></p></td>
-<td><p>ANB — round to nearest integer year</p></td>
+<td><p>ANB — nearest calendar birthday (midpoint → next)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lactuca.anextb</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">age_next_birthday</span></code></p></td>
-<td><p>ANEXTB — ceiling to next integer year</p></td>
+<td><p>ANEXT — next calendar birthday; on birthday = ALB</p></td>
 </tr>
 </tbody>
 </table>
@@ -1463,8 +1437,9 @@ with separate extraordinary cash flows for the Spanish “14 pagas” scheme.</p
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Wrapper containing a list of anniversary <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> values
-(or a list-of-lists when input sequences are used and broadcasted).</p>
+<dd class="field-even"><p>Flat list of anniversary dates for a single pair (or after broadcast
+when N=1). For N&gt;1 pairs, a list-of-lists (one grid per pair).
+Annual <code class="docutils literal notranslate"><span class="pre">m=1</span></code> re-anchors the original day-of-month each year.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#lactuca.FormatDates" title="lactuca.FormatDates">FormatDates</a></p>
@@ -1476,6 +1451,10 @@ with separate extraordinary cash flows for the Spanish “14 pagas” scheme.</p
     <code class="docutils literal notranslate"><span class="pre">end_date</span></code> &lt;= <code class="docutils literal notranslate"><span class="pre">start_date</span></code>.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Annual grids (<code class="docutils literal notranslate"><span class="pre">m=1</span></code>) re-anchor the original day-of-month each year
+(a Feb-29 start keeps Feb-29 on leap years and uses Feb-28 otherwise).
+Scalar or N=1 inputs return a flat date list; N&gt;1 returns a list-of-lists.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">lactuca</span><span class="w"> </span><span class="kn">import</span> <span class="n">anniversary_dates</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
@@ -1496,7 +1475,7 @@ with separate extraordinary cash flows for the Spanish “14 pagas” scheme.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.next_anniversary">
-<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">next_anniversary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">birth_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.next_anniversary" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">next_anniversary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">birth_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lactuca.FormatDates" title="lactuca.FormatDates"><span class="pre">FormatDates</span></a></span></span><a class="headerlink" href="#lactuca.next_anniversary" title="Link to this definition">#</a></dt>
 <dd><p>Return the next anniversary date(s) after a reference date.</p>
 <p>If the reference date equals the anniversary, the function returns
 the anniversary in the following year.</p>
@@ -1570,7 +1549,7 @@ string representations are accepted (e.g. ISO-only, European formats, etc.).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.make_date">
-<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">make_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.make_date" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">make_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lactuca.FormatDates" title="lactuca.dates.core.FormatDates"><span class="pre">FormatDates</span></a></span></span><a class="headerlink" href="#lactuca.make_date" title="Link to this definition">#</a></dt>
 <dd><p>Construct <code class="docutils literal notranslate"><span class="pre">date</span></code> objects from year, month, and day components.</p>
 <p>Public constructor function that builds one or more <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> objects
 from integer year, month, and day components. Validates calendar rules
@@ -1646,7 +1625,7 @@ scalar-result comparisons in tests and assertions.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.add_duration">
-<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">add_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">months</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.add_duration" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">add_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">months</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lactuca.FormatDates" title="lactuca.FormatDates"><span class="pre">FormatDates</span></a></span></span><a class="headerlink" href="#lactuca.add_duration" title="Link to this definition">#</a></dt>
 <dd><p>Add years, months and days to date(s) with month-end adjustment.</p>
 <p>When adding months/years the function adjusts day-of-month to the
 last valid day of the resulting month if the original day does not
@@ -1675,6 +1654,9 @@ objects. Scalar inputs return a single-element wrapper.</p>
 <p>Month-end clamping: when the resulting month has fewer days than the
 original day-of-month, the day is clamped to the last valid day of that
 month (e.g. Jan 31 + 1 month: Feb 28/29; Mar 31 + 1 month: Apr 30).</p>
+<p>Prefer <code class="docutils literal notranslate"><span class="pre">years=N</span></code> (or months/days) <strong>from the original anchor</strong> in one call.
+Chaining repeated <code class="docutils literal notranslate"><span class="pre">+1</span> <span class="pre">year</span></code> from a clamped February date can permanently
+lose day 29; use <a class="reference internal" href="#lactuca.anniversary_dates" title="lactuca.anniversary_dates"><code class="xref py py-func docutils literal notranslate"><span class="pre">anniversary_dates()</span></code></a> for annual policy grids instead.</p>
 <p>Broadcasting follows NumPy-like semantics: scalar <code class="docutils literal notranslate"><span class="pre">start_date</span></code> and
 scalar duration components replicate to match the longest sequence input.</p>
 <p class="rubric">Examples</p>
@@ -1708,7 +1690,7 @@ scalar duration components replicate to match the longest sequence input.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lactuca.end_of_month">
-<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">end_of_month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lactuca.end_of_month" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">lactuca.</span></span><span class="sig-name descname"><span class="pre">end_of_month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DateLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">DateLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lactuca.FormatDates" title="lactuca.FormatDates"><span class="pre">FormatDates</span></a></span></span><a class="headerlink" href="#lactuca.end_of_month" title="Link to this definition">#</a></dt>
 <dd><p>Return month-end date(s) for the provided date(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1900,6 +1882,10 @@ according to <code class="docutils literal notranslate"><span class="pre">Config
 adding actuarial-specific formatting behavior. Equality comparison with a
 scalar <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> is supported: a <code class="docutils literal notranslate"><span class="pre">FormatDates</span></code> containing a single
 date compares equal to that scalar date, simplifying test assertions.</p>
+<p>Length-1 wrappers re-enter age and duration APIs as <strong>scalars</strong> (same as a
+bare <code class="docutils literal notranslate"><span class="pre">date</span></code>). Plain <code class="docutils literal notranslate"><span class="pre">list</span></code> / <code class="docutils literal notranslate"><span class="pre">Series</span></code> / <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of length 1 remain
+sequences. Nested list-of-lists from multi-pair <code class="docutils literal notranslate"><span class="pre">anniversary_dates</span></code> are
+preserved by <a class="reference internal" href="#lactuca.FormatDates.format" title="lactuca.FormatDates.format"><code class="xref py py-meth docutils literal notranslate"><span class="pre">format()</span></code></a>.</p>
 <p>All date-like input values are normalized to <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> objects during
 construction using the global <code class="docutils literal notranslate"><span class="pre">Config().date_format</span></code> setting.</p>
 <p class="rubric">Examples</p>
@@ -1949,9 +1935,10 @@ construction using the global <code class="docutils literal notranslate"><span c
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>Single-element wrapper: scalar result (<code class="docutils literal notranslate"><span class="pre">int</span></code> for <code class="docutils literal notranslate"><span class="pre">'ymd_int'</span></code>,
-<code class="docutils literal notranslate"><span class="pre">str</span></code> otherwise).</p></li>
-<li><p>Multi-element wrapper: <code class="docutils literal notranslate"><span class="pre">list</span></code> with one formatted value per element.</p></li>
+<li><p>Single-element wrapper with a <code class="docutils literal notranslate"><span class="pre">date</span></code> leaf: scalar result
+(<code class="docutils literal notranslate"><span class="pre">int</span></code> for <code class="docutils literal notranslate"><span class="pre">'ymd_int'</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> otherwise).</p></li>
+<li><p>Multi-element or nested list-of-lists: nested <code class="docutils literal notranslate"><span class="pre">list</span></code> preserving
+structure (<code class="docutils literal notranslate"><span class="pre">list[list[str|int]]</span></code> for multi-policy grids).</p></li>
 </ul>
 </p>
 </dd>
@@ -2492,8 +2479,8 @@ mapping months as follows:</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2527,7 +2514,7 @@ mapping months as follows:</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
 </p></div>
       
     </div>
